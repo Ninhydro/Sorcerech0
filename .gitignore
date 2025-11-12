@@ -1,0 +1,12 @@
+# Godot-specific
+.godot/
+*.import
+export_presets.cfg
+
+# System
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.backup
+*.bak
