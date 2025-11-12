@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3xk2w0qelwqr"]
+
+[ext_resource type="Script" path="res://scenes/SpeechBubble/speech_bubble.gd" id="1_isqdf"]
+[ext_resource type="FontFile" uid="uid://bnlrqfkgwv5nc" path="res://config/PixelOperator.ttf" id="2_dm6ip"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j34ig"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="SpeechBubble" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_isqdf")
+
+[node name="Panel" type="Panel" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 53.0
+offset_bottom = 8.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j34ig")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 5.0
+offset_right = -7.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_dm6ip")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

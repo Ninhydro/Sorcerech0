@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dicdyfnugcut6"]
+
+[ext_resource type="Shader" path="res://shaders/highlight.gdshader" id="1_xu2lq"]
+
+[resource]
+shader = ExtResource("1_xu2lq")
+shader_parameter/is_highlighted = false
+shader_parameter/highlight_color = Color(0.5, 0.8, 1, 1)
+shader_parameter/outline_width = 0.1
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/apply_modulate = true

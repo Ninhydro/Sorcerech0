@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://etc02m6bakte"]
+
+[ext_resource type="Script" path="res://scenes/objects/colorobject.gd" id="1_17qeg"]
+[ext_resource type="Texture2D" uid="uid://c616xbl1ahn3a" path="res://assets_image/Objects/puzzle2_objects7.png" id="2_ew086"]
+[ext_resource type="Material" uid="uid://btras4giugcwr" path="res://shaders/OutlineMaterial.tres" id="3_1be6f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7tqnc"]
+radius = 6.0
+
+[node name="ColorObject" type="RigidBody2D"]
+script = ExtResource("1_17qeg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_7tqnc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_ew086")
+
+[node name="HighlightSprite" type="Sprite2D" parent="."]
+material = ExtResource("3_1be6f")

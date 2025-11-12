@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfecqsjeojxxt"]
+
+[ext_resource type="Script" path="res://scenes/objects/GrapplePoint.gd" id="1_0jup1"]
+[ext_resource type="Texture2D" uid="uid://c02uq0n6vw3h8" path="res://assets_image/Objects/grappling_point2.png" id="2_60l6x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3hnsh"]
+
+[node name="GrapplePoint" type="Area2D" groups=["grapple_targets"]]
+script = ExtResource("1_0jup1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["grapple_targets"]]
+shape = SubResource("RectangleShape2D_3hnsh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2.08616e-07, -2.08616e-07)
+scale = Vector2(0.3125, 0.3125)
+texture = ExtResource("2_60l6x")

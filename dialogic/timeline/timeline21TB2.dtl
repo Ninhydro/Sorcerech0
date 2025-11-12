@@ -1,0 +1,11 @@
+join Player center
+Player (Normal): Epilogue, go to
+- Go to Tromarvelia Castle
+	Player (Normal): Go to Tromarvelia Castle
+	set {Global.teleport_last} = 2.1
+- Go to Tromarvelia Town
+	Player (Normal): Go to Tromarvelia Town
+	set {Global.teleport_last} = 2.2
+- Go normal way
+	Player (Normal): Go normal way from battlefield
+	set {Global.teleport_last} = 2.3

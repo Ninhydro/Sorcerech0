@@ -1,0 +1,146 @@
+[gd_scene load_steps=6 format=3 uid="uid://ckppbahpo7wsk"]
+
+[ext_resource type="Script" path="res://scripts/UI/profile_menu.gd" id="1_vdise"]
+[ext_resource type="Texture2D" uid="uid://bxur340ax8ptx" path="res://assets_image/placeholder/Characters/Players/Foxy/Sprites/idle/player-idle-1.png" id="2_wfj6n"]
+[ext_resource type="StyleBox" uid="uid://d2uj0glckthvn" path="res://config/gray_style_box_flat.tres" id="3_hs76l"]
+[ext_resource type="StyleBox" uid="uid://hdm2eqk0jp18" path="res://config/yellow_style_box_flat.tres" id="4_wluse"]
+[ext_resource type="StyleBox" uid="uid://5v8fdiabshkc" path="res://config/blue_style_box_flat.tres" id="5_6myht"]
+
+[node name="ProfileMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 4
+script = ExtResource("1_vdise")
+
+[node name="BackgroundDimmer" type="ColorRect" parent="."]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "PROFILE"
+
+[node name="HSeparator" type="HSeparator" parent="Panel/MainContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MainContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerSpriteProfile" type="TextureRect" parent="Panel/MainContainer/HBoxContainer"]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+texture = ExtResource("2_wfj6n")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MainContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayerNameLabel" type="Label" parent="Panel/MainContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Phina"
+
+[node name="KillsRow" type="HBoxContainer" parent="Panel/MainContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="KillsLabel" type="Label" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/KillsRow"]
+layout_mode = 2
+text = "Kills: [Placeholder]"
+
+[node name="Status" type="Label" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/KillsRow"]
+layout_mode = 2
+text = "[Status]"
+
+[node name="AffinityLabel" type="Label" parent="Panel/MainContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Affinity:"
+
+[node name="AffinityRow" type="HBoxContainer" parent="Panel/MainContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Magus" type="Label" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow"]
+layout_mode = 2
+text = "Magus"
+
+[node name="AffinityProgressBar" type="HBoxContainer" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+alignment = 1
+
+[node name="NegativeAffinityBar" type="ProgressBar" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow/AffinityProgressBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = ExtResource("4_wluse")
+theme_override_styles/fill = ExtResource("3_hs76l")
+min_value = -10.0
+max_value = 0.0
+show_percentage = false
+
+[node name="AffinityProgressBar" type="ProgressBar" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow/AffinityProgressBar"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = ExtResource("4_wluse")
+theme_override_styles/fill = ExtResource("5_6myht")
+min_value = -10.0
+max_value = 10.0
+show_percentage = false
+
+[node name="PositiveAffinityBar" type="ProgressBar" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow/AffinityProgressBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = ExtResource("3_hs76l")
+theme_override_styles/fill = ExtResource("5_6myht")
+max_value = 10.0
+show_percentage = false
+
+[node name="Cyber" type="Label" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow"]
+layout_mode = 2
+text = "Cyber
+"
+
+[node name="Label" type="Label" parent="Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow"]
+layout_mode = 2
+text = "    "
+
+[node name="InventoryLabel" type="Label" parent="Panel/MainContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Inventory: "
+
+[node name="InventoryContainer" type="GridContainer" parent="Panel/MainContainer/HBoxContainer/VBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_vertical = 3
+columns = 10
+
+[node name="Button" type="Button" parent="Panel/MainContainer"]
+layout_mode = 2
+text = "BACK"

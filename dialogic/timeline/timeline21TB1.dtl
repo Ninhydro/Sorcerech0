@@ -1,0 +1,14 @@
+join Player center
+Player (Normal): Epilogue, go to
+- Go to Tromarvelia
+	Player (Normal): Go to Tromarvelia
+	set {Global.teleport_last} = 1.1
+- Go to Exactlyion
+	Player (Normal): Go to Exactlyion
+	set {Global.teleport_last} = 1.2
+- Go to New Aerendale
+	Player (Happy): Go to New Aerendale
+	set {Global.teleport_last} = 1.3
+- Go normal way
+	Player (Normal): Go normal way from battlefield
+	set {Global.teleport_last} = 1.4

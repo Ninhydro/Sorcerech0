@@ -1,0 +1,71 @@
+XJunkyard: 880x320, 1280x280
+XMaya house: 560x160
+XNew Aerendale town: 520x560, 800x200, 960x280
+XNew Aerendale Capital: 680x480, 840x200
+XIntro_lab: 1160x200 (could be longer/loop)
+XGenocide room: 1360x640
+XHidden ruins floor1: 760x560, 600x240, 600x240, 480x480
+XHidden ruins floor2^: 680x280, 600x240
+XHidden ruins floor3^: 600x280, 600x240, 600x240, 600x240
+XHidden ruins true room: 1280x520
+XNew Aerendale Battlefield floor 1: 1240x360, 1200x240
+XNew Aerendale Battlefield floor 2^: 1480x360, 1160x400, 1200x400, 960x360
+XNew Aerendale Battlefield floor 3^: 840x400, 1000x360, 1280x520, 1000x360, 960x360
+XTromarvelia battlefield floor1v: 1760x600, 2480x1320
+XTromarvelia battlefield floor2v: 400x360, 1200x360
+XTromarvelia battlefield floor3v: 720x600, 480x680
+XTromarvelia battlefield 2: 1080x800, 1080x720, 1240x400
+XExactlyion battlefield 1: 1000x440, 1080x600, 1240x600, 1240x680
+XExactlyion battlefield 2: 1200x880, 960x400, 960x440, 960x440
+XT-NA-E Battlefield: 840x400,  960x360
+XTromarvelia town:  1000x360, 1000x400, 1280x720 
+XExactlyiom town: 1360x600, 1320x440, 1280x640, 1040x520
+XNora house: 2360x400 (4 section)
+XValentina house: 2280x400 (4 section)
+
+XTromarvelia dungeon: 1280x560
+XTromarvelia castle: 1280x800
+XExactlyion center: 960x480
+XExactlyion mainframe: 1280x560
+XForest: 1880x640
+XFactory: 1800x280
+XRestart room: 720x280
+
+Adjustment/category:
+600x600, 800x800, 1200x1200, 1600x1600, 2400x1400
+
+Tromarvelia town
+Exactlyion town
+New Aerendale town
+Junkyard
+CG1B: Tromarvelia town, Exactlyion town
+CG3B: New Aerendale town 
+CG7B: Junkyard
+CG14B: Exactlyion town
+CG15B: Tromarvelia town
+CG19B: New Aerendale town 
+
+Change background:
+Part 1 Intro: All, Intro Bad & Good
+Part 1 End: New Aerendale Battlefield Bad, New Aerendale Town Bad (Same to Part 2)
+Part 2 Magus route (going to Cyber): Exactlyiom Town Bad
+Part 2 Cyber route (going to Magus): Tromarvelia Town Bad
+Part 2 Genocide route: New Aerendale Capital Bad
+Part 2 True/Epilogue: All Good
+
+
+
+Need resize:
+-1Aerendale battlefield need to be smaller
+-1Exactlyion battlefield need to be smaller
+-1Tromarvelia battlefield need to be smaller
+-1Ruins need to be smaller
+-2Exactlyion center little bit smaller
+-2Genocide  little bit smaller
+-2Tromarvelia castle little bit smaller
+-2True little bit smaller
+-3Exactlyion mainframe?
+-3Tromarvelia dungeon?
+
+
+

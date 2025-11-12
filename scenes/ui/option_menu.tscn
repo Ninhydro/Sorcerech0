@@ -1,0 +1,240 @@
+[gd_scene load_steps=4 format=3 uid="uid://dnpcxpgwcmnxp"]
+
+[ext_resource type="Script" path="res://scripts/UI/option_menu.gd" id="1_ljvy6"]
+[ext_resource type="Theme" uid="uid://c3vbpj5lg7j01" path="res://config/new_theme.tres" id="2_orj8l"]
+[ext_resource type="FontFile" uid="uid://bnlrqfkgwv5nc" path="res://config/PixelOperator.ttf" id="3_7qxyk"]
+
+[node name="OptionMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 4
+script = ExtResource("1_ljvy6")
+
+[node name="BackgroundDimmer" type="ColorRect" parent="."]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "OPTIONS"
+
+[node name="HSeparator" type="HSeparator" parent="Panel/MainContainer"]
+layout_mode = 2
+
+[node name="SettingContainer" type="HBoxContainer" parent="Panel/MainContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer1" type="VBoxContainer" parent="Panel/MainContainer/SettingContainer"]
+layout_mode = 2
+
+[node name="Fullscreenrow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/Fullscreenrow"]
+layout_mode = 2
+text = "Fullscreen:
+"
+horizontal_alignment = 1
+
+[node name="CheckBox" type="CheckBox" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/Fullscreenrow"]
+layout_mode = 2
+text = "Enabled"
+
+[node name="BrightnessRow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/BrightnessRow"]
+layout_mode = 2
+text = "Brightness:
+"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/BrightnessRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 1.5
+step = 0.1
+value = 1.0
+
+[node name="Label2" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/BrightnessRow"]
+layout_mode = 2
+text = "1.0"
+
+[node name="ResolutionRow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/ResolutionRow"]
+layout_mode = 2
+text = "Resolution
+
+"
+
+[node name="OptionButton" type="OptionButton" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/ResolutionRow"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("2_orj8l")
+theme_override_fonts/font = ExtResource("3_7qxyk")
+theme_override_font_sizes/font_size = 10
+item_count = 4
+popup/item_0/text = "640x360d"
+popup/item_0/id = 0
+popup/item_1/text = "960x540"
+popup/item_1/id = 1
+popup/item_2/text = "1280x720"
+popup/item_2/id = 2
+popup/item_3/text = "1920x1080"
+popup/item_3/id = 3
+
+[node name="V-SyncRow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/V-SyncRow"]
+layout_mode = 2
+text = "V-Sync:
+
+"
+
+[node name="OptionButton" type="OptionButton" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/V-SyncRow"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("2_orj8l")
+theme_override_fonts/font = ExtResource("3_7qxyk")
+theme_override_font_sizes/font_size = 10
+item_count = 3
+popup/item_0/text = "Disabled"
+popup/item_0/id = 0
+popup/item_1/text = "Enabled"
+popup/item_1/id = 1
+popup/item_2/text = "Adaptive"
+popup/item_2/id = 2
+
+[node name="FPSLimitRow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer1"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/FPSLimitRow"]
+layout_mode = 2
+text = "FPS Limit: 
+"
+horizontal_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/FPSLimitRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 30.0
+max_value = 240.0
+value = 60.0
+
+[node name="Label2" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer1/FPSLimitRow"]
+layout_mode = 2
+text = "60 FPS"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/MainContainer/SettingContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MasterVolRow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/MasterVolRow"]
+layout_mode = 2
+text = "Master Volume:"
+
+[node name="HSlider" type="HSlider" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/MasterVolRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -80.0
+max_value = 1.0
+step = 0.1
+value = -10.0
+
+[node name="Label2" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/MasterVolRow"]
+layout_mode = 2
+text = "-10.0dB"
+
+[node name="BGMVolRow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/BGMVolRow"]
+layout_mode = 2
+text = "BGM Volume:"
+
+[node name="HSlider" type="HSlider" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/BGMVolRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -80.0
+max_value = 1.0
+step = 0.1
+value = -10.0
+
+[node name="Label2" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/BGMVolRow"]
+layout_mode = 2
+text = "-10.0dB"
+
+[node name="SFXVolRow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/SFXVolRow"]
+layout_mode = 2
+text = "SFX Volume:"
+
+[node name="HSlider" type="HSlider" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/SFXVolRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -80.0
+max_value = 1.0
+step = 0.1
+value = -10.0
+
+[node name="Label2" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/SFXVolRow"]
+layout_mode = 2
+text = "-10.0dB"
+
+[node name="VoiceVolRow" type="HBoxContainer" parent="Panel/MainContainer/SettingContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/VoiceVolRow"]
+layout_mode = 2
+text = "Voice Volume:"
+
+[node name="HSlider" type="HSlider" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/VoiceVolRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -80.0
+max_value = 1.0
+step = 0.1
+value = -10.0
+
+[node name="Label2" type="Label" parent="Panel/MainContainer/SettingContainer/VBoxContainer2/VoiceVolRow"]
+layout_mode = 2
+text = "-10.0dB"
+
+[node name="Button" type="Button" parent="Panel/MainContainer"]
+layout_mode = 2
+text = "BACK"

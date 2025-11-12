@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6lo73tt16xhr"]
+
+[ext_resource type="Script" path="res://scenes/objects/colormixer.gd" id="1_km256"]
+[ext_resource type="Texture2D" uid="uid://c48xvtl3psu3t" path="res://assets_image/Objects/puzzle2_objects4.png" id="2_hjjgg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kk668"]
+size = Vector2(32, 32)
+
+[node name="ColorMixer" type="Area2D"]
+script = ExtResource("1_km256")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_kk668")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_hjjgg")
+
+[node name="OutputSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, 30)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

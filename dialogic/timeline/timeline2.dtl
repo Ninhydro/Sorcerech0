@@ -1,0 +1,3 @@
+join Player (Angry) center
+Player (Normal): forced/trigger cutscene 2 in maya house
+Player (Happy): teleport to junkyard cutscene 3, go to  minigame

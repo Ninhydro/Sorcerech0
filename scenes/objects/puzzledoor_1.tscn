@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnasyvy0oaxae"]
+
+[ext_resource type="Script" path="res://scenes/objects/puzzledoor_1.gd" id="1_c1wn4"]
+[ext_resource type="Texture2D" uid="uid://djfjdfbyjp6hl" path="res://assets_image/Objects/minigame2_objects6.png" id="1_c2ix1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_llgko"]
+size = Vector2(11, 37)
+
+[node name="puzzledoor1" type="StaticBody2D"]
+script = ExtResource("1_c1wn4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 1.5)
+shape = SubResource("RectangleShape2D_llgko")
+
+[node name="Door" type="Sprite2D" parent="."]
+position = Vector2(8, 0)
+texture = ExtResource("1_c2ix1")

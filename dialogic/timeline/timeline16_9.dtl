@@ -1,0 +1,17 @@
+join Player center
+Player (Normal): Cutscene in junkyard for decision route ending
+- Side with Magus | [if {Global.affinity} <= 0] [else="disable"]
+	Go to magus route
+	set {Global.route_status} = "Magus"
+- Side with Cyber | [if {Global.affinity} >= 0] [else="disable"]
+	Go to cyber route
+	set {Global.route_status} = "Cyber"
+- Find other way | [if {Global.ending_magus} == true && {Global.ending_cyber} == true] [else="disable"]
+	Go to true route/pacifist
+	if {Global.player_status} == "Neutral":
+		set {Global.route_status} = "True"
+	elif {Global.player_status} == "Pacifist":
+		set {Global.route_status} = "Pacifist"
+- I hate everyone, Burn the world! | [if {Global.player_status} == "Genocide"] [else="disable"]
+	Go to genocide route
+	set {Global.route_status} = "Genocide"

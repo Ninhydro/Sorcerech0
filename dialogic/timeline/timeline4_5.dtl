@@ -1,0 +1,8 @@
+join Player center
+Player (Normal): end chapter 2 & start chapter 3, choosing where to go tromarvelia or exactlyion since player still young
+- Go to Tromarvelia
+	Player (Normal): Go to Tromarvelia 
+	set {Global.teleport_first} = 0
+- Go to Exactlyion
+	Player (Normal): Go to Exactlyion
+	set {Global.teleport_first} = 1

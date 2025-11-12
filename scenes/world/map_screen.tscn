@@ -1,0 +1,63 @@
+[gd_scene load_steps=6 format=3 uid="uid://cljrtsdy6t6gw"]
+
+[ext_resource type="Script" path="res://scenes/world/MapScreen.gd" id="1_01ena"]
+[ext_resource type="Texture2D" uid="uid://d2foueoamowa0" path="res://assets_image/Background/Map/maps0.png" id="2_f54mb"]
+[ext_resource type="Texture2D" uid="uid://dco8q7k43y84u" path="res://assets_image/Background/Map/maps1.png" id="3_3ibxq"]
+[ext_resource type="Texture2D" uid="uid://bw50uxyd7pvht" path="res://assets_image/Background/Map/mapsV2.png" id="4_6you6"]
+[ext_resource type="Texture2D" uid="uid://cc4gpw3awlo0s" path="res://assets_image/Background/Map/player_icon.png" id="5_hki5y"]
+
+[node name="MapScreen" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_01ena")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0, 0, 0, 0)
+
+[node name="MapContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 180.0
+
+[node name="Background" type="TextureRect" parent="MapContainer"]
+modulate = Color(1, 1, 1, 0.588235)
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 184.0
+texture = ExtResource("2_f54mb")
+expand_mode = 1
+
+[node name="MapTexture" type="TextureRect" parent="MapContainer"]
+layout_mode = 0
+offset_left = 5.0
+offset_right = 325.0
+offset_bottom = 184.0
+texture = ExtResource("4_6you6")
+expand_mode = 1
+
+[node name="Background2" type="TextureRect" parent="MapContainer"]
+modulate = Color(1, 1, 1, 0.784314)
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 184.0
+texture = ExtResource("3_3ibxq")
+expand_mode = 1
+
+[node name="PlayerContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 180.0
+
+[node name="PlayerIcon" type="TextureRect" parent="PlayerContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_hki5y")
+
+[node name="IconsLayer" type="TextureRect" parent="PlayerContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

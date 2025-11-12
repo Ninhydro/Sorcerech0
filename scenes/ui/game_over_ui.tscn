@@ -1,0 +1,66 @@
+[gd_scene load_steps=2 format=3 uid="uid://b636ofpxh5xb8"]
+
+[ext_resource type="Script" path="res://scripts/UI/game_over_ui.gd" id="1_matwl"]
+
+[node name="GameOverUI" type="CanvasLayer"]
+script = ExtResource("1_matwl")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Space" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="GameOver" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="Space2" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="RetryButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "RETRY"
+
+[node name="Space2" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = " "
+
+[node name="ExitButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "EXIT TO 
+TITLE"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+title = "You want to continue?"
+position = Vector2i(60, 60)
+size = Vector2i(200, 70)
+ok_button_text = "YES"
+cancel_button_text = "No"

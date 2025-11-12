@@ -1,0 +1,3 @@
+join Player center
+Player (Normal): start chapter 2, trigger cutsene 5 on new aerendale town
+Player (Happy): teleport to maya house, cutscene 6, end chapter 2 & start chapter 3

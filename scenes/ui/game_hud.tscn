@@ -1,0 +1,121 @@
+[gd_scene load_steps=8 format=3 uid="uid://cjvrxjjcgu8qo"]
+
+[ext_resource type="Script" path="res://scripts/UI/game_hud.gd" id="1_ffdew"]
+[ext_resource type="Shader" path="res://shaders/highlight.gdshader" id="2_tt4rt"]
+[ext_resource type="Shader" path="res://shaders/circle.gdshader" id="3_kc6w1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bos72"]
+shader = ExtResource("2_tt4rt")
+shader_parameter/is_highlighted = false
+shader_parameter/highlight_color = Color(0.5, 0.8, 1, 1)
+shader_parameter/outline_width = 0.1
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/apply_modulate = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7pkvh"]
+shader = ExtResource("2_tt4rt")
+shader_parameter/is_highlighted = false
+shader_parameter/highlight_color = Color(0.5, 0.8, 1, 1)
+shader_parameter/outline_width = 0.1
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/apply_modulate = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qf8af"]
+shader = ExtResource("2_tt4rt")
+shader_parameter/is_highlighted = false
+shader_parameter/highlight_color = Color(0.5, 0.8, 1, 1)
+shader_parameter/outline_width = 0.1
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/apply_modulate = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y1wf2"]
+shader = ExtResource("3_kc6w1")
+shader_parameter/outline_width = 0.02
+shader_parameter/outline_color = Vector4(1, 1, 1, 1)
+shader_parameter/scale = 0.9
+
+[node name="GameHUD" type="CanvasLayer"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ffdew")
+
+[node name="PlayerFacePortrait" type="TextureRect" parent="Control"]
+layout_mode = 1
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 5.0
+offset_bottom = 5.0
+
+[node name="HealthBarContainer" type="Control" parent="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 40.0
+offset_top = 5.0
+offset_right = 80.0
+offset_bottom = 35.0
+
+[node name="HealthBar" type="ProgressBar" parent="Control/HealthBarContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 17.0
+
+[node name="FormSelectionContainer" type="Control" parent="Control"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 5.0
+offset_top = 40.0
+offset_right = 5.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/FormSelectionContainer"]
+layout_mode = 0
+offset_right = 8.0
+
+[node name="FormIconPrevious" type="TextureRect" parent="Control/FormSelectionContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0.490196)
+material = SubResource("ShaderMaterial_bos72")
+layout_mode = 2
+
+[node name="FormIconCurrent" type="TextureRect" parent="Control/FormSelectionContainer/HBoxContainer"]
+material = SubResource("ShaderMaterial_7pkvh")
+layout_mode = 2
+
+[node name="FormIconNext" type="TextureRect" parent="Control/FormSelectionContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0.490196)
+material = SubResource("ShaderMaterial_qf8af")
+layout_mode = 2
+
+[node name="MinimapContainer" type="Control" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Control/MinimapContainer"]
+visible = false
+material = SubResource("ShaderMaterial_y1wf2")
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -50.0
+offset_bottom = 50.0
+grow_horizontal = 0
+
+[node name="SubViewport" type="SubViewport" parent="Control/MinimapContainer/SubViewportContainer"]
+disable_3d = true
+handle_input_locally = false
+size = Vector2i(50, 50)
+render_target_update_mode = 0
+
+[node name="Camera2D" type="Camera2D" parent="Control/MinimapContainer/SubViewportContainer/SubViewport"]
+visible = false
