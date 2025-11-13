@@ -1206,7 +1206,7 @@ position = Vector2(4736, -680)
 [node name="Room_ExactlyionCentral" parent="." instance=ExtResource("17_bi5uk")]
 position = Vector2(7952, -1352)
 
-[node name="RoomExactlyionBattlefield2" parent="." instance=ExtResource("18_6tufi")]
+[node name="Room_ExactlyionBattlefield2" parent="." instance=ExtResource("18_6tufi")]
 position = Vector2(8808, -1288)
 
 [node name="Room_ExactlyionMainframe" parent="." instance=ExtResource("18_rdbnv")]

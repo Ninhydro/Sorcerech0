@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://bynnmdej0ya1q"]
+
+[ext_resource type="Script" path="res://scenes/objects/goal_cyber.gd" id="1_oxroa"]
+[ext_resource type="Texture2D" uid="uid://b7vk3qtka4pr7" path="res://assets_image/Objects/puzzle2_objects6.png" id="2_v3074"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_choe4"]
+radius = 16.1245
+
+[node name="GoalCyber" type="Area2D"]
+script = ExtResource("1_oxroa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_v3074")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_choe4")

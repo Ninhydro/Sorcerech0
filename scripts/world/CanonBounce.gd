@@ -26,3 +26,8 @@ func get_bounce_data() -> Dictionary:
 		"normal": calculated_bounce_normal,
 		"power": bounce_power
 	}
+
+func can_bounce(player_node) -> bool:
+	# Only allow bouncing when player is in cannon mode and launched
+	return player_node.is_launched
+	

@@ -1,12 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://c2nv1v2dftw2b"]
+[gd_scene load_steps=4 format=3 uid="uid://c2nv1v2dftw2b"]
 
 [ext_resource type="Script" path="res://scenes/world/CyberSpot.gd" id="1_jnse8"]
+[ext_resource type="Texture2D" uid="uid://b4p6fs57tixhh" path="res://assets_image/Objects/puzzle_objects2.png" id="2_0thot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im5ma"]
+size = Vector2(23, 22)
 
 [node name="CyberSpot" type="Area2D"]
 collision_mask = 3
 script = ExtResource("1_jnse8")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 14)
+texture = ExtResource("2_0thot")
+offset = Vector2(0, -15)
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 13)
 shape = SubResource("RectangleShape2D_im5ma")

@@ -9,7 +9,7 @@ var gravity  = 1000.0     # Gravity strength (pixels/sec^2)
 @export var allow_camouflage: bool = false
 @export var allow_time_freeze: bool = false
 @export var telekinesis_enabled : bool = false
-@export var current_magic_spot: MagusSpot = null
+#@export var current_magic_spot: MagusSpot = null
 @export var canon_enabled : bool = false # Flag to indicate if player is in cannon mode
 @onready var telekinesis_controller = $TelekinesisController
 @export var UI_telekinesis : bool = false
@@ -133,6 +133,30 @@ var previous_form: String = ""
 var not_busy = true
 @onready var effects = $Effects
 
+var current_cannon: Node = null  # Reference to the current cannon we're in
+
+var normal_collision_mask: int = 0
+var cannon_collision_mask: int = 0
+
+
+# Add these with your other variables
+var area_pass_count: int = 0
+var max_area_passes: int = 2
+var is_area_goal_complete: bool = false
+var area_goal_locked: bool = false
+var last_area_pass_time: float = 0.0
+var area_pass_cooldown: float = 0.5  # Minimum time between counting passes (seconds)
+
+# Speed increase variables
+var base_launch_speed: float = 500.0  # Store the original speed
+var speed_increase_multiplier: float = 1.2  # 20% speed increase each pass
+var current_speed_boost: float = 1.0  # Current speed multiplier
+# Add these variables to your Player script
+var last_bounce_direction: Vector2 = Vector2.ZERO
+var bounce_direction_change_threshold: float = 0.3  # Minimum change required to count as new bounce
+
+signal area_goal_completed()
+
 # Method to disable player input
 func disable_input():
 	print("Player: Input disabled.")
@@ -150,6 +174,14 @@ func enable_input():
 
 
 func _ready():
+	jump_force = 250.0
+
+	normal_collision_mask = collision_mask & ~(1 << 1) # Remove layer 2 from mas
+	cannon_collision_mask = collision_mask
+	collision_mask = normal_collision_mask
+	
+	base_launch_speed = launch_speed
+	
 	Global.health = 50
 	Global.register_player(self)
 	effects.visible = false
@@ -286,7 +318,7 @@ func _physics_process(delta):
 	# --- NEW: CHECK IF PLAYER IS BUSY (can't perform normal actions) ---
 	var is_busy = (dead or Global.is_cutscene_active or player_hit or knockback_timer > 0 or 
 				  is_grappling_active or Global.dashing or is_launched or canon_enabled or 
-				  telekinesis_enabled or is_grabbing_ledge or 
+				  telekinesis_enabled or is_grabbing_ledge or area_goal_locked or
 				  Global.attacking or Global.is_dialog_open or Global.teleporting)
 	
 
@@ -496,20 +528,42 @@ func _physics_process(delta):
 	# --- CANNON AIMING AND LAUNCHING LOGIC (Can override cutscene if desired, or add Global.is_cutscene_active here too) ---
 	# For simplicity, assuming cannon can still be controlled during a cutscene if desired.
 	# If cutscene should disable cannon input, add 'and not Global.is_cutscene_active' to these Input checks.
-	if is_aiming:
+	if is_aiming and is_instance_valid(current_cannon):
+		var rotation_speed = 2.0  # Adjust rotation speed as neede
 		if Input.is_action_pressed("move_left"):
-			aim_angle_deg = clamp(aim_angle_deg - 1, -170, -10) # restrict angle
+			current_cannon.sprite_2d.rotation_degrees -= rotation_speed
 		elif Input.is_action_pressed("move_right"):
-			aim_angle_deg = clamp(aim_angle_deg + 1, -170, -10)
+			current_cannon.sprite_2d.rotation_degrees += rotation_speed
+	
+	# Sync the player's aim angle with cannon rotation
+		current_cannon.sprite_2d.rotation_degrees = fmod(current_cannon.sprite_2d.rotation_degrees, 360)
+	
+	# Sync player aim with cannon rotation (adjusting for the 90-degree offset)
+		aim_angle_deg = current_cannon.sprite_2d.rotation_degrees - 90
 		update_aim_ui(aim_angle_deg)
-
+		
 	if is_in_cannon and is_aiming and Input.is_action_just_pressed("yes"):
 		print("FIRE!")
-		launch_direction = Vector2.RIGHT.rotated(deg_to_rad(aim_angle_deg)) # Calculate launch direction from aim angle
+		# Calculate launch direction accounting for the sprite's orientation
+		if is_instance_valid(current_cannon):
+			# If sprite faces right by default, use its rotation directly
+			# If it faces up by default, subtract 90 degrees
+			var cannon_rotation_rad = deg_to_rad(current_cannon.sprite_2d.rotation_degrees - 90)
+			launch_direction = Vector2.RIGHT.rotated(cannon_rotation_rad)
+		else:
+			# Fallback to player's aim system
+			launch_direction = Vector2.RIGHT.rotated(deg_to_rad(aim_angle_deg))
+		
+		last_bounce_direction = Vector2.ZERO
 		is_aiming = false
-		is_launched = true # Player is now launched
-		is_in_cannon = false # No longer in the cannon
-		show_aim_ui(false)
+		is_launched = true
+		is_in_cannon = false
+		
+		# Make player visible again and clear cannon reference
+		visible = true
+		current_cannon = null
+		
+		#show_aim_ui(false)
 		#animation_player.play("flying") # Play player's own flying animation
 		
 	if is_launched:
@@ -529,21 +583,42 @@ func _physics_process(delta):
 			var collider = collision.get_collider()
 
 			if collider and collider.has_method("get_bounce_data"):
-				var bounce_data = collider.get_bounce_data()
-				var bounce_normal = bounce_data.normal
-				var bounce_power = bounce_data.power
+			# Check if we can bounce (only in cannon mode)
+				if collider.has_method("can_bounce") and collider.can_bounce(self):
+					if bounced_protection_timer > 0:
+						continue
+					
+					var bounce_data = collider.get_bounce_data()
+					var bounce_normal = bounce_data.normal
+					var bounce_power = bounce_data.power
 
-				if bounce_normal.length() > 0.01:
-					bounce_normal = bounce_normal.normalized()
-					launch_direction = velocity.bounce(bounce_normal).normalized()
-					velocity = launch_direction * launch_speed * bounce_power
-					print("BOUNCED! New direction: ", launch_direction, " New velocity: ", velocity)
-					bounced_this_frame = true
-					bounced_recently()
-					break
+					if bounce_normal.length() > 0.01:
+						bounce_normal = bounce_normal.normalized()
+						
+						# CALCULATE NEW DIRECTION
+						var new_direction = velocity.bounce(bounce_normal).normalized()
+						
+						# SIMPLIFIED OSCILLATION DETECTION - Only apply correction if really stuck
+						var direction_change = last_bounce_direction.distance_to(new_direction)
+						
+						# Only apply correction if we're truly oscillating (very small direction change)
+						if direction_change < 0.1 and last_bounce_direction != Vector2.ZERO:
+							print("DEBUG: Severe oscillation detected, applying small correction")
+							var random_angle = randf_range(-0.05, 0.05)  # Very small random angle
+							new_direction = new_direction.rotated(random_angle)
+						
+						# Apply the new direction
+						launch_direction = new_direction
+						last_bounce_direction = new_direction
+						velocity = launch_direction * launch_speed * bounce_power
+						print("BOUNCED! New direction: ", launch_direction, " New velocity: ", velocity)
+						bounced_this_frame = true
+						bounced_recently()
+						break
 				else:
-					print("Invalid bounce normal: ", bounce_normal)
-
+					# Player is not in cannon mode, pass through without bouncing
+					print("Cannot bounce - not in cannon mode")
+					continue
 		# Apply gravity if launched and not on floor (for ballistic trajectory)
 		if not is_on_floor():
 			velocity.y += gravity * delta
@@ -553,11 +628,19 @@ func _physics_process(delta):
 			#velocity = Vector2.ZERO # Stop movement
 			canon_enabled = false # Exit cannon mode
 			scale = Vector2(1,1)
+			
 			set_physics_process(true)
 			set_process(true)
 			#can_switch_form = true
 			#can_attack = true
 			#can_skill = true
+			collision_mask = normal_collision_mask
+			
+			if not is_area_goal_complete:
+				reset_area_goal()
+		
+			visible = true
+			current_cannon = null
 			print("Player stopped on a non-bounce surface or came to rest.")
 	else:
 		# This else block handles normal gravity application when not launched, not in cannon, not telekinesis
@@ -640,13 +723,16 @@ func lock_state(state_name: String) -> void:
 		unlocked_states.erase(state_name)
 		print("Locked state:" + state_name)
 		
-func enter_cannon():
+func enter_cannon(cannon_ref = null):
 	is_in_cannon = true
 	is_aiming = true
 	velocity = Vector2.ZERO # Stop player movement when entering cannon
-	show_aim_ui(true)
+	#show_aim_ui(true)
 	cannon_form_switched = false  # Reset flag when entering cannon
 	print("Entered cannon and aiming.")
+	current_cannon = cannon_ref
+	visible = false
+	collision_mask = cannon_collision_mask
 	# Optionally disable animations or switch to a "cannon idle" sprite
 	
 func show_aim_ui(visible: bool):
@@ -974,7 +1060,7 @@ func try_push_objects(direction: Vector2):
 
 func bounced_recently():
 	bounced_protection_timer = BOUNCE_GRACE
-	
+	last_bounce_direction = launch_direction
 	
 # This function will be called by the AnimationPlayer to make the player move
 func move_during_cutscene(target_position: Vector2, duration: float):
@@ -1152,3 +1238,95 @@ func emergency_cleanup_shaders():
 		current_state.force_cleanup()
 		
 
+func track_area_pass():
+	if is_area_goal_complete or area_goal_locked or not is_launched:
+		return
+	
+	# Check cooldown to prevent multiple counts in quick succession
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if current_time - last_area_pass_time < area_pass_cooldown:
+		return
+	
+	last_area_pass_time = current_time
+	area_pass_count += 1
+	
+	current_speed_boost *= speed_increase_multiplier
+	launch_speed = base_launch_speed * current_speed_boost
+	print("Area pass count: ", area_pass_count, "/", max_area_passes)
+	
+	show_area_pass_feedback()
+	
+	if area_pass_count >= max_area_passes:
+		complete_area_goal()
+
+func complete_area_goal():
+	if is_area_goal_complete:
+		return
+	
+	is_area_goal_complete = true
+	area_goal_locked = true
+	print("Area pass goal completed! Locking player...")
+	
+	# Stop the player's movement
+	velocity = Vector2.ZERO
+	is_launched = false
+	canon_enabled = false
+	
+	scale = Vector2(1, 1)  # RETURN TO NORMAL SCALE
+	visible = true  # MAKE SURE PLAYER IS VISIBLE
+	
+	collision_mask = normal_collision_mask
+	
+	# Big final visual effect
+	sprite.modulate = Color(1, 0, 0)  # Red flash
+	await get_tree().create_timer(0.3).timeout
+	sprite.modulate = Color(1, 1, 1)
+	
+	# EMIT SIGNAL instead of starting dialog
+	area_goal_completed.emit()
+	
+	# Lock the player for a few seconds
+	await get_tree().create_timer(2.0).timeout
+	area_goal_locked = false
+	
+	# Optionally unlock after dialog completes
+	# You can connect to Dialogic's signal to know when dialog ends
+	# area_goal_locked = false
+
+func reset_area_goal():
+	area_pass_count = 0
+	is_area_goal_complete = false
+	area_goal_locked = false
+	last_area_pass_time = 0.0
+	# RESET SPEED
+	current_speed_boost = 1.0
+	launch_speed = base_launch_speed
+	
+	print("Area goal and speed reset")
+	
+func show_area_pass_feedback():
+	# More dramatic visual feedback for speed increases
+	var tween = create_tween()
+	
+	# Flash effect with color based on speed
+	var flash_color = Color(1, 1 - (current_speed_boost - 1.0) * 0.5, 1 - (current_speed_boost - 1.0) * 0.5)
+	
+	tween.tween_property(sprite, "modulate", flash_color, 0.1)
+	tween.tween_property(sprite, "modulate", Color(1, 1, 1), 0.1)
+	
+	# Optional: Screen shake effect (if you have a camera)
+	if camera:
+		var shake_strength = min(10.0, (current_speed_boost - 1.0) * 50.0)
+		apply_screen_shake(shake_strength)
+
+func apply_screen_shake(strength: float):
+	if camera and camera is Camera2D:
+		var original_offset = camera.offset
+		var tween = create_tween()
+		tween.set_parallel(true)
+		
+		# Shake effect
+		for i in range(3):
+			var random_offset = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * strength
+			tween.tween_property(camera, "offset", original_offset + random_offset, 0.05)
+			tween.tween_property(camera, "offset", original_offset, 0.05)

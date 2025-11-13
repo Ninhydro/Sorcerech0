@@ -315,6 +315,8 @@ var nora_station_1_completed: bool = false  # Green station
 var nora_station_2_completed: bool = false  # Purple station  
 var nora_station_3_completed: bool = false  # Gold station
 
+var minigame_valentina_completed = false
+
 # Function to add/update quest markers
 func add_quest_marker(quest_name: String, world_position: Vector2):
 	quest_markers[quest_name] = world_position
@@ -537,7 +539,8 @@ func get_save_data() -> Dictionary:
 		"minigame_nora_completed": minigame_nora_completed,
 		"nora_station_1_completed": nora_station_1_completed,
 		"nora_station_2_completed": nora_station_2_completed,
-		"nora_station_3_completed": nora_station_3_completed
+		"nora_station_3_completed": nora_station_3_completed,
+		"minigame_valentina_completed": minigame_valentina_completed
 
 		
 	}
@@ -631,7 +634,8 @@ func apply_load_data(data: Dictionary):
 	nora_station_1_completed = data.get("nora_station_1_completed", false)
 	nora_station_2_completed = data.get("nora_station_2_completed", false)
 	nora_station_3_completed = data.get("nora_station_3_completed", false)
-	
+	minigame_valentina_completed = data.get("minigame_valentina_completed", false)
+
 	
 	print("Global: All saved data applied successfully.")
 
@@ -718,7 +722,7 @@ func reset_to_defaults():
 	nora_station_1_completed = false
 	nora_station_2_completed = false
 	nora_station_3_completed = false
-
+	minigame_valentina_completed = false
 	#if autosave_timer.is_running():
 	#	autosave_timer.stop()
 	#autosave_timer.start()
