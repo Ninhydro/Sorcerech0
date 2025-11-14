@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dp1isjgwxh2" path="res://dialogic/cutscene/cutscene5M.tscn" id="5_0sw4y"]
 [ext_resource type="Texture2D" uid="uid://bekaorr4or6s0" path="res://assets_image/Objects/minigame2_objects5.png" id="5_j6u65"]
 [ext_resource type="PackedScene" uid="uid://1kus856tsk7e" path="res://dialogic/cutscene/cutscene6M.tscn" id="6_21ckk"]
-[ext_resource type="PackedScene" uid="uid://demxjsb4n3dom" path="res://scenes/NPC/nora.tscn" id="7_x12si"]
+[ext_resource type="PackedScene" uid="uid://demxjsb4n3dom" path="res://scenes/NPC/nora1.tscn" id="7_x12si"]
 [ext_resource type="PackedScene" uid="uid://v7t2hhjb5qb" path="res://scenes/objects/minigame_station.tscn" id="8_cjuqd"]
 [ext_resource type="PackedScene" uid="uid://b6lo73tt16xhr" path="res://scenes/objects/color_mixer.tscn" id="9_qvdx1"]
 [ext_resource type="PackedScene" uid="uid://etc02m6bakte" path="res://scenes/objects/color_object.tscn" id="10_qxrnp"]
@@ -166,6 +166,7 @@ metadata/_edit_lock_ = true
 position = Vector2(-72, 72)
 
 [node name="cutscene6M" parent="." instance=ExtResource("6_21ckk")]
+visible = false
 position = Vector2(-2248, 72)
 
 [node name="Nora" parent="." instance=ExtResource("7_x12si")]

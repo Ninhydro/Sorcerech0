@@ -23,6 +23,9 @@ var highlight_materials: Array = []  # Track all created highlight materials
 var camouflage_shader: Shader
 var circle_shader: Shader
 
+var snap_threshold: int = 50
+var resize_handler_active: bool = true
+
 func _ready():
 	
 	load_persistent_data()
@@ -45,8 +48,36 @@ func _ready():
 	else:
 		print("ERROR: Failed to load highlight shader")
 		highlight_shader = _create_fallback_shader()
+	
+
+	
+# Add these variables at the top with your other variables
+
+var last_window_size: Vector2i = Vector2i.ZERO
+var last_window_position: Vector2i = Vector2i.ZERO
+var resize_check_active: bool = true
 
 
+func _handle_window_change(size: Vector2i, position: Vector2i):
+	var screen_size = DisplayServer.screen_get_size()
+	var half_screen_width = screen_size.x / 2
+	
+	#print("Global: Window changed - Size: ", size, " | Position: ", position)
+	#print("Global: Screen: ", screen_size, " | Half-width: ", half_screen_width)
+	
+	# Check if window is at screen edge (snapped)
+	var at_left_edge = position.x < snap_threshold
+	var at_right_edge = position.x > screen_size.x - size.x - snap_threshold
+	
+	# Check if window width is close to half-screen but not exact
+	var width_close_to_half = abs(size.x - half_screen_width) < snap_threshold
+	var wrong_size = size.x != half_screen_width
+	
+	# If window is at edge and close to half-screen but wrong size, fix it
+	if (at_left_edge or at_right_edge) and width_close_to_half and wrong_size:
+		print("Global: Snap detected! Forcing exact half-screen: ", Vector2i(half_screen_width, size.y))
+		DisplayServer.window_set_size(Vector2i(half_screen_width, size.y))
+		
 func create_highlight_material() -> ShaderMaterial:
 	var material = ShaderMaterial.new()
 	material.shader = highlight_shader
@@ -175,10 +206,10 @@ var voice_vol = -10.0
 var resolution_index: int = 2 # Default to 1280x720 (index 2)
 var base_resolution = Vector2(320, 180)
 var available_resolutions = [
-	base_resolution * 2, # 0: 640x360
-	base_resolution * 3, # 1: 960x540
-	base_resolution * 4, # 2: 1280x720
-	base_resolution * 6  # 3: 1920x1080
+	Vector2i(640, 360),    # 0: Small
+	Vector2i(960, 540),    # 1: Half HD - THIS IS THE KEY! Use exact half
+	Vector2i(1280, 720),   # 2: HD
+	Vector2i(1920, 1080)   # 3: Full HD
 ]
 
 
@@ -433,13 +464,27 @@ func _init():
 
 func _process(delta):
 	# Handle unpause cooldown timer
+	#print(int(delta * 1000), "ms")
 	if unpause_cooldown_timer > 0:
 		unpause_cooldown_timer -= delta
 		if unpause_cooldown_timer <= 0:
 			ignore_player_input_after_unpause = false
 			unpause_cooldown_timer = 0.0
 			print("=== GLOBAL: Input ENABLED (cooldown finished) ===")
+			
+	if not resize_check_active or fullscreen_on:
+		return
 	
+	var current_size = DisplayServer.window_get_size()
+	var current_position = DisplayServer.window_get_position()
+	
+	# Only check if something actually changed
+	if current_size != last_window_size or current_position != last_window_position:
+		_handle_window_change(current_size, current_position)
+		last_window_size = current_size
+		last_window_position = current_position
+	#print(OS.get_data_dir())
+
 	if Input.is_action_just_pressed("debug1"):
 		killing = !killing
 		print("killing ", killing)
@@ -537,10 +582,8 @@ func get_save_data() -> Dictionary:
 		"revealed_chunks": revealed_chunks,
 		"quest_markers": _serialize_quest_markers(),
 		"minigame_nora_completed": minigame_nora_completed,
-		"nora_station_1_completed": nora_station_1_completed,
-		"nora_station_2_completed": nora_station_2_completed,
-		"nora_station_3_completed": nora_station_3_completed,
 		"minigame_valentina_completed": minigame_valentina_completed
+
 
 		
 	}
@@ -631,11 +674,8 @@ func apply_load_data(data: Dictionary):
 	_deserialize_quest_markers(data.get("quest_markers", {}))
 	
 	minigame_nora_completed = data.get("minigame_nora_completed", false)
-	nora_station_1_completed = data.get("nora_station_1_completed", false)
-	nora_station_2_completed = data.get("nora_station_2_completed", false)
-	nora_station_3_completed = data.get("nora_station_3_completed", false)
 	minigame_valentina_completed = data.get("minigame_valentina_completed", false)
-
+	
 	
 	print("Global: All saved data applied successfully.")
 
@@ -719,10 +759,8 @@ func reset_to_defaults():
 	cutscene_finished1 = false
 	
 	minigame_nora_completed = false
-	nora_station_1_completed = false
-	nora_station_2_completed = false
-	nora_station_3_completed = false
 	minigame_valentina_completed = false
+
 	#if autosave_timer.is_running():
 	#	autosave_timer.stop()
 	#autosave_timer.start()
@@ -745,32 +783,50 @@ func _deserialize_quest_markers(serialized_data: Dictionary):
 	print("Loaded ", quest_markers.size(), " quest markers from save")
 	
 func apply_graphics_settings():
-	var current_resolution = available_resolutions[resolution_index]
 	
 	# Fullscreen
 	if fullscreen_on:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		# Hide borders in fullscreen
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		DisplayServer.window_set_size(current_resolution)
-
+		DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
 		
+		# Apply resolution for windowed mode
+		var current_resolution = available_resolutions[resolution_index]
+		
+		# Get screen size to detect half-screen scenarios
+		var screen_size = DisplayServer.screen_get_size()
+		var half_screen_width = screen_size.x / 2
+		
+		print("applying displayyyyyyyyy")
+		# If selected resolution is close to half-screen width, ensure it triggers Windows snap
+		if abs(current_resolution.x - half_screen_width) <= 20:  # Within 20 pixels of half-screen
+			# Set to slightly above half-screen to ensure Windows snap detection
+			DisplayServer.window_set_size(Vector2i(half_screen_width + 10, current_resolution.y))
+		else:
+			DisplayServer.window_set_size(current_resolution)
+		
+		# Center window
+		call_deferred("_center_window")
+	
 	# V-Sync
-	DisplayServer.window_set_vsync_mode(vsync_on)
-
-	# Brightness (Requires a CanvasModulate node in your main scene)
-	brightness_changed.emit(brightness) # Emit the signal here
-
-	# You would typically have a CanvasModulate node in your main scene (e.g., world.tscn)
-	# and control its 'color' property.
-	# Example in world.gd: $CanvasModulate.color = Color(brightness, brightness, brightness, 1.0)
-	print("Global: Applied graphics settings: Fullscreen=" + str(fullscreen_on) + 
-		  ", VSync=" + str(vsync_on) + ", Brightness (value stored)=" + str(brightness))
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if vsync_on else DisplayServer.VSYNC_DISABLED)
+	
+	# Brightness
+	brightness_changed.emit(brightness)
 	
 	# FPS Limit
 	Engine.set_max_fps(fps_limit)
-	print("Global: FPS Limit set to: " + str(fps_limit))
+	
+	print("Global: Applied graphics settings - Fullscreen=" + str(fullscreen_on))
 
+func _center_window():
+	var screen_size = DisplayServer.screen_get_size()
+	var window_size = DisplayServer.window_get_size()
+	var centered_position = (screen_size - window_size) / 2
+	DisplayServer.window_set_position(centered_position)
 
 func apply_audio_settings():
 	var master_bus_idx = AudioServer.get_bus_index("Master")

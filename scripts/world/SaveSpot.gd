@@ -1,26 +1,46 @@
 extends Area2D
-class_name SaveSpot # Changed from TeleportPole to SaveSpot
+class_name SaveSpot
 
-@onready var interaction_label = $Label # Make sure you have a Label child named 'Label'
-var player_in_range = false # Tracks if the player is currently within the spot's interaction area
+const TEX_EXACTLYION := preload("res://assets_image/Objects/save_pole.png")
+const TEX_DEFAULT    := preload("res://assets_image/Objects/save_pole2.png")
 
-# Optional: If this spot also teleports you to another scene after saving
-# You can set these in the Inspector for each SaveSpot instance
-@export var target_scene_path: String = "" # Path to the scene to load, e.g., "res://scenes/world/world_level_2.tscn"
-@export var target_position_in_scene: Vector2 = Vector2.ZERO # Where the player should appear in the target scene
+@onready var interaction_label: Label = $Label
+@onready var sprite: Sprite2D = $Sprite2D
 
-@onready var sprite = $Sprite2D
+var player_in_range := false
+
+# Areas that use the Exactlyion save pole look
+const EXACTLYION_AREAS := [
+	"Exactlyion Town",
+	"Exactlyion Tower Lower Level",
+	"Exactlyion Central Room",
+	"Exactlyion Tower Upper Level",
+	"Exactlyion Mainframe"
+]
+
+
+
+@export var use_exactlyion_style: bool = false
 
 func _ready():
-	# Connect the Area2D signals to detect when a body enters or exits its area
+	add_to_group("save_spots")
+	# set correct texture once per instance
+	sprite.texture = TEX_EXACTLYION if use_exactlyion_style else TEX_DEFAULT
+
+	interaction_label.visible = false
+	set_process(false) # only needed when player is inside
+
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	
-	# Hide the interaction label initially
-	interaction_label.visible = false
-	
-	print("SaveSpot is ready. Waiting for player interaction.") # Updated print statement
+	print("SaveSpot is ready. Waiting for player interaction.")
 
+func _update_sprite_texture():
+	# This is called once per SaveSpot (or when area actually changes)
+	if Global.current_area in EXACTLYION_AREAS:
+		sprite.texture = TEX_EXACTLYION
+	else:
+		sprite.texture = TEX_DEFAULT
+		
 func _process(delta):
 	# --- DEBUGGING: Print every frame to see if _process is running and player_in_range is true ---
 	# This will spam the console, but it's crucial for diagnosing if input is even being checked.
@@ -30,15 +50,8 @@ func _process(delta):
 	# Check if the player is in range and presses the "interact" action
 	# (Make sure "interact" is set up in Project Settings -> Input Map, e.g., to 'E' key)
 	# Using Input.is_action_just_pressed ensures it only triggers once per press.
-	var exactlyion_areas = ["Exactlyion Town", "Exactlyion Tower Lower Level", "Exactlyion Central Room", "Exactlyion Tower Upper Level", "Exactlyion Mainframe"]
-	
-	if Global.current_area in exactlyion_areas:
-		sprite.texture = load("res://assets_image/Objects/save_pole.png")
-	else:
-		sprite.texture = load("res://assets_image/Objects/save_pole2.png")
-		
+	# Only runs when the player is in range because we enable processing then
 	if player_in_range and Input.is_action_just_pressed("yes"):
-		print("Interact button pressed while player in range. Initiating save/teleport.") # Debug print
 		handle_interaction()
 
 
@@ -105,24 +118,19 @@ func _on_body_entered(body: Node2D):
 	# Check if the entering body is the player by checking its group
 	if body.is_in_group("player"):
 		player_in_range = true
-		interaction_label.visible = true # Show the "Press E to Save" label
+		interaction_label.visible = true
 		Global.near_save = true
-		#Global.saving = true
-		print("Player entered SaveSpot area.") # Updated print statement
-		# --- DEBUGGING: Confirm collision layers/masks ---
-		print("SaveSpot: Body '%s' entered. Player layers: %s, SaveSpot collision mask: %s" % [body.name, body.get_collision_layer(), get_collision_mask()])
-		# --- DEBUGGING: Further check on the 'body' that entered ---
-		if body is Player:
-			print("SaveSpot: The entering body IS of type Player.")
-		else:
-			print("SaveSpot: The entering body is NOT of type Player, but is in group 'player'. Type: ", body.get_class())
+		set_process(true)  # start listening for "yes" only while player is here
 
+		print("Player entered SaveSpot area.")
 
 # Called when a body (e.g., player) exits the Area2D
 func _on_body_exited(body: Node2D):
 	# Check if the exiting body is the player
 	if body.is_in_group("player"):
 		player_in_range = false
-		interaction_label.visible = false # Hide the label
+		interaction_label.visible = false
 		Global.near_save = false
-		print("Player exited SaveSpot area.") # Updated print statement
+		set_process(false)  # stop processing when player leaves
+
+		print("Player exited SaveSpot area.")

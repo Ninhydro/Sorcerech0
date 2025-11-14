@@ -141,7 +141,7 @@ var cannon_collision_mask: int = 0
 
 # Add these with your other variables
 var area_pass_count: int = 0
-var max_area_passes: int = 2
+var max_area_passes: int = 5
 var is_area_goal_complete: bool = false
 var area_goal_locked: bool = false
 var last_area_pass_time: float = 0.0
@@ -179,6 +179,12 @@ func _ready():
 	normal_collision_mask = collision_mask & ~(1 << 1) # Remove layer 2 from mas
 	cannon_collision_mask = collision_mask
 	collision_mask = normal_collision_mask
+	
+	print("DEBUG: Player collision_mask on load: ", collision_mask)
+	print("DEBUG: normal_collision_mask: ", normal_collision_mask)
+	print("DEBUG: cannon_collision_mask: ", cannon_collision_mask)
+	var layer_2_enabled = (collision_mask & (1 << 1)) != 0
+	print("DEBUG: Layer 2 (bounce spots) enabled on load: ", layer_2_enabled)
 	
 	base_launch_speed = launch_speed
 	
@@ -293,6 +299,10 @@ func _physics_process(delta):
 		_should_apply_loaded_position = false
 		Global.current_loaded_player_data = {}
 		print("Player.gd: Position set to loaded: ", global_position)
+		collision_mask = normal_collision_mask
+		print("DEBUG: Collision mask forced to normal after load: ", collision_mask)
+		
+	
 	# --- END APPLY LOADED POSITION ---
 
 	# --- CUTSCENE OVERRIDE ---
@@ -584,10 +594,13 @@ func _physics_process(delta):
 
 			if collider and collider.has_method("get_bounce_data"):
 			# Check if we can bounce (only in cannon mode)
-				if collider.has_method("can_bounce") and collider.can_bounce(self):
+				var layer_2_bitmask = 1 << 1
+				var can_collide_with_bounce = (collision_mask & layer_2_bitmask) != 0
+				
+				if can_collide_with_bounce and is_launched:
 					if bounced_protection_timer > 0:
 						continue
-					
+						
 					var bounce_data = collider.get_bounce_data()
 					var bounce_normal = bounce_data.normal
 					var bounce_power = bounce_data.power
@@ -595,30 +608,21 @@ func _physics_process(delta):
 					if bounce_normal.length() > 0.01:
 						bounce_normal = bounce_normal.normalized()
 						
-						# CALCULATE NEW DIRECTION
+						# Calculate bounce
 						var new_direction = velocity.bounce(bounce_normal).normalized()
 						
-						# SIMPLIFIED OSCILLATION DETECTION - Only apply correction if really stuck
-						var direction_change = last_bounce_direction.distance_to(new_direction)
-						
-						# Only apply correction if we're truly oscillating (very small direction change)
-						if direction_change < 0.1 and last_bounce_direction != Vector2.ZERO:
-							print("DEBUG: Severe oscillation detected, applying small correction")
-							var random_angle = randf_range(-0.05, 0.05)  # Very small random angle
-							new_direction = new_direction.rotated(random_angle)
-						
-						# Apply the new direction
+						# Apply bounce
 						launch_direction = new_direction
-						last_bounce_direction = new_direction
 						velocity = launch_direction * launch_speed * bounce_power
 						print("BOUNCED! New direction: ", launch_direction, " New velocity: ", velocity)
 						bounced_this_frame = true
 						bounced_recently()
 						break
 				else:
-					# Player is not in cannon mode, pass through without bouncing
-					print("Cannot bounce - not in cannon mode")
+					# Player cannot collide with bounce spots or not in cannon mode
+					print("Cannot bounce - collision disabled or not in cannon mode")
 					continue
+
 		# Apply gravity if launched and not on floor (for ballistic trajectory)
 		if not is_on_floor():
 			velocity.y += gravity * delta

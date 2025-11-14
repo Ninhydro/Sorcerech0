@@ -76,138 +76,183 @@ text = "Exactlyion Battlefield"
 
 [node name="GrapplePoint" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(272, -8)
+use_exactlyion_style = true
 
 [node name="GrapplePoint2" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(152, -8)
+use_exactlyion_style = true
 
 [node name="GrapplePoint3" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(216, -72)
+use_exactlyion_style = true
 
 [node name="GrapplePoint4" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(72, 64)
+use_exactlyion_style = true
 
 [node name="GrapplePoint5" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(744, -152)
+use_exactlyion_style = true
 
 [node name="GrapplePoint6" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(856, -152)
+use_exactlyion_style = true
 
 [node name="GrapplePoint7" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1480, -272)
+use_exactlyion_style = true
 
 [node name="GrapplePoint8" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1536, -344)
+use_exactlyion_style = true
 
 [node name="GrapplePoint9" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1448, -392)
+use_exactlyion_style = true
 
 [node name="GrapplePoint10" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1384, -320)
+use_exactlyion_style = true
 
 [node name="GrapplePoint11" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1360, -440)
+use_exactlyion_style = true
 
 [node name="GrapplePoint12" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1296, -376)
+use_exactlyion_style = true
 
 [node name="GrapplePoint13" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1200, -448)
+use_exactlyion_style = true
 
 [node name="GrapplePoint42" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1104, -512)
+use_exactlyion_style = true
 
 [node name="GrapplePoint14" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1200, -320)
+use_exactlyion_style = true
 
 [node name="GrapplePoint15" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1032, -448)
+use_exactlyion_style = true
 
 [node name="GrapplePoint16" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(864, -440)
+use_exactlyion_style = true
 
 [node name="GrapplePoint44" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(728, -464)
+use_exactlyion_style = true
 
 [node name="GrapplePoint43" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(792, -528)
+use_exactlyion_style = true
 
 [node name="GrapplePoint17" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(944, -504)
+use_exactlyion_style = true
 
 [node name="GrapplePoint18" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(672, -632)
+use_exactlyion_style = true
 
 [node name="GrapplePoint19" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(544, -656)
+use_exactlyion_style = true
 
 [node name="GrapplePoint20" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(600, -696)
+use_exactlyion_style = true
 
 [node name="GrapplePoint36" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(728, -584)
+use_exactlyion_style = true
 
 [node name="GrapplePoint35" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(720, -704)
+use_exactlyion_style = true
 
 [node name="GrapplePoint21" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(776, -752)
+use_exactlyion_style = true
 
 [node name="GrapplePoint22" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1472, -736)
+use_exactlyion_style = true
 
 [node name="GrapplePoint23" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1712, -800)
+use_exactlyion_style = true
 
 [node name="GrapplePoint24" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1872, -792)
+use_exactlyion_style = true
 
 [node name="GrapplePoint25" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1800, -864)
+use_exactlyion_style = true
 
 [node name="GrapplePoint26" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1584, -800)
+use_exactlyion_style = true
 
 [node name="GrapplePoint45" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1640, -872)
+use_exactlyion_style = true
 
 [node name="GrapplePoint27" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1936, -856)
+use_exactlyion_style = true
 
 [node name="GrapplePoint28" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(2024, -800)
+use_exactlyion_style = true
 
 [node name="GrapplePoint29" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(2136, -824)
+use_exactlyion_style = true
 
 [node name="GrapplePoint30" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(2208, -736)
+use_exactlyion_style = true
 
 [node name="GrapplePoint31" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1304, -248)
+use_exactlyion_style = true
 
 [node name="GrapplePoint32" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(920, -240)
+use_exactlyion_style = true
 
 [node name="GrapplePoint38" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(800, -240)
+use_exactlyion_style = true
 
 [node name="GrapplePoint37" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1024, -320)
+use_exactlyion_style = true
 
 [node name="GrapplePoint41" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1112, -384)
+use_exactlyion_style = true
 
 [node name="GrapplePoint40" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(944, -384)
+use_exactlyion_style = true
 
 [node name="GrapplePoint39" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(864, -320)
+use_exactlyion_style = true
 
 [node name="GrapplePoint33" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1016, -176)
+use_exactlyion_style = true
 
 [node name="GrapplePoint34" parent="." instance=ExtResource("3_m28yc")]
 position = Vector2(1112, -240)
+use_exactlyion_style = true
 
 [node name="Background" type="Node2D" parent="."]
 modulate = Color(0.784314, 0.784314, 0.784314, 1)
@@ -240,3 +285,4 @@ metadata/_edit_lock_ = true
 
 [node name="SaveSpot" parent="." instance=ExtResource("6_fnpdx")]
 position = Vector2(2320, -664)
+use_exactlyion_style = true

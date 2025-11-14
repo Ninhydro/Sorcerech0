@@ -18,11 +18,11 @@ func _ready():
 		print("SaveLoadManager: 'user://SteamCloud/saves/' directory already exists.")
 	
 	#Later steam cloud:
-	#if !dir.dir_exists("saves"):
-	#	dir.make_dir("saves")
-	#	print("SaveLoadManager: Created 'user://saves/' directory.")
-	#else:
-	#	print("SaveLoadManager: 'user://saves/' directory already exists.")
+	if !dir.dir_exists("saves"):
+		dir.make_dir("saves")
+		print("SaveLoadManager: Created 'user://saves/' directory.")
+	else:
+		print("SaveLoadManager: 'user://saves/' directory already exists.")
 
 func _get_save_file_path(slot_name: String) -> String:
 	var actual_slot_name = slot_name if not slot_name.is_empty() else AUTOSAVE_SLOT_NAME

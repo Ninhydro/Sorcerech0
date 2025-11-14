@@ -94,6 +94,10 @@ func _on_dialogic_finished(_timeline_name = ""):
 	Global.selected_form_index = 3
 	player_in_range.current_state_index = Global.selected_form_index
 	player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
-	print("Global.cyber_form", Global.cyber_form )
+	print("Global.cyber_form ", Global.cyber_form )
 	Global.remove_quest_marker("Explore Exactlyion")
+	Global.minigame_valentina_completed = true
+	print("Global.minigame_valentina_completed ", Global.minigame_valentina_completed)
+	get_tree().get_first_node_in_group("valentina").show_instantly_at_minigame_marker()
+
 	

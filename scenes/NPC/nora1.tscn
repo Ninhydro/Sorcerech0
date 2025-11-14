@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://demxjsb4n3dom"]
 
-[ext_resource type="Script" path="res://scenes/NPC/nora.gd" id="1_pxyym"]
-[ext_resource type="Texture2D" uid="uid://cifdgvorr53t7" path="res://assets_image/Characters/Nora/Nora-Sheet.png" id="2_8eph0"]
+[ext_resource type="Script" path="res://scenes/NPC/nora1.gd" id="1_aqk10"]
+[ext_resource type="Texture2D" uid="uid://cifdgvorr53t7" path="res://assets_image/Characters/Nora/Nora-Sheet.png" id="2_2bct0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tgx33"]
 size = Vector2(16, 32)
@@ -65,10 +65,10 @@ _data = {
 "walk": SubResource("Animation_eish4")
 }
 
-[node name="Nora" type="CharacterBody2D"]
+[node name="Nora1" type="CharacterBody2D"]
 collision_layer = 16
 collision_mask = 0
-script = ExtResource("1_pxyym")
+script = ExtResource("1_aqk10")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -16)
@@ -77,7 +77,7 @@ shape = SubResource("RectangleShape2D_tgx33")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -38)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("2_8eph0")
+texture = ExtResource("2_2bct0")
 hframes = 8
 vframes = 5
 frame = 16
