@@ -141,7 +141,7 @@ var cannon_collision_mask: int = 0
 
 # Add these with your other variables
 var area_pass_count: int = 0
-var max_area_passes: int = 5
+var max_area_passes: int = 2
 var is_area_goal_complete: bool = false
 var area_goal_locked: bool = false
 var last_area_pass_time: float = 0.0
