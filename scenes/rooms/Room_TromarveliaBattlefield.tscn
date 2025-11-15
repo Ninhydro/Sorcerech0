@@ -83,12 +83,6 @@ position = Vector2(3259.5, 1247)
 shape = SubResource("RectangleShape2D_ixvmx")
 metadata/_edit_lock_ = true
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(-584, -416)
-texture = ExtResource("3_5g8y2")
-region_enabled = true
-region_rect = Rect2(404.851, 2301.14, 66.3332, 97.6169)
-
 [node name="TileMap" type="TileMap" parent="." groups=["Platforms"]]
 tile_set = ExtResource("1_7rndt")
 format = 2
@@ -332,6 +326,15 @@ position = Vector2(2392, 1496)
 [node name="Background" type="Node2D" parent="."]
 modulate = Color(0.784314, 0.784314, 0.784314, 1)
 z_index = -10
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D21" type="Sprite2D" parent="Background"]
+modulate = Color(1, 0.784314, 0.588235, 1)
+z_index = 1
+position = Vector2(-584, -424)
+texture = ExtResource("3_5g8y2")
+region_enabled = true
+region_rect = Rect2(404.851, 2301.14, 66.3332, 97.6169)
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
