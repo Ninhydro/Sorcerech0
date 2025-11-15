@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
 uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform float outline_thickness : hint_range(0.01, 0.1) = 0.03;
+uniform float outline_thickness : hint_range(0.01, 0.1) = 0.02;
 
 void fragment() {
     vec4 base_color = texture(TEXTURE, UV);

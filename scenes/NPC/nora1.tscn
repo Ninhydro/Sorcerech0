@@ -85,6 +85,7 @@ frame = 16
 [node name="InteractionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+visible = false
 position = Vector2(0, -24)
 shape = SubResource("RectangleShape2D_qs7od")
 
