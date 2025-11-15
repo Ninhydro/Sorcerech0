@@ -739,6 +739,7 @@ position = Vector2(-544, -96)
 
 [node name="Background" type="Node2D" parent="."]
 z_index = -10
+position = Vector2(0, 1)
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
@@ -856,7 +857,7 @@ frame = 8
 metadata/_edit_lock_ = true
 
 [node name="SaveSpot" parent="." instance=ExtResource("10_kj1r2")]
-position = Vector2(-40, 56)
+position = Vector2(-40, 57)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(1051, 8)
