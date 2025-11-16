@@ -1,0 +1,182 @@
+[gd_scene load_steps=13 format=3 uid="uid://d0y6einf5i6wp"]
+
+[ext_resource type="Script" path="res://scenes/enemies/canon_laser_enemy.gd" id="1_yy0xf"]
+[ext_resource type="Texture2D" uid="uid://codubiip4b0s4" path="res://assets_image/Characters/Enemies/Laserbot-Sheet.png" id="2_oou0w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x4xjq"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q4qgy"]
+radius = 190.263
+
+[sub_resource type="Animation" id="Animation_wk2hq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanonBotSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+
+[sub_resource type="Animation" id="Animation_l5365"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanonBotSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [16, 17, 18, 19]
+}
+
+[sub_resource type="Animation" id="Animation_3lcm2"]
+resource_name = "tracking"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanonBotSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 15]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4d2ln"]
+_data = {
+"RESET": SubResource("Animation_wk2hq"),
+"idle": SubResource("Animation_l5365"),
+"tracking": SubResource("Animation_3lcm2")
+}
+
+[sub_resource type="Animation" id="Animation_3g41t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ArmPivot/CanonArmSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+
+[sub_resource type="Animation" id="Animation_l4p7o"]
+resource_name = "shooting"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ArmPivot/CanonArmSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_idjud"]
+resource_name = "tracking"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ArmPivot/CanonArmSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p2fbt"]
+_data = {
+"RESET": SubResource("Animation_3g41t"),
+"shooting": SubResource("Animation_l4p7o"),
+"tracking": SubResource("Animation_idjud")
+}
+
+[node name="CanonLaserEnemy" type="CharacterBody2D"]
+modulate = Color(0.588235, 0.784314, 1, 1)
+scale = Vector2(0.8, 0.8)
+script = ExtResource("1_yy0xf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-12, 37)
+shape = SubResource("CircleShape2D_x4xjq")
+
+[node name="ArmPivot" type="Marker2D" parent="."]
+position = Vector2(-8, 56)
+rotation = -3.29169
+
+[node name="CanonArmSprite" type="Sprite2D" parent="ArmPivot"]
+position = Vector2(0, -2.86102e-06)
+scale = Vector2(-0.8, -0.8)
+texture = ExtResource("2_oou0w")
+centered = false
+offset = Vector2(-85, -62)
+hframes = 4
+vframes = 5
+frame = 8
+
+[node name="CanonTip" type="Marker2D" parent="ArmPivot/CanonArmSprite"]
+position = Vector2(-68.183, 57.9559)
+
+[node name="CanonBotSprite" type="Sprite2D" parent="."]
+position = Vector2(-24, 56)
+texture = ExtResource("2_oou0w")
+hframes = 4
+vframes = 5
+frame = 16
+
+[node name="LaserSprite" type="Sprite2D" parent="."]
+visible = false
+z_index = 11
+position = Vector2(-76, 118)
+texture = ExtResource("2_oou0w")
+centered = false
+offset = Vector2(0, -12)
+region_enabled = true
+region_rect = Rect2(0, 50.6755, 127.186, 23.3776)
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(-3.38813e-21, 20)
+shape = SubResource("CircleShape2D_q4qgy")
+
+[node name="BotAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4d2ln")
+}
+
+[node name="ArmAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_p2fbt")
+}
+
+[node name="TrackingTimer" type="Timer" parent="."]

@@ -3,7 +3,11 @@ extends CharacterBody2D
 
 class_name EnemyA
  
-@export var speed := 20
+@export var base_speed = 50
+var speed: float:
+	get:
+		return base_speed * Global.global_time_scale
+		
 @export var attack_range := 30
 @export var attack_damage := 10
 @export var attack_cooldown := 1.5
@@ -64,7 +68,10 @@ func _process(delta):
 	#	return
 	#print(Global.playerDamageZone.monitoring)
 	#var distance = global_position.distance_to(player.global_position)
-	
+	#print(speed)
+	if $AnimationPlayer:
+		$AnimationPlayer.speed_scale = Global.global_time_scale
+		
 	if !is_on_floor():
 		velocity.y += gravity*delta
 		velocity.x = 0

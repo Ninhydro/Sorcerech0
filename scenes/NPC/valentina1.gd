@@ -22,9 +22,9 @@ func _ready():
 	collision_mask = 0
 	
 	# DEBUG
-	print("Valentina DEBUG: minigame_valentina_completed = ", Global.minigame_valentina_completed)
-	print("Valentina DEBUG: timeline = ", Global.timeline)
-	print("Valentina DEBUG: show_instantly_flag = ", show_instantly_flag)
+	#print("Valentina DEBUG: minigame_valentina_completed = ", Global.minigame_valentina_completed)
+	#print("Valentina DEBUG: timeline = ", Global.timeline)
+	#print("Valentina DEBUG: show_instantly_flag = ", show_instantly_flag)
 	
 	# INSTANT SHOW IF FLAG IS SET
 	if show_instantly_flag:
@@ -40,7 +40,7 @@ func setup_global_connections():
 	check_globals_periodically()
 func show_instantly():
 	"""Show Valentina immediately without movement"""
-	print("Valentina: Showing instantly!")
+	#print("Valentina: Showing instantly!")
 	is_visible = true
 	visible = true
 	collision_layer = 1
@@ -56,7 +56,7 @@ func show_instantly_at_marker(marker: Marker2D):
 	"""Show Valentina instantly at a specific marker position"""
 	if marker:
 		global_position = marker.global_position
-		print("Valentina: Teleported to marker at ", marker.global_position)
+		#print("Valentina: Teleported to marker at ", marker.global_position)
 	show_instantly()
 
 func show_instantly_at_minigame_marker():
@@ -95,26 +95,26 @@ func _process(_delta):
 
 func check_visibility_conditions():
 	# Check if we should be visible based on global flags
-	print("Valentina: Checking visibility conditions...")
-	print("Valentina: minigame_valentina_completed = ", Global.minigame_valentina_completed)
-	print("Valentina: timeline = ", Global.timeline)
+	#print("Valentina: Checking visibility conditions...")
+	#print("Valentina: minigame_valentina_completed = ", Global.minigame_valentina_completed)
+	#print("Valentina: timeline = ", Global.timeline)
 	
 	if Global.minigame_valentina_completed:
-		print("Valentina: Minigame completed condition met")
+		#print("Valentina: Minigame completed condition met")
 		show_valentina()
 	elif Global.timeline >= 5:
-		print("Valentina: Timeline >= 5 condition met")
+		#print("Valentina: Timeline >= 5 condition met")
 		show_valentina_at_timeline_5()
 	else:
-		print("Valentina: No conditions met, hiding")
+		#print("Valentina: No conditions met, hiding")
 		hide_valentina()
 
 func show_valentina():
-	if is_visible:
-		print("Valentina: Already visible, skipping")
-		return
+	#if is_visible:
+	#	print("Valentina: Already visible, skipping")
+	#	return
 	
-	print("Valentina: Showing after minigame completion")
+	#print("Valentina: Showing after minigame completion")
 	is_visible = true
 	visible = true
 	collision_layer = 1
@@ -130,11 +130,11 @@ func show_valentina():
 	move_to_appropriate_position()
 
 func show_valentina_at_timeline_5():
-	if is_visible:
-		print("Valentina: Already visible, skipping")
-		return
+	#if is_visible:
+	#	print("Valentina: Already visible, skipping")
+	#	return
 	
-	print("Valentina: Showing at timeline 5")
+	#print("Valentina: Showing at timeline 5")
 	is_visible = true
 	visible = true
 	collision_layer = 1
@@ -145,32 +145,32 @@ func show_valentina_at_timeline_5():
 	move_to_appropriate_position()
 
 func move_to_appropriate_position():
-	print("Valentina: Moving to appropriate position for timeline: ", current_timeline)
+	#print("Valentina: Moving to appropriate position for timeline: ", current_timeline)
 	
 	# Move to appropriate position based on current timeline
 	if current_timeline == "after_minigame":
 		if marker_minigame:
-			print("Valentina: Using exported marker_minigame")
+			#print("Valentina: Using exported marker_minigame")
 			move_to_marker(marker_minigame)
 		else:
-			print("Valentina: No minigame marker found")
+			#print("Valentina: No minigame marker found")
 			play_idle_animation()
 			
 	elif current_timeline == "timeline_5":
 		if marker_timeline_5:
-			print("Valentina: Using exported marker_timeline_5")
+			#print("Valentina: Using exported marker_timeline_5")
 			move_to_marker(marker_timeline_5)
 		else:
-			print("Valentina: No timeline 5 marker found")
+			#print("Valentina: No timeline 5 marker found")
 			play_idle_animation()
 
 func move_to_marker(marker: Marker2D, duration: float = 2.0):
 	if not marker:
-		print("Valentina: No marker found, staying in place")
+		#print("Valentina: No marker found, staying in place")
 		play_idle_animation()
 		return
 	
-	print("Valentina: Moving to marker at position ", marker.global_position)
+	#print("Valentina: Moving to marker at position ", marker.global_position)
 	is_moving = true
 	
 	# Play walk animation
@@ -195,7 +195,7 @@ func hide_valentina():
 	if not is_visible:
 		return
 	
-	print("Valentina: Hiding")
+	#print("Valentina: Hiding")
 	is_visible = false
 	visible = false
 	collision_layer = 0
@@ -203,26 +203,26 @@ func hide_valentina():
 	is_moving = false
 
 func _on_movement_finished():
-	print("Valentina: Finished moving")
+	#print("Valentina: Finished moving")
 	is_moving = false
 	play_idle_animation()
 
 func play_walk_animation():
 	if animation_player.has_animation("walk"):
 		animation_player.play("walk")
-		print("Valentina: Playing walk animation")
+		#print("Valentina: Playing walk animation")
 	else:
-		print("Valentina: No walk animation found, playing idle instead")
+		#print("Valentina: No walk animation found, playing idle instead")
 		play_idle_animation()
 		
 func play_idle_animation():
 	if animation_player.has_animation("idle"):
 		animation_player.play("idle")
-		print("Valentina: Playing idle animation")
-	else:
-		print("Valentina: No idle animation found")
+		#print("Valentina: Playing idle animation")
+
+		#print("Valentina: No idle animation found")
 
 # Manual refresh function - call this if globals change elsewhere
 func refresh_visibility():
-	print("Valentina: Manual refresh called")
+	#print("Valentina: Manual refresh called")
 	check_visibility_conditions()

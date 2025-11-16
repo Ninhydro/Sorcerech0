@@ -157,6 +157,10 @@ var bounce_direction_change_threshold: float = 0.3  # Minimum change required to
 
 signal area_goal_completed()
 
+@export var spike_damage_percentage: float = 5.0  # Percentage of max health lost from spikes
+var last_save_position: Vector2 = Vector2.ZERO
+var last_save_scene: String = ""
+
 # Method to disable player input
 func disable_input():
 	print("Player: Input disabled.")
@@ -278,6 +282,7 @@ func _physics_process(delta):
 	#print(Global.timeline)
 	#Global.magus_form = true
 	#print(can_attack)
+	#print(Global.global_time_scale)
 	if Input.is_action_just_pressed("debug2"):  # Assign a key like F1
 		print("Player World Position: ", global_position)
 	
@@ -794,14 +799,34 @@ func _on_animation_player_animation_finished(anim_name):
 func check_hitbox():
 	var hitbox_areas = $Hitbox.get_overlapping_areas()
 	var damage: int = 0 # Initialize damage to 0
+	var hit_spikes: bool = false
+
+	
 	if hitbox_areas:
-		var hitbox = hitbox_areas.front()
-		if hitbox.get_parent() is EnemyA:
-			damage = Global.enemyADamageAmount
-		
+		for area in hitbox_areas:
+			# Check for enemy damage
+			if area.get_parent() is EnemyA:
+				damage = Global.enemyADamageAmount
+				break
+			#For another enemy or boss make like EnemyB or BossA or BossB
+			#if area.get_parent() is EnemyA:
+			#	damage = Global.enemyADamageAmount
+			#	break
+			# Check for spikes
+			elif area.is_in_group("spikes"):
+				hit_spikes = true
+				break
+			# Check for instant death
+			elif area.is_in_group("instant_death"):
+				Global.health = 0
+				handle_death()
+				return
+	
 	if can_take_damage:
-		if Global.enemyAdealing == true:
+		if Global.enemyAdealing == true and damage > 0:
 			take_damage(damage)
+		elif hit_spikes:
+			respawn_nearby_spike()
 			
 func take_damage(damage):
 	if damage != 0:
@@ -812,15 +837,151 @@ func take_damage(damage):
 			print("player health" + str(Global.health))
 			if Global.health <= 0:
 				Global.health = 0
-				dead = true
-				Global.playerAlive = false
-				print("PLAYER DEAD")
-				load_game_over_scene()
+				handle_death()
+				#dead = true
+				#Global.playerAlive = false
+				#print("PLAYER DEAD")
+				#load_game_over_scene()
 			take_damage_cooldown(1.0)
 		health_changed.emit(Global.health, Global.health_max) # Emit signal after health changes
 		await get_tree().create_timer(0.5).timeout
 		player_hit = false
+
+func handle_death():
+	dead = true
+	Global.playerAlive = false
+	print("PLAYER DEAD")
+	
+	# Play death animation through your combat FSM
+	if combat_fsm:
+		combat_fsm.change_state(DieState.new(self))
+	
+	# Wait for death animation to play (adjust time as needed)
+	await get_tree().create_timer(1.5).timeout
+	
+	# Reset to latest save point
+	load_from_save_slot(1)
+
+
+func load_from_save_slot(slot_number: int):
+	print("Loading from save slot: ", slot_number)
+	
+	# Build the slot name (adjust based on your SaveLoadManager naming)
+	var slot_name = SaveLoadManager.MANUAL_SAVE_SLOT_PREFIX + str(slot_number)
+	
+	# Load the game data
+	var loaded_data = SaveLoadManager.load_game(slot_name)
+	
+	if not loaded_data.is_empty():
+		var saved_scene_path = Global.current_scene_path
+		
+		if ResourceLoader.exists(saved_scene_path, "PackedScene"):
+			print("Death respawn: Game loaded. Changing scene to: %s" % saved_scene_path)
 			
+			# Ensure game is unpaused before scene change
+			get_tree().paused = false
+			
+			# Change scene to the saved one
+			get_tree().change_scene_to_file.call_deferred(saved_scene_path)
+			
+		else:
+			printerr("Death respawn: Error: Target scene path is invalid: %s" % saved_scene_path)
+			# Fallback: reload current scene
+			get_tree().reload_current_scene.call_deferred()
+	else:
+		print("Death respawn: Failed to load from slot: %s" % slot_name)
+		# Fallback: reload current scene
+		get_tree().reload_current_scene.call_deferred()
+		
+func respawn_at_save_point():
+	# Reset health to max
+	Global.health = Global.health_max
+	
+	# Reset player state
+	dead = false
+	Global.playerAlive = true
+	player_hit = false
+	can_take_damage = true
+	
+	# Reset any other combat states
+	if combat_fsm:
+		combat_fsm.change_state(IdleState.new(self))
+	
+	# Reset visual effects
+	sprite.modulate = Color(1, 1, 1)
+	
+	# Load from save slot 1
+	SaveLoadManager.load_game("manual_save_1")
+	
+	# Emit health change signal
+	health_changed.emit(Global.health, Global.health_max)
+
+func respawn_nearby_spike():
+	# Only take percentage damage for spike falls
+	var spike_damage = (spike_damage_percentage / 100.0) * Global.health_max
+	Global.health = max(1, Global.health - spike_damage)  # Ensure at least 1 HP remains
+	
+	# Find a safe respawn position nearby (using await since it's a coroutine)
+	var safe_position = await find_nearby_safe_position()
+	if safe_position != Vector2.ZERO:
+		global_position = safe_position
+	
+	# Reset player state (no full death animation)
+	player_hit = true
+	can_take_damage = false
+	
+	# Small knockback or visual effect
+	sprite.modulate = Color(1, 0.5, 0.5)  # Red tint
+	await get_tree().create_timer(0.3).timeout
+	sprite.modulate = Color(1, 1, 1)
+	
+	# Reset states
+	player_hit = false
+	can_take_damage = true
+	
+	# Emit health change
+	health_changed.emit(Global.health, Global.health_max)
+	
+func find_nearby_safe_position() -> Vector2:
+	# Try several positions around the player to find a safe spot
+	var check_positions = [
+		Vector2(50, 0),   # Right
+		Vector2(-50, 0),  # Left
+		Vector2(0, -50),  # Up
+		Vector2(75, 0),   # Further right
+		Vector2(-75, 0),  # Further left
+		Vector2(100, 0),  # Even further right
+		Vector2(-100, 0)  # Even further left
+	]
+	
+	# Store original position
+	var original_position = global_position
+	
+	for offset in check_positions:
+		var test_position = original_position + offset
+		
+		# Temporarily move player to test position
+		global_position = test_position
+		await get_tree().process_frame  # Allow collision detection to update
+		
+		# Check if this position is safe (not colliding with spikes)
+		var is_safe = true
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
+			if collider and (collider.is_in_group("spikes") or collider.is_in_group("instant_death")):
+				is_safe = false
+				break
+		
+		# Also check if we're on a valid floor
+		if is_safe and is_on_floor():
+			print("Found safe respawn position: ", test_position)
+			return test_position
+	
+	# If no safe position found, return a default offset
+	print("No safe position found, using default offset")
+	return original_position + Vector2(100, 0)
+	
 func take_damage_cooldown(time):
 	print("cooldown")
 	can_take_damage = false
