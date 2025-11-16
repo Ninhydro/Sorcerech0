@@ -756,10 +756,9 @@ frame = 6
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D11" type="Sprite2D" parent="Background"]
-position = Vector2(1552, -48)
-scale = Vector2(1.25, 1.25)
+position = Vector2(1554, -47)
+scale = Vector2(1.5, 1.5)
 texture = ExtResource("15_sfoo7")
-metadata/_edit_lock_ = true
 
 [node name="SaveSpot" parent="." instance=ExtResource("13_wlpeo")]
 position = Vector2(520, 56)

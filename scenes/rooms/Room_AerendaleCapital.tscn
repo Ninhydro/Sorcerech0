@@ -126,7 +126,8 @@ shape = SubResource("RectangleShape2D_sguh3")
 disabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Doors/Door_HiddenRuins"]
-position = Vector2(-336, -160)
+modulate = Color(0.780392, 0.780392, 0.780392, 1)
+position = Vector2(-329, -163)
 scale = Vector2(0.92, 0.92)
 texture = ExtResource("6_u7kfp")
 
@@ -236,7 +237,7 @@ frame = 4
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D6" type="Sprite2D" parent="Background"]
-position = Vector2(-304, -172)
+position = Vector2(-299, -172)
 scale = Vector2(1, 1.00833)
 texture = ExtResource("7_tap7l")
 vframes = 7

@@ -53,7 +53,7 @@ func _on_body_entered(body):
 		Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
 	# Start your dialog timeline.
-		Dialogic.start("timeline21TB3", false)
+		Dialogic.start("timeline21TB2", false)
 
 
 func _on_dialogic_finished(_timeline_name = ""):
