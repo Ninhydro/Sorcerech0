@@ -17,6 +17,12 @@ class_name CanonLaserEnemy
 @export var rotation_offset_degrees: float = 40
 @export var laser_rotation_offset_degrees: float = -40  # ADD THIS
 
+# Time scale properties
+@export var base_rotation_speed := 5.0  # Base rotation speed for lerping
+var rotation_speed: float:
+	get:
+		return base_rotation_speed * Global.global_time_scale
+		
 var player: Node2D = null
 var is_tracking := false
 var is_shooting := false
@@ -36,30 +42,50 @@ func _ready():
 	set_idle_state()
 	
 	# Debug: Print initial positions
-	print("=== CANON ENEMY SETUP ===")
-	print("Arm Pivot Position: ", arm_pivot.position)
-	print("Canon Arm Position: ", canon_arm_sprite.position)
-	print("Canon Tip Position: ", canon_tip.position)
+	#print("=== CANON ENEMY SETUP ===")
+	#print("Arm Pivot Position: ", arm_pivot.position)
+	#print("Canon Arm Position: ", canon_arm_sprite.position)
+	#print("Canon Tip Position: ", canon_tip.position)
 
 func _process(delta):
-	# Continuous camouflage check - works even when player is already in area
-	if player and Global.playerAlive and not Global.camouflage:
-		# Player is visible and in range - should be tracking
-		if detection_area.overlaps_body(player) and not is_tracking and not is_shooting:
-			start_tracking()
-		elif not detection_area.overlaps_body(player) and is_tracking:
-			stop_tracking()
-	elif is_tracking and Global.camouflage:  # Player became camouflaged while tracking
-		stop_tracking()
+	# Apply time scale to animations
+	if bot_animation_player:
+		bot_animation_player.speed_scale = Global.global_time_scale
+	if arm_animation_player:
+		arm_animation_player.speed_scale = Global.global_time_scale
 	
-	if is_tracking and not is_shooting and player and Global.playerAlive:
-		# Rotate arm to face player using the pivot point
-		rotate_arm_towards_player()
+	# Apply time scale to timer (pause when time is stopped)
+	if tracking_timer:
+		tracking_timer.paused = (Global.global_time_scale == 0)
+	
+	
+	# Use scaled delta for time-sensitive operations
+	var scaled_delta = delta * Global.global_time_scale
+	
+	# SIMPLIFIED CONTINUOUS CAMOUFLAGE CHECK
+	if player and Global.playerAlive:
+		# Check if player is in detection area
+		var player_in_range = detection_area.overlaps_body(player)
+		var can_see_player = player_in_range and not Global.camouflage
 		
-		# Update tracking time for visual feedback
-		tracking_time += delta
+		if can_see_player and not is_tracking and not is_shooting:
+			# Player is visible and in range - start tracking
+			start_tracking()
+		elif not can_see_player and is_tracking:
+			# Player is either out of range or camouflaged - stop tracking
+			stop_tracking()
+		elif is_tracking and not is_shooting:
+			# Continue tracking and rotating
+			rotate_arm_towards_player(scaled_delta)
+			tracking_time += scaled_delta
+	
+	# Handle shooting state separately
+	elif is_shooting:
+		# Shooting state - no movement or rotation needed
+		pass
 
-func rotate_arm_towards_player():
+
+func rotate_arm_towards_player(delta):
 	if not player:
 		return
 	
@@ -78,7 +104,7 @@ func rotate_arm_towards_player():
 	print("Pivot: ", pivot_global, " Player: ", player_global, " Direction: ", direction_to_player, " Target Angle: ", rad_to_deg(target_angle))
 	
 	# Smoothly rotate the arm pivot
-	arm_pivot.rotation = lerp_angle(arm_pivot.rotation, target_angle, get_process_delta_time() * 5.0)
+	arm_pivot.rotation = lerp_angle(arm_pivot.rotation, target_angle, delta * rotation_speed)
 	
 func set_idle_state():
 	is_tracking = false
@@ -127,7 +153,10 @@ func show_laser_to_player():
 	
 	# Make laser visible
 	laser_sprite.visible = true
-	
+	if not is_instance_valid(laser_sprite):
+		print("ERROR: Laser sprite is not valid")
+		return
+		
 	# Get canon tip position
 	var canon_tip_pos = canon_tip.global_position
 	

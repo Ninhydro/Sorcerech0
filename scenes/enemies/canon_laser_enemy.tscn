@@ -121,7 +121,6 @@ _data = {
 }
 
 [node name="CanonLaserEnemy" type="CharacterBody2D"]
-modulate = Color(0.588235, 0.784314, 1, 1)
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_yy0xf")
 

@@ -470,27 +470,39 @@ shape = SubResource("RectangleShape2D_3m4br")
 
 [node name="Tromarvelia_door" parent="." instance=ExtResource("12_41aih")]
 position = Vector2(-1335.26, 123.939)
+metadata/_edit_lock_ = true
 
 [node name="cutscene4M" parent="." instance=ExtResource("12_2serk")]
 position = Vector2(543.75, -88.75)
+metadata/_edit_lock_ = true
 
 [node name="cutscene4_5" parent="." instance=ExtResource("13_v0bov")]
 position = Vector2(680, -138)
+metadata/_edit_lock_ = true
 
 [node name="cutscene7" parent="." instance=ExtResource("14_gimmw")]
 position = Vector2(586, -105)
+metadata/_edit_lock_ = true
+
+[node name="cutscene7_2" parent="." instance=ExtResource("14_gimmw")]
+position = Vector2(-1378, 107)
+metadata/_edit_lock_ = true
 
 [node name="cutscene13M" parent="." instance=ExtResource("15_q52no")]
 position = Vector2(-1245.52, -26.2851)
+metadata/_edit_lock_ = true
 
 [node name="cutscene16" parent="." instance=ExtResource("16_agjfx")]
-position = Vector2(-1497, 0)
+position = Vector2(-1494, -4)
+metadata/_edit_lock_ = true
 
 [node name="cutscene17_5" parent="." instance=ExtResource("17_qcqnt")]
 position = Vector2(674.58, -226.934)
+metadata/_edit_lock_ = true
 
 [node name="cutscene21_5B1" parent="." instance=ExtResource("18_0n15f")]
 position = Vector2(662.499, -134.434)
+metadata/_edit_lock_ = true
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]
