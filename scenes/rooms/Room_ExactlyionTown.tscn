@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=34 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://bt7wt4w51javq" path="res://dialogic/cutscene/Exactlyion_tower_lock.tscn" id="21_l7fc3"]
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="22_rw64g"]
 [ext_resource type="PackedScene" uid="uid://wug72wsr2c4e" path="res://dialogic/cutscene/cutscene21_5B3.tscn" id="23_m2s6c"]
+[ext_resource type="PackedScene" uid="uid://d174avsoubith" path="res://scenes/enemies/BaseEnemy.tscn" id="27_ruswp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5eae"]
 size = Vector2(4176, 608)
@@ -838,6 +839,9 @@ metadata/_edit_lock_ = true
 [node name="cutscene21_5B4" parent="." instance=ExtResource("23_m2s6c")]
 position = Vector2(2918.27, -571.407)
 metadata/_edit_lock_ = true
+
+[node name="BaseEnemy" parent="." instance=ExtResource("27_ruswp")]
+position = Vector2(-168, 40)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

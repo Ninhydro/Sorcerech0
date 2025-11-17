@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://m8uimlsn78fh"]
+
+[ext_resource type="Script" path="res://scenes/enemies/Projectile.gd" id="1_ljsfk"]
+[ext_resource type="Texture2D" uid="uid://bqajdlgkcw10s" path="res://assets_image/placeholder/Props Items and VFX/fireball/Sprites/fireball-4.png" id="2_tmymu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ap75k"]
+
+[node name="Projectile" type="Area2D"]
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("1_ljsfk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ap75k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tmymu")
+
+[node name="Timer" type="Timer" parent="."]

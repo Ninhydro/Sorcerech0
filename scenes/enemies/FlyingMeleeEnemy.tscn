@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://fm7uhcj7tcrq"]
+[gd_scene load_steps=14 format=3 uid="uid://ctwoqwl4xj6sd"]
 
-[ext_resource type="Script" path="res://scripts/enemies/Enemy.gd" id="1_wn72v"]
-[ext_resource type="Texture2D" uid="uid://dgetyh7q3vqxo" path="res://assets_image/Characters/Enemies/Android-Sheet.png" id="2_s6sw1"]
+[ext_resource type="Script" path="res://scenes/enemies/FlyingMeleeEnemy.gd" id="1_pnxae"]
+[ext_resource type="Texture2D" uid="uid://dgetyh7q3vqxo" path="res://assets_image/Characters/Enemies/Android-Sheet.png" id="2_myu77"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 50)
@@ -136,10 +136,10 @@ size = Vector2(64, 50)
 [sub_resource type="CircleShape2D" id="CircleShape2D_4pq4r"]
 radius = 136.059
 
-[node name="Enemy" type="CharacterBody2D" groups=["Enemies"]]
+[node name="FlyingMeleeEnemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 5
 collision_mask = 9
-script = ExtResource("1_wn72v")
+script = ExtResource("1_pnxae")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
@@ -147,7 +147,7 @@ shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-3, -53)
-texture = ExtResource("2_s6sw1")
+texture = ExtResource("2_myu77")
 hframes = 8
 vframes = 7
 frame = 4
