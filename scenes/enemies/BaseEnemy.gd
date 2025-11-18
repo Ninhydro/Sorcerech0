@@ -41,6 +41,9 @@ var attack_cooldown_timer: Timer
 var can_attack := true
 var has_dealt_damage := false
 
+var melee_attack_cooldown := false
+
+
 func _ready():
 	# Initialize attack cooldown timer
 	attack_cooldown_timer = Timer.new()
@@ -120,7 +123,10 @@ func handle_animation():
 			sprite.flip_h = true
 		elif dir.x == 1:
 			sprite.flip_h = false
-	
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+		
 	# Only play if animation changed
 	if new_animation != current_animation:
 		current_animation = new_animation
@@ -151,13 +157,17 @@ func start_attack():
 		has_dealt_damage = false
 		can_attack = false
 		
-		print("Starting attack on player")
+		print("Enemy attacking player")
 		
 		# Wait for attack animation to reach the damage frame
 		await get_tree().create_timer(0.3).timeout
 		
-		# Deal damage
-		attack_frame()
+		# Deal damage - SIMPLE DIRECT DAMAGE
+		if attack_target and attack_target is Player and attack_target.can_take_damage and not attack_target.dead:
+			var knockback_dir = (attack_target.global_position - global_position).normalized()
+			Global.enemyAknockback = knockback_dir * knockback_force
+			attack_target.take_damage(enemy_damage)
+			print("Melee enemy dealt damage: ", enemy_damage)
 		
 		# Finish attack animation
 		await get_tree().create_timer(0.2).timeout
@@ -165,18 +175,21 @@ func start_attack():
 		
 		# Start cooldown
 		attack_cooldown_timer.start(attack_cooldown)
-
+		
 func attack_frame():
-	# Only deal damage once per attack
+	# Only deal damage for melee enemies
+	# Ranged enemies should deal damage through projectiles only
 	if attack_target and attack_target.has_method("take_damage") and not has_dealt_damage:
-		# Set the global knockback variable before calling take_damage
+		# This should only run for melee enemies
 		var knockback_dir = (attack_target.global_position - global_position).normalized()
 		Global.enemyAknockback = knockback_dir * knockback_force
-		
-		# Now call take_damage with only 1 argument
 		attack_target.take_damage(enemy_damage)
 		has_dealt_damage = true
-		print("Dealt damage to player: ", enemy_damage)
+		melee_attack_cooldown = true
+		await get_tree().create_timer(0.1).timeout
+		melee_attack_cooldown = false
+		
+		print("Melee enemy dealt damage: ", enemy_damage)
 
 func _on_attack_cooldown_timeout():
 	can_attack = true

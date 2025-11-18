@@ -2,7 +2,7 @@ class_name Player
 extends CharacterBody2D
 
 # — Player constants and exported properties —
-@export var move_speed = 300.0   # Walking speed in pixels/sec
+@export var move_speed = 100.0   # Walking speed in pixels/sec
 @export var jump_force = 250.0   # Jump impulse force (vertical velocity for jump)
 var gravity  = 1000.0     # Gravity strength (pixels/sec^2)
 
@@ -161,6 +161,9 @@ signal area_goal_completed()
 var last_save_position: Vector2 = Vector2.ZERO
 var last_save_scene: String = ""
 
+var damage_cooldown := false
+var damage_cooldown_timer: Timer
+
 # Method to disable player input
 func disable_input():
 	print("Player: Input disabled.")
@@ -225,6 +228,11 @@ func _ready():
 	unlock_state("UltimateMagus")
 	unlock_state("Cyber")
 	unlock_state("UltimateCyber")
+	
+	damage_cooldown_timer = Timer.new()
+	damage_cooldown_timer.one_shot = true
+	add_child(damage_cooldown_timer)
+	damage_cooldown_timer.timeout.connect(_on_damage_cooldown_timeout)
 	
 	# --- MODIFIED _ready() LOGIC FOR SAVE/LOAD ---
 	# Check if there's loaded data from Global
@@ -774,17 +782,17 @@ func get_nearby_telekinesis_objects() -> Array[TelekinesisObject]:
 	
 func _on_form_cooldown_timer_timeout():
 	can_switch_form = true
-	print("can form again")
+	#print("can form again")
 
 func _on_attack_cooldown_timer_timeout():
 	can_attack = true
 	combo_timer_flag = true
 	AreaAttack.monitoring = false
-	print("can atatck again")
+	#print("can atatck again")
 
 func _on_skill_cooldown_timer_timeout():
 	can_skill = true
-	print("can skill again")
+	#print("can skill again")
 
 func _on_animation_tree_animation_finished(anim_name):
 	still_animation = false
@@ -792,9 +800,9 @@ func _on_animation_tree_animation_finished(anim_name):
 
 	
 func _on_animation_player_animation_finished(anim_name):
-	#still_animation = false
+	still_animation = false
 	#print("animation end")
-	pass
+
 
 func check_hitbox():
 	var hitbox_areas = $Hitbox.get_overlapping_areas()
@@ -805,15 +813,15 @@ func check_hitbox():
 	if hitbox_areas:
 		for area in hitbox_areas:
 			# Check for enemy damage
-			if area.get_parent() is EnemyA:
-				damage = Global.enemyADamageAmount
-				break
+			#if area.get_parent() is EnemyA:
+			#	damage = Global.enemyADamageAmount
+			#	break
 			#For another enemy or boss make like EnemyB or BossA or BossB
 			#if area.get_parent() is EnemyA:
 			#	damage = Global.enemyADamageAmount
 			#	break
 			# Check for spikes
-			elif area.is_in_group("spikes"):
+			if area.is_in_group("spikes"):
 				hit_spikes = true
 				break
 			# Check for instant death
@@ -829,24 +837,48 @@ func check_hitbox():
 			respawn_nearby_spike()
 			
 func take_damage(damage):
-	if damage != 0:
-		apply_knockback(Global.enemyAknockback)
+	print("Player taking damage: ", damage, " from source: ", get_stack())
+	
+	if damage != 0 and can_take_damage and not dead:
+		# Set states immediately
 		player_hit = true
+		can_take_damage = false
+		
+		# Apply knockback and damage
+		apply_knockback(Global.enemyAknockback)
+		
 		if Global.health > 0:
 			Global.health -= damage
-			print("player health" + str(Global.health))
+			print("player health: " + str(Global.health))
+			
 			if Global.health <= 0:
 				Global.health = 0
 				handle_death()
-				#dead = true
-				#Global.playerAlive = false
-				#print("PLAYER DEAD")
-				#load_game_over_scene()
-			take_damage_cooldown(1.0)
-		health_changed.emit(Global.health, Global.health_max) # Emit signal after health changes
+				return  # Stop here if player died
+		
+		# Emit health change signal
+		health_changed.emit(Global.health, Global.health_max)
+		
+		# DEBUG: Check combat FSM state before changing
+		print("DEBUG: Before damage - FSM state: ", combat_fsm.current_state.name if combat_fsm and combat_fsm.current_state else "null")
+		
+		# Change to hurt state via FSM
+		#if combat_fsm:
+		#	combat_fsm.change_state(HurtState.new(self))
+		
+		# DEBUG: Check combat FSM state after changing
+		print("DEBUG: After damage - FSM state: ", combat_fsm.current_state.name if combat_fsm and combat_fsm.current_state else "null")
+		
+		# Start damage cooldown
+		take_damage_cooldown(1.0)
+		
+		# Reset player_hit after animation completes
 		await get_tree().create_timer(0.5).timeout
 		player_hit = false
-
+		
+func _on_damage_cooldown_timeout():
+	damage_cooldown = false
+	
 func handle_death():
 	dead = true
 	Global.playerAlive = false

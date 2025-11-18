@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cnbcuo1v16c7"]
+[gd_scene load_steps=13 format=3 uid="uid://cnbcuo1v16c7"]
 
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_5carx"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_kfpxq"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bs105i3gcljkr" path="res://scenes/world/SaveSpot.tscn" id="6_fnpdx"]
 [ext_resource type="PackedScene" uid="uid://ctrmmi3uvo6na" path="res://scenes/enemies/spike_trap.tscn" id="8_fllu5"]
 [ext_resource type="PackedScene" uid="uid://d0y6einf5i6wp" path="res://scenes/enemies/canon_laser_enemy.tscn" id="9_i11hh"]
+[ext_resource type="PackedScene" uid="uid://duuqngmhvpksa" path="res://scenes/enemies/ArachneEnemy.tscn" id="10_qu4id"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u82dg"]
 size = Vector2(2868, 1360)
@@ -345,3 +346,7 @@ use_exactlyion_style = true
 z_index = -1
 position = Vector2(424, -80)
 scale = Vector2(1, 1)
+
+[node name="ArachneEnemy" parent="." instance=ExtResource("10_qu4id")]
+position = Vector2(120, -656)
+rotation = -0.0183322

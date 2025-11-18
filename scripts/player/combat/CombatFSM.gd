@@ -23,6 +23,8 @@ func _ready():
 
 func change_state(new_state: CombatState):
 	#print("CombatFSM: change_state start")
+	
+	
 	if current_state:
 		current_state.exit()
 		if current_state.get_parent():

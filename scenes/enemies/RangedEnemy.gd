@@ -1,11 +1,13 @@
 extends BaseEnemy
 
-@export var projectile_scene: PackedScene =  preload("res://scenes/enemies/Projectile_enemy.tscn") # Will hold the preloaded Fireball.tscn
+@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
 @export var projectile_speed := 200.0
-@export var shoot_range := 150.0  # Longer range than melee
+@export var shoot_range := 150.0
+@export var projectile_lifetime := 2.0
+
+@onready var projectile_spawn := $ProjectileSpawn
 
 func _initialize_enemy():
-	# Override attack range for ranged enemy
 	attack_range = shoot_range
 
 func start_attack():
@@ -20,8 +22,13 @@ func start_attack():
 		# Face the player when shooting
 		dir.x = sign(player.global_position.x - global_position.x)
 		
+		# Update projectile spawn position based on direction
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+		
 		# Wait for shoot animation
-		await get_tree().create_timer(0.4).timeout
+		await get_tree().create_timer(0.3).timeout
 		
 		# Shoot projectile
 		shoot_projectile()
@@ -36,14 +43,17 @@ func start_attack():
 func shoot_projectile():
 	if projectile_scene and player:
 		var projectile = projectile_scene.instantiate()
-		get_parent().add_child(projectile)
-		projectile.global_position = global_position
+		get_tree().current_scene.add_child(projectile)
 		
-		# Calculate direction to player
-		var direction = (player.global_position - global_position).normalized()
-		projectile.direction = direction
+		# Use the Marker2D position
+		projectile.global_position = projectile_spawn.global_position
+		
+		# Set projectile properties
+		projectile.set_direction(Vector2(dir.x, 0))
 		projectile.speed = projectile_speed
 		projectile.damage = enemy_damage
+		projectile.lifetime = projectile_lifetime
+		print("Projectile spawned at: ", projectile.global_position, " direction: ", dir.x)
 
 func handle_animation():
 	var new_animation := ""
@@ -53,13 +63,19 @@ func handle_animation():
 	elif taking_damage:
 		new_animation = "hurt"
 	elif is_dealing_damage:
-		new_animation = "shoot"  # Different animation for shooting
+		new_animation = "attack"
 	else:
 		new_animation = "run"
+		# Update direction for sprite and projectile spawn
 		if dir.x == -1:
 			sprite.flip_h = true
 		elif dir.x == 1:
 			sprite.flip_h = false
+		
+		# Update projectile spawn position
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 	
 	if new_animation != current_animation:
 		current_animation = new_animation

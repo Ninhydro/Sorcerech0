@@ -1,8 +1,13 @@
 extends BaseEnemy
 
-@export var shield_health := 80
+@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
+@export var projectile_speed := 180.0
+@export var shoot_range := 200.0
+@export var projectile_lifetime := 2.5
+
+@export var shield_health := 60
 @export var shield_active := false
-@export var shield_activate_delay := 0.3  # Delay before shield activates after first hit
+@export var shield_activate_delay := 0.3
 @export var shield_auto_disable_time := 10.0  # Time after which shield automatically disables
 
 var current_shield_health: float
@@ -13,16 +18,18 @@ var last_hit_time := 0.0
 
 @onready var shield_sprite := $ShieldSprite
 #@onready var shield_animation_player := $ShieldAnimationPlayer
+@onready var projectile_spawn := $ProjectileSpawn
 
 func _initialize_enemy():
 	current_shield_health = shield_health
+	attack_range = shoot_range
 	update_shield_visual()
 	
-	# Medium speed properties
-	base_speed = 40
-	attack_range = 50
-	enemy_damage = 15
-	health = 120
+	# Slow speed properties
+	base_speed = 25
+	enemy_damage = 12
+	health = 100
+	attack_cooldown = 2.0
 
 func _process(delta):
 	super._process(delta)
@@ -47,7 +54,6 @@ func take_damage(damage):
 	# Reset shield idle timer when taking damage
 	if shield_active:
 		shield_idle_timer = 0.0
-		print("Shield idle timer reset due to damage")
 
 	# Check if this is the first hit
 	if not has_taken_first_hit:
@@ -67,12 +73,9 @@ func take_damage(damage):
 		#if shield_animation_player:
 		#	shield_animation_player.play("shield_hit")
 		
-		print("Shield took damage: ", damage, " Shield health: ", current_shield_health)
-		
 		if current_shield_health <= 0:
 			current_shield_health = 0
 			deactivate_shield()
-			print("Shield broken!")
 	else:
 		# Take normal damage when shield is broken or not active
 		super.take_damage(damage)
@@ -100,7 +103,7 @@ func deactivate_shield():
 	#	shield_animation_player.play("shield_break")
 	
 	# Resume movement (slower after shield breaks)
-	base_speed = 20
+	base_speed = 15
 	
 	# Update shield visual
 	update_shield_visual()
@@ -112,7 +115,7 @@ func reset_shield():
 	shield_idle_timer = 0.0
 	
 	# Resume normal movement speed
-	base_speed = 40
+	base_speed = 25
 	
 	# Play shield deactivation animation
 	#if shield_animation_player:
@@ -126,9 +129,7 @@ func reset_shield():
 func update_shield_visual():
 	if shield_active:
 		shield_sprite.visible = true
-		# Visual feedback based on shield health
-		var shield_ratio = current_shield_health / shield_health
-		shield_sprite.modulate.a = 0.5  # Full opacity when active
+		shield_sprite.modulate.a = 0.5
 	else:
 		shield_sprite.visible = false
 
@@ -153,24 +154,39 @@ func start_attack():
 		has_dealt_damage = false
 		can_attack = false
 		
-		print("Shield melee enemy attacking")
+		print("Shield ranged enemy shooting")
 		
-		# Wait for attack animation
-		await get_tree().create_timer(0.3).timeout
+		# Face the player when shooting
+		dir.x = sign(player.global_position.x - global_position.x)
 		
-		# Deal damage
-		if attack_target and attack_target is Player and attack_target.can_take_damage and not attack_target.dead:
-			var knockback_dir = (attack_target.global_position - global_position).normalized()
-			Global.enemyAknockback = knockback_dir * knockback_force
-			attack_target.take_damage(enemy_damage)
-			print("Shield melee enemy dealt damage: ", enemy_damage)
+		# Update projectile spawn position
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+		
+		# Wait for shoot animation
+		await get_tree().create_timer(0.4).timeout
+		
+		# Shoot projectile
+		shoot_projectile()
 		
 		# Finish attack animation
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(0.3).timeout
 		is_dealing_damage = false
 		
 		# Start cooldown
 		attack_cooldown_timer.start(attack_cooldown)
+
+func shoot_projectile():
+	if projectile_scene and player:
+		var projectile = projectile_scene.instantiate()
+		get_tree().current_scene.add_child(projectile)
+		
+		projectile.global_position = projectile_spawn.global_position
+		projectile.set_direction(Vector2(dir.x, 0))
+		projectile.speed = projectile_speed
+		projectile.damage = enemy_damage
+		projectile.lifetime = projectile_lifetime
 
 func handle_animation():
 	var new_animation := ""
@@ -193,6 +209,10 @@ func handle_animation():
 			sprite.flip_h = false
 			if shield_sprite:
 				shield_sprite.flip_h = false
+		
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 	
 	if new_animation != current_animation:
 		current_animation = new_animation

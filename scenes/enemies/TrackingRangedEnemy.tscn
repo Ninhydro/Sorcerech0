@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://dyt7fwafpthfo"]
+[gd_scene load_steps=14 format=3 uid="uid://b8kpph2njo2f0"]
 
-[ext_resource type="Script" path="res://scenes/enemies/TrackingEnemy.gd" id="1_tr2a4"]
-[ext_resource type="Texture2D" uid="uid://dgetyh7q3vqxo" path="res://assets_image/Characters/Enemies/Android-Sheet.png" id="2_2epc0"]
+[ext_resource type="Script" path="res://scenes/enemies/TrackingRangedEnemy.gd" id="1_rgtw5"]
+[ext_resource type="Texture2D" uid="uid://dgetyh7q3vqxo" path="res://assets_image/Characters/Enemies/Android-Sheet.png" id="2_6vgvs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 50)
@@ -43,7 +43,7 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.3),
+"times": PackedFloat32Array(1.8),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -134,12 +134,12 @@ size = Vector2(80, 57.5)
 size = Vector2(64, 50)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4pq4r"]
-radius = 384.021
+radius = 264.273
 
-[node name="TrackingEnemy" type="CharacterBody2D" groups=["Enemies"]]
+[node name="TrackingRangedEnemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 5
 collision_mask = 9
-script = ExtResource("1_tr2a4")
+script = ExtResource("1_rgtw5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
@@ -147,7 +147,7 @@ shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-3, -53)
-texture = ExtResource("2_2epc0")
+texture = ExtResource("2_6vgvs")
 hframes = 8
 vframes = 7
 frame = 4
@@ -177,6 +177,9 @@ shape = SubResource("RectangleShape2D_a7b8b")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RangeChase"]
 position = Vector2(0, -20)
 shape = SubResource("CircleShape2D_4pq4r")
+
+[node name="ProjectileSpawn" type="Marker2D" parent="."]
+position = Vector2(-32, -24)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

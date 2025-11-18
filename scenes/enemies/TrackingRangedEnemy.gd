@@ -1,0 +1,173 @@
+extends BaseEnemy
+
+@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
+@export var projectile_speed := 150.0
+@export var shoot_range := 180.0
+@export var projectile_lifetime := 3.0
+@export var prediction_strength := 2.0  # Strong prediction for slow projectiles
+@export var turn_speed := 3.0
+
+@onready var projectile_spawn := $ProjectileSpawn
+
+func _initialize_enemy():
+	attack_range = shoot_range
+	
+	# Slow speed properties - NOT AFFECTED BY CAMOUFLAGE
+	base_speed = 20
+	enemy_damage = 18  # Higher damage to compensate for slow speed
+	health = 90
+	attack_cooldown = 2.5
+	
+	# Initialize direction
+	dir = Vector2.RIGHT
+	
+	# Tracking enemies ignore camouflage
+	print("Tracking ranged enemy spawned - camouflage immune")
+
+func _process(delta):
+	# Override camouflage check - tracking enemies always chase
+	if $AnimationPlayer:
+		$AnimationPlayer.speed_scale = Global.global_time_scale
+		
+	if !is_on_floor():
+		velocity.y += gravity * delta
+		velocity.x = 0
+	
+	player = Global.playerBody
+	
+	# TRACKING ENEMIES IGNORE CAMOUFLAGE - always chase if player is alive
+	if Global.playerAlive and range:
+		is_enemy_chase = true
+	else:
+		is_enemy_chase = false
+	
+	# Check for attacks - ignore camouflage
+	if is_enemy_chase and player and can_attack and not dead and not taking_damage:
+		var distance = global_position.distance_to(player.global_position)
+		if distance <= attack_range:
+			start_attack()
+	
+	move(delta)
+	handle_animation()
+	move_and_slide()
+
+func move(delta):
+	if dead:
+		velocity.x = 0
+		return
+	
+	if taking_damage:
+		var knockback_dir = (global_position - player.global_position).normalized()
+		velocity.x = knockback_dir.x * abs(enemy_knockback_force)
+		is_roaming = false
+		return
+		
+	if is_dealing_damage:
+		velocity.x = 0
+		is_roaming = false
+		return
+		
+	if is_enemy_chase:
+		is_roaming = false
+		
+		if player:
+			# Simple direction update based on player position
+			var player_direction = player.global_position.x - global_position.x
+			
+			# Update direction with threshold to prevent flickering
+			if abs(player_direction) > 5.0:  # Only update if player is significantly to the side
+				dir.x = sign(player_direction)
+			
+			# Move toward player
+			velocity.x = dir.x * speed
+	else:
+		is_roaming = true
+		velocity.x = dir.x * speed
+
+func start_attack():
+	if can_attack and player and not dead and not taking_damage:
+		attack_target = player
+		is_dealing_damage = true
+		has_dealt_damage = false
+		can_attack = false
+		
+		print("Tracking slow ranged enemy shooting")
+		
+		# Ensure correct facing direction before shooting
+		if player:
+			dir.x = sign(player.global_position.x - global_position.x)
+		
+		# Update projectile spawn position based on direction
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+		
+		# Wait for shoot animation
+		await get_tree().create_timer(0.5).timeout  # Slower wind-up
+		
+		# Shoot predictive projectile
+		shoot_predictive_projectile()
+		
+		# Finish attack animation
+		await get_tree().create_timer(0.4).timeout
+		is_dealing_damage = false
+		
+		# Start cooldown
+		attack_cooldown_timer.start(attack_cooldown)
+
+func shoot_predictive_projectile():
+	if projectile_scene and player:
+		var projectile = projectile_scene.instantiate()
+		get_tree().current_scene.add_child(projectile)
+		
+		projectile.global_position = projectile_spawn.global_position
+		
+		# Calculate predictive aim
+		var player_velocity = player.velocity
+		var distance_to_player = global_position.distance_to(player.global_position)
+		var time_to_reach = distance_to_player / projectile_speed
+		
+		# Predict where player will be
+		var predicted_position = player.global_position + player_velocity * time_to_reach * prediction_strength
+		var shoot_direction = (predicted_position - projectile_spawn.global_position).normalized()
+		
+		# Set projectile properties
+		projectile.set_direction(shoot_direction)
+		projectile.speed = projectile_speed
+		projectile.damage = enemy_damage
+		projectile.lifetime = projectile_lifetime
+		
+		print("Tracking projectile launched with prediction - Direction: ", shoot_direction)
+
+func handle_animation():
+	var new_animation := ""
+	
+	if dead:
+		new_animation = "death"
+	elif taking_damage:
+		new_animation = "hurt"
+	elif is_dealing_damage:
+		new_animation = "attack"
+	else:
+		new_animation = "run"
+		# Update sprite direction
+		if dir.x < 0:
+			sprite.flip_h = true
+		elif dir.x > 0:
+			sprite.flip_h = false
+		
+		# Update projectile spawn position
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+	
+	if new_animation != current_animation:
+		current_animation = new_animation
+		animation_player.play(new_animation)
+		
+		if new_animation == "hurt":
+			await get_tree().create_timer(0.5).timeout
+			taking_damage = false
+		elif new_animation == "death":
+			await animation_player.animation_finished
+			handle_death()

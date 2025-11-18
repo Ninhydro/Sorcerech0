@@ -1,19 +1,28 @@
 extends BaseEnemy
 
-@export var projectile_scene: PackedScene =  preload("res://scenes/enemies/Projectile_enemy.tscn") # Will hold the preloaded Fireball.tscn
-@export var projectile_speed := 200.0  # ADD THIS LINE
-@export var flight_height := 80.0
-@export var hover_speed := 50.0
+@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
+@export var projectile_speed := 200.0
+@export var shoot_range := 150.0
+@export var projectile_lifetime := 2.0
+@export var flight_height := 100.0  # How high above ground to fly
+@export var hover_speed := 50.0     # Up/down hover movement speed
+
+@onready var projectile_spawn := $ProjectileSpawn
+
 var initial_y: float
+var hover_direction := 1.0
+var hover_timer := 0.0
 
 func _initialize_enemy():
+	attack_range = shoot_range
+	gravity = 0  # Flying enemies ignore gravity
 	initial_y = global_position.y
-	# Flying enemies ignore gravity - now this works since gravity is a variable
-	gravity = 0
-	attack_range = 120.0  # Medium range for flying ranged
+	
+	# Flying enemies are faster
+	base_speed = 40
 
 func _process(delta):
-	# Override to add flying behavior
+	# Call parent process but override gravity behavior
 	if $AnimationPlayer:
 		$AnimationPlayer.speed_scale = Global.global_time_scale
 	
@@ -25,6 +34,9 @@ func _process(delta):
 	else:
 		is_enemy_chase = false
 	
+	# Handle hover movement
+	handle_hover_movement(delta)
+	
 	# Check for attacks during chase
 	if is_enemy_chase and player and can_attack and not Global.camouflage and not dead and not taking_damage:
 		var distance = global_position.distance_to(player.global_position)
@@ -35,37 +47,53 @@ func _process(delta):
 	handle_animation()
 	move_and_slide()
 
+func handle_hover_movement(delta):
+	# Gentle up/down hover movement
+	hover_timer += delta
+	if hover_timer >= 2.0:  # Change hover direction every 2 seconds
+		hover_direction *= -1
+		hover_timer = 0.0
+	
+	# Apply hover movement
+	velocity.y = hover_direction * hover_speed * Global.global_time_scale
+
 func move(delta):
 	if dead:
-		velocity = Vector2.ZERO
+		velocity.x = 0
+		velocity.y = 0
 		return
 	
 	if taking_damage:
-		# Flying enemies get knockback but can move in air
+		# Flying enemies get knockback in both directions
 		var knockback_dir = (global_position - player.global_position).normalized()
-		velocity = knockback_dir * abs(enemy_knockback_force)
+		velocity.x = knockback_dir.x * abs(enemy_knockback_force)
+		velocity.y = knockback_dir.y * abs(enemy_knockback_force) * 0.5  # Less vertical knockback
+		is_roaming = false
 		return
 		
 	if is_dealing_damage:
 		velocity.x = 0
+		is_roaming = false
 		return
 		
-	if is_enemy_chase and player:
-		# Fly towards player while maintaining height
-		var target_x = player.global_position.x
-		var target_y = initial_y - flight_height
-		var target_pos = Vector2(target_x, target_y)
-		
-		var direction = (target_pos - global_position).normalized()
-		velocity = direction * speed
+	if is_enemy_chase:
+		is_roaming = false
+		var dir_to_player = (player.global_position - global_position).normalized()
+		velocity.x = dir_to_player.x * speed
 		dir.x = sign(velocity.x)
 		
-		# Add gentle hovering motion
-		velocity.y += sin(Time.get_ticks_msec() * 0.005) * hover_speed
+		# Maintain flight height while chasing
+		var target_y = initial_y - flight_height
+		var y_diff = target_y - global_position.y
+		velocity.y += y_diff * 2.0 * delta  # Smooth height adjustment
 	else:
-		# Roaming flight pattern
-		velocity.x = dir.x * speed * 0.5
-		velocity.y = sin(Time.get_ticks_msec() * 0.005) * hover_speed
+		is_roaming = true
+		velocity.x = dir.x * speed * 0.7  # Slower when roaming
+		
+		# Maintain flight height while roaming
+		var target_y = initial_y - flight_height
+		var y_diff = target_y - global_position.y
+		velocity.y += y_diff * 2.0 * delta
 
 func start_attack():
 	if can_attack and player and not dead and not taking_damage:
@@ -76,26 +104,44 @@ func start_attack():
 		
 		print("Flying ranged enemy shooting")
 		
-		# Face the player
+		# Face the player when shooting
 		dir.x = sign(player.global_position.x - global_position.x)
 		
+		# Update projectile spawn position based on direction
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+		
+		# Wait for shoot animation
 		await get_tree().create_timer(0.3).timeout
+		
+		# Shoot projectile
 		shoot_projectile()
+		
+		# Finish attack animation
 		await get_tree().create_timer(0.2).timeout
 		is_dealing_damage = false
 		
+		# Start cooldown
 		attack_cooldown_timer.start(attack_cooldown)
 
 func shoot_projectile():
 	if projectile_scene and player:
 		var projectile = projectile_scene.instantiate()
-		get_parent().add_child(projectile)
-		projectile.global_position = global_position
+		get_tree().current_scene.add_child(projectile)
 		
-		var direction = (player.global_position - global_position).normalized()
-		projectile.direction = direction
-		projectile.speed = projectile_speed  # Now this variable exists
+		# Use the Marker2D position
+		projectile.global_position = projectile_spawn.global_position
+		
+		# Calculate direction towards player (including vertical component)
+		var direction_to_player = (player.global_position - projectile_spawn.global_position).normalized()
+		
+		# Set projectile properties
+		projectile.set_direction(direction_to_player)
+		projectile.speed = projectile_speed
 		projectile.damage = enemy_damage
+		projectile.lifetime = projectile_lifetime
+		print("Flying enemy projectile spawned at: ", projectile.global_position)
 
 func handle_animation():
 	var new_animation := ""
@@ -105,13 +151,19 @@ func handle_animation():
 	elif taking_damage:
 		new_animation = "hurt"
 	elif is_dealing_damage:
-		new_animation = "shoot"
+		new_animation = "attack" #shoot
 	else:
-		new_animation = "fly"  # Flying animation
+		new_animation = "run"  # Use "fly" animation instead of "run"
+		# Update direction for sprite and projectile spawn
 		if dir.x == -1:
 			sprite.flip_h = true
 		elif dir.x == 1:
 			sprite.flip_h = false
+		
+		# Update projectile spawn position
+		if has_node("ProjectileSpawn"):
+			var projectile_spawn = $ProjectileSpawn
+			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 	
 	if new_animation != current_animation:
 		current_animation = new_animation
@@ -123,3 +175,8 @@ func handle_animation():
 		elif new_animation == "death":
 			await animation_player.animation_finished
 			handle_death()
+
+# Flying enemies don't use ground-based gravity
+func _physics_process(delta):
+	# Override parent physics to remove gravity
+	pass

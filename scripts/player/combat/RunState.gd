@@ -53,6 +53,7 @@ func physics_update(delta):
 			#print("IdleState: Detected movement input → switching to JumpState")
 			get_parent().change_state(JumpState.new(player))
 	elif player.player_hit == true:
+		player.player_hit = false
 		#print("IdleState: Detected movement input → switching to HurtState")
 		get_parent().change_state(HurtState.new(player))
 	

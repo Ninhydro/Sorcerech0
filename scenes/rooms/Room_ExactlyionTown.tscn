@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=41 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -27,6 +27,13 @@
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="22_rw64g"]
 [ext_resource type="PackedScene" uid="uid://wug72wsr2c4e" path="res://dialogic/cutscene/cutscene21_5B3.tscn" id="23_m2s6c"]
 [ext_resource type="PackedScene" uid="uid://d174avsoubith" path="res://scenes/enemies/BaseEnemy.tscn" id="27_ruswp"]
+[ext_resource type="PackedScene" uid="uid://c86ls3q6y6te6" path="res://scenes/enemies/RangedEnemy.tscn" id="27_vs2a1"]
+[ext_resource type="PackedScene" uid="uid://vf1jltllva5b" path="res://scenes/enemies/FlyingRangedEnemy.tscn" id="29_gpvky"]
+[ext_resource type="PackedScene" uid="uid://ctwoqwl4xj6sd" path="res://scenes/enemies/FlyingMeleeEnemy.tscn" id="30_afcae"]
+[ext_resource type="PackedScene" uid="uid://ckm0ky75j1d8h" path="res://scenes/enemies/ShieldedEnemy.tscn" id="31_pemr2"]
+[ext_resource type="PackedScene" uid="uid://botywg5yxksjb" path="res://scenes/enemies/ShieldRangedEnemy.tscn" id="32_ybimx"]
+[ext_resource type="PackedScene" uid="uid://dyt7fwafpthfo" path="res://scenes/enemies/TrackingEnemy.tscn" id="33_riy50"]
+[ext_resource type="PackedScene" uid="uid://b8kpph2njo2f0" path="res://scenes/enemies/TrackingRangedEnemy.tscn" id="34_esgdm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5eae"]
 size = Vector2(4176, 608)
@@ -840,8 +847,29 @@ metadata/_edit_lock_ = true
 position = Vector2(2918.27, -571.407)
 metadata/_edit_lock_ = true
 
+[node name="RangedEnemy" parent="." instance=ExtResource("27_vs2a1")]
+position = Vector2(-96, 224)
+
 [node name="BaseEnemy" parent="." instance=ExtResource("27_ruswp")]
-position = Vector2(-168, 40)
+position = Vector2(-336, 216)
+
+[node name="FlyingRangedEnemy" parent="." instance=ExtResource("29_gpvky")]
+position = Vector2(272, 240)
+
+[node name="FlyingMeleeEnemy" parent="." instance=ExtResource("30_afcae")]
+position = Vector2(104, 232)
+
+[node name="ShieldedEnemy" parent="." instance=ExtResource("31_pemr2")]
+position = Vector2(480, 256)
+
+[node name="ShieldRangedEnemy" parent="." instance=ExtResource("32_ybimx")]
+position = Vector2(736, 240)
+
+[node name="TrackingEnemy" parent="." instance=ExtResource("33_riy50")]
+position = Vector2(1128, 232)
+
+[node name="TrackingRangedEnemy" parent="." instance=ExtResource("34_esgdm")]
+position = Vector2(1632, 248)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

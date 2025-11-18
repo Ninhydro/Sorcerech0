@@ -50,7 +50,9 @@ func physics_update(delta):
 			#print("IdleState: Detected movement input → switching to SkillState")
 		#	get_parent().change_state(SkillState.new(player))
 	elif player.player_hit == true:
+		#print("HITTTTTTT")
 		#print("IdleState: Detected movement input → switching to HurtState")
+		player.player_hit = false
 		get_parent().change_state(HurtState.new(player))
 	
 	if Global.saving == true:
