@@ -43,6 +43,17 @@ var has_dealt_damage := false
 
 var melee_attack_cooldown := false
 
+# EDGE DETECTION SETTINGS
+@export var use_edge_detection := true  # Set to false for flying enemies
+@export var edge_detection_range := 20.0
+@export var edge_ray_offset := 10.0
+
+# Add these to your existing variables
+@onready var edge_ray_left := $EdgeRayLeft
+@onready var edge_ray_right := $EdgeRayRight
+
+var should_turn_around := false
+var edge_turn_cooldown := 0.0
 
 func _ready():
 	# Initialize attack cooldown timer
@@ -50,9 +61,20 @@ func _ready():
 	attack_cooldown_timer.one_shot = true
 	add_child(attack_cooldown_timer)
 	attack_cooldown_timer.timeout.connect(_on_attack_cooldown_timeout)
-	
+	if use_edge_detection:
+		setup_edge_detection()
 	# Initialize enemy-specific components
 	_initialize_enemy()
+
+func setup_edge_detection():
+	if has_node("EdgeRayLeft") and has_node("EdgeRayRight"):
+		edge_ray_left.enabled = true
+		edge_ray_right.enabled = true
+		edge_ray_left.target_position = Vector2(0, edge_detection_range)
+		edge_ray_right.target_position = Vector2(0, edge_detection_range)
+	else:
+		print("Warning: Edge detection rays not found for ", name)
+
 
 func _initialize_enemy():
 	pass
@@ -79,10 +101,60 @@ func _process(delta):
 		if distance <= attack_range:
 			start_attack()
 	
+	# Update edge detection cooldown
+	if edge_turn_cooldown > 0:
+		edge_turn_cooldown -= delta
+	
+	# Handle edge detection
+	if use_edge_detection and not dead and not taking_damage and not is_dealing_damage:
+		detect_edges()
+		
 	move(delta)
 	handle_animation()
 	move_and_slide()
 
+func detect_edges():
+	if not use_edge_detection or edge_turn_cooldown > 0:
+		return
+	
+	# Force raycast updates
+	if has_node("EdgeRayLeft"):
+		edge_ray_left.force_raycast_update()
+	if has_node("EdgeRayRight"):
+		edge_ray_right.force_raycast_update()
+	
+	# Check edges based on movement direction
+	if dir.x > 0:  # Moving right
+		if has_node("EdgeRayRight") and not edge_ray_right.is_colliding():
+			should_turn_around = true
+			turn_around_at_edge()
+	elif dir.x < 0:  # Moving left
+		if has_node("EdgeRayLeft") and not edge_ray_left.is_colliding():
+			should_turn_around = true
+			turn_around_at_edge()
+	else:
+		should_turn_around = false
+
+func turn_around_at_edge():
+	if edge_turn_cooldown > 0:
+		return
+	
+	# Reverse direction
+	dir.x *= -1
+	should_turn_around = false
+	edge_turn_cooldown = 1.0  # 1 second cooldown
+	
+	print(name, " turned around at edge! New direction: ", dir.x)
+	
+	# Small pause after turning
+	var previous_velocity = velocity
+	velocity = Vector2.ZERO
+	await get_tree().create_timer(0.3).timeout
+	
+	# Restore velocity in new direction if not in special state
+	if not (dead or taking_damage or is_dealing_damage):
+		velocity.x = previous_velocity.x * -1
+		
 func move(delta):
 	if dead:
 		velocity.x = 0
@@ -97,6 +169,10 @@ func move(delta):
 	if is_dealing_damage:
 		velocity.x = 0
 		is_roaming = false
+		return
+	
+	if should_turn_around and not is_enemy_chase and edge_turn_cooldown <= 0:
+		turn_around_at_edge()
 		return
 		
 	if is_enemy_chase:

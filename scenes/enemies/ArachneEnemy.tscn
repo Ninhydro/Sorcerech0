@@ -189,20 +189,11 @@ target_position = Vector2(-20, 0)
 position = Vector2(16, 8)
 target_position = Vector2(0, 20)
 
-[node name="RightWallRay" type="RayCast2D" parent="."]
-visible = false
-position = Vector2(15, 0)
-target_position = Vector2(20, 0)
-
-[node name="EdgeDetectionRay2" type="RayCast2D" parent="."]
-visible = false
+[node name="EdgeRayLeft" type="RayCast2D" parent="."]
 position = Vector2(-16, 8)
-target_position = Vector2(0, 20)
 
-[node name="FloorRay" type="RayCast2D" parent="."]
-visible = false
-position = Vector2(0, 15)
-target_position = Vector2(0, 20)
+[node name="EdgeRayRight" type="RayCast2D" parent="."]
+position = Vector2(16, 8)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

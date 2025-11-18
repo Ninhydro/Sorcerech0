@@ -20,6 +20,7 @@ func _initialize_enemy():
 	
 	# Flying enemies are faster
 	base_speed = 40
+	use_edge_detection = false
 
 func _process(delta):
 	# Call parent process but override gravity behavior

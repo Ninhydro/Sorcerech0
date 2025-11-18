@@ -188,6 +188,12 @@ texture = ExtResource("3_u3xmo")
 [node name="ShieldParticles" type="CPUParticles2D" parent="."]
 emitting = false
 
+[node name="EdgeRayLeft" type="RayCast2D" parent="."]
+position = Vector2(-16, 8)
+
+[node name="EdgeRayRight" type="RayCast2D" parent="."]
+position = Vector2(16, 8)
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

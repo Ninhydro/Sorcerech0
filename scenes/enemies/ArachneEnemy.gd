@@ -42,7 +42,8 @@ func _initialize_enemy():
 	health = 80
 	attack_cooldown = 1.8
 	gravity = 0
-
+	use_edge_detection = false
+	
 func _process(delta):
 	if $AnimationPlayer:
 		$AnimationPlayer.speed_scale = Global.global_time_scale

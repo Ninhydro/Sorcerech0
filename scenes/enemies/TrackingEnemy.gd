@@ -19,7 +19,7 @@ func _initialize_enemy():
 	
 	# Initialize direction
 	dir = Vector2.RIGHT
-	
+	use_edge_detection = true
 	# Tracking enemies ignore camouflage
 	print("Tracking enemy spawned - camouflage immune")
 

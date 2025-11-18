@@ -21,7 +21,8 @@ func _initialize_enemy():
 	base_speed = 60
 	attack_range = 80
 	attack_cooldown = 1.2
-
+	use_edge_detection = false
+	
 func _process(delta):
 	# Call parent process but override gravity behavior
 	if $AnimationPlayer:

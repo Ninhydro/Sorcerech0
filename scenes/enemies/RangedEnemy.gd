@@ -9,6 +9,7 @@ extends BaseEnemy
 
 func _initialize_enemy():
 	attack_range = shoot_range
+	use_edge_detection = true
 
 func start_attack():
 	if can_attack and player and not dead and not taking_damage:

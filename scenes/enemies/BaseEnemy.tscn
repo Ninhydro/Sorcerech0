@@ -175,8 +175,15 @@ shape = SubResource("RectangleShape2D_a7b8b")
 [node name="RangeChase" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RangeChase"]
+visible = false
 position = Vector2(0, -20)
 shape = SubResource("CircleShape2D_4pq4r")
+
+[node name="EdgeRayLeft" type="RayCast2D" parent="."]
+position = Vector2(-16, 8)
+
+[node name="EdgeRayRight" type="RayCast2D" parent="."]
+position = Vector2(16, 8)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

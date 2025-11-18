@@ -30,7 +30,8 @@ func _initialize_enemy():
 	enemy_damage = 12
 	health = 100
 	attack_cooldown = 2.0
-
+	use_edge_detection = true
+	
 func _process(delta):
 	super._process(delta)
 	
