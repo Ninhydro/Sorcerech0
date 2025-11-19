@@ -183,11 +183,11 @@ func start(timeline:Variant, label:Variant="") -> Node:
 		scene = self.Styles.get_layout_node()
 		scene.show()
 
-	if not scene.is_node_ready():
-		scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
-		scene.ready.connect(start_timeline.bind(timeline, label))
-	else:
-		start_timeline(timeline, label)
+	#if not scene.is_node_ready():
+		#scene.ready.connect(clear.bind(ClearFlags.KEEP_VARIABLES))
+		#scene.ready.connect(start_timeline.bind(timeline, label))
+	#else:
+	#	start_timeline(timeline, label)
 
 	return scene
 

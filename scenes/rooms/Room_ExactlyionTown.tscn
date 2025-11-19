@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=42 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -34,6 +34,7 @@
 [ext_resource type="PackedScene" uid="uid://botywg5yxksjb" path="res://scenes/enemies/ShieldRangedEnemy.tscn" id="32_ybimx"]
 [ext_resource type="PackedScene" uid="uid://dyt7fwafpthfo" path="res://scenes/enemies/TrackingEnemy.tscn" id="33_riy50"]
 [ext_resource type="PackedScene" uid="uid://b8kpph2njo2f0" path="res://scenes/enemies/TrackingRangedEnemy.tscn" id="34_esgdm"]
+[ext_resource type="PackedScene" uid="uid://duuqngmhvpksa" path="res://scenes/enemies/ArachneEnemy.tscn" id="35_ko4ae"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5eae"]
 size = Vector2(4176, 608)
@@ -848,7 +849,7 @@ position = Vector2(2918.27, -571.407)
 metadata/_edit_lock_ = true
 
 [node name="RangedEnemy" parent="." instance=ExtResource("27_vs2a1")]
-position = Vector2(-96, 224)
+position = Vector2(-144, 224)
 
 [node name="BaseEnemy" parent="." instance=ExtResource("27_ruswp")]
 position = Vector2(-336, 216)
@@ -857,7 +858,7 @@ position = Vector2(-336, 216)
 position = Vector2(272, 240)
 
 [node name="FlyingMeleeEnemy" parent="." instance=ExtResource("30_afcae")]
-position = Vector2(104, 232)
+position = Vector2(72, 240)
 
 [node name="ShieldedEnemy" parent="." instance=ExtResource("31_pemr2")]
 position = Vector2(480, 256)
@@ -870,6 +871,9 @@ position = Vector2(1128, 232)
 
 [node name="TrackingRangedEnemy" parent="." instance=ExtResource("34_esgdm")]
 position = Vector2(1632, 248)
+
+[node name="ArachneEnemy" parent="." instance=ExtResource("35_ko4ae")]
+position = Vector2(2096, 240)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

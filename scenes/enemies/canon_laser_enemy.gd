@@ -13,7 +13,7 @@ class_name CanonLaserEnemy
 @onready var arm_pivot := $ArmPivot  # Where the arm rotates from
 @onready var canon_tip := $ArmPivot/CanonArmSprite/CanonTip  # Where laser comes from
 
-@export var tracking_duration := 3.0  # Time to track before shooting
+@export var tracking_duration = 3.0 # Time to track before shooting
 @export var rotation_offset_degrees: float = 40
 @export var laser_rotation_offset_degrees: float = -40  # ADD THIS
 
@@ -34,6 +34,7 @@ func _ready():
 	detection_area.body_exited.connect(_on_detection_area_body_exited)
 	
 	# Set up timer
+	
 	tracking_timer.wait_time = tracking_duration
 	tracking_timer.one_shot = true
 	tracking_timer.timeout.connect(_on_tracking_timeout)
@@ -132,6 +133,7 @@ func set_tracking_state():
 	laser_sprite.visible = false
 	
 	# Start tracking timer
+
 	tracking_timer.start(tracking_duration)
 
 func set_shooting_state():
@@ -219,9 +221,12 @@ func stop_tracking():
 	set_idle_state()
 
 func _on_tracking_timeout():
-	if is_tracking and player and Global.playerAlive and not Global.camouflage:
-		print("Canon Laser Enemy: Tracking complete, FIRING LASER!")
-		shoot_laser()
+	if Global.global_time_scale == 1:
+		if is_tracking and player and Global.playerAlive and not Global.camouflage:
+			print("Canon Laser Enemy: Tracking complete, FIRING LASER!")
+			shoot_laser()
+	else:
+		tracking_timer.start(tracking_duration)
 
 func shoot_laser():
 	set_shooting_state()

@@ -222,4 +222,4 @@ func _on_direction_timer_timeout():
 	# Simple direction change for roaming
 	if !is_enemy_chase and is_on_wall:
 		dir = choose([Vector2.RIGHT, Vector2.LEFT])
-		print("Wall Spider changed roam direction to: ", dir.x)
+		#print("Wall Spider changed roam direction to: ", dir.x)
