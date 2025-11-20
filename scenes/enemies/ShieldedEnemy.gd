@@ -181,7 +181,7 @@ func handle_animation():
 	elif taking_damage:
 		new_animation = "hurt"
 	elif shield_active:
-		new_animation = "idle"  # Special idle animation when shield is active
+		new_animation = "shield"  # Special idle animation when shield is active
 	elif is_dealing_damage:
 		new_animation = "attack"
 	else:

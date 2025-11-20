@@ -9,6 +9,10 @@ extends BaseEnemy
 
 @onready var projectile_spawn := $ProjectileSpawn
 
+# ALERT SYSTEM
+var has_alerted := false
+var is_alert_animation_playing := false
+
 func _initialize_enemy():
 	attack_range = shoot_range
 	
@@ -148,9 +152,20 @@ func handle_animation():
 		new_animation = "hurt"
 	elif is_dealing_damage:
 		new_animation = "attack"
-	else:
+	elif is_enemy_chase and not has_alerted:
+		# Play alert animation only once when first detecting player
+		new_animation = "alert"
+		is_alert_animation_playing = true
+	elif is_enemy_chase and has_alerted:
+		# After alert, use run animation for chasing
 		new_animation = "run"
-		# Update sprite direction
+	elif is_roaming:
+		new_animation = "run"
+	else:
+		new_animation = "idle"
+	
+	# Update sprite direction for run/idle animations
+	if new_animation == "run" or new_animation == "idle":
 		if dir.x < 0:
 			sprite.flip_h = true
 		elif dir.x > 0:
@@ -161,13 +176,28 @@ func handle_animation():
 			var projectile_spawn = $ProjectileSpawn
 			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 	
+	# Only change animation if it's different
 	if new_animation != current_animation:
 		current_animation = new_animation
 		animation_player.play(new_animation)
 		
+		# Handle animation completion for specific cases
 		if new_animation == "hurt":
 			await get_tree().create_timer(0.5).timeout
 			taking_damage = false
+		elif new_animation == "alert":
+			# Wait for alert animation to finish, then mark as alerted
+			await animation_player.animation_finished
+			has_alerted = true
+			is_alert_animation_playing = false
+			print("Tracking enemy finished alert animation - now chasing")
 		elif new_animation == "death":
 			await animation_player.animation_finished
 			handle_death()
+
+# Optional: Reset alert state if player leaves and re-enters range
+func _on_range_chase_body_exited(body):
+	if body.name == "Player":
+		# You can choose to reset the alert state when player leaves
+		# has_alerted = false  # Uncomment if you want alert to play every time player enters range
+		pass

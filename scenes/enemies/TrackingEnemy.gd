@@ -10,6 +10,9 @@ var is_dashing := false
 var dash_timer := 0.0
 var last_player_velocity := Vector2.ZERO
 
+var has_alerted := false
+var is_alert_animation_playing := false
+
 func _initialize_enemy():
 	# Fast speed properties - NOT AFFECTED BY CAMOUFLAGE
 	base_speed = 80
@@ -155,7 +158,6 @@ func deal_dash_damage():
 		Global.enemyAknockback = knockback_dir * (knockback_force * 1.3)
 		player.take_damage(enemy_damage)
 		print("Tracking dash attack dealt damage: ", enemy_damage)
-
 func handle_animation():
 	var new_animation := ""
 	
@@ -163,25 +165,37 @@ func handle_animation():
 		new_animation = "death"
 	elif taking_damage:
 		new_animation = "hurt"
-	elif is_dashing:
-		new_animation = "run"  # Special dash animation
 	elif is_dealing_damage:
 		new_animation = "attack"
-	else:
+	elif is_enemy_chase and not has_alerted:
+		# Play alert animation only once when first detecting player
+		new_animation = "alert"
+		is_alert_animation_playing = true
+	elif is_enemy_chase and has_alerted:
+		# After alert, use run animation for chasing
 		new_animation = "run"
-		# Update sprite direction based on movement direction
-		if dir.x < 0:
-			sprite.flip_h = true
-		elif dir.x > 0:
-			sprite.flip_h = false
+	elif is_roaming:
+		new_animation = "run"
+	else:
+		new_animation = "idle"
+	
+	# Update sprite direction
+	if dir.x < 0:
+		sprite.flip_h = true
+	elif dir.x > 0:
+		sprite.flip_h = false
 	
 	if new_animation != current_animation:
 		current_animation = new_animation
 		animation_player.play(new_animation)
 		
 		if new_animation == "hurt":
-			await get_tree().create_timer(0.4).timeout  # Faster recovery
+			await get_tree().create_timer(0.4).timeout
 			taking_damage = false
+		elif new_animation == "alert":
+			await animation_player.animation_finished
+			has_alerted = true
+			is_alert_animation_playing = false
 		elif new_animation == "death":
 			await animation_player.animation_finished
 			handle_death()

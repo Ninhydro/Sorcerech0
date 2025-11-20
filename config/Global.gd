@@ -1,21 +1,24 @@
 # res://scripts/globals/Global.gd
 extends Node
 
-# ... (other variables) ...
-
-# If you need to store completed events by dialogue_id, declare it like this:
+# Game State Variables
+var gameStarted: bool = false
 var sub_quest: Dictionary = {}
-
-# Your existing Global.gd code with `current_scene_path` changes:
-var gameStarted: bool
 var autosave_timer: Timer = Timer.new()
 var autosave_interval_seconds: float = 60.0
 
+# Window Management
+var last_window_size: Vector2i = Vector2i.ZERO
+var last_window_position: Vector2i = Vector2i.ZERO
+var resize_check_active: bool = true
+var unpause_cooldown_timer: float = 0.0
+var ignore_player_input_after_unpause: bool = false
+const UNPAUSE_COOLDOWN_DURATION: float = 0.5
+
+# UI State Variables
 var is_dialog_open := false
 var attacking := false
-
-# ADD THIS LINE:
-var is_cutscene_active := false # <--- NEW: Flag to indicate if a cutscene is active
+var is_cutscene_active := false
 
 
 var highlight_shader: Shader
@@ -24,21 +27,11 @@ var camouflage_shader: Shader
 var circle_shader: Shader
 
 var snap_threshold: int = 50
-var resize_handler_active: bool = true
 
 func _ready():
-	
 	load_persistent_data()
-
-
 	Dialogic.connect("dialog_started", Callable(self, "_on_dialog_started"))
 	Dialogic.connect("dialog_ended", Callable(self, "_on_dialog_ended"))
-	
-	#add_child(autosave_timer)
-	#autosave_timer.wait_time = autosave_interval_seconds
-	#autosave_timer.timeout.connect(_on_autosave_timer_timeout)
-	#autosave_timer.start()
-	#print("Autosave timer started with interval: %s seconds" % autosave_interval_seconds)
 	highlight_shader = load("res://shaders/highlight2.gdshader") #currently I think the highlight.gdshader is not used
 	camouflage_shader = load("res://shaders/camouflage_alpha.gdshader")
 	circle_shader = load("res://shaders/circle.gdshader")
@@ -50,20 +43,12 @@ func _ready():
 		highlight_shader = _create_fallback_shader()
 	
 
-	
-# Add these variables at the top with your other variables
-
-var last_window_size: Vector2i = Vector2i.ZERO
-var last_window_position: Vector2i = Vector2i.ZERO
-var resize_check_active: bool = true
-
-
 func _handle_window_change(size: Vector2i, position: Vector2i):
 	var screen_size = DisplayServer.screen_get_size()
 	var half_screen_width = screen_size.x / 2
 	
-	#print("Global: Window changed - Size: ", size, " | Position: ", position)
-	#print("Global: Screen: ", screen_size, " | Half-width: ", half_screen_width)
+	print("Global: Window changed - Size: ", size, " | Position: ", position)
+	print("Global: Screen: ", screen_size, " | Half-width: ", half_screen_width)
 	
 	# Check if window is at screen edge (snapped)
 	var at_left_edge = position.x < snap_threshold
@@ -98,8 +83,7 @@ func cleanup_all_materials():
 	print("Global: Cleaning up all shader materials")
 	for material in highlight_materials:
 		if material and is_instance_valid(material):
-			if material is ShaderMaterial:
-					material = null  # let GC handle it
+			material = null
 	highlight_materials.clear()
 
 func _create_fallback_shader() -> Shader:
@@ -136,36 +120,40 @@ var selected_form_index: int
 var current_form: String = "Normal" # Initialize with default value for the backing variable
 
 # Declare the signal
+# Signals
 signal current_form_changed(new_form_id: String)
+signal brightness_changed(new_brightness_value)
 
-# Public setter function that emits the signal
+# Form management functions
 func set_player_form(value: String):
 	if current_form != value:
 		current_form = value
 		current_form_changed.emit(current_form)
 		print("Global: Player form changed to: " + current_form)
 
-# Public getter function
 func get_player_form() -> String:
 	return current_form
-# --- END MODIFIED ---
 
-var health = 100
-var health_max = 100
-var health_min = 0
-var playerAlive :bool
+# Player Stats
+var health: int = 100
+var health_max: int = 100
+var health_min: int = 0
+var playerAlive: bool = true
 var playerDamageZone: Area2D
 var playerDamageAmount: int
 var playerHitbox: Area2D
+
+# Player Abilities
 var telekinesis_mode := false
 var teleporting := false
 var dashing := false
 var camouflage := false
 var time_freeze := false
 
-var near_save = false
-var saving = false
-var loading = false
+# Save/Load State
+var near_save := false
+var saving := false
+var loading := false
 
 var enemyADamageZone: Area2D
 var enemyADamageAmount: int
@@ -190,27 +178,29 @@ var dialog_timeline := ""
 var dialog_current_index := 0
 var dialogic_variables: Dictionary = {}
 
-var fullscreen_on = false
-var vsync_on = false
+# Graphics Settings
+var fullscreen_on := false
+var vsync_on := false
 var brightness: float = 1.0
-var pixel_smoothing: bool = false
+var pixel_smoothing := false
 var fps_limit: int = 60
-var master_vol = -10.0
-var bgm_vol = -10.0
-var sfx_vol = -10.0
-var voice_vol = -10.0
+var resolution_index: int = 2 # Default to 1280x720
 
+# Audio Settings
+var master_vol: float = -10.0
+var bgm_vol: float = -10.0
+var sfx_vol: float = -10.0
+var voice_vol: float = -10.0
 
-# Add to graphics variables
-
-var resolution_index: int = 2 # Default to 1280x720 (index 2)
+# Available display resolutions
 var base_resolution = Vector2(320, 180)
 var available_resolutions = [
-	Vector2i(640, 360),    # 0: Small
-	Vector2i(960, 540),    # 1: Half HD - THIS IS THE KEY! Use exact half
-	Vector2i(1280, 720),   # 2: HD
-	Vector2i(1920, 1080)   # 3: Full HD
+	Vector2i(640, 360),
+	Vector2i(960, 540),
+	Vector2i(1280, 720),
+	Vector2i(1920, 1080)
 ]
+
 
 
 var current_scene_path: String = "" 
@@ -221,7 +211,7 @@ var current_game_state_data: Dictionary = {}
 var cutscene_name: String = ""
 var cutscene_playback_position: float = 0.0
 
-signal brightness_changed(new_brightness_value)
+#signal brightness_changed(new_brightness_value)
 
 var player_position_before_dialog: Vector2 = Vector2.ZERO # Use Vector2 for position
 var scene_path_before_dialog: String = ""
@@ -229,9 +219,9 @@ var scene_path_before_dialog: String = ""
 
 var cutscene_finished1 = false
 
-var ignore_player_input_after_unpause: bool = false
-var unpause_cooldown_timer: float = 0.0
-const UNPAUSE_COOLDOWN_DURATION: float = 0.5  # 100ms cooldown
+#var ignore_player_input_after_unpause: bool = false
+#var unpause_cooldown_timer: float = 0.0
+#const UNPAUSE_COOLDOWN_DURATION: float = 0.5  # 100ms cooldown
 
 var global_time_scale: float = 1.0
 func slow_time():
@@ -421,91 +411,43 @@ func get_player_camera() -> Camera2D:
 		return player.get_node("CameraPivot/Camera2D")
 	return null
 
-# Add these variables to your Global.gd
-var map_screen: CanvasLayer = null
-var map_visible: bool = false
-
+# Map and Quest System
+#var quest_markers: Dictionary = {}
 var revealed_chunks: Dictionary = {}
-var player_has_quill: bool = false
+var player_has_quill := false
+var map_screen: CanvasLayer = null
+var map_visible := false
 
-# Simple map functions
-func toggle_map():
-	pass
-	#if map_screen == null:
-		# Load the map scene
-	#	map_screen = preload("res://scenes/world/map_screen.tscn").instantiate()
-	#	get_tree().root.add_child(map_screen)
-	
-	#map_visible = !map_visible
-	#map_screen.visible = map_visible
-
-# Simple function to change map texture
+# Map texture update function
 func set_map_texture(texture: Texture2D):
 	if map_screen and map_screen.has_method("update_map_texture"):
 		map_screen.update_map_texture(texture)
 		
 func _init():
-	# Set initial default values for settings here
-	fullscreen_on = false
+	# Initialize essential settings only
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-	brightness = 1.0
-	pixel_smoothing = false
-	fps_limit = 60
-	master_vol = 0.0
-	bgm_vol = -10.0
-	sfx_vol = -10.0
-	voice_vol = -10.0
-	
-	# Initialize profile data defaults
-	kills = 0
-	affinity = 0
-	player_status = "Neutral"
-	current_form = "Normal" # Initialize the backing variable
+	master_vol = 0.0 # Override default for master volume
 
 func _process(delta):
 	# Handle unpause cooldown timer
-	#print(int(delta * 1000), "ms")
 	if unpause_cooldown_timer > 0:
 		unpause_cooldown_timer -= delta
 		if unpause_cooldown_timer <= 0:
 			ignore_player_input_after_unpause = false
 			unpause_cooldown_timer = 0.0
-			print("=== GLOBAL: Input ENABLED (cooldown finished) ===")
-			
+			print("Global: Input enabled after cooldown")
+	
+	# Handle window resizing if not in fullscreen
 	if not resize_check_active or fullscreen_on:
 		return
 	
 	var current_size = DisplayServer.window_get_size()
 	var current_position = DisplayServer.window_get_position()
 	
-	# Only check if something actually changed
 	if current_size != last_window_size or current_position != last_window_position:
 		_handle_window_change(current_size, current_position)
 		last_window_size = current_size
 		last_window_position = current_position
-	#print(OS.get_data_dir())
-
-	if Input.is_action_just_pressed("debug1"):
-		killing = !killing
-		print("killing ", killing)
-	
-	if Input.is_action_just_pressed("debug3"):
-		print("timeline ", timeline)
-		print("magus_form ", magus_form)
-		print("cyber_form ", cyber_form)
-		print("ult_magus_form ", ult_magus_form)
-		print("ult_cyber_form ", ult_cyber_form)
-		print("affinity ", affinity)
-		print("kills ", kills)
-		print("player_status ", player_status)
-		print("route_status ", route_status)
-		print("alyra_dead ", alyra_dead)
-		print("gawr_dead ", gawr_dead)
-		print("nora_dead ", nora_dead)
-		print("replica_fini_dead ", replica_fini_dead)
-		print("valentina_dead ", valentina_dead)
-	# Continuous debug print - remove this after debugging
-	#print("Global input flag: ", ignore_player_input_after_unpause, " | Timer: ", unpause_cooldown_timer)
 	
 func start_unpause_cooldown():
 	ignore_player_input_after_unpause = true
@@ -584,23 +526,9 @@ func get_save_data() -> Dictionary:
 		"minigame_nora_completed": minigame_nora_completed,
 		"minigame_valentina_completed": minigame_valentina_completed
 
-
 		
 	}
-	print("Global: Gathering full save data.")
 	return data
-
-		#timeline
-		#magus_form
-		#cyber_form
-		#ult_magus_form
-		#ult_cyber_form
-		#route_status
-		#alyra_dead
-		#gawr_dead
-		#nora_dead
-		#replica_fini_dead
-		#valentina_dead
 		
 func apply_load_data(data: Dictionary):
 	current_scene_path = data.get("current_scene_path", "")
@@ -624,18 +552,16 @@ func apply_load_data(data: Dictionary):
 
 	
 	selected_form_index = data.get("selected_form_index", 0)
-	# This assignment will now correctly call the set_player_form setter, emitting the signal
-	set_player_form(data.get("current_form", "Normal")) 
+	set_player_form(data.get("current_form", "Normal"))
 	playerAlive = data.get("playerAlive", true)
 
-	
 	sub_quest = data.get("sub_quest", {})
 	active_quests = data.get("active_quests", [])
 	completed_quests = data.get("completed_quests", [])
 	
-	kills = data.get("kills", 0) # Load kills
-	affinity = data.get("affinity", 0) # Load affinity
-	player_status = data.get("player_status", "Neutral") # NEW: Load player status
+	kills = data.get("kills", 0)
+	affinity = data.get("affinity", 0)
+	player_status = data.get("player_status", "Neutral")
 		
 	timeline = data.get("timeline", 0)
 	magus_form = data.get("magus_form", false)
@@ -675,9 +601,7 @@ func apply_load_data(data: Dictionary):
 	
 	minigame_nora_completed = data.get("minigame_nora_completed", false)
 	minigame_valentina_completed = data.get("minigame_valentina_completed", false)
-	
-	
-	print("Global: All saved data applied successfully.")
+	print("Global: Save data loaded successfully.")
 
 func reset_to_defaults():
 	print("Global: Resetting essential game state to defaults.")
@@ -690,11 +614,13 @@ func reset_to_defaults():
 	play_intro_cutscene = false
 	selected_form_index = 0
 	playerAlive = true
+	# Reset player abilities
 	telekinesis_mode = false
 	teleporting = false
 	dashing = false
 	camouflage = false
 	time_freeze = false
+	# Reset settings to defaults
 	fullscreen_on = false
 	vsync_on = false
 	brightness = 1.0
@@ -702,8 +628,8 @@ func reset_to_defaults():
 	master_vol = -10.0
 	bgm_vol = -10.0
 	sfx_vol = -10.0
-	voice_vol = -10
-	resolution_index = 2 # Reset to default index
+	voice_vol = -10.0
+	resolution_index = 2
 	
 	kills = 0 # Reset kills
 	affinity = 0 # Reset affinity
@@ -760,10 +686,6 @@ func reset_to_defaults():
 	
 	minigame_nora_completed = false
 	minigame_valentina_completed = false
-
-	#if autosave_timer.is_running():
-	#	autosave_timer.stop()
-	#autosave_timer.start()
 
 # Helper functions for quest marker serialization
 func _serialize_quest_markers() -> Dictionary:
@@ -864,20 +786,9 @@ func _on_autosave_timer_timeout():
 func cleanup_all_shader_materials():
 	"""Global cleanup called during exit"""
 	print("Global: Cleaning up all shader materials")
-	
-	# Call emergency cleanup on player if it exists
 	if playerBody and is_instance_valid(playerBody):
 		if playerBody.has_method("emergency_cleanup_shaders"):
 			playerBody.emergency_cleanup_shaders()
-			
-#func _notification(what):
-#	if what == NOTIFICATION_SCENE_CHANGED:
-#		cleanup_materials()
-
-#func cleanup_materials():
-	# Force garbage collection
-#	RenderingServer.call_deferred("free_rids")
-#	OS.delay_msec(100) # Small delay
 
 # Add these to your existing variables section (around line 7-8)
 var persistent_data_path: String = "user://persistent_data.cfg"  # Changed from .dat to .cfg

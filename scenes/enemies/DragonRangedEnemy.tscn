@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://duuqngmhvpksa"]
+[gd_scene load_steps=14 format=3 uid="uid://beq5p0il5hmwp"]
 
-[ext_resource type="Script" path="res://scenes/enemies/ArachneEnemy.gd" id="1_816w7"]
-[ext_resource type="Texture2D" uid="uid://tnh7poh3clmp" path="res://assets_image/Characters/Enemies/arachne-Sheet.png" id="2_n6gi8"]
+[ext_resource type="Script" path="res://scenes/enemies/FlyingRangedEnemy.gd" id="1_881ex"]
+[ext_resource type="Texture2D" uid="uid://cqe2qmib8sqhs" path="res://assets_image/Characters/Enemies/Dragon-Sheet.png" id="2_gdr3t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 50)
@@ -23,7 +23,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_xjc00"]
 resource_name = "attack"
-length = 0.5
+length = 0.9
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -31,10 +31,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [16, 17, 18, 19, 20]
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -43,7 +43,7 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1.8),
+"times": PackedFloat32Array(2),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -53,7 +53,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_2r7oh"]
 resource_name = "death"
-length = 0.6
+length = 0.7
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -61,10 +61,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5]
+"values": [8, 9, 10, 11, 12, 13, 14]
 }
 
 [sub_resource type="Animation" id="Animation_evimy"]
@@ -80,12 +80,12 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [8, 9, 10, 11]
+"values": [16, 17, 18, 19]
 }
 
 [sub_resource type="Animation" id="Animation_h6kap"]
 resource_name = "idle"
-length = 0.6
+length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -94,15 +94,15 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [32, 33, 34, 35, 36, 37]
+"values": [32, 33, 34, 35]
 }
 
 [sub_resource type="Animation" id="Animation_4olnp"]
 resource_name = "run"
-length = 0.6
+length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -111,10 +111,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [24, 25, 26, 27, 28, 29]
+"values": [24, 25, 26, 27]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l2ty1"]
@@ -134,12 +134,12 @@ size = Vector2(80, 57.5)
 size = Vector2(64, 50)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4pq4r"]
-radius = 256.0
+radius = 136.059
 
-[node name="ArachneEnemy" type="CharacterBody2D" groups=["Enemies"]]
+[node name="FlyingRangedEnemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 5
 collision_mask = 9
-script = ExtResource("1_816w7")
+script = ExtResource("1_881ex")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
@@ -147,7 +147,7 @@ shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-3, -53)
-texture = ExtResource("2_n6gi8")
+texture = ExtResource("2_gdr3t")
 hframes = 8
 vframes = 5
 frame = 4
@@ -175,19 +175,11 @@ shape = SubResource("RectangleShape2D_a7b8b")
 [node name="RangeChase" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RangeChase"]
-position = Vector2(0, -16)
+position = Vector2(0, -20)
 shape = SubResource("CircleShape2D_4pq4r")
 
 [node name="ProjectileSpawn" type="Marker2D" parent="."]
 position = Vector2(-32, -24)
-
-[node name="WallRay" type="RayCast2D" parent="."]
-position = Vector2(-15, 0)
-target_position = Vector2(-20, 0)
-
-[node name="EdgeDetectionRay" type="RayCast2D" parent="."]
-position = Vector2(16, 8)
-target_position = Vector2(0, 20)
 
 [node name="EdgeRayLeft" type="RayCast2D" parent="."]
 position = Vector2(-16, 8)

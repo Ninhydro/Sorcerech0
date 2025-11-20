@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://duuqngmhvpksa"]
+[gd_scene load_steps=15 format=3 uid="uid://djf8vabhjgbv5"]
 
-[ext_resource type="Script" path="res://scenes/enemies/ArachneEnemy.gd" id="1_816w7"]
-[ext_resource type="Texture2D" uid="uid://tnh7poh3clmp" path="res://assets_image/Characters/Enemies/arachne-Sheet.png" id="2_n6gi8"]
+[ext_resource type="Script" path="res://scenes/enemies/ShieldRangedEnemy.gd" id="1_5vand"]
+[ext_resource type="Texture2D" uid="uid://dhe5l3jk6mtyk" path="res://assets_image/Characters/Enemies/Tank-Sheet.png" id="2_u4oo7"]
+[ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="3_ibars"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 50)
@@ -53,7 +54,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_2r7oh"]
 resource_name = "death"
-length = 0.6
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -61,10 +62,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5]
+"values": [0, 1, 2, 3, 4]
 }
 
 [sub_resource type="Animation" id="Animation_evimy"]
@@ -85,7 +86,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_h6kap"]
 resource_name = "idle"
-length = 0.6
+length = 0.5
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -94,15 +95,15 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
-"values": [32, 33, 34, 35, 36, 37]
+"values": [48, 49, 50, 51, 52]
 }
 
 [sub_resource type="Animation" id="Animation_4olnp"]
 resource_name = "run"
-length = 0.6
+length = 0.8
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -111,10 +112,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [24, 25, 26, 27, 28, 29]
+"values": [40, 41, 42, 43, 44, 45, 46, 47]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l2ty1"]
@@ -134,12 +135,12 @@ size = Vector2(80, 57.5)
 size = Vector2(64, 50)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4pq4r"]
-radius = 256.0
+radius = 136.059
 
-[node name="ArachneEnemy" type="CharacterBody2D" groups=["Enemies"]]
+[node name="ShieldRangedEnemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 5
 collision_mask = 9
-script = ExtResource("1_816w7")
+script = ExtResource("1_5vand")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
@@ -147,9 +148,9 @@ shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-3, -53)
-texture = ExtResource("2_n6gi8")
+texture = ExtResource("2_u4oo7")
 hframes = 8
-vframes = 5
+vframes = 6
 frame = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -175,19 +176,20 @@ shape = SubResource("RectangleShape2D_a7b8b")
 [node name="RangeChase" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RangeChase"]
-position = Vector2(0, -16)
+position = Vector2(0, -20)
 shape = SubResource("CircleShape2D_4pq4r")
 
 [node name="ProjectileSpawn" type="Marker2D" parent="."]
 position = Vector2(-32, -24)
 
-[node name="WallRay" type="RayCast2D" parent="."]
-position = Vector2(-15, 0)
-target_position = Vector2(-20, 0)
+[node name="ShieldSprite" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.392157)
+position = Vector2(0, -16)
+texture = ExtResource("3_ibars")
 
-[node name="EdgeDetectionRay" type="RayCast2D" parent="."]
-position = Vector2(16, 8)
-target_position = Vector2(0, 20)
+[node name="ShieldParticles" type="CPUParticles2D" parent="."]
+emitting = false
 
 [node name="EdgeRayLeft" type="RayCast2D" parent="."]
 position = Vector2(-16, 8)
