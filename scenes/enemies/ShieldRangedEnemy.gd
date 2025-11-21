@@ -146,39 +146,39 @@ func move(delta):
 	# Otherwise use normal movement
 	super.move(delta)
 
-func start_attack():
+#func start_attack():
 	# Can't attack while shield is active
-	if shield_active:
-		return
+#	if shield_active:
+#		return
 	
-	if can_attack and player and not dead and not taking_damage:
-		attack_target = player
-		is_dealing_damage = true
-		has_dealt_damage = false
-		can_attack = false
+#	if can_attack and player and not dead and not taking_damage:
+#		attack_target = player
+#		is_dealing_damage = true
+#		has_dealt_damage = false
+#		can_attack = false
 		
-		print("Shield ranged enemy shooting")
+#		print("Shield ranged enemy shooting")
 		
 		# Face the player when shooting
-		dir.x = sign(player.global_position.x - global_position.x)
+#		dir.x = sign(player.global_position.x - global_position.x)
 		
 		# Update projectile spawn position
-		if has_node("ProjectileSpawn"):
-			var projectile_spawn = $ProjectileSpawn
-			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+#		if has_node("ProjectileSpawn"):
+#			var projectile_spawn = $ProjectileSpawn
+#			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 		
 		# Wait for shoot animation
-		await get_tree().create_timer(0.4).timeout
+#		await get_tree().create_timer(0.4).timeout
 		
 		# Shoot projectile
-		shoot_projectile()
+#		shoot_projectile()
 		
 		# Finish attack animation
-		await get_tree().create_timer(0.3).timeout
-		is_dealing_damage = false
+#		await get_tree().create_timer(0.3).timeout
+#		is_dealing_damage = false
 		
 		# Start cooldown
-		attack_cooldown_timer.start(attack_cooldown)
+#		attack_cooldown_timer.start(attack_cooldown)
 
 func shoot_projectile():
 	if projectile_scene and player:
@@ -202,6 +202,8 @@ func handle_animation():
 		new_animation = "idle"  # Special idle animation when shield is active
 	elif is_dealing_damage:
 		new_animation = "attack"
+	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
+		new_animation = "idle"
 	else:
 		new_animation = "run"
 		if dir.x == -1:

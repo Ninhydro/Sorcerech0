@@ -850,34 +850,34 @@ position = Vector2(2918.27, -571.407)
 metadata/_edit_lock_ = true
 
 [node name="AndroidEnemy" parent="." instance=ExtResource("27_kd1pu")]
-position = Vector2(-485, 224)
+position = Vector2(-488, 240)
 
 [node name="BeastEnemy" parent="." instance=ExtResource("28_fkudv")]
-position = Vector2(-304, 216)
+position = Vector2(-314, 244)
 
 [node name="MagusEnemy" parent="." instance=ExtResource("29_n6ufa")]
-position = Vector2(-164, 220)
+position = Vector2(-137, 230)
 
 [node name="CyberEnemy" parent="." instance=ExtResource("30_fw0mc")]
 position = Vector2(103, 223)
 
 [node name="DragonEnemy" parent="." instance=ExtResource("31_2qy18")]
-position = Vector2(560, 203)
+position = Vector2(298, 157)
 
 [node name="DroneEnemy" parent="." instance=ExtResource("32_1maay")]
-position = Vector2(383, 183)
+position = Vector2(-346, -3)
 
 [node name="RobodogEnemy" parent="." instance=ExtResource("33_tn2y8")]
-position = Vector2(1061, 268)
+position = Vector2(456, 245)
 
 [node name="TrentEnemy" parent="." instance=ExtResource("34_r2ont")]
-position = Vector2(793, 283)
+position = Vector2(773, 273)
 
 [node name="TankEnemy" parent="." instance=ExtResource("35_kusgs")]
-position = Vector2(-724, 177)
+position = Vector2(-659, 181)
 
 [node name="ArachneEnemy" parent="." instance=ExtResource("36_8dkmd")]
-position = Vector2(-664, -20)
+position = Vector2(-835, 76)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

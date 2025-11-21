@@ -16,35 +16,35 @@ func _initialize_enemy():
 	  # Adjust as needed for your animation
 	use_edge_detection = true
 
-func start_attack():
-	if can_attack and player and not dead and not taking_damage:
-		attack_target = player
-		is_dealing_damage = true
-		has_dealt_damage = false
-		can_attack = false
+#func start_attack():
+#	if can_attack and player and not dead and not taking_damage:
+#		attack_target = player
+#		is_dealing_damage = true
+#		has_dealt_damage = false
+#		can_attack = false
 		
-		print("Ranged enemy shooting")
+#		print("Ranged enemy shooting")
 		
 		# Face the player when shooting
-		dir.x = sign(player.global_position.x - global_position.x)
+#		dir.x = sign(player.global_position.x - global_position.x)
 		
 		# Update projectile spawn position based on direction
-		if has_node("ProjectileSpawn"):
-			var projectile_spawn = $ProjectileSpawn
-			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+#		if has_node("ProjectileSpawn"):
+#			var projectile_spawn = $ProjectileSpawn
+#			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 		
 		# Wait for shoot animation
-		await get_tree().create_timer(0.3).timeout
+#		await get_tree().create_timer(0.3).timeout
 		
 		# Shoot projectile
-		shoot_projectile()
+#		shoot_projectile()
 		
 		# Finish attack animation
-		await get_tree().create_timer(0.2).timeout
-		is_dealing_damage = false
+#		await get_tree().create_timer(0.2).timeout
+#		is_dealing_damage = false
 		
 		# Start cooldown
-		attack_cooldown_timer.start(attack_cooldown)
+#		attack_cooldown_timer.start(attack_cooldown)
 
 func shoot_projectile():
 	if projectile_scene and player:
@@ -70,6 +70,8 @@ func handle_animation():
 		new_animation = "hurt"
 	elif is_dealing_damage:
 		new_animation = "attack"
+	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
+		new_animation = "idle"
 	else:
 		new_animation = "run"
 		# Update direction for sprite and projectile spawn

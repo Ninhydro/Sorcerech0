@@ -185,7 +185,7 @@ func turn_around_at_edge():
 	should_turn_around = false
 	edge_turn_cooldown = 1.0
 	
-	print(name, " turned around at edge! New direction: ", dir.x)
+	#print(name, " turned around at edge! New direction: ", dir.x)
 	
 	# Small pause after turning
 	var previous_velocity = velocity

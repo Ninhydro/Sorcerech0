@@ -171,6 +171,7 @@ func handle_animation():
 		# Play alert animation only once when first detecting player
 		new_animation = "alert"
 		is_alert_animation_playing = true
+		has_alerted = true
 	elif is_enemy_chase and has_alerted:
 		# After alert, use run animation for chasing
 		new_animation = "run"

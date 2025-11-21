@@ -91,36 +91,36 @@ func move(delta):
 		is_roaming = true
 		velocity.x = dir.x * speed
 
-func start_attack():
-	if can_attack and player and not dead and not taking_damage:
-		attack_target = player
-		is_dealing_damage = true
-		has_dealt_damage = false
-		can_attack = false
+#func start_attack():
+#	if can_attack and player and not dead and not taking_damage:
+#		attack_target = player
+#		is_dealing_damage = true
+#		has_dealt_damage = false
+#		can_attack = false
 		
-		print("Tracking slow ranged enemy shooting")
+#		print("Tracking slow ranged enemy shooting")
 		
 		# Ensure correct facing direction before shooting
-		if player:
-			dir.x = sign(player.global_position.x - global_position.x)
+#		if player:
+#			dir.x = sign(player.global_position.x - global_position.x)
 		
 		# Update projectile spawn position based on direction
-		if has_node("ProjectileSpawn"):
-			var projectile_spawn = $ProjectileSpawn
-			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+#		if has_node("ProjectileSpawn"):
+#			var projectile_spawn = $ProjectileSpawn
+#			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 		
 		# Wait for shoot animation
-		await get_tree().create_timer(0.5).timeout  # Slower wind-up
+#		await get_tree().create_timer(0.5).timeout  # Slower wind-up
 		
 		# Shoot predictive projectile
-		shoot_predictive_projectile()
+#		shoot_predictive_projectile()
 		
 		# Finish attack animation
-		await get_tree().create_timer(0.4).timeout
-		is_dealing_damage = false
+#		await get_tree().create_timer(0.4).timeout
+#		is_dealing_damage = false
 		
 		# Start cooldown
-		attack_cooldown_timer.start(attack_cooldown)
+#		attack_cooldown_timer.start(attack_cooldown)
 
 func shoot_predictive_projectile():
 	if projectile_scene and player:
@@ -162,6 +162,9 @@ func handle_animation():
 	elif is_enemy_chase and has_alerted:
 		# After alert, use run animation for chasing
 		new_animation = "run"
+	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
+		new_animation = "idle"
+		
 	elif is_roaming:
 		new_animation = "run"
 	else:
