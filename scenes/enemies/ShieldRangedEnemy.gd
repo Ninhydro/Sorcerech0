@@ -5,7 +5,7 @@ extends BaseEnemy
 @export var shoot_range := 200.0
 #@export var projectile_lifetime := 2.5
 
-@export var shield_health := 60
+@export var shield_health := 50
 @export var shield_active := false
 @export var shield_activate_delay := 0.3
 @export var shield_auto_disable_time := 10.0  # Time after which shield automatically disables

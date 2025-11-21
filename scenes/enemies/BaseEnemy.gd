@@ -9,7 +9,7 @@ var speed: float:
 		
 @export var attack_range := 60
 @export var enemy_damage := 10
-@export var attack_cooldown := 1.0
+@export var attack_cooldown := 2.0
 @export var health := 100
 @export var health_max := 100
 @export var knockback_force := 100.0
@@ -32,7 +32,7 @@ enum AttackType { MELEE, RANGED }
 
 @export var can_drop_health := true
 @export var health_drop_chance := 1
-@export var health_amount := 10
+var health_amount := 10
 @export var health_drop_scene: PackedScene = preload("res://scenes/objects/health_pickup.tscn")
 
 # State variables
@@ -70,6 +70,14 @@ var melee_attack_cooldown := false
 var should_turn_around := false
 var edge_turn_cooldown := 0.0
 
+var hit_stun_time := 0.3
+var hit_stun_timer: Timer
+var can_be_interrupted := true  # Can attacks be interrupted?
+
+var attack_delay_timer: Timer
+var can_start_attack := true
+var is_preparing_attack := false
+
 func _ready():
 	# Initialize attack cooldown timer
 	attack_cooldown_timer = Timer.new()
@@ -80,9 +88,26 @@ func _ready():
 	if use_edge_detection:
 		setup_edge_detection()
 	
+	hit_stun_timer = Timer.new()
+	hit_stun_timer.one_shot = true
+	add_child(hit_stun_timer)
+	hit_stun_timer.timeout.connect(_on_hit_stun_timeout)
+	
+	attack_delay_timer = Timer.new()
+	attack_delay_timer.one_shot = true
+	add_child(attack_delay_timer)
+	attack_delay_timer.timeout.connect(_on_attack_delay_timeout)
+	
 	# Initialize enemy-specific components
 	_initialize_enemy()
-
+	
+func _on_attack_delay_timeout():
+	can_start_attack = true
+	
+func _on_hit_stun_timeout():
+	taking_damage = false
+	can_attack = true
+	
 func setup_edge_detection():
 	if edge_ray_left and edge_ray_right:
 		edge_ray_left.enabled = true
@@ -122,7 +147,7 @@ func _process(delta):
 		edge_turn_cooldown -= delta
 	
 	# Handle edge detection
-	if use_edge_detection and not dead and not taking_damage and not is_dealing_damage:
+	if use_edge_detection and not dead and not taking_damage and not is_dealing_damage and not is_preparing_attack:
 		detect_edges()
 		
 	move(delta)
@@ -168,7 +193,7 @@ func turn_around_at_edge():
 	await get_tree().create_timer(0.3).timeout
 	
 	# Restore velocity in new direction if not in special state
-	if not (dead or taking_damage or is_dealing_damage):
+	if not (dead or taking_damage or is_dealing_damage or is_preparing_attack):
 		velocity.x = previous_velocity.x * -1
 		
 func move(delta):
@@ -182,7 +207,7 @@ func move(delta):
 		is_roaming = false
 		return
 		
-	if is_dealing_damage:
+	if is_dealing_damage or is_preparing_attack:  # ADDED is_preparing_attack here
 		velocity.x = 0
 		is_roaming = false
 		return
@@ -209,6 +234,17 @@ func handle_animation():
 		new_animation = "hurt"
 	elif is_dealing_damage:
 		new_animation = "attack"
+	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
+		new_animation = "idle"
+		# Face the player during preparation
+		if player:
+			dir.x = sign(player.global_position.x - global_position.x)
+			if dir.x == -1:
+				sprite.flip_h = true
+			elif dir.x == 1:
+				sprite.flip_h = false
+			if projectile_spawn:
+				projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 	else:
 		new_animation = "run"
 		if dir.x == -1:
@@ -256,34 +292,89 @@ func drop_health():
 	print(name, " dropped health pickup!")
 	
 func take_damage(damage):
+	if taking_damage:  # Prevent multiple hits during stun
+		return
 	health -= damage
 	taking_damage = true
+	
+	# Cancel attack preparation if hit during preparation
+	if is_preparing_attack:
+		is_preparing_attack = false
+		can_start_attack = true
+		print("Attack preparation interrupted by damage")
+	
+	if is_dealing_damage and can_be_interrupted:
+		is_dealing_damage = false
+		can_attack = false
+		print("Attack interrupted by damage")
+	
+	# Apply hit stun
+	hit_stun_timer.start(hit_stun_time / Global.global_time_scale)
+	
 	if health <= 0:
 		health = 0
 		dead = true
 
 func start_attack():
-	if can_attack and player and not dead and not taking_damage:
-		attack_target = player
-		is_dealing_damage = true
-		has_dealt_damage = false
-		can_attack = false
+	# Prevent multiple attack preparations
+	if not can_start_attack or is_preparing_attack or is_dealing_damage:
+		return
 		
-		print(name, " starting ", AttackType.keys()[attack_type], " attack")
-		
-		# Face the player when attacking
-		dir.x = sign(player.global_position.x - global_position.x)
-		
-		# Update projectile spawn position based on direction
-		if projectile_spawn:
-			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
-		
-		# Play attack animation
-		animation_player.play("attack")
-		
-		# Use unified attack coroutine
-		attack_coroutine()
+	if (can_attack and player and not dead and not taking_damage and 
+		hit_stun_timer.time_left <= 0 and not Global.camouflage):
+		var distance = global_position.distance_to(player.global_position)
+		if distance <= attack_range:
+			if player_can_be_targeted():
+				# Set preparing state
+				is_preparing_attack = true
+				can_start_attack = false
+				attack_delay_timer.start(0.5 / Global.global_time_scale)
+				
+				print(name, " preparing attack (1 second delay)")
+				
+				# Face the player during delay
+				dir.x = sign(player.global_position.x - global_position.x)
+				
+				# Wait for delay then execute attack
+				await attack_delay_timer.timeout
+				
+				# Clear preparing state
+				is_preparing_attack = false
+				
+				# Check conditions again after delay
+				if (can_attack and player and not dead and not taking_damage and 
+					hit_stun_timer.time_left <= 0 and not Global.camouflage and
+					global_position.distance_to(player.global_position) <= attack_range):
+					
+					_execute_attack_after_delay()
+				else:
+					print("Attack cancelled during delay")
+					can_start_attack = true
 
+func _execute_attack_after_delay():
+	attack_target = player
+	is_dealing_damage = true
+	has_dealt_damage = false
+	can_attack = false
+	
+	print(name, " executing attack after delay")
+	
+	if projectile_spawn:
+		projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
+	
+	animation_player.play("attack")
+	attack_coroutine()
+
+func player_can_be_targeted() -> bool:
+	if not player or not is_instance_valid(player):
+		return false
+	
+	# Check if player is in damageable state
+	if player.has_method("can_take_damage"):
+		return player.can_take_damage
+	
+	return true
+	
 func attack_coroutine():
 	# Wait for animation to actually start playing
 	await get_tree().process_frame

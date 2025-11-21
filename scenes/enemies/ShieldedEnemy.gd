@@ -1,6 +1,6 @@
 extends BaseEnemy
 
-@export var shield_health := 80
+@export var shield_health := 50
 @export var shield_active := false
 @export var shield_activate_delay := 0.3  # Delay before shield activates after first hit
 @export var shield_auto_disable_time := 10.0  # Time after which shield automatically disables
