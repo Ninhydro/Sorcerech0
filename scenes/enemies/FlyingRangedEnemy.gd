@@ -1,19 +1,21 @@
 extends BaseEnemy
 
-@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
-@export var projectile_speed := 200.0
+#@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
+#@export var projectile_speed := 200.0
 @export var shoot_range := 150.0
-@export var projectile_lifetime := 2.0
+#@export var projectile_lifetime := 2.0
 @export var flight_height := 100.0  # How high above ground to fly
 @export var hover_speed := 50.0     # Up/down hover movement speed
 
-@onready var projectile_spawn := $ProjectileSpawn
+#@onready var projectile_spawn := $ProjectileSpawn
 
 var initial_y: float
 var hover_direction := 1.0
 var hover_timer := 0.0
 
 func _initialize_enemy():
+	attack_windup_time = 0.3
+	attack_type = AttackType.RANGED
 	attack_range = shoot_range
 	gravity = 0  # Flying enemies ignore gravity
 	initial_y = global_position.y

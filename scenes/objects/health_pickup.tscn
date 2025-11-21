@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqionmsy23twr"]
+
+[ext_resource type="Script" path="res://scenes/objects/health_pickup.gd" id="1_gkluw"]
+[ext_resource type="Texture2D" uid="uid://dkmlqen31fr74" path="res://assets_image/Objects/collect_objects2.png" id="2_nhnf5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qbq5y"]
+size = Vector2(8, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jeilx"]
+size = Vector2(21, 21)
+
+[node name="HealthPickup" type="RigidBody2D"]
+collision_mask = 3
+script = ExtResource("1_gkluw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qbq5y")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2.38419e-07, 2.38419e-07)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_nhnf5")
+
+[node name="CollectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectionArea"]
+shape = SubResource("RectangleShape2D_jeilx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

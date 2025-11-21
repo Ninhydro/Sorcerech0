@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dvha5j3j34j8a" path="res://assets_image/Characters/Enemies/dryad-Sheet.png" id="2_vm42a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
-size = Vector2(32, 50)
+size = Vector2(32, 58)
 
 [sub_resource type="Animation" id="Animation_a6itw"]
 length = 0.001
@@ -19,6 +19,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_bemnk"]
+resource_name = "alert"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
 }
 
 [sub_resource type="Animation" id="Animation_xjc00"]
@@ -117,22 +133,6 @@ tracks/0/keys = {
 "values": [32, 33, 34, 35, 36, 37, 38, 39]
 }
 
-[sub_resource type="Animation" id="Animation_bemnk"]
-resource_name = "alert"
-length = 0.8
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l2ty1"]
 _data = {
 "RESET": SubResource("Animation_a6itw"),
@@ -145,21 +145,22 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ljdqk"]
-size = Vector2(80, 57.5)
+size = Vector2(80, 65.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a7b8b"]
-size = Vector2(64, 50)
+size = Vector2(64, 58)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4pq4r"]
 radius = 264.273
 
-[node name="TrackingRangedEnemy" type="CharacterBody2D" groups=["Enemies"]]
+[node name="TrentEnemy" type="CharacterBody2D" groups=["Enemies"]]
+scale = Vector2(0.7, 0.7)
 collision_layer = 5
 collision_mask = 9
 script = ExtResource("1_fdwcx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -15)
+position = Vector2(0, -19)
 shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -180,13 +181,13 @@ autostart = true
 [node name="Hitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(0, -19.25)
+position = Vector2(0, -23.25)
 shape = SubResource("RectangleShape2D_ljdqk")
 
 [node name="DealAttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DealAttackArea"]
-position = Vector2(0, -15)
+position = Vector2(0, -19)
 shape = SubResource("RectangleShape2D_a7b8b")
 
 [node name="RangeChase" type="Area2D" parent="."]

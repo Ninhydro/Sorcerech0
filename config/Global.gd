@@ -225,7 +225,7 @@ var cutscene_finished1 = false
 
 var global_time_scale: float = 1.0
 func slow_time():
-	global_time_scale = 0.3  # 30% normal speed
+	global_time_scale = 0.5  # 30% normal speed
 
 func normal_time():
 	global_time_scale = 1.0  # 100% normal speed

@@ -1,9 +1,9 @@
 extends BaseEnemy
 
-@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
-@export var projectile_speed := 180.0
+#@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
+#@export var projectile_speed := 180.0
 @export var shoot_range := 200.0
-@export var projectile_lifetime := 2.5
+#@export var projectile_lifetime := 2.5
 
 @export var shield_health := 60
 @export var shield_active := false
@@ -18,9 +18,11 @@ var last_hit_time := 0.0
 
 @onready var shield_sprite := $ShieldSprite
 #@onready var shield_animation_player := $ShieldAnimationPlayer
-@onready var projectile_spawn := $ProjectileSpawn
+#@onready var projectile_spawn := $ProjectileSpawn
 
 func _initialize_enemy():
+	attack_windup_time = 0.3
+	attack_type = AttackType.RANGED
 	current_shield_health = shield_health
 	attack_range = shoot_range
 	update_shield_visual()

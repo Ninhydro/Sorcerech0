@@ -1,19 +1,22 @@
 extends BaseEnemy
 
-@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
-@export var projectile_speed := 150.0
+#@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
+#@export var projectile_speed := 150.0
 @export var shoot_range := 180.0
-@export var projectile_lifetime := 3.0
+#@export var projectile_lifetime := 3.0
 @export var prediction_strength := 2.0  # Strong prediction for slow projectiles
 @export var turn_speed := 3.0
 
-@onready var projectile_spawn := $ProjectileSpawn
+#@onready var projectile_spawn := $ProjectileSpawn
 
 # ALERT SYSTEM
 var has_alerted := false
 var is_alert_animation_playing := false
 
 func _initialize_enemy():
+	attack_windup_time = 0.3
+	attack_type = AttackType.RANGED
+	
 	attack_range = shoot_range
 	
 	# Slow speed properties - NOT AFFECTED BY CAMOUFLAGE

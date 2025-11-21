@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cqe2qmib8sqhs" path="res://assets_image/Characters/Enemies/Dragon-Sheet.png" id="2_gdr3t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
-size = Vector2(32, 50)
+size = Vector2(32, 40)
 
 [sub_resource type="Animation" id="Animation_a6itw"]
 length = 0.001
@@ -128,7 +128,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ljdqk"]
-size = Vector2(80, 57.5)
+size = Vector2(80, 68)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a7b8b"]
 size = Vector2(64, 50)
@@ -136,13 +136,15 @@ size = Vector2(64, 50)
 [sub_resource type="CircleShape2D" id="CircleShape2D_4pq4r"]
 radius = 136.059
 
-[node name="FlyingRangedEnemy" type="CharacterBody2D" groups=["Enemies"]]
+[node name="DragonEnemy" type="CharacterBody2D" groups=["Enemies"]]
+scale = Vector2(0.8, 0.8)
 collision_layer = 5
 collision_mask = 9
 script = ExtResource("1_881ex")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -15)
+position = Vector2(0, -20)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -163,13 +165,15 @@ autostart = true
 [node name="Hitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(0, -19.25)
+position = Vector2(0, -14)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_ljdqk")
 
 [node name="DealAttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DealAttackArea"]
 position = Vector2(0, -15)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_a7b8b")
 
 [node name="RangeChase" type="Area2D" parent="."]

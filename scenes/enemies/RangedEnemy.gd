@@ -1,14 +1,19 @@
 extends BaseEnemy
 
-@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
-@export var projectile_speed := 200.0
+#@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
+#@export var projectile_speed := 200.0
 @export var shoot_range := 150.0
-@export var projectile_lifetime := 2.0
+#@export var projectile_lifetime := 2.0
 
-@onready var projectile_spawn := $ProjectileSpawn
+#@onready var projectile_spawn := $ProjectileSpawn
 
 func _initialize_enemy():
 	attack_range = shoot_range
+	attack_windup_time = 0.3
+	attack_type = AttackType.RANGED
+	
+	# Configure ranged-specific properties
+	  # Adjust as needed for your animation
 	use_edge_detection = true
 
 func start_attack():

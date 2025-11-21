@@ -1527,3 +1527,14 @@ func apply_screen_shake(strength: float):
 			var random_offset = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * strength
 			tween.tween_property(camera, "offset", original_offset + random_offset, 0.05)
 			tween.tween_property(camera, "offset", original_offset, 0.05)
+
+func heal(amount: int):
+	if Global.health < Global.health_max:
+		Global.health += amount
+		Global.health = min(Global.health, Global.health_max)
+		print("Player healed! Current health: ", Global.health)
+		
+		# Emit signal if you have health changed events
+		if health_changed:
+			health_changed.emit(Global.health, Global.health_max)
+			

@@ -1,14 +1,14 @@
 extends BaseEnemy
 
-@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
-@export var projectile_speed := 200.0
+#@export var projectile_scene: PackedScene = preload("res://scenes/enemies/Projectile_enemy.tscn")
+#@export var projectile_speed := 200.0
 @export var shoot_range := 150.0
-@export var projectile_lifetime := 2.0
+#@export var projectile_lifetime := 2.0
 
 # WALL SETTINGS - Set this in the Inspector!
 @export_enum("Left Wall", "Right Wall") var wall_side: int = 0  # 0 = Left, 1 = Right
 
-@onready var projectile_spawn := $ProjectileSpawn
+#@onready var projectile_spawn := $ProjectileSpawn
 @onready var wall_ray := $WallRay
 @onready var edge_detection_ray := $EdgeDetectionRay
 
@@ -36,6 +36,8 @@ func setup_wall_spider():
 	update_edge_detection_ray()
 
 func _initialize_enemy():
+	attack_windup_time = 0.3
+	attack_type = AttackType.RANGED
 	attack_range = shoot_range
 	base_speed = 35
 	enemy_damage = 12

@@ -849,35 +849,35 @@ metadata/_edit_lock_ = true
 position = Vector2(2918.27, -571.407)
 metadata/_edit_lock_ = true
 
-[node name="AndroidEnemy" parent="." instance=ExtResource("27_kd1pu")]
-position = Vector2(-488, 200)
+[node name="BaseEnemy" parent="." instance=ExtResource("27_kd1pu")]
+position = Vector2(-576, 184)
 
-[node name="BeastEnemy" parent="." instance=ExtResource("28_fkudv")]
-position = Vector2(-304, 216)
+[node name="BaseEnemy2" parent="." instance=ExtResource("28_fkudv")]
+position = Vector2(-344, 200)
 
-[node name="MagusEnemy" parent="." instance=ExtResource("29_n6ufa")]
-position = Vector2(-136, 232)
+[node name="RangedEnemy" parent="." instance=ExtResource("29_n6ufa")]
+position = Vector2(-168, 216)
 
-[node name="CyberEnemy" parent="." instance=ExtResource("30_fw0mc")]
-position = Vector2(108, 241)
+[node name="ShieldedEnemy" parent="." instance=ExtResource("30_fw0mc")]
+position = Vector2(136, 224)
 
-[node name="DragonEnemy" parent="." instance=ExtResource("31_2qy18")]
-position = Vector2(560, 203)
+[node name="FlyingRangedEnemy" parent="." instance=ExtResource("31_2qy18")]
+position = Vector2(376, 216)
 
-[node name="DroneEnemy" parent="." instance=ExtResource("32_1maay")]
-position = Vector2(383, 183)
+[node name="FlyingMeleeEnemy" parent="." instance=ExtResource("32_1maay")]
+position = Vector2(640, 232)
 
-[node name="RobodogEnemy" parent="." instance=ExtResource("33_tn2y8")]
-position = Vector2(1061, 268)
+[node name="TrackingEnemy" parent="." instance=ExtResource("33_tn2y8")]
+position = Vector2(896, 232)
 
-[node name="TrentEnemy" parent="." instance=ExtResource("34_r2ont")]
-position = Vector2(793, 283)
+[node name="TrackingRangedEnemy" parent="." instance=ExtResource("34_r2ont")]
+position = Vector2(1216, 232)
 
-[node name="TankEnemy" parent="." instance=ExtResource("35_kusgs")]
-position = Vector2(-751, 165)
+[node name="ShieldRangedEnemy" parent="." instance=ExtResource("35_kusgs")]
+position = Vector2(1520, 232)
 
 [node name="ArachneEnemy" parent="." instance=ExtResource("36_8dkmd")]
-position = Vector2(-664, -20)
+position = Vector2(1832, 240)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]
