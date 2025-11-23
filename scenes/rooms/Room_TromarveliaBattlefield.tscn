@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b3dq36l3txbp4"]
+[gd_scene load_steps=26 format=3 uid="uid://b3dq36l3txbp4"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_7rndt"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_her3h"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://beq5p0il5hmwp" path="res://scenes/enemies/DragonRangedEnemy.tscn" id="15_338f3"]
 [ext_resource type="PackedScene" uid="uid://duuqngmhvpksa" path="res://scenes/enemies/ArachneEnemy.tscn" id="16_5cnrh"]
 [ext_resource type="PackedScene" uid="uid://1rly63yl5k0j" path="res://scenes/enemies/TrentEnemy.tscn" id="17_u4k6a"]
+[ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="18_h3pxg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4en5y"]
 size = Vector2(1163, 1298)
@@ -663,3 +664,39 @@ position = Vector2(-2144, 1208)
 
 [node name="TrentEnemy3" parent="." instance=ExtResource("17_u4k6a")]
 position = Vector2(-144, 504)
+
+[node name="HealthPickup" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(-24, -128)
+
+[node name="HealthPickup2" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(-264, 224)
+
+[node name="HealthPickup3" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(312, 232)
+
+[node name="HealthPickup4" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(72, 624)
+
+[node name="HealthPickup5" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(-24, 864)
+
+[node name="HealthPickup6" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(-472, 1176)
+
+[node name="HealthPickup7" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(904, 1024)
+
+[node name="HealthPickup8" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(592, 1136)
+
+[node name="HealthPickup9" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(-1840, 1184)
+
+[node name="HealthPickup10" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(-1344, 1520)
+
+[node name="HealthPickup11" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(1856, 1176)
+
+[node name="HealthPickup12" parent="." instance=ExtResource("18_h3pxg")]
+position = Vector2(2432, 1568)

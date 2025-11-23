@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://be402c7tmtfjf"]
+[gd_scene load_steps=20 format=3 uid="uid://be402c7tmtfjf"]
 
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_f7n0r"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_h4b7r"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://djf8vabhjgbv5" path="res://scenes/enemies/TankEnemy.tscn" id="11_i75da"]
 [ext_resource type="PackedScene" uid="uid://qnxok2fklgci" path="res://scenes/enemies/DronesEnemy.tscn" id="12_nnaoj"]
 [ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="13_xhiif"]
+[ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="14_vqmha"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4sdei"]
 size = Vector2(1192, 584)
@@ -453,3 +454,12 @@ position = Vector2(417, -673)
 
 [node name="CyberEnemy" parent="." instance=ExtResource("13_xhiif")]
 position = Vector2(159, -556)
+
+[node name="HealthPickup" parent="." instance=ExtResource("14_vqmha")]
+position = Vector2(-260, -704)
+
+[node name="HealthPickup2" parent="." instance=ExtResource("14_vqmha")]
+position = Vector2(567, -416)
+
+[node name="HealthPickup3" parent="." instance=ExtResource("14_vqmha")]
+position = Vector2(-199, 51)

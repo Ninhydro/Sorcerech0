@@ -33,6 +33,7 @@ directories/dch_directory={
 }
 directories/dtl_directory={
 "Exactlyion_tower_lock": "res://dialogic/timeline/Exactlyion_tower_lock.dtl",
+"Test": "res://dialogic/timeline/Test.dtl",
 "timeline1": "res://dialogic/timeline/timeline1.dtl",
 "timeline10": "res://dialogic/timeline/timeline10.dtl",
 "timeline11": "res://dialogic/timeline/timeline11.dtl",

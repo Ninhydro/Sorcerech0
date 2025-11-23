@@ -30,6 +30,7 @@ var snap_threshold: int = 50
 
 func _ready():
 	load_persistent_data()
+	#reset_persistent()
 	Dialogic.connect("dialog_started", Callable(self, "_on_dialog_started"))
 	Dialogic.connect("dialog_ended", Callable(self, "_on_dialog_ended"))
 	highlight_shader = load("res://shaders/highlight2.gdshader") #currently I think the highlight.gdshader is not used
@@ -818,6 +819,10 @@ var persistent_microchips: int = 0
 var persistent_magic_stones: int = 0
 var persistent_video_tapes: int = 0
 
+var persistent_video_tape_1_collected: bool = false
+var persistent_video_tape_2_collected: bool = false
+var persistent_video_tape_3_collected: bool = false
+
 func save_persistent_data():
 	var config = ConfigFile.new()
 	
@@ -843,6 +848,10 @@ func save_persistent_data():
 	config.set_value("collections", "magic_stones", persistent_magic_stones)
 	config.set_value("collections", "video_tapes", persistent_video_tapes)
 	
+	config.set_value("achievements", "video_tape_1_collected", persistent_video_tape_1_collected)
+	config.set_value("achievements", "video_tape_2_collected", persistent_video_tape_2_collected)
+	config.set_value("achievements", "video_tape_3_collected", persistent_video_tape_3_collected)
+
 	config.set_value("metadata", "timestamp", Time.get_unix_time_from_system())
 	config.set_value("metadata", "version", "1.0")
 	
@@ -875,10 +884,14 @@ func load_persistent_data():
 		persistent_game_100_percent = config.get_value("achievements", "game_100_percent", false)
 		
 		
-		persistent_microchips = config.get_value("collections", "microchips_collected", 0)
-		persistent_magic_stones = config.get_value("collections", "magic_stones_collected", 0)
-		persistent_video_tapes = config.get_value("collections", "video_tapes_collected", 0)
-		
+		persistent_microchips = config.get_value("collections", "microchips", 0)
+		persistent_magic_stones = config.get_value("collections", "magic_stones", 0)
+		persistent_video_tapes = config.get_value("collections", "video_tapes", 0)
+
+		persistent_video_tape_1_collected = config.get_value("achievements", "video_tape_1_collected", false)
+		persistent_video_tape_2_collected = config.get_value("achievements", "video_tape_2_collected", false)
+		persistent_video_tape_3_collected = config.get_value("achievements", "video_tape_3_collected", false)
+
 		print("Persistent data loaded successfully")
 	else:
 		print("No persistent save file found, starting fresh")
@@ -903,9 +916,18 @@ func reset_persistent():
 
 
 # Persistent collections
+	# Collections
 	persistent_microchips = 0
 	persistent_magic_stones = 0
 	persistent_video_tapes = 0
+
+	# NEW: reset unique tape flags
+	persistent_video_tape_1_collected = false
+	persistent_video_tape_2_collected = false
+	persistent_video_tape_3_collected = false
+
+	print("Persistent data RESET for testing.")
+	save_persistent_data()
 	
 func check_collection_achievements():
 	# Define your total counts (change these to your actual totals)

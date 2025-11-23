@@ -6,8 +6,8 @@ extends CharacterBody2D
 @export var jump_force = 250.0   # Jump impulse force (vertical velocity for jump)
 var gravity  = 1000.0     # Gravity strength (pixels/sec^2)
 
-@export var allow_camouflage: bool = false
-@export var allow_time_freeze: bool = false
+#@export var allow_camouflage: bool = false
+#@export var allow_time_freeze: bool = false
 @export var telekinesis_enabled : bool = false
 #@export var current_magic_spot: MagusSpot = null
 @export var canon_enabled : bool = false # Flag to indicate if player is in cannon mode
@@ -164,6 +164,25 @@ var last_save_scene: String = ""
 var damage_cooldown := false
 var damage_cooldown_timer: Timer
 
+@export var use_health_as_mana: bool = false
+
+# Health costs per form (edit these numbers directly in the script)
+const ATTACK_HEALTH_COSTS := {
+	"Normal": 0,
+	"Magus": 5,
+	"Cyber": 5,
+	"UltimateMagus": 10,
+	"UltimateCyber": 15,
+}
+
+const SKILL_HEALTH_COSTS := {
+	"Normal": 0,
+	"Magus": 5,
+	"Cyber": 1,
+	"UltimateMagus": 5,
+	"UltimateCyber": 5,
+}
+
 # Method to disable player input
 func disable_input():
 	print("Player: Input disabled.")
@@ -181,6 +200,7 @@ func enable_input():
 
 
 func _ready():
+	#Global.reset_persistent()
 	jump_force = 250.0
 
 	normal_collision_mask = collision_mask & ~(1 << 1) # Remove layer 2 from mas
@@ -467,18 +487,25 @@ func _physics_process(delta):
 	
 			if Input.is_action_just_pressed("yes") and can_attack and not Global.is_dialog_open and not Global.near_save:
 				print("player press attack")
+				
+				# --- HP COST FOR ATTACK ---
+				if not _try_pay_health_for_attack():
+					print("Attack cancelled: not enough HP.")
+					return
+				# --- END HP COST ---
+
 				var current_form = get_current_form_id()
 				var attack_started = false
 				if current_form == "Cyber":
-					attack_cooldown_timer.start(2.0)
+					attack_cooldown_timer.start(1.0)
 					attack_started = true
 					not_busy = false
 				elif current_form == "Magus":
-					attack_cooldown_timer.start(2.0)
+					attack_cooldown_timer.start(1.0)
 					attack_started = true
 					not_busy = false
 				elif current_form == "UltimateCyber":
-					attack_cooldown_timer.start(5.0)
+					attack_cooldown_timer.start(1.0)
 					attack_started = true
 					not_busy = false
 				elif current_form == "UltimateMagus" and combo_timer_flag:
@@ -489,7 +516,7 @@ func _physics_process(delta):
 				
 				if current_state and current_state.has_method("perform_attack"):
 					current_state.perform_attack()
-		
+				
 				if combat_fsm:
 					combat_fsm.change_state(AttackState.new(self))
 
@@ -497,33 +524,37 @@ func _physics_process(delta):
 				
 				if attack_started:
 					can_attack = false
-					# Add your attack logic here (e.g., combat_fsm.change_state(AttackState.new(self)))
-
 			# Skill input (only if not dialog open)
 			if Input.is_action_just_pressed("no") and can_skill and not Global.is_dialog_open and not Global.ignore_player_input_after_unpause:
-				#print("=== PLAYER: 'no' pressed - Checking global flag: ", Global.ignore_player_input_after_unpause, " ===")
 				print("player press skill")
+				
+				# --- HP COST FOR SKILL ---
+				if not _try_pay_health_for_skill():
+					print("Skill cancelled: not enough HP.")
+					return
+				# --- END HP COST ---
+				
 				var current_form = get_current_form_id()
 				var skill_started = false
 				if current_form == "UltimateMagus" and not_busy: # Check for UltimateMagus first
-					skill_cooldown_timer.start(2.0)
+					skill_cooldown_timer.start(1.0)
 					skill_started = true
 					not_busy = false
-	
+
 				elif current_form == "Cyber":
 					skill_cooldown_timer.start(0.2)
 					skill_started = true
 					not_busy = false
 
 				elif current_form == "Magus" and not_busy:
-					skill_cooldown_timer.start(10.0)
+					skill_cooldown_timer.start(1.0)
 					skill_started = true
 					not_busy = false
 					if combat_fsm:
 						combat_fsm.change_state(SkillState.new(self))
 
-				elif current_form == "UltimateCyber" and not_busy: # Assuming this is different from "UltimateCyber"
-					skill_cooldown_timer.start(15.0)
+				elif current_form == "UltimateCyber" and not_busy:
+					skill_cooldown_timer.start(1.0)
 					skill_started = true
 					not_busy = false
 					if combat_fsm:
@@ -531,10 +562,6 @@ func _physics_process(delta):
 					
 				if current_state and current_state.has_method("perform_skill"):
 					current_state.perform_skill()
-					
-				
-				#if combat_fsm:
-				#	combat_fsm.change_state(SkillState.new(self))
 				
 				start_cooldown()
 				if skill_started:
@@ -686,7 +713,7 @@ func _physics_process(delta):
 					switch_state(unlocked_states[current_state_index])
 					combat_fsm.change_state(IdleState.new(self))
 					can_switch_form = false
-					form_cooldown_timer.start(3)
+					form_cooldown_timer.start(1)
 
 func start_cooldown():
 	print("Cooldown started...")
@@ -1537,4 +1564,56 @@ func heal(amount: int):
 		# Emit signal if you have health changed events
 		if health_changed:
 			health_changed.emit(Global.health, Global.health_max)
-			
+
+func _try_pay_health_generic(action: String) -> bool:
+	# --- GLOBAL HP LIMIT: below 20% -> no attack/skill at all ---
+	if Global.health_max > 0:
+		var health_ratio := float(Global.health) / float(Global.health_max)
+		if health_ratio <= 0.2:
+			print("Action blocked: HP below 20%. HP:", Global.health, "/", Global.health_max)
+			return false
+	# If health_max is 0 (weird), just allow to avoid division error
+
+	# If we are NOT using HP as mana, we still respect the 20% lock above,
+	# but we don't consume health.
+	if not use_health_as_mana:
+		return true
+
+	var form_id := get_current_form_id()
+
+	# Godot doesn't like the `?` operator in your version, so do it explicitly:
+	var cost_dict
+	if action == "attack":
+		cost_dict = ATTACK_HEALTH_COSTS
+	else:
+		cost_dict = SKILL_HEALTH_COSTS
+
+	var cost: int = cost_dict.get(form_id, 0)
+
+	if cost <= 0:
+		return true  # no cost for this form / action
+
+	# Decide if you allow self-kill or not.
+	# Here we keep at least 1 HP.
+	var min_hp_left := 1
+
+	if Global.health - cost < min_hp_left:
+		print("Not enough health for ", action, " in form ", form_id, ". HP: ", Global.health, " cost: ", cost)
+		return false
+
+	Global.health -= cost
+	print("Paid ", cost, " HP for ", action, " in form ", form_id, ". HP now: ", Global.health)
+
+	# Notify HUD
+	if health_changed:
+		health_changed.emit(Global.health, Global.health_max)
+
+	return true
+
+
+func _try_pay_health_for_attack() -> bool:
+	return _try_pay_health_generic("attack")
+
+
+func _try_pay_health_for_skill() -> bool:
+	return _try_pay_health_generic("skill")

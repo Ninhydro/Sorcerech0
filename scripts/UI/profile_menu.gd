@@ -51,6 +51,21 @@ var status_text_color_good : Color = Color.GREEN # Default to white, you can cha
 var status_text_color_magus : Color = Color.YELLOW # Default to white, you can change this in the Inspector
 var status_text_color_cyber : Color = Color.BLUE # Default to white, you can change this in the Inspector
 
+@export var item_icons: Dictionary = {
+	"Microchip": preload("res://assets_image/Objects/collect_objects7.png"),
+	"MagicStone": preload("res://assets_image/Objects/collect_objects6.png"),
+	"Tape_A": preload("res://assets_image/Objects/collect_objects8.png"),
+	"Tape_B": preload("res://assets_image/Objects/collect_objects9.png"),
+	"Tape_C": preload("res://assets_image/Objects/collect_objects10.png"),
+}
+
+@export var item_display_names: Dictionary = {
+	"Microchip": "Microchip",
+	"MagicStone": "Magic Stone",
+	"Tape_A": "Video Tape: Past",
+	"Tape_B": "Video Tape: Present",
+	"Tape_C": "Video Tape: Future",
+}
 
 
 func _ready():
@@ -129,41 +144,47 @@ func update_form_visuals(form_id: String):
 
 
 func _update_inventory_display(inventory_list: Array):
+	# Clear old slots
 	for child in inventory_grid.get_children():
 		child.queue_free()
 	
-	var test_inventory_list = inventory_list.duplicate()
-	#if not test_inventory_list.has("PH"):
-	#	test_inventory_list.append("PH")
-	#if not test_inventory_list.has("PH2"):
-	#	test_inventory_list.append("PH2")
-
-	for i in range(test_inventory_list.size()):
-		var item_id = test_inventory_list[i]
+	# 1) Build a dictionary: { item_id: count }
+	var counts: Dictionary = {}
+	for item_id in inventory_list:
+		if counts.has(item_id):
+			counts[item_id] += 1
+		else:
+			counts[item_id] = 1
+	
+	# Preserve order roughly by iterating original list and only
+	# using each id the first time we see it
+	var unique_ids: Array = []
+	for item_id in inventory_list:
+		if not unique_ids.has(item_id):
+			unique_ids.append(item_id)
+	
+	# 2) Create a slot per unique item
+	for item_id in unique_ids:
+		var count: int = counts.get(item_id, 1)
 		
-		# --- MODIFIED: Change item_slot to VBoxContainer for automatic vertical layout ---
 		var item_slot = VBoxContainer.new()
 		item_slot.set_custom_minimum_size(INVENTORY_SLOT_SIZE)
 		item_slot.mouse_filter = Control.MOUSE_FILTER_PASS
 		
-		# Apply a StyleBoxFlat to make the VBoxContainer look like a panel
 		var slot_style = StyleBoxFlat.new()
-		slot_style.bg_color = Color(0.15, 0.15, 0.15, 1.0) # Dark gray background for the slot
-		slot_style.border_width_left = 1 # Corrected: Individual border widths
+		slot_style.bg_color = Color(0.15, 0.15, 0.15, 1.0)
+		slot_style.border_width_left = 1
 		slot_style.border_width_right = 1
 		slot_style.border_width_top = 1
 		slot_style.border_width_bottom = 1
-		slot_style.border_color = Color(0.3, 0.3, 0.3, 1.0) # Border color
-		# --- MODIFIED: Use individual corner radius properties ---
+		slot_style.border_color = Color(0.3, 0.3, 0.3, 1.0)
 		slot_style.corner_radius_top_left = 4
 		slot_style.corner_radius_top_right = 4
 		slot_style.corner_radius_bottom_left = 4
 		slot_style.corner_radius_bottom_right = 4
-		# --- END MODIFIED ---
-		item_slot.add_theme_stylebox_override("panel", slot_style) # Apply to "panel" style type
+		item_slot.add_theme_stylebox_override("panel", slot_style)
 		
-		# Add padding inside the VBoxContainer
-		item_slot.add_theme_constant_override("separation", 0) # No default separation between children
+		item_slot.add_theme_constant_override("separation", 0)
 		item_slot.add_theme_constant_override("margin_left", 2)
 		item_slot.add_theme_constant_override("margin_right", 2)
 		item_slot.add_theme_constant_override("margin_top", 2)
@@ -171,63 +192,100 @@ func _update_inventory_display(inventory_list: Array):
 
 		inventory_grid.add_child(item_slot)
 
+		# --- ICON ---
 		var item_texture_rect = TextureRect.new()
 		item_texture_rect.set_custom_minimum_size(Vector2(24, 24))
 		item_texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		item_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		# Make image expand to fill most of the VBoxContainer's height
 		item_texture_rect.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		item_texture_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-		if item_id == "PH":
-			item_texture_rect.texture = preload("res://assets_image/placeholder/icon.svg")
-		elif item_id == "PH2":
-			item_texture_rect.texture = preload("res://assets_image/placeholder/icon.svg")
+		if item_icons.has(item_id) and item_icons[item_id] != null:
+			item_texture_rect.texture = item_icons[item_id]
 		else:
 			item_texture_rect.texture = preload("res://assets_image/placeholder/icon.svg")
+		
 		item_slot.add_child(item_texture_rect)
 
+		# --- COUNT BADGE ON TOP OF ICON (for stacked items) ---
+		# Only show for Microchip & MagicStone and only if count > 1
+		if (item_id == "Microchip" or item_id == "MagicStone") and count > 1:
+			var count_label = Label.new()
+			count_label.text = str(count)
+			
+			# Make it small and bold-ish
+			var default_font: Font = inventory_grid.get_theme_font("font")
+			if default_font:
+				var badge_theme = Theme.new()
+				badge_theme.set_font("font", "Label", default_font)
+				badge_theme.set_font_size("font_size", "Label", 8)
+				count_label.theme = badge_theme
+			
+			count_label.add_theme_color_override("font_color", Color.WHITE)
+			count_label.add_theme_color_override("font_outline_color", Color.BLACK)
+			count_label.add_theme_constant_override("outline_size", 2)
+			
+			# Overlay in bottom-right of the icon
+			item_texture_rect.add_child(count_label)
+			count_label.anchor_left = 1.0
+			count_label.anchor_top = 1.0
+			count_label.anchor_right = 1.0
+			count_label.anchor_bottom = 1.0
+			# Offsets relative to the bottom-right corner
+			count_label.offset_left = -12
+			count_label.offset_top = -10
+			count_label.offset_right = 0
+			count_label.offset_bottom = 0
+			count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			count_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+
+		# --- NAME LABEL UNDER ICON ---
+		var base_name: String
+		if item_display_names.has(item_id):
+			base_name = item_display_names[item_id]
+		else:
+			base_name = item_id
+
 		var item_label = Label.new()
-		item_label.text = item_id
+		item_label.text = base_name
 		item_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		item_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER # Center vertically within its own allocated space
+		item_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		item_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		item_label.clip_text = true
-		# Make label shrink to its content and stick to the bottom of VBoxContainer's remaining space
 		item_label.size_flags_vertical = Control.SIZE_SHRINK_END
-		item_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL # Expand horizontally to center text
+		item_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 		var item_font_size = 8
-		var default_font: Font = inventory_grid.get_theme_font("font")
-		if default_font:
+		var default_font2: Font = inventory_grid.get_theme_font("font")
+		if default_font2:
 			var item_font_theme = Theme.new()
-			item_font_theme.set_font("font", "Label", default_font)
+			item_font_theme.set_font("font", "Label", default_font2)
 			item_font_theme.set_font_size("font_size", "Label", item_font_size)
 			item_label.theme = item_font_theme
 		
 		item_slot.add_child(item_label)
 	
-	for i in range(test_inventory_list.size(), MAX_INVENTORY_SLOTS):
-		var empty_slot = VBoxContainer.new() # Also change empty slots to VBoxContainer
+	# 3) Fill remaining slots as empty
+	var used_slots := unique_ids.size()
+	for i in range(used_slots, MAX_INVENTORY_SLOTS):
+		var empty_slot = VBoxContainer.new()
 		empty_slot.set_custom_minimum_size(INVENTORY_SLOT_SIZE)
 		empty_slot.mouse_filter = Control.MOUSE_FILTER_PASS
-		# Apply the same style to empty slots for consistency
+		
 		var empty_slot_style = StyleBoxFlat.new()
-		empty_slot_style.bg_color = Color(0.1, 0.1, 0.1, 1.0) # Slightly darker for empty
-		empty_slot_style.border_width_left = 1 # Corrected: Individual border widths
+		empty_slot_style.bg_color = Color(0.1, 0.1, 0.1, 1.0)
+		empty_slot_style.border_width_left = 1
 		empty_slot_style.border_width_right = 1
 		empty_slot_style.border_width_top = 1
 		empty_slot_style.border_width_bottom = 1
 		empty_slot_style.border_color = Color(0.2, 0.2, 0.2, 1.0)
-		# --- MODIFIED: Use individual corner radius properties for empty slots ---
 		empty_slot_style.corner_radius_top_left = 4
 		empty_slot_style.corner_radius_top_right = 4
 		empty_slot_style.corner_radius_bottom_left = 4
 		empty_slot_style.corner_radius_bottom_right = 4
-		# --- END MODIFIED ---
 		empty_slot.add_theme_stylebox_override("panel", empty_slot_style)
+		
 		inventory_grid.add_child(empty_slot)
-
 
 func _update_affinity_display(affinity_value: int):
 	# Update the ProgressBar value

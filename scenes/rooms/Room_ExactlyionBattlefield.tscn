@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cnbcuo1v16c7"]
+[gd_scene load_steps=16 format=3 uid="uid://cnbcuo1v16c7"]
 
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_5carx"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_kfpxq"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://bn8oavaphsmkf" path="res://scenes/enemies/AndroidEnemy.tscn" id="10_85gkl"]
 [ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="11_gxyny"]
 [ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="12_g87bb"]
+[ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="13_ackiy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u82dg"]
 size = Vector2(2868, 1360)
@@ -369,3 +370,12 @@ position = Vector2(152, -584)
 
 [node name="CyberEnemy3" parent="." instance=ExtResource("11_gxyny")]
 position = Vector2(1240, -712)
+
+[node name="HealthPickup" parent="." instance=ExtResource("13_ackiy")]
+position = Vector2(1288, -160)
+
+[node name="HealthPickup2" parent="." instance=ExtResource("13_ackiy")]
+position = Vector2(296, -592)
+
+[node name="HealthPickup3" parent="." instance=ExtResource("13_ackiy")]
+position = Vector2(1504, -672)

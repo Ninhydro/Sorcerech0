@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dignl4ivlyijc"]
+[gd_scene load_steps=24 format=3 uid="uid://dignl4ivlyijc"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_HiddenTown.gd" id="1_25ggv"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_grdml"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://1rly63yl5k0j" path="res://scenes/enemies/TrentEnemy.tscn" id="17_yytu4"]
 [ext_resource type="PackedScene" uid="uid://djf8vabhjgbv5" path="res://scenes/enemies/TankEnemy.tscn" id="18_uxsph"]
 [ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="19_mhgjg"]
+[ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="20_3jn1s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0gaot"]
 size = Vector2(2656, 1064)
@@ -560,3 +561,27 @@ position = Vector2(1088, -616)
 
 [node name="ArachneEnemy4" parent="." instance=ExtResource("14_k0wi8")]
 position = Vector2(1936, -760)
+
+[node name="HealthPickup" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(432, -400)
+
+[node name="HealthPickup2" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(1136, -136)
+
+[node name="HealthPickup3" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(2272, -24)
+
+[node name="HealthPickup4" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(1936, -120)
+
+[node name="HealthPickup5" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(928, -328)
+
+[node name="HealthPickup6" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(1488, -632)
+
+[node name="HealthPickup7" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(936, -784)
+
+[node name="HealthPickup8" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(1528, -432)

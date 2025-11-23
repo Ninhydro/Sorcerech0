@@ -55,7 +55,7 @@ func _input(event):
 			show_map()
 			get_tree().paused = true
 		get_viewport().set_input_as_handled()
-
+	
 
 func show_map():
 	print("=== SHOW MAP DEBUG ===")

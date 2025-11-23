@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqionmsy23twr"]
+[gd_scene load_steps=5 format=3 uid="uid://b2gmv5cvy0lxk"]
 
-[ext_resource type="Script" path="res://scenes/objects/health_pickup.gd" id="1_gkluw"]
-[ext_resource type="Texture2D" uid="uid://dkmlqen31fr74" path="res://assets_image/Objects/collect_objects2.png" id="2_nhnf5"]
+[ext_resource type="Script" path="res://scenes/objects/MicrochipPickup.gd" id="1_m27g2"]
+[ext_resource type="Texture2D" uid="uid://ccrw3qy4xqidq" path="res://assets_image/Objects/collect_objects7.png" id="2_j1di5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qbq5y"]
 size = Vector2(8, 14)
@@ -11,7 +11,8 @@ size = Vector2(21, 21)
 
 [node name="MicrochipPickup" type="RigidBody2D"]
 collision_mask = 3
-script = ExtResource("1_gkluw")
+script = ExtResource("1_m27g2")
+chip_texture = ExtResource("2_j1di5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_qbq5y")
@@ -19,7 +20,7 @@ shape = SubResource("RectangleShape2D_qbq5y")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-2.38419e-07, 2.38419e-07)
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_nhnf5")
+texture = ExtResource("2_j1di5")
 
 [node name="CollectionArea" type="Area2D" parent="."]
 

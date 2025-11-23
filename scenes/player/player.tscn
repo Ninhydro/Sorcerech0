@@ -2139,6 +2139,7 @@ size = Vector2(13, 12)
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
 collision_mask = 103
 script = ExtResource("1_6nqbo")
+use_health_as_mana = true
 
 [node name="CameraPivot" type="Node2D" parent="Player"]
 

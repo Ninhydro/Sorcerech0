@@ -89,7 +89,7 @@ func _ready():
 		printerr("❌ World: player_spawn_point_junkyard not found or invalid! Check node path: $Room_AerendaleJunkyard/Marker2D")
 		return
 
-	var is_loaded_game = not Global.current_loaded_player_data.is_empty()
+	var is_loaded_game = not Global.current_loaded_player_data.is_empty() and not Global.play_intro_cutscene
 
 	# --- Cutscene / Game Start Logic ---
 	if not is_loaded_game: # This is a new game (or a scene change within a new game session)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dbo4t4k7ob3qg"]
+[gd_scene load_steps=24 format=3 uid="uid://dbo4t4k7ob3qg"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_2u37g"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_gdouu"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://b2tbmn1dan8yx" path="res://scenes/enemies/BeastEnemy.tscn" id="14_6yk5q"]
 [ext_resource type="PackedScene" uid="uid://1rly63yl5k0j" path="res://scenes/enemies/TrentEnemy.tscn" id="15_h8xae"]
 [ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="16_a6hdd"]
+[ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="17_mtnn4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t4ope"]
 size = Vector2(4395, 465)
@@ -1922,3 +1923,36 @@ position = Vector2(272, 759)
 
 [node name="BeastEnemy7" parent="." instance=ExtResource("14_6yk5q")]
 position = Vector2(-304, 751)
+
+[node name="HealthPickup" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(-2176, -561)
+
+[node name="HealthPickup2" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(-2328, -353)
+
+[node name="HealthPickup3" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(-1488, -353)
+
+[node name="HealthPickup4" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(-848, -417)
+
+[node name="HealthPickup5" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(1584, -385)
+
+[node name="HealthPickup6" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(2120, -481)
+
+[node name="HealthPickup7" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(-992, 583)
+
+[node name="HealthPickup8" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(0, 623)
+
+[node name="HealthPickup9" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(952, 527)
+
+[node name="HealthPickup10" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(2280, 599)
+
+[node name="HealthPickup11" parent="." instance=ExtResource("17_mtnn4")]
+position = Vector2(1344, 1127)
