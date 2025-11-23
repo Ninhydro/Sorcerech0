@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dignl4ivlyijc"]
+[gd_scene load_steps=23 format=3 uid="uid://dignl4ivlyijc"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_HiddenTown.gd" id="1_25ggv"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_grdml"]
@@ -11,6 +11,14 @@
 [ext_resource type="Texture2D" uid="uid://bkjde6nisre66" path="res://assets_image/Background/Aerendale_Capital/Aerendale_Capital_1-Sheet.png" id="8_3hpuu"]
 [ext_resource type="PackedScene" uid="uid://bs105i3gcljkr" path="res://scenes/world/SaveSpot.tscn" id="8_5i4no"]
 [ext_resource type="PackedScene" uid="uid://ds2wiv5ixrc7e" path="res://dialogic/cutscene/cutscene17_5.tscn" id="10_8d8am"]
+[ext_resource type="PackedScene" uid="uid://qnxok2fklgci" path="res://scenes/enemies/DronesEnemy.tscn" id="12_10u8g"]
+[ext_resource type="PackedScene" uid="uid://beq5p0il5hmwp" path="res://scenes/enemies/DragonRangedEnemy.tscn" id="13_qvvsh"]
+[ext_resource type="PackedScene" uid="uid://duuqngmhvpksa" path="res://scenes/enemies/ArachneEnemy.tscn" id="14_k0wi8"]
+[ext_resource type="PackedScene" uid="uid://bn8oavaphsmkf" path="res://scenes/enemies/AndroidEnemy.tscn" id="15_c6auo"]
+[ext_resource type="PackedScene" uid="uid://b2tbmn1dan8yx" path="res://scenes/enemies/BeastEnemy.tscn" id="16_rwauu"]
+[ext_resource type="PackedScene" uid="uid://1rly63yl5k0j" path="res://scenes/enemies/TrentEnemy.tscn" id="17_yytu4"]
+[ext_resource type="PackedScene" uid="uid://djf8vabhjgbv5" path="res://scenes/enemies/TankEnemy.tscn" id="18_uxsph"]
+[ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="19_mhgjg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0gaot"]
 size = Vector2(2656, 1064)
@@ -495,3 +503,60 @@ shape = SubResource("RectangleShape2D_1lsqq")
 
 [node name="cutscene17_5" parent="." instance=ExtResource("10_8d8am")]
 position = Vector2(-213, -17)
+
+[node name="DroneEnemy" parent="." instance=ExtResource("12_10u8g")]
+position = Vector2(2160, 16)
+
+[node name="DroneEnemy2" parent="." instance=ExtResource("12_10u8g")]
+position = Vector2(2432, 56)
+
+[node name="DragonEnemy" parent="." instance=ExtResource("13_qvvsh")]
+position = Vector2(240, -616)
+
+[node name="DragonEnemy2" parent="." instance=ExtResource("13_qvvsh")]
+position = Vector2(1856, -456)
+
+[node name="ArachneEnemy" parent="." instance=ExtResource("14_k0wi8")]
+position = Vector2(744, -120)
+
+[node name="ArachneEnemy2" parent="." instance=ExtResource("14_k0wi8")]
+position = Vector2(1304, -712)
+
+[node name="AndroidEnemy" parent="." instance=ExtResource("15_c6auo")]
+position = Vector2(2368, 168)
+
+[node name="BeastEnemy" parent="." instance=ExtResource("16_rwauu")]
+position = Vector2(1520, -320)
+
+[node name="TrentEnemy" parent="." instance=ExtResource("17_yytu4")]
+position = Vector2(1736, -312)
+
+[node name="TankEnemy" parent="." instance=ExtResource("18_uxsph")]
+position = Vector2(1656, -8)
+
+[node name="RobodogEnemy" parent="." instance=ExtResource("19_mhgjg")]
+position = Vector2(1632, -624)
+
+[node name="AndroidEnemy2" parent="." instance=ExtResource("15_c6auo")]
+position = Vector2(1744, -624)
+
+[node name="BeastEnemy2" parent="." instance=ExtResource("16_rwauu")]
+position = Vector2(536, -552)
+
+[node name="BeastEnemy3" parent="." instance=ExtResource("16_rwauu")]
+position = Vector2(928, -616)
+
+[node name="ArachneEnemy3" parent="." instance=ExtResource("14_k0wi8")]
+position = Vector2(1256, -144)
+
+[node name="DragonEnemy3" parent="." instance=ExtResource("13_qvvsh")]
+position = Vector2(336, -296)
+
+[node name="AndroidEnemy3" parent="." instance=ExtResource("15_c6auo")]
+position = Vector2(1624, -128)
+
+[node name="TrentEnemy2" parent="." instance=ExtResource("17_yytu4")]
+position = Vector2(1088, -616)
+
+[node name="ArachneEnemy4" parent="." instance=ExtResource("14_k0wi8")]
+position = Vector2(1936, -760)

@@ -20,8 +20,8 @@ func _initialize_enemy():
 	attack_range = shoot_range
 	
 	# Slow speed properties - NOT AFFECTED BY CAMOUFLAGE
-	base_speed = 20
-	enemy_damage = 18  # Higher damage to compensate for slow speed
+	base_speed = 15
+	enemy_damage = 10  # Higher damage to compensate for slow speed
 	health = 90
 	attack_cooldown = 2.5
 	

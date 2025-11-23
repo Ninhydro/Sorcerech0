@@ -10,6 +10,7 @@ class_name Rocket
 var target: Node2D = null          # The enemy the rocket is trying to hit
 var initial_direction_vector = Vector2.ZERO # The broad direction given at spawn
 var is_homing_active = false       # Flag to control homing behavior
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 func _ready():
 	body_entered.connect(_on_body_entered)
@@ -37,6 +38,7 @@ func _ready():
 
 func _physics_process(delta):
 	# Find target only if needed
+	animation_player.play("shooting")
 	if not is_instance_valid(target):
 		target = find_closest_enemy()
 
@@ -44,7 +46,8 @@ func _physics_process(delta):
 
 	if target and is_homing_active:
 		# If homing is active and there's a target, aim towards the target
-		var direction_to_target = (target.global_position - global_position).normalized()
+		var aim_point = target.global_position + Vector2(0, -10) 
+		var direction_to_target = (aim_point - global_position).normalized()
 		current_target_angle = direction_to_target.angle()
 	else: # Homing is not active OR no target found
 		# During the initial phase, or if no target ever appears, aim towards the initial_direction_vector

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dbo4t4k7ob3qg"]
+[gd_scene load_steps=23 format=3 uid="uid://dbo4t4k7ob3qg"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_2u37g"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_gdouu"]
@@ -12,6 +12,10 @@
 [ext_resource type="Texture2D" uid="uid://drcnusij8a3e1" path="res://assets_image/Background/Aerendale_battlefield/Aerendale-battlefield1-Sheet.png" id="8_jafq4"]
 [ext_resource type="PackedScene" uid="uid://c54rarboga6it" path="res://dialogic/cutscene/cutscene7_5.tscn" id="10_85oow"]
 [ext_resource type="PackedScene" uid="uid://bs105i3gcljkr" path="res://scenes/world/SaveSpot.tscn" id="11_pjwf6"]
+[ext_resource type="PackedScene" uid="uid://bn8oavaphsmkf" path="res://scenes/enemies/AndroidEnemy.tscn" id="13_nunrm"]
+[ext_resource type="PackedScene" uid="uid://b2tbmn1dan8yx" path="res://scenes/enemies/BeastEnemy.tscn" id="14_6yk5q"]
+[ext_resource type="PackedScene" uid="uid://1rly63yl5k0j" path="res://scenes/enemies/TrentEnemy.tscn" id="15_h8xae"]
+[ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="16_a6hdd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t4ope"]
 size = Vector2(4395, 465)
@@ -1879,3 +1883,42 @@ position = Vector2(2691, -256)
 
 [node name="SaveSpot" parent="." instance=ExtResource("11_pjwf6")]
 position = Vector2(-64, -281)
+
+[node name="AndroidEnemy" parent="." instance=ExtResource("13_nunrm")]
+position = Vector2(2144, -265)
+
+[node name="AndroidEnemy2" parent="." instance=ExtResource("13_nunrm")]
+position = Vector2(1160, -313)
+
+[node name="BeastEnemy" parent="." instance=ExtResource("14_6yk5q")]
+position = Vector2(-1176, -329)
+
+[node name="BeastEnemy2" parent="." instance=ExtResource("14_6yk5q")]
+position = Vector2(-2096, -265)
+
+[node name="BeastEnemy3" parent="." instance=ExtResource("14_6yk5q")]
+position = Vector2(-2160, -433)
+
+[node name="BeastEnemy4" parent="." instance=ExtResource("14_6yk5q")]
+position = Vector2(-1024, -257)
+
+[node name="AndroidEnemy3" parent="." instance=ExtResource("13_nunrm")]
+position = Vector2(1176, 607)
+
+[node name="BeastEnemy5" parent="." instance=ExtResource("14_6yk5q")]
+position = Vector2(-1160, 535)
+
+[node name="TrentEnemy" parent="." instance=ExtResource("15_h8xae")]
+position = Vector2(-1304, 639)
+
+[node name="BeastEnemy6" parent="." instance=ExtResource("14_6yk5q")]
+position = Vector2(2096, 727)
+
+[node name="RobodogEnemy" parent="." instance=ExtResource("16_a6hdd")]
+position = Vector2(984, -249)
+
+[node name="AndroidEnemy4" parent="." instance=ExtResource("13_nunrm")]
+position = Vector2(272, 759)
+
+[node name="BeastEnemy7" parent="." instance=ExtResource("14_6yk5q")]
+position = Vector2(-304, 751)

@@ -29,7 +29,7 @@ func _initialize_enemy():
 	
 	# Slow speed properties
 	base_speed = 25
-	enemy_damage = 12
+	enemy_damage = 10
 	health = 100
 	attack_cooldown = 2.0
 	use_edge_detection = true

@@ -21,7 +21,7 @@ func _initialize_enemy():
 	# Medium speed properties
 	base_speed = 40
 	attack_range = 50
-	enemy_damage = 15
+	enemy_damage = 10
 	health = 120
 	use_edge_detection = true
 

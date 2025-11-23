@@ -448,8 +448,15 @@ func deal_damage():
 func is_player_in_attack_range() -> bool:
 	if not player or not is_instance_valid(player):
 		return false
-	return global_position.distance_to(player.global_position) <= attack_range
 
+	# Separate horizontal and vertical checks so enemy doesn't hit from weird angles
+	var dx = abs(player.global_position.x - global_position.x)
+	var dy = abs(player.global_position.y - global_position.y)
+	print("dx: ", dx)
+	print("dy: ", dy)
+	# Horizontal reach = attack_range, vertical tolerance = 24 px (tweak as needed)
+	return dx <= attack_range and dy <= attack_range
+	
 func _on_attack_cooldown_timeout():
 	can_attack = true
 	

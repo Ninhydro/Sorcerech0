@@ -1,10 +1,14 @@
 extends BaseEnemy
 
-@export var prediction_strength := 1.5  # How far ahead to predict player movement
-@export var turn_speed := 5.0  # How quickly to turn toward target
+@export var prediction_strength := 1.5
+@export var turn_speed := 5.0
 @export var dash_speed_multiplier := 2.0
-@export var dash_duration := 0.3
+@export var dash_duration := 0.0
 @export var dash_cooldown := 2.0
+
+# NEW — cooldown flags (do nothing unless we use them later)
+var is_attack_cooldown := false
+var is_dash_cooldown := false
 
 var is_dashing := false
 var dash_timer := 0.0
@@ -14,20 +18,16 @@ var has_alerted := false
 var is_alert_animation_playing := false
 
 func _initialize_enemy():
-	# Fast speed properties - NOT AFFECTED BY CAMOUFLAGE
 	base_speed = 80
 	attack_range = 40
-	enemy_damage = 15
-	health = 80  # Less health for balance
+	enemy_damage = 10
+	health = 80
 	
-	# Initialize direction
 	dir = Vector2.RIGHT
 	use_edge_detection = true
-	# Tracking enemies ignore camouflage
 	print("Tracking enemy spawned - camouflage immune")
 
 func _process(delta):
-	# Override camouflage check - tracking enemies always chase
 	if $AnimationPlayer:
 		$AnimationPlayer.speed_scale = Global.global_time_scale
 		
@@ -37,23 +37,25 @@ func _process(delta):
 	
 	player = Global.playerBody
 	
-	# TRACKING ENEMIES IGNORE CAMOUFLAGE - always chase if player is alive
 	if Global.playerAlive and not Global.camouflage and range:
 		is_enemy_chase = true
 	else:
 		is_enemy_chase = false
-	
-	# Update dash timer
+
+	# dash cooldown
 	if dash_timer > 0:
 		dash_timer -= delta * Global.global_time_scale
-	
-	# Check for attacks - ignore camouflage
+		if dash_timer <= 0:
+			is_dash_cooldown = false   # NEW (cooldown end)
+
+	# ORIGINAL attack logic (unchanged)
 	if is_enemy_chase and player and can_attack and not Global.camouflage and not dead and not taking_damage:
 		var distance = global_position.distance_to(player.global_position)
-		if distance <= attack_range:
+
+		if distance <= attack_range and not is_attack_cooldown:
 			start_attack()
-		elif distance <= attack_range * 2 and dash_timer <= 0:
-			# Dash attack from further range
+
+		elif distance <= attack_range * 2 and dash_timer <= 0 and not is_dash_cooldown:
 			start_dash_attack()
 	
 	move(delta)
@@ -72,8 +74,12 @@ func move(delta):
 		return
 		
 	if is_dealing_damage or is_dashing:
-		# Only stop horizontal movement during attacks, keep vertical
 		velocity.x = 0
+		is_roaming = false
+		return
+
+	# NEW — during cooldown show idle, still allowed to walk
+	if is_attack_cooldown or is_dash_cooldown:
 		is_roaming = false
 		return
 		
@@ -81,18 +87,12 @@ func move(delta):
 		is_roaming = false
 		
 		if player:
-			# Get raw direction to player (no prediction for basic movement)
 			var raw_direction = (player.global_position - global_position).normalized()
 			
-			# Update direction based on player position
-			if abs(raw_direction.x) > 0.1:  # Only update if there's significant horizontal movement
+			if abs(raw_direction.x) > 0.1:
 				dir.x = sign(raw_direction.x)
 			
-			# Simple movement toward player
 			velocity.x = dir.x * speed
-			
-			# Debug output
-			#print("Player X: ", player.global_position.x, " Enemy X: ", global_position.x, " Direction: ", dir.x)
 	else:
 		is_roaming = true
 		velocity.x = dir.x * speed
@@ -105,52 +105,53 @@ func start_attack():
 		can_attack = false
 		
 		print("Tracking fast melee enemy attacking")
-		
-		# Ensure correct facing direction before attacking
+
 		if player:
 			dir.x = sign(player.global_position.x - global_position.x)
+
+		await get_tree().create_timer(0.2).timeout
 		
-		# Wait for attack animation
-		await get_tree().create_timer(0.2).timeout  # Faster attack
-		
-		# Deal damage
 		if attack_target and attack_target is Player and attack_target.can_take_damage and not attack_target.dead:
 			var knockback_dir = (attack_target.global_position - global_position).normalized()
 			Global.enemyAknockback = knockback_dir * knockback_force
 			attack_target.take_damage(enemy_damage)
 			print("Tracking melee enemy dealt damage: ", enemy_damage)
-		
-		# Finish attack animation
+
 		await get_tree().create_timer(0.15).timeout
 		is_dealing_damage = false
-		
-		# Start cooldown
-		attack_cooldown_timer.start(attack_cooldown * 0.7)  # Faster cooldown
+
+		# NEW — activate cooldown
+		is_attack_cooldown = true
+
+		attack_cooldown_timer.start(attack_cooldown * 0.7)
+
+func _on_attack_cooldown_timeout():
+	# NEW — this is called automatically by BaseEnemy timer
+	can_attack = true
+	is_attack_cooldown = false
 
 func start_dash_attack():
 	if not is_dashing and dash_timer <= 0 and player:
 		is_dashing = true
 		print("Tracking fast melee enemy dash attacking")
-		
-		# Face player before dashing
+
 		if player:
 			dir.x = sign(player.global_position.x - global_position.x)
-		
-		# Dash toward player
-		var dash_direction = Vector2(dir.x, 0)  # Only horizontal dash
+
+		var dash_direction = Vector2(dir.x, 0)
 		velocity = dash_direction * speed * dash_speed_multiplier
-		
-		# Dash duration
+
 		await get_tree().create_timer(dash_duration).timeout
-		
-		# Deal damage if close enough after dash
+
 		if player and global_position.distance_to(player.global_position) <= attack_range:
 			deal_dash_damage()
-		
-		# Reset
+
 		is_dashing = false
-		dash_timer = dash_cooldown
 		velocity.x = 0
+
+		# NEW — dash cooldown
+		is_dash_cooldown = true
+		dash_timer = dash_cooldown
 
 func deal_dash_damage():
 	if player and player is Player and player.can_take_damage and not player.dead:
@@ -158,6 +159,7 @@ func deal_dash_damage():
 		Global.enemyAknockback = knockback_dir * (knockback_force * 1.3)
 		player.take_damage(enemy_damage)
 		print("Tracking dash attack dealt damage: ", enemy_damage)
+
 func handle_animation():
 	var new_animation := ""
 	
@@ -167,20 +169,19 @@ func handle_animation():
 		new_animation = "hurt"
 	elif is_dealing_damage:
 		new_animation = "attack"
+	elif is_attack_cooldown or is_dash_cooldown:      # NEW — idle during cooldown
+		new_animation = "idle"
 	elif is_enemy_chase and not has_alerted:
-		# Play alert animation only once when first detecting player
 		new_animation = "alert"
 		is_alert_animation_playing = true
 		has_alerted = true
 	elif is_enemy_chase and has_alerted:
-		# After alert, use run animation for chasing
 		new_animation = "run"
 	elif is_roaming:
 		new_animation = "run"
 	else:
 		new_animation = "idle"
 	
-	# Update sprite direction
 	if dir.x < 0:
 		sprite.flip_h = true
 	elif dir.x > 0:

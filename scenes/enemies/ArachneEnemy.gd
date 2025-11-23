@@ -40,7 +40,7 @@ func _initialize_enemy():
 	attack_type = AttackType.RANGED
 	attack_range = shoot_range
 	base_speed = 35
-	enemy_damage = 12
+	enemy_damage = 10
 	health = 80
 	attack_cooldown = 1.8
 	gravity = 0
@@ -130,7 +130,7 @@ func move(delta):
 func turn_around():
 	# Reverse direction
 	dir.x *= -1
-	print("Wall Spider turned around! New direction: ", dir.x)
+	#print("Wall Spider turned around! New direction: ", dir.x)
 	
 	# Small pause after turning
 	velocity = Vector2.ZERO

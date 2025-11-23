@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cnbcuo1v16c7"]
+[gd_scene load_steps=15 format=3 uid="uid://cnbcuo1v16c7"]
 
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_5carx"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_kfpxq"]
@@ -9,6 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://bs105i3gcljkr" path="res://scenes/world/SaveSpot.tscn" id="6_fnpdx"]
 [ext_resource type="PackedScene" uid="uid://ctrmmi3uvo6na" path="res://scenes/enemies/spike_trap.tscn" id="8_fllu5"]
 [ext_resource type="PackedScene" uid="uid://d0y6einf5i6wp" path="res://scenes/enemies/canon_laser_enemy.tscn" id="9_i11hh"]
+[ext_resource type="PackedScene" uid="uid://bn8oavaphsmkf" path="res://scenes/enemies/AndroidEnemy.tscn" id="10_85gkl"]
+[ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="11_gxyny"]
+[ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="12_g87bb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u82dg"]
 size = Vector2(2868, 1360)
@@ -345,3 +348,24 @@ use_exactlyion_style = true
 z_index = -1
 position = Vector2(424, -80)
 scale = Vector2(1, 1)
+
+[node name="AndroidEnemy" parent="." instance=ExtResource("10_85gkl")]
+position = Vector2(1408, -200)
+
+[node name="CyberEnemy" parent="." instance=ExtResource("11_gxyny")]
+position = Vector2(1088, -104)
+
+[node name="RobodogEnemy" parent="." instance=ExtResource("12_g87bb")]
+position = Vector2(1120, -712)
+
+[node name="AndroidEnemy2" parent="." instance=ExtResource("10_85gkl")]
+position = Vector2(1792, -728)
+
+[node name="CyberEnemy2" parent="." instance=ExtResource("11_gxyny")]
+position = Vector2(464, -584)
+
+[node name="AndroidEnemy4" parent="." instance=ExtResource("10_85gkl")]
+position = Vector2(152, -584)
+
+[node name="CyberEnemy3" parent="." instance=ExtResource("11_gxyny")]
+position = Vector2(1240, -712)
