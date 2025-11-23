@@ -244,10 +244,10 @@ func _ready():
 	
 	set_collision_mask_value(2, true)
 	
-	unlock_state("Magus")
-	unlock_state("UltimateMagus")
-	unlock_state("Cyber")
-	unlock_state("UltimateCyber")
+	#unlock_state("Magus")
+	#unlock_state("UltimateMagus")
+	#unlock_state("Cyber")
+	#dunlock_state("UltimateCyber")
 	
 	damage_cooldown_timer = Timer.new()
 	damage_cooldown_timer.one_shot = true

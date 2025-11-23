@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://be402c7tmtfjf"]
+[gd_scene load_steps=21 format=3 uid="uid://be402c7tmtfjf"]
 
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_f7n0r"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_h4b7r"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://qnxok2fklgci" path="res://scenes/enemies/DronesEnemy.tscn" id="12_nnaoj"]
 [ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="13_xhiif"]
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="14_vqmha"]
+[ext_resource type="PackedScene" uid="uid://b2gmv5cvy0lxk" path="res://scenes/objects/MicrochipPickup.tscn" id="15_6ax42"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4sdei"]
 size = Vector2(1192, 584)
@@ -126,6 +127,12 @@ position = Vector2(-544, 0)
 
 [node name="TObject2" parent="." instance=ExtResource("3_5casu")]
 position = Vector2(-400, 320)
+
+[node name="TObject3" parent="." instance=ExtResource("3_5casu")]
+position = Vector2(-1523, -941)
+
+[node name="TObject4" parent="." instance=ExtResource("3_5casu")]
+position = Vector2(-1533, -1196)
 
 [node name="GrapplePoint" parent="." instance=ExtResource("4_thmof")]
 position = Vector2(-248, -16)
@@ -463,3 +470,11 @@ position = Vector2(567, -416)
 
 [node name="HealthPickup3" parent="." instance=ExtResource("14_vqmha")]
 position = Vector2(-199, 51)
+
+[node name="MicrochipPickup" parent="." instance=ExtResource("15_6ax42")]
+position = Vector2(-408, -360)
+pickup_id = "MC_008"
+
+[node name="MicrochipPickup2" parent="." instance=ExtResource("15_6ax42")]
+position = Vector2(-1212, -1185)
+pickup_id = "MC_009"

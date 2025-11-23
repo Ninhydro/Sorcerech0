@@ -823,6 +823,9 @@ var persistent_video_tape_1_collected: bool = false
 var persistent_video_tape_2_collected: bool = false
 var persistent_video_tape_3_collected: bool = false
 
+var persistent_microchip_ids: Array = []
+var persistent_magic_stone_ids: Array = []
+
 func save_persistent_data():
 	var config = ConfigFile.new()
 	
@@ -851,9 +854,13 @@ func save_persistent_data():
 	config.set_value("achievements", "video_tape_1_collected", persistent_video_tape_1_collected)
 	config.set_value("achievements", "video_tape_2_collected", persistent_video_tape_2_collected)
 	config.set_value("achievements", "video_tape_3_collected", persistent_video_tape_3_collected)
+	
+	config.set_value("collections", "microchip_ids", persistent_microchip_ids)
+	config.set_value("collections", "magic_stone_ids", persistent_magic_stone_ids)
 
 	config.set_value("metadata", "timestamp", Time.get_unix_time_from_system())
 	config.set_value("metadata", "version", "1.0")
+	
 	
 	var error = config.save(persistent_data_path)
 	if error == OK:
@@ -891,6 +898,9 @@ func load_persistent_data():
 		persistent_video_tape_1_collected = config.get_value("achievements", "video_tape_1_collected", false)
 		persistent_video_tape_2_collected = config.get_value("achievements", "video_tape_2_collected", false)
 		persistent_video_tape_3_collected = config.get_value("achievements", "video_tape_3_collected", false)
+		
+		persistent_microchip_ids = config.get_value("collections", "microchip_ids", [])
+		persistent_magic_stone_ids = config.get_value("collections", "magic_stone_ids", [])
 
 		print("Persistent data loaded successfully")
 	else:
@@ -925,6 +935,9 @@ func reset_persistent():
 	persistent_video_tape_1_collected = false
 	persistent_video_tape_2_collected = false
 	persistent_video_tape_3_collected = false
+	
+	persistent_microchip_ids = []
+	persistent_magic_stone_ids = []
 
 	print("Persistent data RESET for testing.")
 	save_persistent_data()

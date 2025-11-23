@@ -565,6 +565,12 @@ position = Vector2(1936, -760)
 [node name="HealthPickup" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(432, -400)
 
+[node name="HealthPickup9" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(144, -560)
+
+[node name="HealthPickup10" parent="." instance=ExtResource("20_3jn1s")]
+position = Vector2(1808, -792)
+
 [node name="HealthPickup2" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(1136, -136)
 

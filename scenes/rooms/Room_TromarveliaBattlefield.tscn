@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b3dq36l3txbp4"]
+[gd_scene load_steps=28 format=3 uid="uid://b3dq36l3txbp4"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_7rndt"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_her3h"]
@@ -18,6 +18,8 @@
 [ext_resource type="PackedScene" uid="uid://duuqngmhvpksa" path="res://scenes/enemies/ArachneEnemy.tscn" id="16_5cnrh"]
 [ext_resource type="PackedScene" uid="uid://1rly63yl5k0j" path="res://scenes/enemies/TrentEnemy.tscn" id="17_u4k6a"]
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="18_h3pxg"]
+[ext_resource type="PackedScene" uid="uid://krbnmqo4s6nb" path="res://scenes/objects/TObject.tscn" id="19_newq3"]
+[ext_resource type="PackedScene" uid="uid://ctc3cbhtbq6hf" path="res://scenes/objects/MagicStonePickup.tscn" id="20_rrqef"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4en5y"]
 size = Vector2(1163, 1298)
@@ -700,3 +702,25 @@ position = Vector2(1856, 1176)
 
 [node name="HealthPickup12" parent="." instance=ExtResource("18_h3pxg")]
 position = Vector2(2432, 1568)
+
+[node name="TObject" parent="." instance=ExtResource("19_newq3")]
+position = Vector2(3512, 1328)
+
+[node name="TObject2" parent="." instance=ExtResource("19_newq3")]
+position = Vector2(3552, 1128)
+
+[node name="MagicStonePickup" parent="." instance=ExtResource("20_rrqef")]
+position = Vector2(808, 352)
+pickup_id = "MS_006"
+
+[node name="MagicStonePickup2" parent="." instance=ExtResource("20_rrqef")]
+position = Vector2(-1040, 712)
+pickup_id = "MS_007"
+
+[node name="MagicStonePickup3" parent="." instance=ExtResource("20_rrqef")]
+position = Vector2(3288, 1320)
+pickup_id = "MS_008"
+
+[node name="MagicStonePickup4" parent="." instance=ExtResource("20_rrqef")]
+position = Vector2(1472, 1320)
+pickup_id = "MS_009"

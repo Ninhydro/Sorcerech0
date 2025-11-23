@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://d31x3lq4tpd8s"]
+[gd_scene load_steps=33 format=3 uid="uid://d31x3lq4tpd8s"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_MagusTown.gd" id="1_imj52"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_0kg3k"]
@@ -23,6 +23,8 @@
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="18_0n15f"]
 [ext_resource type="PackedScene" uid="uid://1rly63yl5k0j" path="res://scenes/enemies/TrentEnemy.tscn" id="22_irdft"]
 [ext_resource type="PackedScene" uid="uid://b2tbmn1dan8yx" path="res://scenes/enemies/BeastEnemy.tscn" id="23_2txyu"]
+[ext_resource type="PackedScene" uid="uid://c3fg0v3ccw12x" path="res://scenes/objects/VideoTapePickup.tscn" id="24_gopsl"]
+[ext_resource type="Texture2D" uid="uid://d3kfgqo6x00hi" path="res://assets_image/Objects/collect_objects10.png" id="25_1lvi8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wlrbn"]
 size = Vector2(3432, 638.5)
@@ -526,6 +528,12 @@ position = Vector2(-1926, -560)
 
 [node name="BeastEnemy4" parent="." instance=ExtResource("23_2txyu")]
 position = Vector2(-1440, -543)
+
+[node name="VideoTapePickup" parent="." instance=ExtResource("24_gopsl")]
+position = Vector2(-962, -947)
+tape_slot = "Tape3"
+inventory_id = "Tape_C"
+tape_texture = ExtResource("25_1lvi8")
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]

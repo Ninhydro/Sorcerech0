@@ -1,6 +1,7 @@
 # res://scripts/items/MagicStonePickup.gd
 extends RigidBody2D
 
+@export var pickup_id: String = "MS_001"
 @export var bounce_force := 100.0
 @export var inventory_id := "MagicStone"
 @export var float_height := 5.0
@@ -9,9 +10,14 @@ extends RigidBody2D
 @export var stone_texture: Texture2D = preload("res://assets_image/Objects/collect_objects6.png")
 
 var initial_y: float
+var time := 0.0
 var has_settled := false
 
 func _ready():
+	if Global.persistent_magic_stone_ids.has(pickup_id):
+		print("MagicStonePickup: already collected (", pickup_id, "), despawning.")
+		queue_free()
+		return
 	gravity_scale = 1.0
 	linear_damp = 0.5
 	can_sleep = true
@@ -28,6 +34,12 @@ func _ready():
 
 	initial_y = global_position.y
 
+func _process(delta):
+	if has_settled:
+		time += delta
+		global_position.y = initial_y + sin(time * float_speed) * float_height
+
+
 func _integrate_forces(state):
 	if state.linear_velocity.length() < 5.0 and not has_settled:
 		has_settled = true
@@ -43,6 +55,10 @@ func start_floating_animation():
 func _on_body_entered(body):
 	if not body.is_in_group("player"):
 		return
+	
+	if not Global.persistent_magic_stone_ids.has(pickup_id):
+		Global.persistent_magic_stone_ids.append(pickup_id)
+
 
 	Global.persistent_magic_stones += 1
 	Global.check_collection_achievements()

@@ -15,8 +15,26 @@ var time := 0.0
 var has_settled := false
 
 func _ready():
-	print("VideoTapePickup _ready():", name, "slot =", tape_slot, "inv_id =", inventory_id, " at ", global_position)
-
+	#print("VideoTapePickup _ready():", name, "slot =", tape_slot, "inv_id =", inventory_id, " at ", global_position)
+	
+	# If this tape was already collected in any previous session, don't spawn it
+	match tape_slot:
+		"Tape1":
+			if Global.persistent_video_tape_1_collected:
+				print("VideoTapePickup: Tape1 already collected previously, despawning.")
+				queue_free()
+				return
+		"Tape2":
+			if Global.persistent_video_tape_2_collected:
+				print("VideoTapePickup: Tape2 already collected previously, despawning.")
+				queue_free()
+				return
+		"Tape3":
+			if Global.persistent_video_tape_3_collected:
+				print("VideoTapePickup: Tape3 already collected previously, despawning.")
+				queue_free()
+				return
+				
 	# Physics setup
 	gravity_scale = 1.0
 	linear_damp = 0.5
@@ -29,9 +47,9 @@ func _ready():
 	if has_node("CollectionArea"):
 		var area := $CollectionArea
 		area.body_entered.connect(_on_body_entered)
-		print("VideoTapePickup: Connected body_entered on", area.name, 
-			" | layer =", area.collision_layer, 
-			" | mask =", area.collision_mask)
+		#print("VideoTapePickup: Connected body_entered on", area.name, 
+		#	" | layer =", area.collision_layer, 
+		#	" | mask =", area.collision_mask)
 	else:
 		push_error("VideoTapePickup: Missing CollectionArea child!")
 
@@ -53,13 +71,13 @@ func _integrate_forces(state) -> void:
 		initial_y = global_position.y
 
 func _on_body_entered(body: Node2D) -> void:
-	print("VideoTapePickup: body_entered by:", body.name, 
-		" class:", body.get_class(), 
-		" groups:", body.get_groups())
+	#print("VideoTapePickup: body_entered by:", body.name, 
+	#	" class:", body.get_class(), 
+	#	" groups:", body.get_groups())
 
 	# Be generous about detecting the player
 	if not body.is_in_group("player"):
-		print("VideoTapePickup: Ignored, not player.")
+		#print("VideoTapePickup: Ignored, not player.")
 		return
 	#var is_player := body is Player or body.is_in_group("player")
 	#if not is_player:

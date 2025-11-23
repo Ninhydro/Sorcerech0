@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cnbcuo1v16c7"]
+[gd_scene load_steps=17 format=3 uid="uid://cnbcuo1v16c7"]
 
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_5carx"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_kfpxq"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="11_gxyny"]
 [ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="12_g87bb"]
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="13_ackiy"]
+[ext_resource type="PackedScene" uid="uid://b2gmv5cvy0lxk" path="res://scenes/objects/MicrochipPickup.tscn" id="14_webm3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u82dg"]
 size = Vector2(2868, 1360)
@@ -366,7 +367,7 @@ position = Vector2(1792, -728)
 position = Vector2(464, -584)
 
 [node name="AndroidEnemy4" parent="." instance=ExtResource("10_85gkl")]
-position = Vector2(152, -584)
+position = Vector2(192, -584)
 
 [node name="CyberEnemy3" parent="." instance=ExtResource("11_gxyny")]
 position = Vector2(1240, -712)
@@ -379,3 +380,14 @@ position = Vector2(296, -592)
 
 [node name="HealthPickup3" parent="." instance=ExtResource("13_ackiy")]
 position = Vector2(1504, -672)
+
+[node name="HealthPickup4" parent="." instance=ExtResource("13_ackiy")]
+position = Vector2(880, -720)
+
+[node name="MicrochipPickup" parent="." instance=ExtResource("14_webm3")]
+position = Vector2(-24, -184)
+pickup_id = "MC_006"
+
+[node name="MicrochipPickup2" parent="." instance=ExtResource("14_webm3")]
+position = Vector2(112, -592)
+pickup_id = "MC_007"

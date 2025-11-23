@@ -1,6 +1,7 @@
 # res://scripts/items/MicrochipPickup.gd
 extends RigidBody2D
 
+@export var pickup_id: String = "MC_001"  # Set unique per instance in inspector
 @export var bounce_force := 100.0
 @export var inventory_id := "Microchip"
 @export var float_height := 5.0
@@ -11,13 +12,19 @@ extends RigidBody2D
 
 var initial_y: float
 var has_settled := false
+var time := 0.0
 
 func _ready():
 	# Physics
+	if Global.persistent_microchip_ids.has(pickup_id):
+		print("MicrochipPickup: already collected (", pickup_id, "), despawning.")
+		queue_free()
+		return
+		
 	gravity_scale = 1.0
 	linear_damp = 0.5
 	can_sleep = true
-
+	
 	# Bounce out of ground
 	apply_central_impulse(Vector2(randf_range(-50, 50), -bounce_force))
 
@@ -32,6 +39,12 @@ func _ready():
 		$Sprite2D.texture = chip_texture
 
 	initial_y = global_position.y
+
+func _process(delta):
+	if has_settled:
+		time += delta
+		global_position.y = initial_y + sin(time * float_speed) * float_height
+
 
 func _integrate_forces(state):
 	# When the body slows down enough, we start the float tween
@@ -49,6 +62,10 @@ func start_floating_animation():
 func _on_body_entered(body):
 	if not body.is_in_group("player"):
 		return
+	
+	if not Global.persistent_microchip_ids.has(pickup_id):
+		Global.persistent_microchip_ids.append(pickup_id)
+		
 
 	# Increase global persistent count
 	Global.persistent_microchips += 1

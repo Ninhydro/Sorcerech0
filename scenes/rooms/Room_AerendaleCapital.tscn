@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bkcqtqfijxmyn"]
+[gd_scene load_steps=21 format=3 uid="uid://bkcqtqfijxmyn"]
 
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_876ac"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_b5ajo"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://b2prxedmmkjie" path="res://assets_image/Background/Genocide/genocide-Sheet.png" id="8_xj1n3"]
 [ext_resource type="Texture2D" uid="uid://0ij2ua1okm4x" path="res://assets_image/Background/Intro/intro-Sheetv2.png" id="9_8ywqu"]
 [ext_resource type="PackedScene" uid="uid://cxx11d4ruajw3" path="res://dialogic/cutscene/cutscene18G.tscn" id="10_72xc6"]
+[ext_resource type="PackedScene" uid="uid://c3fg0v3ccw12x" path="res://scenes/objects/VideoTapePickup.tscn" id="14_luh2u"]
+[ext_resource type="Texture2D" uid="uid://cns3s4e1as7d7" path="res://assets_image/Objects/collect_objects9.png" id="15_ipvry"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_36fax"]
 size = Vector2(1510, 698)
@@ -325,6 +327,12 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene18G" parent="." instance=ExtResource("10_72xc6")]
 position = Vector2(-1444, -23)
+
+[node name="VideoTapePickup" parent="." instance=ExtResource("14_luh2u")]
+position = Vector2(-538, 282)
+tape_slot = "Tape2"
+inventory_id = "Tape_B"
+tape_texture = ExtResource("15_ipvry")
 
 [connection signal="body_entered" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_entered"]
 [connection signal="body_exited" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_exited"]
