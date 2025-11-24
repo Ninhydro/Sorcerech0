@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://d31x3lq4tpd8s"]
+[gd_scene load_steps=31 format=3 uid="uid://d31x3lq4tpd8s"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_MagusTown.gd" id="1_imj52"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_0kg3k"]
@@ -21,8 +21,6 @@
 [ext_resource type="PackedScene" uid="uid://8krsc7hlpjgk" path="res://dialogic/cutscene/cutscene16.tscn" id="16_agjfx"]
 [ext_resource type="PackedScene" uid="uid://ds2wiv5ixrc7e" path="res://dialogic/cutscene/cutscene17_5.tscn" id="17_qcqnt"]
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="18_0n15f"]
-[ext_resource type="PackedScene" uid="uid://1rly63yl5k0j" path="res://scenes/enemies/TrentEnemy.tscn" id="22_irdft"]
-[ext_resource type="PackedScene" uid="uid://b2tbmn1dan8yx" path="res://scenes/enemies/BeastEnemy.tscn" id="23_2txyu"]
 [ext_resource type="PackedScene" uid="uid://c3fg0v3ccw12x" path="res://scenes/objects/VideoTapePickup.tscn" id="24_gopsl"]
 [ext_resource type="Texture2D" uid="uid://d3kfgqo6x00hi" path="res://assets_image/Objects/collect_objects10.png" id="25_1lvi8"]
 
@@ -507,27 +505,6 @@ metadata/_edit_lock_ = true
 [node name="cutscene21_5B1" parent="." instance=ExtResource("18_0n15f")]
 position = Vector2(662.499, -134.434)
 metadata/_edit_lock_ = true
-
-[node name="TrentEnemy" parent="." instance=ExtResource("22_irdft")]
-position = Vector2(-1224, -564)
-
-[node name="TrentEnemy2" parent="." instance=ExtResource("22_irdft")]
-position = Vector2(-1662, -537)
-
-[node name="TrentEnemy3" parent="." instance=ExtResource("22_irdft")]
-position = Vector2(-1904, -910)
-
-[node name="BeastEnemy" parent="." instance=ExtResource("23_2txyu")]
-position = Vector2(-2335, -849)
-
-[node name="BeastEnemy2" parent="." instance=ExtResource("23_2txyu")]
-position = Vector2(-1669, -906)
-
-[node name="BeastEnemy3" parent="." instance=ExtResource("23_2txyu")]
-position = Vector2(-1926, -560)
-
-[node name="BeastEnemy4" parent="." instance=ExtResource("23_2txyu")]
-position = Vector2(-1440, -543)
 
 [node name="VideoTapePickup" parent="." instance=ExtResource("24_gopsl")]
 position = Vector2(-962, -947)

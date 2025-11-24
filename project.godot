@@ -36,6 +36,7 @@ directories/dtl_directory={
 "Test": "res://dialogic/timeline/Test.dtl",
 "timeline1": "res://dialogic/timeline/timeline1.dtl",
 "timeline10": "res://dialogic/timeline/timeline10.dtl",
+"timeline10v2": "res://dialogic/timeline/timeline10v2.dtl",
 "timeline11": "res://dialogic/timeline/timeline11.dtl",
 "timeline11V2": "res://dialogic/timeline/timeline11V2.dtl",
 "timeline12": "res://dialogic/timeline/timeline12.dtl",

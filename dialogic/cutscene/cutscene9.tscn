@@ -120,11 +120,28 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="BossCamera2D" type="Camera2D" parent="."]
 position = Vector2(-2, -27)
-zoom = Vector2(2, 2)
 
 [node name="npc1" type="Sprite2D" parent="."]
 
+[node name="Boss2SpawnMarker" type="Marker2D" parent="."]
+position = Vector2(-127, 38)
+
+[node name="Boss2Timer" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer"]
+offset_left = 280.0
+offset_top = 8.0
+offset_right = 320.0
+offset_bottom = 21.0
+text = "Time"
+metadata/_edit_use_anchors_ = true
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="Boss2Timer" to="." method="_on_boss_2_timer_timeout"]

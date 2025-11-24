@@ -164,7 +164,7 @@ var enemyAknockback := Vector2.ZERO
 var tracking_paused = false
 
 var kills: int = 0 # Initialize kills
-var affinity: int = 0 # Initialize affinity
+var affinity: int = 0 # Initialize affinity negative magus, positive cyber
 var player_status: String = "Neutral" # NEW: Player status
 
 func increment_kills() -> void:
@@ -261,6 +261,7 @@ var ult_magus_form = false
 var ult_cyber_form = false
 var route_status = "" # "", "Genocide", "Magus", "Cyber","True"(normal), "Pacifist"
 #(Nataly always fight Maya)  on magus & cyber routes, with the optional nora & valentina fight
+var first_boss_dead = false 
 var alyra_dead = false 
 #false means alyra alive so this is true normal route -> lux dead, zach king & different dialog overall
 #true means alyra is dead so this contribute true pacifist route -> lux alive, varek king & different dialog overall
@@ -497,6 +498,7 @@ func get_save_data() -> Dictionary:
 		"ult_magus_form":ult_magus_form,
 		"ult_cyber_form":ult_cyber_form,
 		"route_status":route_status,
+		"first_boss_dead":first_boss_dead,
 		"alyra_dead":alyra_dead,
 		"gawr_dead":gawr_dead,
 		"nora_dead":nora_dead,
@@ -570,6 +572,7 @@ func apply_load_data(data: Dictionary):
 	ult_magus_form = data.get("ult_magus_form", false)
 	ult_cyber_form = data.get("ult_cyber_form", false)
 	route_status = data.get("route_status", "")
+	first_boss_dead = data.get("first_boss_dead", false)
 	alyra_dead = data.get("alyra_dead", false)
 	gawr_dead = data.get("gawr_dead", false)
 	nora_dead = data.get("nora_dead", false)
@@ -644,6 +647,7 @@ func reset_to_defaults():
 	ult_magus_form = false
 	ult_cyber_form = false
 	route_status = ""
+	first_boss_dead = false
 	alyra_dead = false
 	gawr_dead = false
 	nora_dead = false

@@ -120,9 +120,8 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="CutsceneCamera2D" type="Camera2D" parent="."]
 position = Vector2(-2, -27)
-zoom = Vector2(2, 2)
 
 [node name="npc1" type="Sprite2D" parent="."]
 

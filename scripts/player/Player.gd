@@ -9,7 +9,7 @@ var gravity  = 1000.0     # Gravity strength (pixels/sec^2)
 #@export var allow_camouflage: bool = false
 #@export var allow_time_freeze: bool = false
 @export var telekinesis_enabled : bool = false
-#@export var current_magic_spot: MagusSpot = null
+@export var current_magic_spot: MagusSpot = null
 @export var canon_enabled : bool = false # Flag to indicate if player is in cannon mode
 @onready var telekinesis_controller = $TelekinesisController
 @export var UI_telekinesis : bool = false
@@ -408,8 +408,7 @@ func _physics_process(delta):
 			# This ensures the player stays in Normal form during cannon mode
 			#can_switch_form = false
 			
-		elif telekinesis_enabled:
-			velocity = Vector2.ZERO
+
 		elif Global.dashing:
 		# Apply gravity during dash
 			velocity.y += gravity * delta
@@ -680,6 +679,19 @@ func _physics_process(delta):
 			#can_skill = true
 			collision_mask = normal_collision_mask
 			
+			 # >>> hard reset all busy flags <<<
+			telekinesis_enabled = false
+			is_grappling_active = false
+			is_grabbing_ledge = false
+			Global.dashing = false
+			Global.attacking = false
+			Global.teleporting = false
+			player_hit = false
+			knockback_timer = 0.0
+			area_goal_locked = false
+			Global.is_cutscene_active = false
+			# <<< end reset >>>
+	
 			if not is_area_goal_complete:
 				reset_area_goal()
 		

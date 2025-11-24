@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cfhmj1vvcbg6r"]
+[gd_scene load_steps=8 format=3 uid="uid://cfhmj1vvcbg6r"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene8.gd" id="1_35yc7"]
 
@@ -107,12 +107,16 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e4s5f"]
+size = Vector2(20, 277)
+
 [node name="cutscene8" type="Area2D"]
 position = Vector2(79, 74)
 script = ExtResource("1_35yc7")
+boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-4.5, -27.5)
+position = Vector2(89, 22)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -120,11 +124,40 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="BossCamera2D" type="Camera2D" parent="."]
 position = Vector2(-2, -27)
-zoom = Vector2(2, 2)
 
 [node name="npc1" type="Sprite2D" parent="."]
 
+[node name="BossSpawnMarker" type="Marker2D" parent="."]
+position = Vector2(-127, 38)
+
+[node name="BossTimer" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer"]
+offset_left = 280.0
+offset_top = 8.0
+offset_right = 320.0
+offset_bottom = 21.0
+text = "Time"
+metadata/_edit_use_anchors_ = true
+
+[node name="BarrierLeft" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
+position = Vector2(-175, -66)
+shape = SubResource("RectangleShape2D_e4s5f")
+
+[node name="BarrierRight" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
+position = Vector2(169, -66)
+shape = SubResource("RectangleShape2D_e4s5f")
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="BossTimer" to="." method="_on_boss_timer_timeout"]

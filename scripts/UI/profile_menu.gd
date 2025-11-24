@@ -295,7 +295,7 @@ func _update_affinity_display(affinity_value: int):
 	var clamped_affinity = clampi(affinity_value, MIN_AFFINITY, MAX_AFFINITY)
 	#print(f"Clamped affinity: {clamped_affinity}")
 
-	if clamped_affinity < 0:
+	if clamped_affinity < 0: #negative
 		print("Affinity is negative. Setting yellow bar.")
 		negative_affinity_bar.value = clamped_affinity
 		positive_affinity_bar.value = 0 # Reset positive bar
@@ -305,7 +305,7 @@ func _update_affinity_display(affinity_value: int):
 		#affinity_value_label.add_theme_color_override("font_color", Color.YELLOW)
 		#print(f"Negative bar value: {negative_affinity_bar.value}, visible: {negative_affinity_bar.visible}")
 		#print(f"Positive bar value: {positive_affinity_bar.value}, visible: {positive_affinity_bar.visible}")
-	elif clamped_affinity > 0:
+	elif clamped_affinity > 0: #positive
 		print("Affinity is positive. Setting blue bar.")
 		positive_affinity_bar.value = clamped_affinity
 		negative_affinity_bar.value = 0 # Reset negative bar

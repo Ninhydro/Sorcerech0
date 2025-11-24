@@ -64,7 +64,7 @@ func _init(_player):
 # Called when entering this state
 func enter():
 	player.grapple_line = player.get_node("GrappleLine")
-	Global.playerDamageAmount = 30
+	Global.playerDamageAmount = 50 #30
 	print("Entered Cyber State")
 	
 	# Set player's grappling flag to false on state entry
