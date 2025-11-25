@@ -180,7 +180,10 @@ func handle_animation():
 	elif is_roaming:
 		new_animation = "run"
 	else:
-		new_animation = "idle"
+		if abs(velocity.x) < idle_velocity_threshold:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 	
 	if dir.x < 0:
 		sprite.flip_h = true

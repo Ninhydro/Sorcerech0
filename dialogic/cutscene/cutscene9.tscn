@@ -107,7 +107,7 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
-[node name="cutscene9" type="Area2D"]
+[node name="cutscene9" type="Area2D" groups=["boss2_cutscene"]]
 position = Vector2(79, 74)
 script = ExtResource("1_d1t25")
 
@@ -133,6 +133,13 @@ wait_time = 60.0
 one_shot = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
+modulate = Color(0.380392, 0.380392, 0.380392, 0.784314)
+offset_left = 256.0
+offset_right = 320.0
+offset_bottom = 32.0
 
 [node name="TimerLabel" type="Label" parent="CanvasLayer"]
 offset_left = 280.0

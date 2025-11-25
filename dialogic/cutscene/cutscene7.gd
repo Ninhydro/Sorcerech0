@@ -46,6 +46,16 @@ func _on_body_entered(body):
 			
 		if player_in_range:
 			transition_manager.travel_to(player_in_range, target_room, target_spawn)
+		
+		Global.current_scene_path = get_tree().current_scene.scene_file_path
+		var manual_save_slot_name = SaveLoadManager.MANUAL_SAVE_SLOT_PREFIX + "1" # Example: Save to slot 1
+		Global.health = Global.health_max
+		player_in_range.health_changed.emit(Global.health, Global.health_max) 
+		if SaveLoadManager.save_game(player_in_range, manual_save_slot_name): # Pass the player node and slot name
+			print("Game saved successfully at SaveSpot to manual slot 1!") # Updated print statement
+			# Optionally, display a temporary "Game Saved!" message on the screen
+		else:
+			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 			
 		Global.is_cutscene_active = true
 		#Global.cutscene_name = cutscene_animation_name

@@ -169,18 +169,18 @@ var damage_cooldown_timer: Timer
 # Health costs per form (edit these numbers directly in the script)
 const ATTACK_HEALTH_COSTS := {
 	"Normal": 0,
-	"Magus": 5,
-	"Cyber": 5,
-	"UltimateMagus": 10,
-	"UltimateCyber": 15,
+	"Magus": 3,
+	"Cyber": 2,
+	"UltimateMagus": 4,
+	"UltimateCyber": 5,
 }
 
 const SKILL_HEALTH_COSTS := {
 	"Normal": 0,
 	"Magus": 5,
 	"Cyber": 1,
-	"UltimateMagus": 5,
-	"UltimateCyber": 5,
+	"UltimateMagus": 3,
+	"UltimateCyber": 8,
 }
 
 # Method to disable player input
@@ -504,7 +504,7 @@ func _physics_process(delta):
 					attack_started = true
 					not_busy = false
 				elif current_form == "UltimateCyber":
-					attack_cooldown_timer.start(1.0)
+					attack_cooldown_timer.start(2.0)
 					attack_started = true
 					not_busy = false
 				elif current_form == "UltimateMagus" and combo_timer_flag:
@@ -536,24 +536,24 @@ func _physics_process(delta):
 				var current_form = get_current_form_id()
 				var skill_started = false
 				if current_form == "UltimateMagus" and not_busy: # Check for UltimateMagus first
-					skill_cooldown_timer.start(1.0)
+					skill_cooldown_timer.start(2.0)
 					skill_started = true
 					not_busy = false
 
 				elif current_form == "Cyber":
-					skill_cooldown_timer.start(0.2)
+					skill_cooldown_timer.start(0.1)
 					skill_started = true
 					not_busy = false
 
 				elif current_form == "Magus" and not_busy:
-					skill_cooldown_timer.start(1.0)
+					skill_cooldown_timer.start(6.0)
 					skill_started = true
 					not_busy = false
 					if combat_fsm:
 						combat_fsm.change_state(SkillState.new(self))
 
 				elif current_form == "UltimateCyber" and not_busy:
-					skill_cooldown_timer.start(1.0)
+					skill_cooldown_timer.start(11.0)
 					skill_started = true
 					not_busy = false
 					if combat_fsm:
@@ -927,6 +927,16 @@ func handle_death():
 	if combat_fsm:
 		combat_fsm.change_state(DieState.new(self))
 	
+	var tree := get_tree()
+	if tree:
+		for node in tree.get_nodes_in_group("boss1_cutscene"):
+			if node.has_method("cancel_boss_battle_on_player_death"):
+				node.cancel_boss_battle_on_player_death()
+
+		for node in tree.get_nodes_in_group("boss2_cutscene"):
+			if node.has_method("cancel_boss2_battle_on_player_death"):
+				node.cancel_boss2_battle_on_player_death()
+		
 	# Wait for death animation to play (adjust time as needed)
 	await get_tree().create_timer(1.5).timeout
 	
@@ -1629,3 +1639,25 @@ func _try_pay_health_for_attack() -> bool:
 
 func _try_pay_health_for_skill() -> bool:
 	return _try_pay_health_generic("skill")
+
+func unlock_and_force_form(form_name: String) -> void:
+	# Make sure it's unlocked
+	unlock_state(form_name)
+
+	# Find the correct index in unlocked_states
+	var idx := unlocked_states.find(form_name)
+	if idx == -1:
+		push_warning("unlock_and_force_form: Form '%s' not in unlocked_states!" % form_name)
+		return
+
+	# Set indices
+	current_state_index = idx
+	Global.selected_form_index = idx
+
+	# Switch the actual FSM/state
+	switch_state(form_name)
+	if combat_fsm:
+		combat_fsm.change_state(IdleState.new(self))
+
+	print("unlock_and_force_form: forced form to ", form_name, " at index ", idx)
+

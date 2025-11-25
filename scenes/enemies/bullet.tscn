@@ -1,9 +1,24 @@
-[gd_scene load_steps=7 format=3 uid="uid://m8uimlsn78fh"]
+[gd_scene load_steps=7 format=3 uid="uid://duunjhlgoi1am"]
 
-[ext_resource type="Script" path="res://scenes/enemies/Projectile.gd" id="1_ljsfk"]
-[ext_resource type="Texture2D" uid="uid://divyak7nalilb" path="res://assets_image/placeholder/Props Items and VFX/fireball/spritesheet.png" id="2_hca3g"]
+[ext_resource type="Script" path="res://scenes/enemies/Projectile.gd" id="1_nghlf"]
+[ext_resource type="Texture2D" uid="uid://bmocxh6l1yg8u" path="res://assets_image/Objects/bullet.png" id="2_4irr6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ap75k"]
+
+[sub_resource type="Animation" id="Animation_g72pb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
 
 [sub_resource type="Animation" id="Animation_hps3b"]
 resource_name = "run"
@@ -22,21 +37,6 @@ tracks/0/keys = {
 "values": [0, 1, 2, 3, 4]
 }
 
-[sub_resource type="Animation" id="Animation_g72pb"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mbk4u"]
 _data = {
 "RESET": SubResource("Animation_g72pb"),
@@ -45,13 +45,14 @@ _data = {
 
 [node name="Projectile" type="Area2D"]
 collision_layer = 12
-script = ExtResource("1_ljsfk")
+script = ExtResource("1_nghlf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ap75k")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_hca3g")
+scale = Vector2(2, 2)
+texture = ExtResource("2_4irr6")
 hframes = 5
 
 [node name="Timer" type="Timer" parent="."]

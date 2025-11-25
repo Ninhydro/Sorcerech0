@@ -168,7 +168,10 @@ func handle_animation():
 	elif is_roaming:
 		new_animation = "run"
 	else:
-		new_animation = "idle"
+		if abs(velocity.x) < idle_velocity_threshold:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 	
 	# Update sprite direction for run/idle animations
 	if new_animation == "run" or new_animation == "idle":

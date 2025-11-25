@@ -90,11 +90,12 @@ func _on_dialogic_finished(_timeline_name = ""):
 	
 	#Global.cyber_form = true
 	if Global.ult_magus_form == true and Global.gawr_dead == true:
-		player_in_range.unlock_state("UltimateMagus")
-		player_in_range.switch_state("UltimateMagus")
-		Global.selected_form_index = 0
-		player_in_range.current_state_index = Global.selected_form_index
-		player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
+		player_in_range.unlock_and_force_form("UltimateMagus")
+		#player_in_range.unlock_state("UltimateMagus")
+		#player_in_range.switch_state("UltimateMagus")
+		#Global.selected_form_index = 0
+		#player_in_range.current_state_index = Global.selected_form_index
+		#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
 		if player_in_range:
 			transition_manager.travel_to(player_in_range, target_room, target_spawn)
 		Global.remove_quest_marker("Meet the Magus King")

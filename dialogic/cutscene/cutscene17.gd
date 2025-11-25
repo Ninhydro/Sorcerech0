@@ -102,6 +102,16 @@ func _on_dialogic_finished(_timeline_name = ""):
 		if player_in_range:
 			transition_manager.travel_to(player_in_range, target_room1, target_spawn1)
 		Global.add_quest_marker("Fight for the Magus", Vector2(6744,-2416))
+		
+		Global.current_scene_path = get_tree().current_scene.scene_file_path
+		var manual_save_slot_name = SaveLoadManager.MANUAL_SAVE_SLOT_PREFIX + "1" # Example: Save to slot 1
+		Global.health = Global.health_max
+		player_in_range.health_changed.emit(Global.health, Global.health_max) 
+		if SaveLoadManager.save_game(player_in_range, manual_save_slot_name): # Pass the player node and slot name
+			print("Game saved successfully at SaveSpot to manual slot 1!") # Updated print statement
+			# Optionally, display a temporary "Game Saved!" message on the screen
+		else:
+			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 
 	elif Global.route_status == "Cyber":
 		Dialogic.start("timeline17C", false)
@@ -109,16 +119,47 @@ func _on_dialogic_finished(_timeline_name = ""):
 			transition_manager.travel_to(player_in_range, target_room2, target_spawn2)
 		Global.add_quest_marker("Fight for the Cyber", Vector2(-704,3896))
 		
+		Global.current_scene_path = get_tree().current_scene.scene_file_path
+		var manual_save_slot_name = SaveLoadManager.MANUAL_SAVE_SLOT_PREFIX + "1" # Example: Save to slot 1
+		Global.health = Global.health_max
+		player_in_range.health_changed.emit(Global.health, Global.health_max) 
+		if SaveLoadManager.save_game(player_in_range, manual_save_slot_name): # Pass the player node and slot name
+			print("Game saved successfully at SaveSpot to manual slot 1!") # Updated print statement
+			# Optionally, display a temporary "Game Saved!" message on the screen
+		else:
+			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
+		
 	elif Global.route_status == "True" or Global.route_status == "Pacifist":
 		Dialogic.start("timeline17T", false)
 		if player_in_range:
 			transition_manager.travel_to(player_in_range, target_room4, target_spawn4)
 		Global.add_quest_marker("Find the the other way with Lux", Vector2(6032,3520))
+		
+		Global.current_scene_path = get_tree().current_scene.scene_file_path
+		var manual_save_slot_name = SaveLoadManager.MANUAL_SAVE_SLOT_PREFIX + "1" # Example: Save to slot 1
+		Global.health = Global.health_max
+		player_in_range.health_changed.emit(Global.health, Global.health_max) 
+		if SaveLoadManager.save_game(player_in_range, manual_save_slot_name): # Pass the player node and slot name
+			print("Game saved successfully at SaveSpot to manual slot 1!") # Updated print statement
+			# Optionally, display a temporary "Game Saved!" message on the screen
+		else:
+			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
+			
 	elif Global.route_status == "Genocide":
 		Dialogic.start("timeline17G", false)
 		if player_in_range:
 			transition_manager.travel_to(player_in_range, target_room3, target_spawn3)
 		Global.add_quest_marker("Destroy Everyone!", Vector2(-3376,1280))
+		
+		Global.current_scene_path = get_tree().current_scene.scene_file_path
+		var manual_save_slot_name = SaveLoadManager.MANUAL_SAVE_SLOT_PREFIX + "1" # Example: Save to slot 1
+		Global.health = Global.health_max
+		player_in_range.health_changed.emit(Global.health, Global.health_max) 
+		if SaveLoadManager.save_game(player_in_range, manual_save_slot_name): # Pass the player node and slot name
+			print("Game saved successfully at SaveSpot to manual slot 1!") # Updated print statement
+			# Optionally, display a temporary "Game Saved!" message on the screen
+		else:
+			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 	
 	else:
 		pass

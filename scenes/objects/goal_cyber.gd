@@ -86,18 +86,20 @@ func _on_dialogic_finished(_timeline_name = ""):
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 
 
-
+	#player_in_range.canon_enabled = false # Exit cannon mode
 	Global.timeline = 4
 	Global.cyber_form = true
-	player_in_range.unlock_state("Cyber")
-	player_in_range.switch_state("Cyber")
-	Global.selected_form_index = 3
-	player_in_range.current_state_index = Global.selected_form_index
-	player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
+	#player_in_range.unlock_state("Cyber")
+	await get_tree().create_timer(0.1).timeout
+	player_in_range.unlock_and_force_form("Cyber")
+	#Global.selected_form_index = 3
+	#player_in_range.switch_state("Cyber")
+	#player_in_range.current_state_index = Global.selected_form_index
+	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
 	print("Global.cyber_form ", Global.cyber_form )
 	Global.remove_quest_marker("Explore Exactlyion")
 	Global.minigame_valentina_completed = true
 	print("Global.minigame_valentina_completed ", Global.minigame_valentina_completed)
 	get_tree().get_first_node_in_group("valentina").show_instantly_at_minigame_marker()
 
-	
+

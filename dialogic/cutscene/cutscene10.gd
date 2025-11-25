@@ -55,12 +55,16 @@ func _on_body_entered(body: Node) -> void:
 #   final_cutscene_node.start_cutscene()
 func start_cutscene() -> void:
 	# Ensure we don't start twice
+	var tree := get_tree()
+	if tree == null:
+		print("FinalCutscene: start_cutscene() called but node not in scene tree, ignoring.")
+		return
+
 	if _has_been_triggered == false:
 		_mark_triggered()
-	
-	# If no player stored (e.g. called directly), try to grab one
+
 	if player_in_range == null:
-		var players := get_tree().get_nodes_in_group("player")
+		var players := tree.get_nodes_in_group("player")
 		if players.size() > 0:
 			player_in_range = players[0]
 	

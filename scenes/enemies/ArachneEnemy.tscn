@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://duuqngmhvpksa"]
+[gd_scene load_steps=15 format=3 uid="uid://duuqngmhvpksa"]
 
 [ext_resource type="Script" path="res://scenes/enemies/ArachneEnemy.gd" id="1_816w7"]
 [ext_resource type="Texture2D" uid="uid://tnh7poh3clmp" path="res://assets_image/Characters/Enemies/arachne-Sheet.png" id="2_n6gi8"]
+[ext_resource type="PackedScene" uid="uid://b03navbrpl5bh" path="res://scenes/enemies/web.tscn" id="2_ncojk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
-size = Vector2(32, 50)
+size = Vector2(32, 21.4286)
 
 [sub_resource type="Animation" id="Animation_a6itw"]
 length = 0.001
@@ -139,11 +140,15 @@ radius = 256.0
 [node name="ArachneEnemy" type="CharacterBody2D" groups=["Enemies"]]
 scale = Vector2(0.7, 0.7)
 collision_layer = 5
-collision_mask = 9
+collision_mask = 15
 script = ExtResource("1_816w7")
+enemy_damage = 8
+health = 50
+health_max = 50
+projectile_scene = ExtResource("2_ncojk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -15)
+position = Vector2(0, -0.714286)
 shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

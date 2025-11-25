@@ -8,7 +8,7 @@ var speed: float:
 		return base_speed * Global.global_time_scale
 		
 @export var attack_range := 60
-@export var enemy_damage := 10
+@export var enemy_damage := 0
 @export var attack_cooldown := 2.0
 @export var health := 100
 @export var health_max := 100
@@ -51,6 +51,19 @@ var dir: Vector2
 var enemy_knockback_force = -20
 var gravity = 1000.0
 
+# --- NEW: stuck detection + chase tuning ---
+@export var stuck_check_speed_threshold := 5.0      # min intended speed to consider "trying to move"
+@export var stuck_position_epsilon := 1.0           # max movement (px) to still count as "stuck"
+@export var stuck_time_threshold := 0.7             # seconds of being stuck before idling
+@export var stuck_idle_duration := 1.5              # idle time before turning around
+
+@export var vertical_chase_deadzone := 8.0          # if player is this close in X, don't move horizontally
+
+var previous_position: Vector2                      # for detecting no movement
+var stuck_accumulator := 0.0
+var stuck_idle_timer := 0.0
+var is_stuck_idle := false
+
 # Attack system
 var attack_target: Node2D = null
 var attack_cooldown_timer: Timer
@@ -78,6 +91,9 @@ var attack_delay_timer: Timer
 var can_start_attack := true
 var is_preparing_attack := false
 
+@export var idle_velocity_threshold := 5.0  # if |velocity.x| < this, use idle instead of run
+
+
 func _ready():
 	# Initialize attack cooldown timer
 	attack_cooldown_timer = Timer.new()
@@ -100,6 +116,7 @@ func _ready():
 	
 	# Initialize enemy-specific components
 	_initialize_enemy()
+	previous_position = global_position
 	
 func _on_attack_delay_timeout():
 	can_start_attack = true
@@ -153,6 +170,8 @@ func _process(delta):
 	move(delta)
 	handle_animation()
 	move_and_slide()
+	
+	_update_stuck_state(delta)
 
 func detect_edges():
 	if not use_edge_detection or edge_turn_cooldown > 0:
@@ -206,6 +225,12 @@ func move(delta):
 		velocity.x = knockback_dir.x * abs(enemy_knockback_force)
 		is_roaming = false
 		return
+	
+	# NEW: if we are in "stuck idle" state, do not move horizontally
+	if is_stuck_idle:
+		velocity.x = 0
+		is_roaming = false
+		return
 		
 	if is_dealing_damage or is_preparing_attack:  # ADDED is_preparing_attack here
 		velocity.x = 0
@@ -216,11 +241,22 @@ func move(delta):
 		turn_around_at_edge()
 		return
 		
-	if is_enemy_chase:
+	if is_enemy_chase and player:
 		is_roaming = false
-		var dir_to_player = (player.global_position - global_position).normalized()
-		velocity.x = dir_to_player.x * speed
-		dir.x = sign(velocity.x)
+		
+		var to_player = player.global_position - global_position
+		var abs_dx = abs(to_player.x)
+		
+		# NEW: if player is almost directly above, don't flicker-chase left/right
+		if abs_dx < vertical_chase_deadzone:
+			velocity.x = 0
+			# Face player if there is *some* horizontal offset
+			if abs_dx > 0.1:
+				dir.x = sign(to_player.x)
+		else:
+			var dir_to_player = to_player.normalized()
+			velocity.x = dir_to_player.x * speed
+			dir.x = sign(velocity.x)
 	else:
 		is_roaming = true
 		velocity.x = dir.x * speed
@@ -246,7 +282,13 @@ func handle_animation():
 			if projectile_spawn:
 				projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 	else:
-		new_animation = "run"
+		# NEW: treat stuck idle as idle animation
+		if is_stuck_idle:
+			new_animation = "idle"
+		elif abs(velocity.x) < idle_velocity_threshold:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 		if dir.x == -1:
 			sprite.flip_h = true
 		elif dir.x == 1:
@@ -482,3 +524,50 @@ func _on_hitbox_area_entered(area):
 	var damage = Global.playerDamageAmount
 	if area == Global.playerDamageZone:
 		take_damage(damage)
+
+func _update_stuck_state(delta: float) -> void:
+	# Reset tracking during special states
+	if dead or taking_damage or is_dealing_damage or is_preparing_attack:
+		previous_position = global_position
+		stuck_accumulator = 0.0
+		return
+	
+	# If currently idling because we were stuck
+	if is_stuck_idle:
+		stuck_idle_timer -= delta
+		if stuck_idle_timer <= 0.0:
+			is_stuck_idle = false
+			stuck_accumulator = 0.0
+			
+			# Turn around when idle ends
+			if dir.x == 0:
+				# Choose a random direction
+				if randf() < 0.5:
+					dir.x = -1
+				else:
+					dir.x = 1
+			else:
+				dir.x *= -1
+		previous_position = global_position
+		return
+	
+	# Only consider "stuck" if we are *trying* to move horizontally
+	if abs(velocity.x) > stuck_check_speed_threshold:
+		var dx = abs(global_position.x - previous_position.x)
+		if dx < stuck_position_epsilon:
+			# Not moving even though we are trying
+			stuck_accumulator += delta
+			if stuck_accumulator >= stuck_time_threshold:
+				# Enter idle-stuck state
+				is_stuck_idle = true
+				stuck_idle_timer = stuck_idle_duration
+				velocity.x = 0
+		else:
+			# We actually moved, reset counter
+			stuck_accumulator = 0.0
+	else:
+		stuck_accumulator = 0.0
+	
+	previous_position = global_position
+
+

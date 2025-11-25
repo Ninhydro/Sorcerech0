@@ -185,7 +185,10 @@ func handle_animation():
 	elif is_dealing_damage:
 		new_animation = "attack"
 	else:
-		new_animation = "run"
+		if abs(velocity.x) < idle_velocity_threshold:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 		if dir.x == -1:
 			sprite.flip_h = true
 			if shield_sprite:

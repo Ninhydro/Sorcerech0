@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bvhqv11fkgbxy" path="res://assets_image/Characters/Enemies/Robodog-Sheet.png" id="2_oyasn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
-size = Vector2(32, 26)
+size = Vector2(26, 20)
 
 [sub_resource type="Animation" id="Animation_a6itw"]
 length = 0.001
@@ -157,11 +157,14 @@ radius = 384.021
 [node name="RobodogEnemy" type="CharacterBody2D" groups=["Enemies"]]
 scale = Vector2(0.8, 0.8)
 collision_layer = 5
-collision_mask = 9
+collision_mask = 14
 script = ExtResource("1_jtwno")
+enemy_damage = 5
+health = 50
+health_max = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3)
+position = Vector2(-3, 2.98023e-07)
 shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

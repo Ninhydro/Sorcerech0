@@ -73,7 +73,10 @@ func handle_animation():
 	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
 		new_animation = "idle"
 	else:
-		new_animation = "run"
+		if abs(velocity.x) < idle_velocity_threshold:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 		# Update direction for sprite and projectile spawn
 		if dir.x == -1:
 			sprite.flip_h = true

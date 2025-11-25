@@ -330,11 +330,14 @@ func _on_dialogic_finished(_timeline_name = ""):
 
 	Global.timeline = 4
 	Global.magus_form = true
-	player_in_range.unlock_state("Magus")
-	player_in_range.switch_state("Magus")
-	Global.selected_form_index = 1
-	player_in_range.current_state_index = Global.selected_form_index
-	player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
+	
+	await get_tree().create_timer(0.1).timeout
+	player_in_range.unlock_and_force_form("Magus")
+	#player_in_range.unlock_state("Magus")
+	#player_in_range.switch_state("Magus")
+	#Global.selected_form_index = 1
+	#player_in_range.current_state_index = Global.selected_form_index
+	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
 	print("Global.magus_form ",Global.magus_form )
 	Global.remove_quest_marker("Explore Tromarvelia")
 	

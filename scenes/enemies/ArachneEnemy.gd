@@ -210,7 +210,10 @@ func handle_animation():
 		new_animation = "idle"
 		
 	else:
-		new_animation = "idle"
+		if abs(velocity.x) < idle_velocity_threshold:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 	
 	if new_animation != current_animation:
 		current_animation = new_animation

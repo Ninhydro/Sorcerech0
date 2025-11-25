@@ -12,6 +12,7 @@ var player_in_range: Node = null
 @onready var boss_spawn_marker: Marker2D = $BossSpawnMarker
 @onready var boss_timer: Timer = $BossTimer
 @onready var timer_label: Label = $CanvasLayer/TimerLabel
+@onready var timer_color = $CanvasLayer/ColorRect
 
 var previous_player_camera: Camera2D = null
 var boss_instance: Node = null
@@ -25,11 +26,15 @@ const BOSS_SCENE: PackedScene = preload("res://scenes/enemies/MagusSoldierEnemy.
 @export var fail_cutscene_path: NodePath
 @export var boss_barriers: Array[NodePath] = []
 
+var battle_cancelled_on_player_death: bool = false
+
 func _ready() -> void:
 	# Timer label hidden until battle starts
 	_deactivate_barriers()
 	if timer_label:
 		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
 	
 	if boss_timer:
 		boss_timer.one_shot = true
@@ -113,7 +118,9 @@ func _on_dialogic_finished(_timeline_name: String = "") -> void:
 
 func start_boss_battle() -> void:
 	# Spawn boss at marker
-	
+	battle_cancelled_on_player_death = false   # 🔹 reset
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max) 
 	if not BOSS_SCENE:
 		printerr("Boss scene could not be loaded!")
 		return
@@ -142,13 +149,15 @@ func start_boss_battle() -> void:
 		boss_timer.start()
 	if timer_label:
 		timer_label.visible = true
+	if timer_color:
+		timer_color.visible = true
 	_activate_barriers()
 	print("Boss battle started. 2-minute timer ticking.")
 
 
 func _on_boss_timer_timeout() -> void:
 	# Timer finished; check if boss is still alive
-	if not battle_active:
+	if not battle_active or battle_cancelled_on_player_death:
 		return
 	
 	battle_active = false
@@ -157,7 +166,6 @@ func _on_boss_timer_timeout() -> void:
 	if boss_alive:
 		print("Boss survived the timer. Player failed condition.")
 		
-		# 🔹 REMOVE boss1 from the scene
 		if boss_instance:
 			boss_instance.queue_free()
 			boss_instance = null
@@ -168,9 +176,15 @@ func _on_boss_timer_timeout() -> void:
 		_handle_battle_success()
 
 
+
 func _on_boss_died() -> void:
 	# Called when boss node leaves the tree
 	if not battle_active:
+		boss_instance = null
+		return
+	
+	if battle_cancelled_on_player_death:
+		print("Boss1: Boss freed after player death, ignoring.")
 		boss_instance = null
 		return
 	
@@ -207,6 +221,8 @@ func _finish_battle_and_start_outro(success: bool) -> void:
 	
 	if timer_label:
 		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
 
 	# Optionally switch camera back to player camera now
 	if previous_player_camera:
@@ -253,4 +269,42 @@ func _deactivate_barriers() -> void:
 				b.set_deferred("collision_mask", 0)
 			if b is CanvasItem:
 				b.visible = false
+
+func cancel_boss_battle_on_player_death() -> void:
+	if not battle_active:
+		return
+	
+	print("Boss1: Battle cancelled due to player death.")
+	battle_active = false
+	battle_cancelled_on_player_death = true
+	
+	Global.timeline = 5
+	Global.first_boss_dead = false
+	Global.alyra_dead = false
+	
+	# Stop timer
+	if boss_timer:
+		boss_timer.stop()
+	
+	# Disconnect and free boss, but DO NOT call success/fail handlers
+	if boss_instance and is_instance_valid(boss_instance):
+		if boss_instance.tree_exited.is_connected(_on_boss_died):
+			boss_instance.tree_exited.disconnect(_on_boss_died)
+		boss_instance.queue_free()
+		boss_instance = null
+	
+	# Hide UI + barriers and give camera back to player
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
+	
+	_deactivate_barriers()
+	
+	if previous_player_camera:
+		previous_player_camera.make_current()
+	elif player_in_range:
+		var player_cam: Camera2D = player_in_range.get_node_or_null("Camera2D")
+		if player_cam:
+			player_cam.make_current()
 

@@ -11,6 +11,7 @@ var player_in_range: Node = null
 @onready var boss2_spawn_marker: Marker2D = $Boss2SpawnMarker
 @onready var boss2_timer: Timer = $Boss2Timer
 @onready var timer_label: Label = $CanvasLayer/TimerLabel
+@onready var timer_color = $CanvasLayer/ColorRect
 
 
 var boss2_scene: PackedScene    = preload("res://scenes/enemies/CyberSoldierEnemy.tscn")
@@ -19,12 +20,15 @@ var boss2_scene: PackedScene    = preload("res://scenes/enemies/CyberSoldierEnem
 var boss2_instance: Node = null
 var battle_active: bool = false
 
+var battle_cancelled_on_player_death: bool = false
 
 func _ready() -> void:
 	# Only active when Global.timeline == 5.2
 	
 	if timer_label:
 		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
 	
 	if boss2_timer:
 		boss2_timer.one_shot = true
@@ -70,11 +74,19 @@ func _on_body_entered(body: Node) -> void:
 #   cutscene2_node.start_cutscene()
 func start_cutscene() -> void:
 	# If no player stored (e.g. called directly), try to find one
-	if player_in_range == null:
-		var players := get_tree().get_nodes_in_group("player")
-		if players.size() > 0:
-			player_in_range = players[0]
-	
+	#var tree := get_tree()
+	#if tree == null:
+	#	print("Boss2Cutscene: start_cutscene() called but node not in scene tree, ignoring.")
+	#	return
+
+	# If no player stored (e.g. called directly), try to find one
+	#if player_in_range == null:
+	#	var players := tree.get_nodes_in_group("player")
+	#	if players.size() > 0:
+	#		player_in_range = players[0]
+	#	else:
+	#		print("Boss2Cutscene: No player found in group 'player', aborting.")
+	#		return
 	Global.is_cutscene_active = true
 
 	# Choose dialog based on Global.first_boss_dead
@@ -109,6 +121,7 @@ func _on_dialogic_finished(_timeline_name: String = "") -> void:
 
 
 func start_boss2_battle() -> void:
+	battle_cancelled_on_player_death = false   # 🔹 reset
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max) 
 	if boss2_scene == null:
@@ -139,12 +152,15 @@ func start_boss2_battle() -> void:
 		boss2_timer.start()
 	if timer_label:
 		timer_label.visible = true
+	if timer_color:
+		timer_color.visible = true
 	
 	print("Boss 2 battle started. 2-minute timer ticking.")
 
 
 func _on_boss2_timer_timeout() -> void:
-	if not battle_active:
+	print("DEBUG: Boss2 timer timeout fired")
+	if not battle_active or battle_cancelled_on_player_death:
 		return
 	
 	battle_active = false
@@ -152,7 +168,6 @@ func _on_boss2_timer_timeout() -> void:
 	var boss_alive := is_instance_valid(boss2_instance)
 	if boss_alive:
 		print("Boss 2 survived timer. Player failed condition.")
-		# 🔹 REMOVE boss1 from the scene
 		if boss2_instance:
 			boss2_instance.queue_free()
 			boss2_instance = null
@@ -164,6 +179,11 @@ func _on_boss2_timer_timeout() -> void:
 
 func _on_boss2_died() -> void:
 	if not battle_active:
+		boss2_instance = null
+		return
+	
+	if battle_cancelled_on_player_death:
+		print("Boss2: Boss freed after player death, ignoring.")
 		boss2_instance = null
 		return
 	
@@ -198,7 +218,8 @@ func _handle_boss2_fail() -> void:
 func _finish_battle_and_start_outro() -> void:
 	if timer_label:
 		timer_label.visible = false
-	
+	if timer_color:
+		timer_color.visible = false
 	# Optionally re-lock or unlock gameplay here if needed
 	# Global.is_cutscene_active = true
 	
@@ -235,3 +256,30 @@ func _on_boss_2_timer_timeout():
 	else:
 		print("Timer finished but Boss 2 already dead. Treat as success.")
 		_handle_boss2_success()
+
+func cancel_boss2_battle_on_player_death() -> void:
+	if not battle_active:
+		return
+	
+	print("Boss2: Battle cancelled due to player death.")
+	battle_active = false
+	battle_cancelled_on_player_death = true
+	
+	Global.timeline = 5
+	Global.first_boss_dead = false
+	Global.alyra_dead = false
+	
+	if boss2_timer:
+		boss2_timer.stop()
+	
+	if boss2_instance and is_instance_valid(boss2_instance):
+		if boss2_instance.tree_exited.is_connected(_on_boss2_died):
+			boss2_instance.tree_exited.disconnect(_on_boss2_died)
+		boss2_instance.queue_free()
+		boss2_instance = null
+	
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
+		

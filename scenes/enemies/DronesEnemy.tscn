@@ -150,11 +150,14 @@ radius = 136.059
 
 [node name="DroneEnemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 5
-collision_mask = 9
+collision_mask = 15
 script = ExtResource("1_leat8")
+enemy_damage = 5
+health = 50
+health_max = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-5.5, -17)
+position = Vector2(-5.5, -16)
 shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -187,7 +190,7 @@ shape = SubResource("RectangleShape2D_a7b8b")
 [node name="RangeChase" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RangeChase"]
-position = Vector2(-2.5, -20)
+position = Vector2(0, -16)
 shape = SubResource("CircleShape2D_4pq4r")
 
 [node name="EdgeRayLeft" type="RayCast2D" parent="."]

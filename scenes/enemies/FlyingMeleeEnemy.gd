@@ -109,7 +109,10 @@ func _handle_animation() -> void:
 	elif is_preparing_attack:
 		new_anim = "idle"
 	else:
-		new_anim = "run"  # or "fly" if that’s your anim name
+		if abs(velocity.x) < idle_velocity_threshold:
+			new_anim = "idle"
+		else:
+			new_anim = "run"
 
 		# Sprite flip
 		if dir.x == -1:

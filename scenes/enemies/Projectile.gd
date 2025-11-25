@@ -13,6 +13,7 @@ var direction = Vector2.RIGHT
 @onready var timer = $Timer
 @onready var sprite = $Sprite2D
 @onready var collision_shape = $CollisionShape2D
+@onready var animation = $AnimationPlayer
 
 func _ready():
 	# Connect ONLY body_entered signal like the spike trap
@@ -33,7 +34,8 @@ func _ready():
 
 func _physics_process(delta):
 	position += direction * speed * delta
-
+	animation.play("run")
+	
 func _on_body_entered(body: Node2D):
 	# Simple detection like spike trap
 	if body is Player and body.can_take_damage and not body.dead:
