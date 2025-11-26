@@ -219,7 +219,7 @@ func switch_with_object(obj: TelekinesisObject):
 
 func do_dash():
 	# Do a dash forward in facing direction using velocity
-	player.set_collision_mask_value(1, false) 
+	#player.set_collision_mask_value(1, false) 
 	player.set_collision_mask_value(3, false) 
 	var dash_power = 500  # Adjust this value to control dash speed
 	var dash_direction = Vector2.RIGHT if player.facing_direction > 0 else Vector2.LEFT
@@ -236,7 +236,7 @@ func do_dash():
 	Global.dashing = true
 	await player.get_tree().create_timer(0.3).timeout
 	Global.dashing = false
-	player.set_collision_mask_value(1, true) 
+	#player.set_collision_mask_value(1, true) 
 	player.set_collision_mask_value(3, true) 
 
 func update_highlight():

@@ -175,6 +175,7 @@ func start_attack():
 
 func handle_animation():
 	var new_animation := ""
+	var moved_x: float = abs(global_position.x - last_anim_position.x)
 	
 	if dead:
 		new_animation = "death"
@@ -185,10 +186,14 @@ func handle_animation():
 	elif is_dealing_damage:
 		new_animation = "attack"
 	else:
-		if abs(velocity.x) < idle_velocity_threshold:
+	# Treat as "blocked" only if we *barely* moved this frame
+		var blocked := moved_x < 0.05  # ~almost zero movement
+
+		if is_stuck_idle or blocked or abs(velocity.x) < idle_velocity_threshold:
 			new_animation = "idle"
 		else:
 			new_animation = "run"
+		
 		if dir.x == -1:
 			sprite.flip_h = true
 			if shield_sprite:
@@ -208,3 +213,4 @@ func handle_animation():
 		elif new_animation == "death":
 			await animation_player.animation_finished
 			handle_death()
+	last_anim_position = global_position

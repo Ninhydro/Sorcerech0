@@ -162,6 +162,7 @@ func deal_dash_damage():
 
 func handle_animation():
 	var new_animation := ""
+	var moved_x: float = abs(global_position.x - last_anim_position.x)
 	
 	if dead:
 		new_animation = "death"
@@ -176,11 +177,18 @@ func handle_animation():
 		is_alert_animation_playing = true
 		has_alerted = true
 	elif is_enemy_chase and has_alerted:
-		new_animation = "run"
+		# chase animation, but still stop if blocked
+		if is_stuck_idle or moved_x < anim_not_moving_epsilon or abs(velocity.x) < idle_velocity_threshold:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 	elif is_roaming:
-		new_animation = "run"
+		if is_stuck_idle or moved_x < anim_not_moving_epsilon or abs(velocity.x) < idle_velocity_threshold:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 	else:
-		if abs(velocity.x) < idle_velocity_threshold:
+		if is_stuck_idle or moved_x < anim_not_moving_epsilon or abs(velocity.x) < idle_velocity_threshold:
 			new_animation = "idle"
 		else:
 			new_animation = "run"
@@ -204,3 +212,5 @@ func handle_animation():
 		elif new_animation == "death":
 			await animation_player.animation_finished
 			handle_death()
+	
+	last_anim_position = global_position

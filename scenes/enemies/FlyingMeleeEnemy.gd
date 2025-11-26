@@ -99,7 +99,7 @@ func _move_logic(delta: float) -> void:
 
 func _handle_animation() -> void:
 	var new_anim := ""
-
+	var moved_x: float = abs(global_position.x - last_anim_position.x)
 	if dead:
 		new_anim = "death"
 	elif taking_damage:
@@ -109,12 +109,11 @@ func _handle_animation() -> void:
 	elif is_preparing_attack:
 		new_anim = "idle"
 	else:
-		if abs(velocity.x) < idle_velocity_threshold:
+		if is_stuck_idle or moved_x < anim_not_moving_epsilon or abs(velocity.x) < idle_velocity_threshold:
 			new_anim = "idle"
 		else:
 			new_anim = "run"
-
-		# Sprite flip
+				# Sprite flip
 		if dir.x == -1:
 			sprite.flip_h = true
 		elif dir.x == 1:

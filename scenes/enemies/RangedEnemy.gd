@@ -63,6 +63,7 @@ func shoot_projectile():
 
 func handle_animation():
 	var new_animation := ""
+	var moved_x: float = abs(global_position.x - last_anim_position.x)
 	
 	if dead:
 		new_animation = "death"
@@ -73,7 +74,7 @@ func handle_animation():
 	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
 		new_animation = "idle"
 	else:
-		if abs(velocity.x) < idle_velocity_threshold:
+		if is_stuck_idle or moved_x < anim_not_moving_epsilon or abs(velocity.x) < idle_velocity_threshold:
 			new_animation = "idle"
 		else:
 			new_animation = "run"
@@ -98,3 +99,4 @@ func handle_animation():
 		elif new_animation == "death":
 			await animation_player.animation_finished
 			handle_death()
+	last_anim_position = global_position

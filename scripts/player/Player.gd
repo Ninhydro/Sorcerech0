@@ -179,7 +179,7 @@ const SKILL_HEALTH_COSTS := {
 	"Normal": 0,
 	"Magus": 5,
 	"Cyber": 1,
-	"UltimateMagus": 3,
+	"UltimateMagus": 5,
 	"UltimateCyber": 8,
 }
 
@@ -247,7 +247,7 @@ func _ready():
 	#unlock_state("Magus")
 	#unlock_state("UltimateMagus")
 	#unlock_state("Cyber")
-	#dunlock_state("UltimateCyber")
+	#unlock_state("UltimateCyber")
 	
 	damage_cooldown_timer = Timer.new()
 	damage_cooldown_timer.one_shot = true
@@ -1591,8 +1591,8 @@ func _try_pay_health_generic(action: String) -> bool:
 	# --- GLOBAL HP LIMIT: below 20% -> no attack/skill at all ---
 	if Global.health_max > 0:
 		var health_ratio := float(Global.health) / float(Global.health_max)
-		if health_ratio <= 0.2:
-			print("Action blocked: HP below 20%. HP:", Global.health, "/", Global.health_max)
+		if health_ratio <= 0.1:
+			print("Action blocked: HP below 10%. HP:", Global.health, "/", Global.health_max)
 			return false
 	# If health_max is 0 (weird), just allow to avoid division error
 

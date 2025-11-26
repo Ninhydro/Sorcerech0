@@ -138,7 +138,7 @@ radius = 136.059
 
 [node name="AndroidEnemy" type="CharacterBody2D" groups=["Enemies"]]
 scale = Vector2(0.7, 0.7)
-collision_layer = 5
+collision_layer = 4
 collision_mask = 14
 script = ExtResource("1_rcfkl")
 enemy_damage = 5

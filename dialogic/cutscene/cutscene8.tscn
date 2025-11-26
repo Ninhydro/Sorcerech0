@@ -130,7 +130,7 @@ position = Vector2(-2, -27)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="BossSpawnMarker" type="Marker2D" parent="."]
-position = Vector2(-127, 38)
+position = Vector2(-79, 38)
 
 [node name="BossTimer" type="Timer" parent="."]
 wait_time = 60.0

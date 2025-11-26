@@ -1,7 +1,8 @@
-[gd_scene load_steps=23 format=3 uid="uid://dho52j1svafa7"]
+[gd_scene load_steps=24 format=3 uid="uid://dho52j1svafa7"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_Hub.gd" id="1_67lrk"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_sl44h"]
+[ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_0vxfr"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="2_lvadt"]
 [ext_resource type="Texture2D" uid="uid://cs81f8ne403tw" path="res://assets_image/Background/Tileset/Tileset2.png" id="4_dslja"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="4_halrj"]
@@ -649,6 +650,12 @@ size = Vector2(355, 463)
 [node name="RoomAerendaleTown" type="Node2D"]
 script = ExtResource("1_67lrk")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(1168, -48)
+scale = Vector2(2.61218, 2.61468)
+texture = ExtResource("2_0vxfr")
+
 [node name="Area2D" type="Area2D" parent="."]
 script = ExtResource("2_lvadt")
 area_name = "New Aerendale Town"
@@ -736,6 +743,15 @@ position = Vector2(-376, -248)
 
 [node name="GrapplePoint2" parent="." instance=ExtResource("4_halrj")]
 position = Vector2(-544, -96)
+
+[node name="GrapplePoint5" parent="." instance=ExtResource("4_halrj")]
+position = Vector2(1352, -56)
+
+[node name="GrapplePoint6" parent="." instance=ExtResource("4_halrj")]
+position = Vector2(1168, -56)
+
+[node name="GrapplePoint7" parent="." instance=ExtResource("4_halrj")]
+position = Vector2(1256, -72)
 
 [node name="Background" type="Node2D" parent="."]
 z_index = -10

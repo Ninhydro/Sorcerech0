@@ -51,13 +51,34 @@ var dir: Vector2
 var enemy_knockback_force = -20
 var gravity = 1000.0
 
-# --- NEW: stuck detection + chase tuning ---
+# --- NEW: chase jump settings ---
+@export var can_jump_chase := false          # enable this per-enemy in Inspector
+@export var jump_speed := 600.0              # vertical speed (similar to player jump_force)
+@export var jump_min_vertical_diff := 24.0   # minimum height difference to bother jumping
+@export var jump_max_vertical_diff := 224.0   # maximum height difference we can reasonably reach
+@export var jump_horizontal_speed := 220.0 
+@export var jump_horizontal_range := 300.0    # only jump if player roughly within this X range
+@export var jump_cooldown := 1             # seconds between jumps
+
+var jump_cooldown_timer: Timer               # internal timer
+@export var jump_forward_multiplier := 1.5
+@export var jump_forward_distance := 80.0    # where ray looks forward
+@export var jump_check_height := 50.0  
+@onready var jump_ray: RayCast2D = $JumpRay if has_node("JumpRay") else null
+# --- NEW: "hold jump" behaviour for enemies ---
+@export var jump_hold_time := 0.5       # how long they "hold" the jump (seconds)
+@export var jump_gravity_scale := 0.1
+var is_jump_rising: bool = false
+var jump_rise_time_left: float = 0.0
+
+@export var vertical_chase_deadzone := 8.0          # if player is this close in X, don't move horizontally
+@export var stop_distance_from_player := 20.0       # NEW: stop this far away from player (in pixels)
 @export var stuck_check_speed_threshold := 5.0      # min intended speed to consider "trying to move"
 @export var stuck_position_epsilon := 1.0           # max movement (px) to still count as "stuck"
 @export var stuck_time_threshold := 0.7             # seconds of being stuck before idling
 @export var stuck_idle_duration := 1.5              # idle time before turning around
 
-@export var vertical_chase_deadzone := 8.0          # if player is this close in X, don't move horizontally
+#@export var vertical_chase_deadzone := 8.0          # if player is this close in X, don't move horizontally
 
 var previous_position: Vector2                      # for detecting no movement
 var stuck_accumulator := 0.0
@@ -93,6 +114,8 @@ var is_preparing_attack := false
 
 @export var idle_velocity_threshold := 5.0  # if |velocity.x| < this, use idle instead of run
 
+@export var anim_not_moving_epsilon := 0.5  # how many pixels per frame we consider "not moving"
+var last_anim_position: Vector2   
 
 func _ready():
 	# Initialize attack cooldown timer
@@ -114,9 +137,15 @@ func _ready():
 	add_child(attack_delay_timer)
 	attack_delay_timer.timeout.connect(_on_attack_delay_timeout)
 	
+	# NEW: jump cooldown
+	jump_cooldown_timer = Timer.new()
+	jump_cooldown_timer.one_shot = true
+	add_child(jump_cooldown_timer)
+	
 	# Initialize enemy-specific components
 	_initialize_enemy()
 	previous_position = global_position
+	last_anim_position = global_position   # NEW
 	
 func _on_attack_delay_timeout():
 	can_start_attack = true
@@ -145,6 +174,7 @@ func _process(delta):
 		velocity.y += gravity * delta
 		velocity.x = 0
 	
+	_update_jump_rise(delta)
 	player = Global.playerBody
 	
 	# Global camouflage affects all enemies
@@ -226,13 +256,13 @@ func move(delta):
 		is_roaming = false
 		return
 	
-	# NEW: if we are in "stuck idle" state, do not move horizontally
+	# If we are in "stuck idle" state, do not move horizontally
 	if is_stuck_idle:
 		velocity.x = 0
 		is_roaming = false
 		return
 		
-	if is_dealing_damage or is_preparing_attack:  # ADDED is_preparing_attack here
+	if is_dealing_damage or is_preparing_attack:
 		velocity.x = 0
 		is_roaming = false
 		return
@@ -244,19 +274,28 @@ func move(delta):
 	if is_enemy_chase and player:
 		is_roaming = false
 		
-		var to_player = player.global_position - global_position
-		var abs_dx = abs(to_player.x)
+		var to_player: Vector2 = player.global_position - global_position
+		var abs_dx: float = abs(to_player.x)
 		
-		# NEW: if player is almost directly above, don't flicker-chase left/right
+		# 🔹 NEW: if close enough, stop a bit in front and just idle/attack
+		if abs_dx <= stop_distance_from_player:
+			velocity.x = 0
+			# just face the player, but don't push into them
+			if abs_dx > 0.1:
+				dir.x = sign(to_player.x)
+			return
+		
+		# If player is almost directly above – don't jitter left/right
 		if abs_dx < vertical_chase_deadzone:
 			velocity.x = 0
-			# Face player if there is *some* horizontal offset
 			if abs_dx > 0.1:
 				dir.x = sign(to_player.x)
 		else:
-			var dir_to_player = to_player.normalized()
+			var dir_to_player: Vector2 = to_player.normalized()
 			velocity.x = dir_to_player.x * speed
 			dir.x = sign(velocity.x)
+		
+		_try_chase_jump_to_platform()
 	else:
 		is_roaming = true
 		velocity.x = dir.x * speed
@@ -264,13 +303,16 @@ func move(delta):
 func handle_animation():
 	var new_animation := ""
 	
+	# How much we actually moved since last frame (horizontal only)
+	var moved_x: float = abs(global_position.x - last_anim_position.x)
+	
 	if dead:
 		new_animation = "death"
 	elif taking_damage:
 		new_animation = "hurt"
 	elif is_dealing_damage:
 		new_animation = "attack"
-	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
+	elif is_preparing_attack:
 		new_animation = "idle"
 		# Face the player during preparation
 		if player:
@@ -282,20 +324,32 @@ func handle_animation():
 			if projectile_spawn:
 				projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
 	else:
-		# NEW: treat stuck idle as idle animation
+		# --- NORMAL LOCOMOTION / IDLE ---
+		
+		# 1) If we are in special "stuck idle" state → idle
 		if is_stuck_idle:
 			new_animation = "idle"
+		
+		# 2) If we barely moved horizontally at all → idle
+		elif moved_x < anim_not_moving_epsilon:
+			new_animation = "idle"
+		
+		# 3) If speed is very low → idle
 		elif abs(velocity.x) < idle_velocity_threshold:
 			new_animation = "idle"
+		
+		# 4) Otherwise → run
 		else:
 			new_animation = "run"
+		
+		# Handle facing direction
 		if dir.x == -1:
 			sprite.flip_h = true
 		elif dir.x == 1:
 			sprite.flip_h = false
 		if projectile_spawn:
 			projectile_spawn.position.x = abs(projectile_spawn.position.x) * dir.x
-		
+	
 	# Only play if animation changed
 	if new_animation != current_animation:
 		current_animation = new_animation
@@ -308,6 +362,9 @@ func handle_animation():
 		elif new_animation == "death":
 			await animation_player.animation_finished
 			handle_death()
+	
+	# 🔹 Update last_anim_position AFTER deciding animation
+	last_anim_position = global_position
 
 func handle_death():
 	if can_drop_health and health_drop_scene:
@@ -570,4 +627,122 @@ func _update_stuck_state(delta: float) -> void:
 	
 	previous_position = global_position
 
+func _try_chase_jump() -> void:
+	if not can_jump_chase:
+		return
+	
+	if not is_enemy_chase or player == null or not is_instance_valid(player):
+		return
+	
+	if not is_on_floor():
+		return
+	
+	if jump_cooldown_timer.time_left > 0.0:
+		return
+	
+	var to_player: Vector2 = player.global_position - global_position
+	var dx: float = abs(to_player.x)
+	var dy: float = to_player.y
+	
+	if dx <= jump_horizontal_range \
+	and dy < -jump_min_vertical_diff \
+	and dy > -jump_max_vertical_diff:
+		
+		# vertical jump
+		velocity.y = -jump_speed
+		
+		# determine direction
+		var dir_x: float = sign(to_player.x)
+		if dir_x == 0:
+			# valid GDScript ternary:
+			dir_x = dir.x if dir.x != 0 else 1
+		
+		# horizontal boost forward
+		if abs(velocity.x) < speed:
+			velocity.x = dir_x * speed * jump_forward_multiplier
+			dir.x = dir_x
+		
+		jump_cooldown_timer.start(jump_cooldown)
 
+func _try_chase_jump_to_platform() -> void:
+	if not can_jump_chase:
+		return
+	
+	if not is_enemy_chase or player == null or not is_instance_valid(player):
+		return
+	
+	# Only jump if grounded
+	if not is_on_floor():
+		return
+	
+	# Cooldown
+	if jump_cooldown_timer.time_left > 0.0:
+		return
+	
+	if jump_ray == null:
+		return
+	
+	var to_player: Vector2 = player.global_position - global_position
+	var abs_dx: float = abs(to_player.x)
+	
+	# Only try if player roughly in front horizontally
+	if abs_dx > jump_horizontal_range:
+		return
+	
+	# Decide facing direction (towards player)
+	var dir_x: float = sign(to_player.x)
+	if dir_x == 0.0:
+		dir_x = dir.x if dir.x != 0.0 else 1.0
+	
+	# Aim ray to (≈80, -50) in local space, flipped by dir_x
+	var local_target: Vector2 = Vector2(
+		jump_forward_distance * dir_x,
+		-jump_check_height
+	)
+	jump_ray.target_position = local_target
+	
+	jump_ray.force_raycast_update()
+	
+	# Only jump if we actually see a platform in that direction
+	if not jump_ray.is_colliding():
+		return
+	
+	var hit_point: Vector2 = jump_ray.get_collision_point()
+	
+	# Make sure the platform is at least a bit above us
+	if hit_point.y >= global_position.y - 4.0:
+		return
+	
+	# --- Do the jump ---
+	velocity.y = -jump_speed
+	velocity.x = dir_x * jump_horizontal_speed
+	dir.x = dir_x
+	
+	is_jump_rising = true
+	jump_rise_time_left = jump_hold_time
+	
+	
+	jump_cooldown_timer.start(jump_cooldown)
+
+func _update_jump_rise(delta: float) -> void:
+	if not is_jump_rising:
+		return
+	
+	jump_rise_time_left -= delta
+	
+	# Stop holding if time is up, enemy starts falling, or lands again
+	if jump_rise_time_left <= 0.0 or is_on_floor() or velocity.y >= 0.0:
+		is_jump_rising = false
+		return
+	
+	# We already applied full gravity earlier:
+	# velocity.y += gravity * delta
+	# Here we "undo" part of it, to simulate lighter gravity
+	
+	var full_g: float = gravity * delta
+	var reduced_g: float = full_g * (1.0 - jump_gravity_scale)
+	
+	# reduced_g is the part of gravity we DON'T want, so subtract it
+	velocity.y -= reduced_g
+
+	
