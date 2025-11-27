@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="2_wuslc"]
 [ext_resource type="Texture2D" uid="uid://ch3fmbdvsgskw" path="res://assets_image/Background/Valentina/Valentina house-Sheet.png" id="4_6yk7h"]
 [ext_resource type="Script" path="res://scripts/world/Door_press.gd" id="4_fkgil"]
-[ext_resource type="PackedScene" uid="uid://krbnmqo4s6nb" path="res://scenes/objects/TObject.tscn" id="5_61emm"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="6_kgvqj"]
 [ext_resource type="Texture2D" uid="uid://da1muhepf1pcn" path="res://assets_image/Background/Exactlyion_Town/Exactlyion Town1.png" id="8_pnqli"]
 [ext_resource type="Texture2D" uid="uid://dqp7sf1t0dpmq" path="res://assets_image/Background/Exactlyion_Town/Exactlyion Town2.png" id="9_7xyyb"]
@@ -27,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="22_rw64g"]
 [ext_resource type="PackedScene" uid="uid://wug72wsr2c4e" path="res://dialogic/cutscene/cutscene21_5B3.tscn" id="23_m2s6c"]
 [ext_resource type="PackedScene" uid="uid://c3fg0v3ccw12x" path="res://scenes/objects/VideoTapePickup.tscn" id="27_wiylq"]
+[ext_resource type="PackedScene" uid="uid://btsntrt88p7xj" path="res://scenes/objects/TObject2.tscn" id="28_cvf4j"]
 [ext_resource type="Texture2D" uid="uid://dqpw5vwa0bil3" path="res://assets_image/Objects/collect_objects8.png" id="28_j1gdn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5eae"]
@@ -196,9 +196,6 @@ offset_right = -443.0
 offset_bottom = 63.0
 text = "Exactlyion Town"
 metadata/_edit_use_anchors_ = true
-
-[node name="TObject" parent="." instance=ExtResource("5_61emm")]
-position = Vector2(3048, -840)
 
 [node name="GrapplePoint" parent="." instance=ExtResource("6_kgvqj")]
 position = Vector2(-520, -176)
@@ -844,6 +841,9 @@ metadata/_edit_lock_ = true
 [node name="VideoTapePickup" parent="." instance=ExtResource("27_wiylq")]
 position = Vector2(3062, 996)
 tape_texture = ExtResource("28_j1gdn")
+
+[node name="TObject" parent="." instance=ExtResource("28_cvf4j")]
+position = Vector2(3024, -864)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

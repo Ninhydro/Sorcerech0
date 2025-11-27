@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtfpeqhgdrfec"]
+
+[ext_resource type="Script" path="res://scenes/enemies/spike_trap_move.gd" id="1_fj3p3"]
+[ext_resource type="Texture2D" uid="uid://cl7q6qj34r6si" path="res://assets_image/Objects/SpikeStrip2.png" id="2_mnwhw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vohmu"]
+size = Vector2(160, 66)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t2qnd"]
+radius = 280.865
+
+[node name="SpikeTrap" type="Area2D"]
+position = Vector2(-64, 24)
+script = ExtResource("1_fj3p3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 0.588235, 1, 1)
+position = Vector2(64, -24)
+scale = Vector2(0.625, 0.5625)
+texture = ExtResource("2_mnwhw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(64, -23)
+shape = SubResource("RectangleShape2D_vohmu")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(63, -18)
+shape = SubResource("CircleShape2D_t2qnd")

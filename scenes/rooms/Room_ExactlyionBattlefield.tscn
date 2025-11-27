@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cnbcuo1v16c7"]
+[gd_scene load_steps=19 format=3 uid="uid://cnbcuo1v16c7"]
 
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_5carx"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_kfpxq"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="12_g87bb"]
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="13_ackiy"]
 [ext_resource type="PackedScene" uid="uid://b2gmv5cvy0lxk" path="res://scenes/objects/MicrochipPickup.tscn" id="14_webm3"]
+[ext_resource type="PackedScene" uid="uid://c2nv1v2dftw2b" path="res://scenes/world/CyberSpot.tscn" id="15_qw1v5"]
+[ext_resource type="Texture2D" uid="uid://kvnkxhr7uy3v" path="res://assets_image/Objects/puzzle_objects1.png" id="16_433ev"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u82dg"]
 size = Vector2(2868, 1360)
@@ -391,3 +393,12 @@ pickup_id = "MC_006"
 [node name="MicrochipPickup2" parent="." instance=ExtResource("14_webm3")]
 position = Vector2(112, -592)
 pickup_id = "MC_007"
+
+[node name="CyberSpot" parent="." instance=ExtResource("15_qw1v5")]
+position = Vector2(2104, -744)
+
+[node name="PuzzleObjects3" type="Sprite2D" parent="."]
+z_index = -2
+position = Vector2(2104, -744)
+scale = Vector2(1.4375, 1.84375)
+texture = ExtResource("16_433ev")

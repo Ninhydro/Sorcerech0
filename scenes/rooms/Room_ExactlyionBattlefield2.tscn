@@ -4,7 +4,6 @@
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_h4b7r"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_vj13j"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="2_ap8j1"]
-[ext_resource type="PackedScene" uid="uid://krbnmqo4s6nb" path="res://scenes/objects/TObject.tscn" id="3_5casu"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="4_thmof"]
 [ext_resource type="Texture2D" uid="uid://rwk8getsy47x" path="res://assets_image/Background/Exactlyion_battlefield/Exactlyion-battlefield2-Sheet.png" id="6_qnd7j"]
 [ext_resource type="PackedScene" uid="uid://bs105i3gcljkr" path="res://scenes/world/SaveSpot.tscn" id="7_7newe"]
@@ -15,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="13_xhiif"]
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="14_vqmha"]
 [ext_resource type="PackedScene" uid="uid://b2gmv5cvy0lxk" path="res://scenes/objects/MicrochipPickup.tscn" id="15_6ax42"]
+[ext_resource type="PackedScene" uid="uid://btsntrt88p7xj" path="res://scenes/objects/TObject2.tscn" id="15_hbpom"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4sdei"]
 size = Vector2(1192, 584)
@@ -121,18 +121,6 @@ offset_top = 24.0
 offset_right = -309.0
 offset_bottom = 47.0
 text = "Exactlyion Battlefield 2"
-
-[node name="TObject" parent="." instance=ExtResource("3_5casu")]
-position = Vector2(-544, 0)
-
-[node name="TObject2" parent="." instance=ExtResource("3_5casu")]
-position = Vector2(-400, 320)
-
-[node name="TObject3" parent="." instance=ExtResource("3_5casu")]
-position = Vector2(-1523, -941)
-
-[node name="TObject4" parent="." instance=ExtResource("3_5casu")]
-position = Vector2(-1533, -1196)
 
 [node name="GrapplePoint" parent="." instance=ExtResource("4_thmof")]
 position = Vector2(-248, -16)
@@ -478,3 +466,15 @@ pickup_id = "MC_008"
 [node name="MicrochipPickup2" parent="." instance=ExtResource("15_6ax42")]
 position = Vector2(-1212, -1185)
 pickup_id = "MC_009"
+
+[node name="TObject5" parent="." instance=ExtResource("15_hbpom")]
+position = Vector2(-1496, -1199)
+
+[node name="TObject3" parent="." instance=ExtResource("15_hbpom")]
+position = Vector2(-1507, -947)
+
+[node name="TObject2" parent="." instance=ExtResource("15_hbpom")]
+position = Vector2(-383, 298)
+
+[node name="TObject" parent="." instance=ExtResource("15_hbpom")]
+position = Vector2(-531, 0)

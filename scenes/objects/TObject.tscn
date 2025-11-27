@@ -1,20 +1,21 @@
 [gd_scene load_steps=5 format=3 uid="uid://krbnmqo4s6nb"]
 
 [ext_resource type="Script" path="res://scenes/objects/TObject.gd" id="1_vbkh2"]
-[ext_resource type="Texture2D" uid="uid://com3npnfr635k" path="res://assets_image/placeholder/Props Items and VFX/acorn/Sprites/acorn-1.png" id="1_yg60u"]
 [ext_resource type="Material" uid="uid://btras4giugcwr" path="res://shaders/OutlineMaterial.tres" id="2_0xknh"]
+[ext_resource type="Texture2D" uid="uid://nj1tkc0bvik1" path="res://assets_image/Objects/puzzle_objects9.png" id="3_ijw8s"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_syqko"]
+radius = 22.0907
 
 [node name="TObject" type="RigidBody2D" groups=["TelekinesisObject"]]
 script = ExtResource("1_vbkh2")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_syqko")
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = ExtResource("2_0xknh")
-texture = ExtResource("1_yg60u")
+texture = ExtResource("3_ijw8s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_syqko")
 
 [node name="HighlightSprite" type="Sprite2D" parent="."]
 material = ExtResource("2_0xknh")
