@@ -157,7 +157,7 @@ offset_bottom = 57.0
 text = "Press down to enter"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Doors/Door_Valentina"]
-position = Vector2(1152, 128)
+position = Vector2(1097, 128)
 shape = SubResource("RectangleShape2D_05uf5")
 
 [node name="Door_Factory" type="Area2D" parent="Doors"]
@@ -536,7 +536,6 @@ use_exactlyion_style = true
 [node name="Background" type="Node2D" parent="."]
 modulate = Color(0.784314, 0.784314, 0.784314, 1)
 z_index = -10
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D19" type="Sprite2D" parent="Background"]
 modulate = Color(0.784314, 1, 0.784314, 1)
@@ -549,152 +548,240 @@ region_rect = Rect2(44.677, 1478.14, 133.689, 120.963)
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
-position = Vector2(48, -214)
-scale = Vector2(1, 1.00667)
+position = Vector2(10, -175)
+scale = Vector2(0.8, 0.806)
 texture = ExtResource("8_pnqli")
 vframes = 9
 frame = 2
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D2" type="Sprite2D" parent="Background"]
-position = Vector2(48, -214)
-scale = Vector2(1, 1.00667)
+position = Vector2(-15, -181)
+scale = Vector2(0.5, 0.503)
+texture = ExtResource("8_pnqli")
+vframes = 9
+frame = 3
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D5" type="Sprite2D" parent="Background"]
+position = Vector2(619, -82)
+scale = Vector2(0.5, 0.503)
+texture = ExtResource("8_pnqli")
+vframes = 9
+frame = 3
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D35" type="Sprite2D" parent="Background"]
+position = Vector2(1319, -67)
+scale = Vector2(0.5, 0.503)
+texture = ExtResource("8_pnqli")
+vframes = 9
+frame = 3
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D36" type="Sprite2D" parent="Background"]
+position = Vector2(2047, -135)
+scale = Vector2(0.5, 0.503)
 texture = ExtResource("8_pnqli")
 vframes = 9
 frame = 3
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D3" type="Sprite2D" parent="Background"]
-position = Vector2(48, -214)
-scale = Vector2(1, 1.00667)
+position = Vector2(-58, -77)
+scale = Vector2(0.5, 0.503)
 texture = ExtResource("8_pnqli")
 vframes = 9
 frame = 4
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D7" type="Sprite2D" parent="Background"]
-position = Vector2(1368, -134.886)
-scale = Vector2(1.03333, 1.08584)
+position = Vector2(1134, -93)
+scale = Vector2(0.8, 0.841)
+texture = ExtResource("9_7xyyb")
+vframes = 8
+frame = 1
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D34" type="Sprite2D" parent="Background"]
+position = Vector2(2276, -95)
+scale = Vector2(-0.8, 0.841)
 texture = ExtResource("9_7xyyb")
 vframes = 8
 frame = 1
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D4" type="Sprite2D" parent="Background"]
-position = Vector2(48, -214)
-scale = Vector2(1, 1.00667)
+position = Vector2(196, -68)
+scale = Vector2(0.5, 0.504)
 texture = ExtResource("8_pnqli")
 vframes = 9
 frame = 6
 metadata/_edit_lock_ = true
 
-[node name="Sprite2D5" type="Sprite2D" parent="Background"]
-position = Vector2(48, -214)
-scale = Vector2(1, 1.00667)
+[node name="Sprite2D30" type="Sprite2D" parent="Background"]
+position = Vector2(537, -360.181)
+scale = Vector2(-0.5, -0.474602)
 texture = ExtResource("8_pnqli")
 vframes = 9
-frame = 7
+frame = 6
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D6" type="Sprite2D" parent="Background"]
-position = Vector2(44.4875, -188.071)
-scale = Vector2(1, 1.00667)
+position = Vector2(238, -82)
+scale = Vector2(0.5, 0.503)
+texture = ExtResource("8_pnqli")
+vframes = 9
+frame = 8
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D29" type="Sprite2D" parent="Background"]
+position = Vector2(540, -369.551)
+scale = Vector2(-0.5, -0.471502)
 texture = ExtResource("8_pnqli")
 vframes = 9
 frame = 8
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D8" type="Sprite2D" parent="Background"]
-position = Vector2(1368, -134.886)
-scale = Vector2(1.03333, 1.08584)
+position = Vector2(1308, -18)
+scale = Vector2(0.5, 0.526)
 texture = ExtResource("9_7xyyb")
 vframes = 8
 frame = 2
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D9" type="Sprite2D" parent="Background"]
-position = Vector2(1368, -134.886)
-scale = Vector2(1.03333, 1.08584)
+position = Vector2(864, -19)
+scale = Vector2(0.5, 0.526)
+texture = ExtResource("9_7xyyb")
+vframes = 8
+frame = 3
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D37" type="Sprite2D" parent="Background"]
+position = Vector2(1551, -14)
+scale = Vector2(0.5, 0.526)
 texture = ExtResource("9_7xyyb")
 vframes = 8
 frame = 3
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D14" type="Sprite2D" parent="Background"]
-position = Vector2(2804, -200)
-scale = Vector2(1.09375, 0.877711)
+position = Vector2(3319, -104)
+scale = Vector2(0.8, 0.642)
 texture = ExtResource("10_wfcyn")
 vframes = 8
 frame = 1
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D10" type="Sprite2D" parent="Background"]
-position = Vector2(1328, -192)
-scale = Vector2(1.15303, 1.29091)
+position = Vector2(818, -40)
+scale = Vector2(0.5, 0.56)
+texture = ExtResource("9_7xyyb")
+vframes = 8
+frame = 4
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D31" type="Sprite2D" parent="Background"]
+position = Vector2(992, -285)
+scale = Vector2(-0.5, -0.56)
 texture = ExtResource("9_7xyyb")
 vframes = 8
 frame = 4
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D12" type="Sprite2D" parent="Background"]
-position = Vector2(1368, -134.886)
-scale = Vector2(1.03333, 1.08584)
+position = Vector2(1426, -75)
+scale = Vector2(0.7, 0.737)
+texture = ExtResource("9_7xyyb")
+vframes = 8
+frame = 6
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D32" type="Sprite2D" parent="Background"]
+position = Vector2(1680, -353)
+scale = Vector2(-0.7, -0.737)
 texture = ExtResource("9_7xyyb")
 vframes = 8
 frame = 6
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D13" type="Sprite2D" parent="Background"]
-position = Vector2(1368, -134.886)
-scale = Vector2(1.03333, 1.08584)
+position = Vector2(1259, -121)
+scale = Vector2(0.9, 0.946)
 texture = ExtResource("9_7xyyb")
 vframes = 8
 frame = 7
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D15" type="Sprite2D" parent="Background"]
-position = Vector2(2588, -191.132)
-scale = Vector2(0.90625, 0.877711)
+position = Vector2(2917, -59)
+scale = Vector2(0.5, 0.485)
 texture = ExtResource("10_wfcyn")
 vframes = 8
 frame = 2
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D16" type="Sprite2D" parent="Background"]
-position = Vector2(2588, -191.132)
-scale = Vector2(0.90625, 0.877711)
+position = Vector2(2286, -60)
+scale = Vector2(0.5, 0.485)
 texture = ExtResource("10_wfcyn")
 vframes = 8
 frame = 3
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D17" type="Sprite2D" parent="Background"]
-position = Vector2(2784, -200)
-scale = Vector2(0.90625, 0.877711)
+position = Vector2(2640, -74)
+scale = Vector2(0.5, 0.485)
+texture = ExtResource("10_wfcyn")
+vframes = 8
+frame = 6
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D38" type="Sprite2D" parent="Background"]
+position = Vector2(2969, -3.99999)
+scale = Vector2(-0.5, 0.526)
+texture = ExtResource("9_7xyyb")
+vframes = 8
+frame = 3
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D39" type="Sprite2D" parent="Background"]
+position = Vector2(3441, -36)
+scale = Vector2(-0.5, 0.526)
+texture = ExtResource("9_7xyyb")
+vframes = 8
+frame = 3
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D33" type="Sprite2D" parent="Background"]
+position = Vector2(2360, -381)
+scale = Vector2(-0.5, -0.485)
 texture = ExtResource("10_wfcyn")
 vframes = 8
 frame = 6
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D18" type="Sprite2D" parent="Background"]
-position = Vector2(2784, -192)
-scale = Vector2(0.90625, 0.877711)
+position = Vector2(2856, -135)
+scale = Vector2(0.7, 0.678)
 texture = ExtResource("10_wfcyn")
 vframes = 8
 frame = 7
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D20" type="Sprite2D" parent="Background"]
-position = Vector2(2920, -776)
-scale = Vector2(0.90625, 0.877711)
+position = Vector2(2871, -758)
+scale = Vector2(0.8, 0.775)
 texture = ExtResource("11_05u1s")
 vframes = 5
 frame = 3
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D21" type="Sprite2D" parent="Background"]
-position = Vector2(3104, -776)
-scale = Vector2(0.90625, 0.877711)
+position = Vector2(2945, -684)
+scale = Vector2(0.5, 0.485)
 texture = ExtResource("11_05u1s")
 vframes = 5
 frame = 4
@@ -756,9 +843,10 @@ frame = 6
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D11" type="Sprite2D" parent="Background"]
-position = Vector2(1554, -47)
+position = Vector2(1553, -26)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("15_sfoo7")
+metadata/_edit_lock_ = true
 
 [node name="SaveSpot" parent="." instance=ExtResource("13_wlpeo")]
 position = Vector2(520, 56)

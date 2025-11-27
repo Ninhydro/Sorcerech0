@@ -1,19 +1,27 @@
-[gd_scene load_steps=9 format=3 uid="uid://2dwtol1f3sey"]
+[gd_scene load_steps=11 format=3 uid="uid://2dwtol1f3sey"]
 
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_5efam"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_bfrxd"]
+[ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_kkp24"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_up4da"]
 [ext_resource type="Texture2D" uid="uid://b8owh3b71jqfo" path="res://assets_image/Background/Exactlyion_Center/Exactlyion Center-Sheet.png" id="4_o0ofr"]
 [ext_resource type="PackedScene" uid="uid://bronoe2p580sf" path="res://dialogic/cutscene/cutscene14C.tscn" id="5_jn263"]
 [ext_resource type="PackedScene" uid="uid://b6neiab4paji0" path="res://dialogic/cutscene/cutscene15C.tscn" id="6_u8h6v"]
+[ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="8_lmqlp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xfvtn"]
-size = Vector2(1044, 465)
+size = Vector2(1044, 481)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spevo"]
 size = Vector2(28, 24)
 
 [node name="RoomExactlyionCentral" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-560, -344)
+scale = Vector2(2.61218, 2.61468)
+texture = ExtResource("1_kkp24")
 
 [node name="Area2D" type="Area2D" parent="."]
 script = ExtResource("1_5efam")
@@ -22,7 +30,7 @@ chunk_name = "Exactlyion Central Room"
 metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-218, -159.5)
+position = Vector2(-218, -167.5)
 shape = SubResource("RectangleShape2D_xfvtn")
 metadata/_edit_lock_ = true
 
@@ -96,7 +104,72 @@ region_rect = Rect2(819.003, 479.241, 133.199, 488.253)
 metadata/_edit_lock_ = true
 
 [node name="cutscene14C" parent="." instance=ExtResource("5_jn263")]
-position = Vector2(-468, -61)
+position = Vector2(-472, -56)
+metadata/_edit_lock_ = true
 
 [node name="cutscene15C" parent="." instance=ExtResource("6_u8h6v")]
 position = Vector2(205.301, 45.624)
+metadata/_edit_lock_ = true
+
+[node name="GrapplePoint" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-536, -8)
+
+[node name="GrapplePoint10" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-48, -152)
+
+[node name="GrapplePoint12" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-208, -152)
+
+[node name="GrapplePoint13" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-368, -152)
+
+[node name="GrapplePoint14" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-520, -152)
+
+[node name="GrapplePoint15" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-440, -216)
+
+[node name="GrapplePoint21" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-368, -280)
+
+[node name="GrapplePoint16" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-288, -224)
+
+[node name="GrapplePoint18" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(40, -224)
+
+[node name="GrapplePoint17" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-128, -224)
+
+[node name="GrapplePoint20" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-208, -280)
+
+[node name="GrapplePoint19" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-48, -280)
+
+[node name="GrapplePoint11" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(120, -152)
+
+[node name="GrapplePoint6" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-448, -80)
+
+[node name="GrapplePoint7" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-296, -80)
+
+[node name="GrapplePoint8" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-128, -88)
+
+[node name="GrapplePoint9" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(32, -88)
+
+[node name="GrapplePoint2" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(112, -8)
+
+[node name="GrapplePoint3" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-48, -8)
+
+[node name="GrapplePoint4" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-208, -8)
+
+[node name="GrapplePoint5" parent="." instance=ExtResource("8_lmqlp")]
+position = Vector2(-376, -8)
