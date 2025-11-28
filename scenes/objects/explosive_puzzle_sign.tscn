@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbmkbxerbojg7"]
+
+[ext_resource type="Script" path="res://scenes/objects/explosive_puzzle_sign.gd" id="1_04j26"]
+[ext_resource type="Texture2D" uid="uid://dw2la68vffmg" path="res://assets_image/Objects/object5.png" id="2_djt5x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d17l4"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hxd3a"]
+size = Vector2(48, 56)
+
+[node name="ExplosivePuzzleSign" type="Area2D"]
+script = ExtResource("1_04j26")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_d17l4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_djt5x")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_hxd3a")

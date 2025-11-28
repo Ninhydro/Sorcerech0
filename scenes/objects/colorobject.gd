@@ -1,6 +1,6 @@
-extends TelekinesisObject  # Change this line!
+# res://scripts/objects/ColorObject.gd
+extends TelekinesisObject
 class_name ColorObject
-
 
 enum ColorType {
 	RED, BLUE, YELLOW, 
@@ -10,11 +10,32 @@ enum ColorType {
 }
 
 @export var color_type: ColorType = ColorType.RED
-@export var original_position: Vector2
-@onready var collision_shape = $CollisionShape2D
 
+# Spawn / reset
+@export var original_position: Vector2
+@export var spawn_marker_path: NodePath
+var spawn_marker: Marker2D = null
+
+@export var fall_reset_enabled: bool = true
+@export var fall_reset_distance: float = 800.0  # how far below original before reset
+
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+
+
+# Mixer-related
 var is_in_mixer: bool = false
 var is_available_for_mixing: bool = true
+
+# EXPLOSIVE BEHAVIOUR
+@export var is_explosive: bool = false
+@export var explosion_countdown_time: float = 3.0
+
+@onready var hitbox_area: Area2D = $HitboxArea if has_node("HitboxArea") else null
+@onready var explosion_area: Area2D = $ExplosionArea if has_node("ExplosionArea") else null
+@onready var countdown_label: Label = $CountdownLabel if has_node("CountdownLabel") else null
+
+var countdown_running: bool = false
+var countdown_remaining: float = 0.0
 
 var color_values = {
 	ColorType.RED: Color.RED,
@@ -30,30 +51,69 @@ var color_values = {
 	ColorType.BLACK: Color.BLACK,
 	ColorType.GOLD: Color.GOLD
 }
-#@onready var outline_material = preload("res://shaders/OutlineMaterial.tres")
-
 
 func _ready():
 	add_to_group("TelekinesisObject")
 	
+	# Resolve spawn marker if set
+	if spawn_marker_path != NodePath():
+		var node = get_node_or_null(spawn_marker_path)
+		if node and node is Marker2D:
+			spawn_marker = node
+			original_position = spawn_marker.global_position
+		else:
+			push_warning("ColorObject %s: spawn_marker_path does not point to a Marker2D" % name)
+	
+	# If no original_position set, use current
 	if original_position == Vector2.ZERO:
 		original_position = global_position
+	
 	update_appearance()
-
-
-	if has_node("Sprite2D"):
-		sprite = $Sprite2D
+	
+	if sprite:
 		if sprite.material != null:
 			sprite.material.set_shader(null)
 			sprite.material = null
-		print("Sprite2D found for object: ", name)
-
 	else:
 		print("ERROR: No Sprite2D node found for object: ", name)
 	
-func _process(delta):
-	if global_position.y > 2000:
-		reset_to_original()
+	# Explosive hooks
+	if hitbox_area:
+		hitbox_area.area_entered.connect(_on_hitbox_area_entered)
+	
+	if countdown_label:
+		countdown_label.visible = false
+
+	# Make sure objects spawn unfrozen
+	is_in_mixer = false
+	is_available_for_mixing = true
+	if collision_shape:
+		collision_shape.disabled = false
+	freeze = false
+
+
+func _process(delta: float) -> void:
+	# Relative fall reset from original_position, not hardcoded y=2000
+	if fall_reset_enabled:
+		if global_position.y > original_position.y + fall_reset_distance:
+			reset_to_original()
+	
+	# Handle explosive countdown
+	if countdown_running:
+		countdown_remaining -= delta * Global.global_time_scale
+		if countdown_remaining < 0:
+			countdown_remaining = 0
+		
+		if countdown_label:
+			countdown_label.visible = true
+			countdown_label.text = str(round(countdown_remaining * 10.0) / 10.0)  # 1 decimal
+		
+		if countdown_remaining <= 0.0:
+			countdown_running = false
+			_explode()
+
+
+# ===== Telekinesis basic controls =====
 
 func start_levitation(player_pos: Vector2):
 	is_controlled = true
@@ -72,15 +132,25 @@ func update_levitation(player_pos: Vector2):
 func stop_levitation():
 	is_controlled = false
 
+
+# ===== Visual / color =====
+
 func update_appearance():
-	if sprite:
-		if color_type == ColorType.GOLD:
-			var gold_texture = preload("res://assets_image/Objects/collect_objects6.png")
-			sprite.texture = gold_texture
-			sprite.modulate = Color.WHITE  # Use texture's original colors
-		else:
-			# For all other colors, use color modulation
-			sprite.modulate = color_values[color_type]
+	if not sprite:
+		return
+	
+	if is_explosive:
+		# Optional: ensure explosive uses pure texture (no tint), or keep the tint if you like
+		sprite.modulate = Color.WHITE
+		return
+	
+	if color_type == ColorType.GOLD:
+		var gold_texture = preload("res://assets_image/Objects/collect_objects6.png")
+		sprite.texture = gold_texture
+		sprite.modulate = Color.WHITE
+	else:
+		sprite.modulate = color_values[color_type]
+
 
 func get_color_type():
 	return color_type
@@ -88,6 +158,9 @@ func get_color_type():
 func set_color_type(new_type: ColorType):
 	color_type = new_type
 	update_appearance()
+
+
+# ===== Mixer integration =====
 
 func set_is_in_mixer(in_mixer: bool):
 	is_in_mixer = in_mixer
@@ -101,10 +174,63 @@ func _deferred_set_physics(in_mixer: bool):
 		collision_shape.disabled = in_mixer
 	freeze = in_mixer
 
+
+# ===== Reset position =====
+
 func reset_to_original():
 	global_position = original_position
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0
 	set_is_in_mixer(false)
 	freeze = false
+
+
+# ===== EXPLOSIVE API =====
+
+func make_explosive(time: float = 3.0):
+	is_explosive = true
+	explosion_countdown_time = time
+	update_appearance()
+
+
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	if not is_explosive:
+		return
 	
+	# Attack hitbox starts the countdown
+	if area == Global.playerDamageZone and not countdown_running:
+		_start_countdown()
+
+
+func _start_countdown():
+	countdown_running = true
+	countdown_remaining = explosion_countdown_time
+	if countdown_label:
+		countdown_label.visible = true
+
+
+func _explode():
+	print("ColorObject: EXPLOSION at ", global_position)
+	
+	# Hide self visual
+	if sprite:
+		sprite.visible = false
+	
+	# Affect everything in explosion_area
+	if explosion_area:
+		# bodies
+		for body in explosion_area.get_overlapping_bodies():
+			if body and is_instance_valid(body):
+				if body is ExplosiveDoor or body.is_in_group("ExplosiveDoor"):
+					body.on_explosive_hit()
+		
+		# areas if needed (optional)
+		for ar in explosion_area.get_overlapping_areas():
+			if ar and is_instance_valid(ar):
+				if  ar.is_in_group("ExplosiveDoor"):
+					ar.on_explosive_hit()
+	
+	# You can add particles / sound here
+	
+	# Finally remove the bomb
+	queue_free()

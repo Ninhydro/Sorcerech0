@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://lp8gqkeevk5j"]
+
+[ext_resource type="Script" path="res://scenes/objects/colormixer.gd" id="1_vej0v"]
+[ext_resource type="Texture2D" uid="uid://c48xvtl3psu3t" path="res://assets_image/Objects/puzzle2_objects4.png" id="2_76cvt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kk668"]
+size = Vector2(32, 32)
+
+[node name="Explosive_ColorMixer" type="Area2D"]
+script = ExtResource("1_vej0v")
+use_explosive_orange = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_kk668")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_76cvt")
+
+[node name="OutputSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, 30)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

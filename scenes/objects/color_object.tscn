@@ -5,7 +5,7 @@
 [ext_resource type="Material" uid="uid://btras4giugcwr" path="res://shaders/OutlineMaterial.tres" id="3_1be6f"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7tqnc"]
-radius = 6.0
+radius = 7.0
 
 [node name="ColorObject" type="RigidBody2D"]
 script = ExtResource("1_17qeg")
