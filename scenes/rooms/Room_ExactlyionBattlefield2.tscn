@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://be402c7tmtfjf"]
+[gd_scene load_steps=25 format=3 uid="uid://be402c7tmtfjf"]
 
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_f7n0r"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_h4b7r"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://vywcyt3bp8vw" path="res://scenes/enemies/laser_trap.tscn" id="16_7ebdu"]
 [ext_resource type="PackedScene" uid="uid://dnu1dcekl6spa" path="res://scenes/objects/puzzledoor_2.tscn" id="17_i5sc4"]
 [ext_resource type="PackedScene" uid="uid://dh0yc5d53ts1l" path="res://scenes/objects/buttonpuzzle_2.tscn" id="18_tblxt"]
+[ext_resource type="PackedScene" uid="uid://bdr1pxrtguia0" path="res://scenes/enemies/Spawner_falling_spike.tscn" id="19_kadxm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4sdei"]
 size = Vector2(1192, 584)
@@ -530,3 +531,6 @@ stay_pressed = false
 position = Vector2(-1607, -1030)
 door_target = NodePath("../puzzledoor2")
 stay_pressed = false
+
+[node name="SpawnerFallSpike" parent="." instance=ExtResource("19_kadxm")]
+position = Vector2(-1651, -1177)

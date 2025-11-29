@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dignl4ivlyijc"]
+[gd_scene load_steps=25 format=3 uid="uid://dignl4ivlyijc"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_HiddenTown.gd" id="1_25ggv"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_grdml"]
@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://djf8vabhjgbv5" path="res://scenes/enemies/TankEnemy.tscn" id="18_uxsph"]
 [ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="19_mhgjg"]
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="20_3jn1s"]
+[ext_resource type="PackedScene" uid="uid://bdr1pxrtguia0" path="res://scenes/enemies/Spawner_falling_spike.tscn" id="21_26582"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0gaot"]
 size = Vector2(2656, 1064)
@@ -591,3 +592,57 @@ position = Vector2(936, -784)
 
 [node name="HealthPickup8" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(1528, -432)
+
+[node name="SpawnerFallSpike" parent="." instance=ExtResource("21_26582")]
+position = Vector2(272, -496)
+
+[node name="SpawnerFallSpike2" parent="." instance=ExtResource("21_26582")]
+position = Vector2(528, -496)
+
+[node name="SpawnerFallSpike3" parent="." instance=ExtResource("21_26582")]
+position = Vector2(152, -440)
+
+[node name="SpawnerFallSpike4" parent="." instance=ExtResource("21_26582")]
+position = Vector2(864, -240)
+
+[node name="SpawnerFallSpike5" parent="." instance=ExtResource("21_26582")]
+position = Vector2(944, -240)
+
+[node name="SpawnerFallSpike6" parent="." instance=ExtResource("21_26582")]
+position = Vector2(800, -240)
+
+[node name="SpawnerFallSpike7" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1872, -232)
+
+[node name="SpawnerFallSpike8" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1512, -232)
+
+[node name="SpawnerFallSpike9" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1272, -544)
+
+[node name="SpawnerFallSpike10" parent="." instance=ExtResource("21_26582")]
+position = Vector2(928, -552)
+
+[node name="SpawnerFallSpike11" parent="." instance=ExtResource("21_26582")]
+position = Vector2(880, -840)
+
+[node name="SpawnerFallSpike12" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1232, -840)
+
+[node name="SpawnerFallSpike13" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1464, -832)
+
+[node name="SpawnerFallSpike14" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1552, -832)
+spawn_interval = 3.0
+
+[node name="SpawnerFallSpike15" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1504, -832)
+spawn_interval = 8.0
+
+[node name="SpawnerFallSpike16" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1728, -544)
+spawn_interval = 8.0
+
+[node name="SpawnerFallSpike17" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1656, -544)
