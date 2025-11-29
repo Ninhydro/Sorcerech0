@@ -146,6 +146,7 @@ enemy_damage = 8
 health = 50
 health_max = 50
 projectile_scene = ExtResource("2_ncojk")
+edge_priority_over_chase = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.714286)

@@ -5,17 +5,18 @@
 [ext_resource type="Texture2D" uid="uid://dotttdvklbm7f" path="res://assets_image/Objects/object3.png" id="3_bcmoa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jygxp"]
-size = Vector2(48, 37)
+size = Vector2(34, 30)
 
 [node name="TObject" type="RigidBody2D" groups=["TelekinesisObject"]]
 script = ExtResource("1_nn8xr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = ExtResource("2_5nsl5")
+scale = Vector2(0.8, 0.8)
 texture = ExtResource("3_bcmoa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 2.5)
+position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_jygxp")
 
 [node name="HighlightSprite" type="Sprite2D" parent="."]

@@ -341,6 +341,9 @@ var nora_station_3_completed: bool = false  # Gold station
 var minigame_valentina_completed = false
 
 var explode_door = false
+var cannon_goal_door_destroyed = false
+var final_puzzle_door = false
+
 
 # Function to add/update quest markers
 func add_quest_marker(quest_name: String, world_position: Vector2):
@@ -531,6 +534,9 @@ func get_save_data() -> Dictionary:
 		"minigame_nora_completed": minigame_nora_completed,
 		"minigame_valentina_completed": minigame_valentina_completed,
 		"explode_door": explode_door,
+		"cannon_goal_door_destroyed": cannon_goal_door_destroyed,
+		"final_puzzle_door": final_puzzle_door,
+		
 		
 	}
 	return data
@@ -608,7 +614,9 @@ func apply_load_data(data: Dictionary):
 	minigame_nora_completed = data.get("minigame_nora_completed", false)
 	minigame_valentina_completed = data.get("minigame_valentina_completed", false)
 	explode_door = data.get("explode_door", false)
-	
+	cannon_goal_door_destroyed = data.get("cannon_goal_door_destroyed", false)
+	final_puzzle_door = data.get("final_puzzle_door", false)
+
 	print("Global: Save data loaded successfully.")
 
 func reset_to_defaults():
@@ -696,6 +704,8 @@ func reset_to_defaults():
 	minigame_nora_completed = false
 	minigame_valentina_completed = false
 	explode_door = false
+	cannon_goal_door_destroyed = false
+	final_puzzle_door = false
 	
 # Helper functions for quest marker serialization
 func _serialize_quest_markers() -> Dictionary:

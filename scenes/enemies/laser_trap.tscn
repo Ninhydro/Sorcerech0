@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://vywcyt3bp8vw"]
+
+[ext_resource type="Script" path="res://scenes/enemies/laser_trap.gd" id="1_qbxan"]
+[ext_resource type="Texture2D" uid="uid://bdw68gybu2q3b" path="res://assets_image/Objects/laser5.png" id="2_2xtdo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vohmu"]
+size = Vector2(40, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t2qnd"]
+radius = 208.154
+
+[node name="LaserTrap" type="Area2D"]
+position = Vector2(-64, 24)
+script = ExtResource("1_qbxan")
+local_direction = Vector2(-1, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-24, 0)
+shape = SubResource("RectangleShape2D_vohmu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-24, 0)
+scale = Vector2(0.625, 0.5625)
+texture = ExtResource("2_2xtdo")
+
+[node name="LaserOrigin" type="Marker2D" parent="."]
+
+[node name="LaserRay" type="RayCast2D" parent="LaserOrigin"]
+target_position = Vector2(10, 0)
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_t2qnd")

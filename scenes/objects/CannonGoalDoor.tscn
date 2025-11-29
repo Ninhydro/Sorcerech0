@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://b4er2cyr1bsue"]
+
+[ext_resource type="Script" path="res://scenes/objects/CannonGoalDoor.gd" id="1_ek7bp"]
+[ext_resource type="Texture2D" uid="uid://cng1i1ffqj665" path="res://assets_image/Objects/door.png" id="2_vln3d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_axykj"]
+size = Vector2(44, 64)
+
+[sub_resource type="Animation" id="Animation_66ups"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_dwnui"]
+resource_name = "explode"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x15c3"]
+_data = {
+"RESET": SubResource("Animation_66ups"),
+"explode": SubResource("Animation_dwnui")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5b5f0"]
+size = Vector2(65, 80)
+
+[node name="CannonGoalDoor" type="StaticBody2D"]
+script = ExtResource("1_ek7bp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_vln3d")
+hframes = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_axykj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_x15c3")
+}
+
+[node name="HitArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_5b5f0")

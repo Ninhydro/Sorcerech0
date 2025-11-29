@@ -7,7 +7,7 @@ var speed: float:
 	get:
 		return base_speed * Global.global_time_scale
 		
-@export var attack_range := 60
+@export var attack_range := 50
 @export var enemy_damage := 0
 @export var attack_cooldown := 2.0
 @export var health := 100
@@ -103,6 +103,8 @@ var melee_attack_cooldown := false
 
 var should_turn_around := false
 var edge_turn_cooldown := 0.0
+
+@export var edge_priority_over_chase := false
 
 var hit_stun_time := 0.3
 var hit_stun_timer: Timer
@@ -206,7 +208,8 @@ func _process(delta):
 func detect_edges():
 	if not use_edge_detection or edge_turn_cooldown > 0:
 		return
-	
+	if is_enemy_chase and edge_priority_over_chase:
+		return
 	# Force raycast updates
 	if edge_ray_left:
 		edge_ray_left.force_raycast_update()
@@ -267,9 +270,12 @@ func move(delta):
 		is_roaming = false
 		return
 	
-	if should_turn_around and not is_enemy_chase and edge_turn_cooldown <= 0:
-		turn_around_at_edge()
-		return
+	if should_turn_around and edge_turn_cooldown <= 0:
+	# If NOT chasing → always turn
+	# If chasing → only turn if this enemy prioritizes edges
+		if (not is_enemy_chase) or edge_priority_over_chase:
+			turn_around_at_edge()
+			return
 		
 	if is_enemy_chase and player:
 		is_roaming = false
@@ -277,19 +283,37 @@ func move(delta):
 		var to_player: Vector2 = player.global_position - global_position
 		var abs_dx: float = abs(to_player.x)
 		
-		# 🔹 NEW: if close enough, stop a bit in front and just idle/attack
+		# Decide facing direction towards player first
+		var chase_dir_x: float = sign(to_player.x)
+		if chase_dir_x == 0.0:
+			chase_dir_x = dir.x if dir.x != 0.0 else 1.0
+		dir.x = chase_dir_x
+		
+		# ===== HARD EDGE PRIORITY WHILE CHASING =====
+		if use_edge_detection and edge_priority_over_chase:
+			# Update rays
+			if edge_ray_left:
+				edge_ray_left.force_raycast_update()
+			if edge_ray_right:
+				edge_ray_right.force_raycast_update()
+			
+			# If about to walk off → stop and don't move horizontally
+			if dir.x > 0 and edge_ray_right and not edge_ray_right.is_colliding():
+				velocity.x = 0
+				return
+			elif dir.x < 0 and edge_ray_left and not edge_ray_left.is_colliding():
+				velocity.x = 0
+				return
+		# ===== END EDGE PRIORITY BLOCK =====
+		
+		# 🔹 If close enough, stop a bit in front and just idle/attack
 		if abs_dx <= stop_distance_from_player:
 			velocity.x = 0
-			# just face the player, but don't push into them
-			if abs_dx > 0.1:
-				dir.x = sign(to_player.x)
 			return
 		
 		# If player is almost directly above – don't jitter left/right
 		if abs_dx < vertical_chase_deadzone:
 			velocity.x = 0
-			if abs_dx > 0.1:
-				dir.x = sign(to_player.x)
 		else:
 			var dir_to_player: Vector2 = to_player.normalized()
 			velocity.x = dir_to_player.x * speed

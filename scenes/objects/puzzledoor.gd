@@ -1,5 +1,5 @@
 extends StaticBody2D
-class_name PuzzleDoor
+class_name PuzzleDoor2
 
 @export var required_station: int = 1
 @export var move_distance: float = 64.0  # How far to move up

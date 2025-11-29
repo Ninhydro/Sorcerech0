@@ -845,35 +845,26 @@ func _on_animation_player_animation_finished(anim_name):
 
 func check_hitbox():
 	var hitbox_areas = $Hitbox.get_overlapping_areas()
-	var damage: int = 0 # Initialize damage to 0
-	var hit_spikes: bool = false
+	var damage: int = 0
+	var hit_spike_ref: SpikeTrap = null
 
-	
 	if hitbox_areas:
 		for area in hitbox_areas:
-			# Check for enemy damage
-			#if area.get_parent() is EnemyA:
-			#	damage = Global.enemyADamageAmount
-			#	break
-			#For another enemy or boss make like EnemyB or BossA or BossB
-			#if area.get_parent() is EnemyA:
-			#	damage = Global.enemyADamageAmount
-			#	break
-			# Check for spikes
+			# Spikes
 			if area.is_in_group("spikes"):
-				hit_spikes = true
+				hit_spike_ref = area as SpikeTrap
 				break
-			# Check for instant death
+			# Instant death
 			elif area.is_in_group("instant_death"):
 				Global.health = 0
 				handle_death()
 				return
-	
+
 	if can_take_damage:
 		if Global.enemyAdealing == true and damage > 0:
 			take_damage(damage)
-		elif hit_spikes:
-			respawn_nearby_spike()
+		elif hit_spike_ref != null:
+			respawn_nearby_spike(hit_spike_ref)
 			
 func take_damage(damage):
 	print("Player taking damage: ", damage, " from source: ", get_stack())
@@ -997,71 +988,84 @@ func respawn_at_save_point():
 	# Emit health change signal
 	health_changed.emit(Global.health, Global.health_max)
 
-func respawn_nearby_spike():
-	# Only take percentage damage for spike falls
-	var spike_damage = (spike_damage_percentage / 100.0) * Global.health_max
-	Global.health = max(1, Global.health - spike_damage)  # Ensure at least 1 HP remains
+func respawn_nearby_spike(spike_ref: SpikeTrap = null):
+	# Prevent re-entrance / chain-triggering
+	if not can_take_damage or dead:
+		return
 	
-	# Find a safe respawn position nearby (using await since it's a coroutine)
-	var safe_position = await find_nearby_safe_position()
-	if safe_position != Vector2.ZERO:
-		global_position = safe_position
-	
-	# Reset player state (no full death animation)
-	player_hit = true
 	can_take_damage = false
-	
-	# Small knockback or visual effect
-	sprite.modulate = Color(1, 0.5, 0.5)  # Red tint
+	player_hit = true
+
+	# Percentage damage from spikes
+	var spike_damage = int((spike_damage_percentage / 100.0) * Global.health_max)
+	Global.health = max(0, Global.health - spike_damage)
+
+	# Death by spikes
+	if Global.health <= 0:
+		Global.health = 0
+		health_changed.emit(Global.health, Global.health_max)
+		handle_death()
+		return
+
+	# Decide where to respawn
+	var safe_position: Vector2 = Vector2.ZERO
+
+	# 1) Prefer spike's custom marker if set
+	if spike_ref != null and is_instance_valid(spike_ref) and spike_ref.respawn_marker != null:
+		safe_position = spike_ref.respawn_marker.global_position
+	else:
+		# 2) Fallback: search nearby safe tile
+		safe_position = await find_nearby_safe_position()
+
+	# Apply respawn pos with a slight upward offset so we don't clip into floor
+	if safe_position != Vector2.ZERO:
+		global_position = safe_position + Vector2(0, -8)
+	velocity = Vector2.ZERO  # stop any fall momentum
+
+	# Hurt feedback
+	sprite.modulate = Color(1, 0.5, 0.5)
 	await get_tree().create_timer(0.3).timeout
 	sprite.modulate = Color(1, 1, 1)
-	
-	# Reset states
+
 	player_hit = false
 	can_take_damage = true
-	
-	# Emit health change
+
 	health_changed.emit(Global.health, Global.health_max)
+
 	
 func find_nearby_safe_position() -> Vector2:
-	# Try several positions around the player to find a safe spot
+	# Try several positions mainly above the current spot
 	var check_positions = [
-		Vector2(50, 0),   # Right
-		Vector2(-50, 0),  # Left
-		Vector2(0, -50),  # Up
-		Vector2(75, 0),   # Further right
-		Vector2(-75, 0),  # Further left
-		Vector2(100, 0),  # Even further right
-		Vector2(-100, 0)  # Even further left
+		Vector2(0, -48),   # Straight up
+		Vector2(0, -96),   # Higher up
+		Vector2(32, -48),  # Up-right
+		Vector2(-32, -48), # Up-left
+		Vector2(64, -48),  # Further right
+		Vector2(-64, -48)  # Further left
 	]
-	
-	# Store original position
+
 	var original_position = global_position
-	
+
 	for offset in check_positions:
 		var test_position = original_position + offset
 		
 		# Temporarily move player to test position
 		global_position = test_position
-		await get_tree().process_frame  # Allow collision detection to update
-		
-		# Check if this position is safe (not colliding with spikes)
+		await get_tree().process_frame  # Let overlap checks update
+
 		var is_safe = true
-		for i in get_slide_collision_count():
-			var collision = get_slide_collision(i)
-			var collider = collision.get_collider()
-			if collider and (collider.is_in_group("spikes") or collider.is_in_group("instant_death")):
+		var areas = Hitbox.get_overlapping_areas()
+		for area in areas:
+			if area.is_in_group("spikes") or area.is_in_group("instant_death"):
 				is_safe = false
 				break
 		
-		# Also check if we're on a valid floor
-		if is_safe and is_on_floor():
+		if is_safe:
 			print("Found safe respawn position: ", test_position)
 			return test_position
-	
-	# If no safe position found, return a default offset
-	print("No safe position found, using default offset")
-	return original_position + Vector2(100, 0)
+
+	print("No safe position found, using default offset above.")
+	return original_position + Vector2(0, -96)
 	
 func take_damage_cooldown(time):
 	print("cooldown")

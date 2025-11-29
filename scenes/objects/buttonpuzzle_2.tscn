@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://dh0yc5d53ts1l"]
 
-[ext_resource type="Script" path="res://scenes/objects/buttonpuzzle_1.gd" id="1_m2yot"]
+[ext_resource type="Script" path="res://scenes/objects/buttonpuzzle_2.gd" id="1_605yg"]
 [ext_resource type="Texture2D" uid="uid://bixxk3xedf4xd" path="res://assets_image/Objects/button1.png" id="2_qevw6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vm5cv"]
@@ -59,8 +59,8 @@ _data = {
 "release": SubResource("Animation_y11ue")
 }
 
-[node name="Buttonpuzzle1" type="Area2D"]
-script = ExtResource("1_m2yot")
+[node name="Buttonpuzzle2" type="Area2D"]
+script = ExtResource("1_605yg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_vm5cv")
