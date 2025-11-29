@@ -311,41 +311,49 @@ use_exactlyion_style = true
 [node name="SpikeTrap" parent="." instance=ExtResource("8_fllu5")]
 z_index = -1
 position = Vector2(685, -7)
+damage_percentage = 10.0
 use_exactlyion_style = true
 
 [node name="SpikeTrap2" parent="." instance=ExtResource("8_fllu5")]
 z_index = -1
 position = Vector2(804, -7)
+damage_percentage = 10.0
 use_exactlyion_style = true
 
 [node name="SpikeTrap3" parent="." instance=ExtResource("8_fllu5")]
 z_index = -1
 position = Vector2(1484, -7)
+damage_percentage = 10.0
 use_exactlyion_style = true
 
 [node name="SpikeTrap4" parent="." instance=ExtResource("8_fllu5")]
 z_index = -1
 position = Vector2(1603, -7)
+damage_percentage = 10.0
 use_exactlyion_style = true
 
 [node name="SpikeTrap5" parent="." instance=ExtResource("8_fllu5")]
 z_index = -1
 position = Vector2(1565, -584)
+damage_percentage = 10.0
 use_exactlyion_style = true
 
 [node name="SpikeTrap6" parent="." instance=ExtResource("8_fllu5")]
 z_index = -1
 position = Vector2(1718, -584)
+damage_percentage = 10.0
 use_exactlyion_style = true
 
 [node name="SpikeTrap7" parent="." instance=ExtResource("8_fllu5")]
 z_index = -1
 position = Vector2(1870, -584)
+damage_percentage = 10.0
 use_exactlyion_style = true
 
 [node name="SpikeTrap8" parent="." instance=ExtResource("8_fllu5")]
 z_index = -1
 position = Vector2(2022, -584)
+damage_percentage = 10.0
 use_exactlyion_style = true
 
 [node name="CanonLaserEnemy" parent="." instance=ExtResource("9_i11hh")]
