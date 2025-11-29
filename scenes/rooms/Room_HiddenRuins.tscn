@@ -599,6 +599,12 @@ position = Vector2(272, -496)
 [node name="SpawnerFallSpike2" parent="." instance=ExtResource("21_26582")]
 position = Vector2(528, -496)
 
+[node name="SpawnerFallSpike18" parent="." instance=ExtResource("21_26582")]
+position = Vector2(464, -784)
+
+[node name="SpawnerFallSpike19" parent="." instance=ExtResource("21_26582")]
+position = Vector2(2272, -272)
+
 [node name="SpawnerFallSpike3" parent="." instance=ExtResource("21_26582")]
 position = Vector2(152, -440)
 

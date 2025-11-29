@@ -15,3 +15,6 @@ Player (Normal): Cutscene in junkyard for decision route ending
 - I hate everyone, Burn the world! | [if {Global.player_status} == "Genocide"] [else="disable"]
 	Go to genocide route
 	set {Global.route_status} = "Genocide"
+- Go back and think about it
+	Go back
+	set {Global.route_status} = " "

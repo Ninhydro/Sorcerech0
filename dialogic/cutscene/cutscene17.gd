@@ -91,10 +91,12 @@ func _on_dialogic_finished(_timeline_name = ""):
 
 	
 	
-	Global.timeline = 8
-	Global.remove_quest_marker("Make decision at Maya's house")
+	#Global.timeline = 8
+	#Global.remove_quest_marker("Make decision at Maya's house")
 
 	if Global.route_status == "Magus":
+		Global.timeline = 8
+		Global.remove_quest_marker("Make decision at Maya's house")
 		if Global.alyra_dead == true:
 			Dialogic.start("timeline17M", false)
 		elif Global.alyra_dead == false:
@@ -114,6 +116,8 @@ func _on_dialogic_finished(_timeline_name = ""):
 			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 
 	elif Global.route_status == "Cyber":
+		Global.timeline = 8
+		Global.remove_quest_marker("Make decision at Maya's house")
 		Dialogic.start("timeline17C", false)
 		if player_in_range:
 			transition_manager.travel_to(player_in_range, target_room2, target_spawn2)
@@ -130,6 +134,8 @@ func _on_dialogic_finished(_timeline_name = ""):
 			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 		
 	elif Global.route_status == "True" or Global.route_status == "Pacifist":
+		Global.timeline = 8
+		Global.remove_quest_marker("Make decision at Maya's house")
 		Dialogic.start("timeline17T", false)
 		if player_in_range:
 			transition_manager.travel_to(player_in_range, target_room4, target_spawn4)
@@ -146,6 +152,8 @@ func _on_dialogic_finished(_timeline_name = ""):
 			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 			
 	elif Global.route_status == "Genocide":
+		Global.timeline = 8
+		Global.remove_quest_marker("Make decision at Maya's house")
 		Dialogic.start("timeline17G", false)
 		if player_in_range:
 			transition_manager.travel_to(player_in_range, target_room3, target_spawn3)
@@ -162,7 +170,7 @@ func _on_dialogic_finished(_timeline_name = ""):
 			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 	
 	else:
-		pass
+		Global.timeline = 7
 	_has_been_triggered = false
 	
 
