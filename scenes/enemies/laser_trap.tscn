@@ -10,7 +10,7 @@ size = Vector2(40, 8)
 radius = 208.154
 
 [node name="LaserTrap" type="Area2D"]
-position = Vector2(-64, 24)
+position = Vector2(224, 88)
 script = ExtResource("1_qbxan")
 local_direction = Vector2(-1, 0)
 

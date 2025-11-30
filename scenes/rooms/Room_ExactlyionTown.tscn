@@ -933,6 +933,11 @@ tape_texture = ExtResource("28_j1gdn")
 [node name="TObject" parent="." instance=ExtResource("28_cvf4j")]
 position = Vector2(3024, -864)
 
+[node name="Camera2D" type="Camera2D" parent="."]
+visible = false
+position = Vector2(2622, -788)
+zoom = Vector2(0.4, 0.4)
+
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]
 [connection signal="body_entered" from="Doors/Door_Factory" to="." method="_on_door_factory_body_entered"]
