@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://djx4sn2eal13h"]
+[gd_scene load_steps=10 format=3 uid="uid://djx4sn2eal13h"]
 
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_b6t2i"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_mpnj4"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://de8pkqja16kft" path="res://assets_image/Background/Exactlyion_Mainframe/Exactlyion Mainframe-Sheet.png" id="4_0l0wf"]
 [ext_resource type="PackedScene" uid="uid://domkt1qmgve2v" path="res://dialogic/cutscene/cutscene20M.tscn" id="5_wbc4c"]
 [ext_resource type="PackedScene" uid="uid://wug72wsr2c4e" path="res://dialogic/cutscene/cutscene21_5B3.tscn" id="6_d4wsa"]
+[ext_resource type="Texture2D" uid="uid://dev7yrvstdbqy" path="res://assets_image/Characters/GigaSter/Gigaster.png" id="7_kxvpe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kpp03"]
 size = Vector2(1336, 584)
@@ -93,3 +94,7 @@ position = Vector2(724.304, 32.5948)
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(240, -144)
 zoom = Vector2(0.4, 0.4)
+
+[node name="Gigaster" type="Sprite2D" parent="."]
+position = Vector2(144, -176)
+texture = ExtResource("7_kxvpe")
