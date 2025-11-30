@@ -151,7 +151,7 @@ scale = Vector2(1.378, 1.502)
 texture = ExtResource("7_8achl")
 
 [node name="cutscene5C" parent="." instance=ExtResource("5_f8ebg")]
-position = Vector2(-430, 72)
+position = Vector2(-424, 68)
 
 [node name="cutscene6C" parent="." instance=ExtResource("6_s83h7")]
 visible = false

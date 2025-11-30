@@ -18,8 +18,8 @@ var is_moving: bool = false
 func _ready():
 	# Start invisible
 	visible = false
-	collision_layer = 0
-	collision_mask = 0
+	#collision_layer = 0
+	#collision_mask = 0
 	
 	# DEBUG
 	#print("Valentina DEBUG: minigame_valentina_completed = ", Global.minigame_valentina_completed)
@@ -43,8 +43,8 @@ func show_instantly():
 	#print("Valentina: Showing instantly!")
 	is_visible = true
 	visible = true
-	collision_layer = 1
-	collision_mask = 1
+	#collision_layer = 1
+	#collision_mask = 1
 	sprite.modulate.a = 1.0
 	
 	# Stop any ongoing movement
@@ -99,12 +99,13 @@ func check_visibility_conditions():
 	#print("Valentina: minigame_valentina_completed = ", Global.minigame_valentina_completed)
 	#print("Valentina: timeline = ", Global.timeline)
 	
-	if Global.minigame_valentina_completed:
-		#print("Valentina: Minigame completed condition met")
-		show_valentina()
-	elif Global.timeline >= 5:
-		#print("Valentina: Timeline >= 5 condition met")
+	# 1) Later timeline state should override earlier minigame state
+	if Global.timeline >= 5:
 		show_valentina_at_timeline_5()
+	
+	# 2) If minigame is done but story not that far yet, use minigame position
+	elif Global.minigame_valentina_completed:
+		show_valentina()
 	else:
 		#print("Valentina: No conditions met, hiding")
 		hide_valentina()
@@ -117,8 +118,8 @@ func show_valentina():
 	#print("Valentina: Showing after minigame completion")
 	is_visible = true
 	visible = true
-	collision_layer = 1
-	collision_mask = 1
+	#collision_layer = 1
+	#collision_mask = 1
 	
 	# Default behavior if no animation
 	sprite.modulate.a = 1.0
@@ -137,8 +138,8 @@ func show_valentina_at_timeline_5():
 	#print("Valentina: Showing at timeline 5")
 	is_visible = true
 	visible = true
-	collision_layer = 1
-	collision_mask = 1
+	#collision_layer = 1
+	#collision_mask = 1
 	
 	# Set timeline 5 behavior and move to position
 	current_timeline = "timeline_5"
@@ -198,8 +199,8 @@ func hide_valentina():
 	#print("Valentina: Hiding")
 	is_visible = false
 	visible = false
-	collision_layer = 0
-	collision_mask = 0
+	#collision_layer = 0
+	#collision_mask = 0
 	is_moving = false
 
 func _on_movement_finished():

@@ -118,6 +118,8 @@ _data = {
 }
 
 [node name="valentina1" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 16
 script = ExtResource("1_uuihw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

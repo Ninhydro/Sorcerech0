@@ -171,6 +171,7 @@ position = Vector2(-2248, 72)
 
 [node name="Nora" parent="." instance=ExtResource("7_x12si")]
 position = Vector2(-64, 80)
+collision_mask = 16
 minigame_stations = Array[NodePath]([NodePath("../MinigameStation"), NodePath("../MinigameStation2"), NodePath("../MinigameStation3")])
 final_position_marker = NodePath("../NoraFinalPosition")
 

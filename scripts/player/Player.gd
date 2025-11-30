@@ -311,8 +311,10 @@ func _physics_process(delta):
 	#Global.magus_form = true
 	#print(can_attack)
 	#print(Global.global_time_scale)
-	if Input.is_action_just_pressed("debug2"):  # Assign a key like F1
-		print("Player World Position: ", global_position)
+	#Global.timeline = 11
+	#print(Global.timeline)
+	#if Input.is_action_just_pressed("debug2"):  # Assign a key like F1
+	#	print("Player World Position: ", global_position)
 	
 	
 	
