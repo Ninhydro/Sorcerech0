@@ -74,14 +74,7 @@ func enter():
 	if not _animation_player_node:
 		push_warning("MagusState: 'AnimationPlayer' node not found. Debugging might be less insightful.")
 
-	# IMPORTANT: When entering, assume camouflage is OFF unless explicitly turned ON.
-	# If player.allow_camouflage was TRUE from a previous session (e.g., after the 5s timer
-	# finished but before exiting the state), we should reset it here.
-	#if Global.camouflage and not _is_camouflage_active_timed:
-		# This condition handles cases where player.allow_camouflage might be true
-		# but the timed camouflage is not active. We want to ensure a clean start.
-		#player.allow_camouflage = false 
-	#	Global.camouflage = false
+
 
 
 	# Set the shader uniform directly on enter

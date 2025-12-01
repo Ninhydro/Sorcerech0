@@ -53,7 +53,7 @@ func _on_body_entered(body):
 			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 		Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-	# Start your dialog timeline.
+
 		Dialogic.start("timeline16_8", false)
 		#if Global.alyra_dead == false:
 		#	Dialogic.start("timeline13V2", false) #alive alive

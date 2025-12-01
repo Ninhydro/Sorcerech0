@@ -10,7 +10,7 @@ func enter():
 	match form:
 		"Magus":
 			#player.anim_sprite.play("magus_attack")
-			# You could also spawn a fireball or magic effect here
+
 			#print("Magus skill")
 			player.still_animation = true
 			player.anim_state.travel("ability_magus")

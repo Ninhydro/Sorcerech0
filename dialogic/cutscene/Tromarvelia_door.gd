@@ -51,7 +51,7 @@ func _process(delta):
 				Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 			Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-		# Start your dialog timeline.
+
 			Dialogic.start("timeline21TB2", false)
 	else:
 		if player_in_range and Input.is_action_just_pressed("move_down"):

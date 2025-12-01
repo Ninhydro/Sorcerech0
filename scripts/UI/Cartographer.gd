@@ -5,8 +5,8 @@ var master_map_texture: ImageTexture
 var master_map_image: Image 
 
 func _ready():
-	# Create a blank master map (same size as your map texture)
-	var map_size = Vector2(1280, 720)  # Your map size
+
+	var map_size = Vector2(1280, 720)  
 	master_map_image = Image.create(map_size.x, map_size.y, false, Image.FORMAT_RGBA8)
 	master_map_image.fill(Color.TRANSPARENT)
 	master_map_texture = ImageTexture.create_from_image(master_map_image)
@@ -43,7 +43,7 @@ func add_chunk_to_master_map(chunk_name: String):
 		print("ERROR: Could not load chunk: ", chunk_name)
 
 func get_chunk_position(chunk_name: String) -> Vector2:
-	# Define where each chunk is positioned on your master map
+
 	match chunk_name:
 		"Junkyard":
 			return Vector2(319.242, 415.76)      # 

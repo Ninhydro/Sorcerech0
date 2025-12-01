@@ -5,7 +5,7 @@ class_name ColorMixer
 @onready var output_spawn_point: Marker2D = $OutputSpawnPoint
 @onready var sprite_2d: Sprite2D = $Sprite2D  # Reference to mixer sprite
 
-# NEW: scenes to instantiate
+
 @export var normal_object_scene: PackedScene = preload("res://scenes/objects/color_object.tscn")
 @export var explosive_object_scene: PackedScene = preload("res://scenes/objects/explosive_color_object.tscn")
 @export var use_explosive_orange: bool = false

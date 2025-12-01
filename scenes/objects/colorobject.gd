@@ -140,7 +140,7 @@ func update_appearance():
 		return
 	
 	if is_explosive:
-		# Optional: ensure explosive uses pure texture (no tint), or keep the tint if you like
+
 		sprite.modulate = Color.WHITE
 		return
 	
@@ -230,7 +230,7 @@ func _explode():
 				if  ar.is_in_group("ExplosiveDoor"):
 					ar.on_explosive_hit()
 	
-	# You can add particles / sound here
+
 	
 	# Finally remove the bomb
 	queue_free()

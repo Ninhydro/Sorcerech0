@@ -27,20 +27,14 @@ func _ready():
 	back_to_title_button.pressed.connect(_on_back_to_title_button_pressed)
 	profile_button.pressed.connect(_on_profile_button_pressed)
 
-	# Connect signals for the confirmation dialog.
-	# We will connect 'canceled' with Callable.bind() to make sure it only
-	# reacts AFTER the dialog has been purposefully shown.
+
 	confirmation_dialog_back_to_title.confirmed.connect(_on_confirmation_dialog_back_to_title_confirmed)
-	# Important: Do NOT connect 'canceled' here if it's causing an immediate trigger.
-	# We will connect it dynamically when popup_centered() is called.
-	
+
 	profile_button.grab_focus()
 
 	get_tree().paused = true
 	print("PauseMenu: Game paused. Paused state now: ", get_tree().paused)
-	# The input event that opened the menu should be handled by the *instantiating* script (e.g., World.gd)
-	# If it's not, you'll still have the issue of _unhandled_input being called immediately.
-	# So, ensure `get_viewport().set_input_as_handled()` is in the script that opens PauseMenu.
+
 
 func _unhandled_input(event: InputEvent):
 	if is_closing:

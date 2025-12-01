@@ -20,7 +20,7 @@ func _ready() -> void:
 	cooldown_left = 0.0
 	
 	if spike:
-		spike._deactivate()  # or spike.reset_inactive() if you rename it
+		spike._deactivate()  
 
 
 func _physics_process(delta: float) -> void:

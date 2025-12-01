@@ -3,7 +3,7 @@ extends Area2D
 @export var target_scene_path: String = ""
 @export var target_position_in_scene: Vector2 = Vector2.ZERO
 @export var cutscene_animation_name_to_play: String = "cutscene1"
-@export var cutscene_animation_name_after_dialog: String = "cutscene2" # New export for the second animation
+@export var cutscene_animation_name_after_dialog: String = "cutscene2" 
 @export var play_only_once: bool = true
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer # This is the AnimationPlayer on the Cutscene Area2D
@@ -53,7 +53,6 @@ func _ready():
 	# 	cutscene_camera.set_process_mode(Node.PROCESS_MODE_DISABLED)
 	# 	print("Cutscene Area2D: Cutscene camera explicitly set to not current and disabled in _ready.")
 
-	# NEW: Instead of disabling it, ensure it's not current if it somehow became current in editor
 	if cutscene_camera and is_instance_valid(cutscene_camera) and cutscene_camera.is_current():
 		cutscene_camera.set_current(false)
 		print("Cutscene Area2D: Cutscene camera explicitly set to not current in _ready.")
@@ -264,7 +263,7 @@ func end_cutscene(cutscene_name_finished: String):
 		Dialogic.dialog_ended.disconnect(Callable(self, "_on_dialogic_ended_in_cutscene"))
 
 	cutscene_finished.emit(cutscene_name_finished)
-	# NEW: Call proxy to enable player input
+
 	proxy_enable_player_input_after_cutscene()
 	
 	if Global.playerBody and is_instance_valid(Global.playerBody):
@@ -298,7 +297,6 @@ func end_cutscene(cutscene_name_finished: String):
 	
 	Global.cutscene_finished1 = true
 
-# NEW: Function to set player reference (called from World.gd)
 func set_player_reference(player: Player):
 	if is_instance_valid(player):
 		player_node_ref = player
@@ -307,8 +305,7 @@ func set_player_reference(player: Player):
 	else:
 		printerr("Test_dialog: Received invalid player reference!")
 
-# NEW: Proxy methods for AnimationPlayer to call methods on the Player node
-# These methods are on Test_dialog.gd, and *they* call the actual methods on player_node_ref
+
 
 func proxy_disable_player_input_for_cutscene():
 	if player_node_ref and is_instance_valid(player_node_ref):

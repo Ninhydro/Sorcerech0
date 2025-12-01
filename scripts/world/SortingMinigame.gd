@@ -33,7 +33,7 @@ func _ready():
 	objects_label.visible = false
 	ColorRect1.visible = false
 	add_to_group("sorting_minigame")
-	# In your actual game, replace these prints with:
+
 	# Dialogic.start('minigame_start_dialog')
 	# await Dialogic.timeline_ended
 	setup_bin_connections()
@@ -163,7 +163,7 @@ func end_game(victory: bool):
 		show_win_dialog()
 		win = true
 		print("WIN")
-		#result_label.text = "You Win! Sorted all objects in time!"
+
 	else:
 		print("LOSE, reset minigame")
 		show_lose_dialog()
@@ -174,8 +174,7 @@ func end_game(victory: bool):
 	#restart_button.connect("pressed", _on_restart_pressed)
 
 func show_win_dialog():
-	#print("MINIGAME WIN DIALOG: Congratulations! You sorted all objects correctly!")
-	#print("MINIGAME WIN DIALOG: You're a sorting master!")
+
 	print("MINIGAME WIN DIALOG: Time remaining: ", current_time, " seconds")
 	timer_label.visible = false
 	objects_label.visible = false
@@ -189,31 +188,24 @@ func show_win_dialog():
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 	Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-# Start your dialog timeline.
+
 	Dialogic.start("timeline3W", false)
-	# In your actual game, replace these prints with:
-	# Dialogic.start('minigame_win_dialog')
-	# await Dialogic.timeline_ended
-	#complete_minigame()
+
 
 func show_lose_dialog():
-	#print("MINIGAME LOSE DIALOG: Time's up! You didn't sort all objects in time.")
+
 	print("MINIGAME LOSE DIALOG: Objects sorted: ", objects_sorted, "/", total_objects)
 	print("MINIGAME LOSE DIALOG: Would you like to try again?")
 	
 	Global.is_cutscene_active = true
-		#Global.cutscene_name = cutscene_animation_name
-		#Global.cutscene_playback_position = start_position
-		#Dialogic.start("timeline1", false)
+
 	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 	Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-# Start your dialog timeline.
+
 	Dialogic.start("timeline3L", false)
-	# In your actual game, replace these prints with:
-	# Dialogic.start('minigame_lose_dialog')
-	# await Dialogic.timeline_ended
+
 	
 
 

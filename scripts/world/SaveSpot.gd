@@ -42,21 +42,13 @@ func _update_sprite_texture():
 		sprite.texture = TEX_DEFAULT
 		
 func _process(delta):
-	# --- DEBUGGING: Print every frame to see if _process is running and player_in_range is true ---
-	# This will spam the console, but it's crucial for diagnosing if input is even being checked.
-	# Uncomment the line below if you want constant feedback:
-	# print("SaveSpot _process: player_in_range = %s, Input.is_action_pressed('interact') = %s" % [player_in_range, Input.is_action_pressed("interact")])
 
-	# Check if the player is in range and presses the "interact" action
-	# (Make sure "interact" is set up in Project Settings -> Input Map, e.g., to 'E' key)
-	# Using Input.is_action_just_pressed ensures it only triggers once per press.
-	# Only runs when the player is in range because we enable processing then
 	if player_in_range and Input.is_action_just_pressed("yes"):
 		handle_interaction()
 
 
 func handle_interaction():
-	# --- ENHANCED FIX: Cast the retrieved node to Player type with more checks ---
+
 	var found_node = get_tree().get_first_node_in_group("player")
 	var player_node: Player = null # Initialize as null
 
@@ -68,23 +60,17 @@ func handle_interaction():
 		printerr("Error: No node found in 'player' group. Is your Player node added to the 'player' group?")
 
 	if player_node:
-		# --- SAVE GAME LOGIC ---
-		# Before saving, update the current_scene_path in Global.gd
-		# This ensures we save which scene the player was in.
-		# This is CRUCIAL for loading the correct scene later.
+
 		Global.current_scene_path = get_tree().current_scene.scene_file_path
 		 
-		# Call the save_game function from your SaveLoadManager Autoload.
-		# For SaveSpot, we'll assume it's a manual save point, so we'll save to a specific slot.
-		# For now, let's make it save to manual_save_1. You'd later connect this to a UI
-		# to choose the slot.
+
 		var manual_save_slot_name = SaveLoadManager.MANUAL_SAVE_SLOT_PREFIX + "1" # Example: Save to slot 1
 		Global.health = Global.health_max
 		player_node.health_changed.emit(Global.health, Global.health_max) 
 		
 		if SaveLoadManager.save_game(player_node, manual_save_slot_name): # Pass the player node and slot name
 			print("Game saved successfully at SaveSpot to manual slot 1!") # Updated print statement
-			# Optionally, display a temporary "Game Saved!" message on the screen
+
 		else:
 			printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 			# Optionally, display an error message

@@ -13,7 +13,7 @@ var spawn_time: float = 0.0
 var min_movement_time: float = 1.0  # Don't freeze for at least 1 second
 var last_push_time: float = 0.0
 
-# Manual texture paths - UPDATE THESE PATHS TO YOUR ACTUAL TEXTURES
+
 var cyber_texture_paths: Array[String] = [
 	"res://assets_image/Objects/minigame1_objects1.png",
 	"res://assets_image/Objects/minigame1_objects2.png", 
@@ -92,30 +92,36 @@ func setup_random_texture():
 		print("ERROR: No texture paths for type: ", object_type)
 		
 func _physics_process(_delta):
-	var current_time = Time.get_time_dict_from_system()["second"]
-	var time_since_spawn = current_time - spawn_time
+	#ar current_time = Time.get_time_dict_from_system()["second"]
+	#var time_since_spawn = current_time - spawn_time
 	
 	# Only consider freezing after minimum time has passed
-	if (can_be_pushed and time_since_spawn > min_movement_time 
-		and linear_velocity.length() < 0.1 
-		and (current_time - last_push_time) > 0.5):
-		can_be_pushed = false
-		freeze = true
+	#if (can_be_pushed and time_since_spawn > min_movement_time 
+	#	and linear_velocity.length() < 0.1 
+	#	and (current_time - last_push_time) > 0.5):
+	#	can_be_pushed = false
+	#	freeze = true
+	pass
+const MAX_PUSH_SPEED := 200.0  # tune this
+const PUSH_FORCE := 50.0       # lower than before
 
 func push(direction: Vector2, force: float = 200.0):
-	#if can_be_pushed or (not can_be_pushed and linear_velocity.length() > 5.0):
-	var current_time = Time.get_time_dict_from_system()["second"]
-	
-	# Always allow pushing
-	freeze = false
+	# Wake it up
+	sleeping = false
 	can_be_pushed = true
-	last_push_time = current_time
-	
-	# Apply impulse with slight upward component to help unstack
-	var push_direction = direction.normalized()
-	push_direction.y = -0.2  # Small upward component to lift object slightly
-	
-	apply_impulse(push_direction * force)
-	
-	# Also add a small torque to help objects rotate out of stuck positions
+
+	var dir := direction
+	if dir == Vector2.ZERO:
+		return
+
+	dir = dir.normalized()
+	# Small upward bias so it doesn’t clamp down on the player
+	dir.y = -0.2  
+
+	# Apply a modest impulse every frame we “push”
+	apply_impulse(dir * force)
 	apply_torque_impulse(randf_range(-50, 50))
+
+	# Hard cap the speed so it never rockets off
+	if linear_velocity.length() > MAX_PUSH_SPEED:
+		linear_velocity = linear_velocity.normalized() * MAX_PUSH_SPEED

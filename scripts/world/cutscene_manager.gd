@@ -5,7 +5,7 @@ extends Node
 
 signal cutscene_finished
 
-# Use the real timeline resource path you gave me:
+
 const INTRO_TIMELINE_PATH := "res://dialogic/timeline/timeline1.dtl"
 
 func _ready():
@@ -40,8 +40,7 @@ func start_cutscene():
 		_on_cutscene_end()
 		return
 
-	# ✅ IMPORTANT: We DO NOT check Dialogic.current_timeline anymore.
-	# In your version it stays null even when things work, so that check was wrong.
+
 
 
 func _on_dialogic_finished(_timeline_name = ""):

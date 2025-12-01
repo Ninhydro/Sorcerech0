@@ -15,14 +15,14 @@ extends Control
 
 # Dictionary to hold preloaded form textures (set in Inspector)
 @export var form_textures: Dictionary = {
-	"Normal": preload("res://assets_image/UI/Form_logo/Normal.png"), # Replace with your actual paths
+	"Normal": preload("res://assets_image/UI/Form_logo/Normal.png"), 
 	"Cyber": preload("res://assets_image/UI/Form_logo/Cyber.png"),
 	"UltimateCyber": preload("res://assets_image/UI/Form_logo/UltimateCyber.png"),
 	"Magus": preload("res://assets_image/UI/Form_logo/Magus.png"),
 	"UltimateMagus": preload("res://assets_image/UI/Form_logo/UltimateMagus.png"),
 }
 
-# --- NEW: Dictionary for Character Face Portraits ---
+
 # These should be pre-cropped/zoomed to just the face for each form.
 @export var character_face_portraits: Dictionary = {
 	"Normal": preload("res://assets_image/Characters/Phina/Normal/Normal_Normal.png"), # Example path
@@ -32,7 +32,7 @@ extends Control
 	"UltimateCyber": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Normal.jpg"),
 }
 
-var player_node: Player = null # Reference to your Player node
+var player_node: Player = null 
 var _last_selected_form_index: int = -1 
 
 var _form_icon_display_size: Vector2 = Vector2.ZERO 
@@ -65,8 +65,8 @@ func initialize_hud():
 		player_face_portrait.expand_mode = TextureRect.EXPAND_FIT_WIDTH
 		player_face_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		
-		var form_icon_size = Vector2(10, 10) # <-- Ensure this matches your intended icon size
-		_form_icon_display_size = form_icon_size # Store the size here
+		var form_icon_size = Vector2(10, 10) 
+		_form_icon_display_size = form_icon_size 
 		form_icon_previous.custom_minimum_size = form_icon_size
 		form_icon_current.custom_minimum_size = form_icon_size
 		form_icon_next.custom_minimum_size = form_icon_size
@@ -94,7 +94,6 @@ func initialize_hud():
 			minimap_viewport.world_2d = get_tree().root.world_2d
 			print("minimap_viewport",minimap_viewport.world_2d)
 			# Ensure the minimap camera is not the 'current' camera for the main viewport
-			# This is often already true if your main game camera is set to 'current' in the editor.
 			# Create material for circular mask
 			var circle_material = Global.create_circle_material()
 			#circle_material.shader = load("res://shaders/circle.gdshader")
@@ -324,7 +323,7 @@ func update_character_face_portrait(form_id: String):
 		player_face_portrait.texture = character_face_portraits[form_id]
 	else:
 		printerr("GameHUD: No face portrait found for form: ", form_id, ". Using null texture.")
-		player_face_portrait.texture = null # Or a default placeholder if you have one
+		player_face_portrait.texture = null
 
 
 func update_health_bar_from_signal(current_health: int, max_health: int):

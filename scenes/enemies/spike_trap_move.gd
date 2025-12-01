@@ -128,7 +128,7 @@ func _physics_process(delta: float) -> void:
 					current_state = State.MOVING_UP
 		
 		State.DISABLED:
-			# Handled above; we early-return while disabled
+
 			pass
 
 

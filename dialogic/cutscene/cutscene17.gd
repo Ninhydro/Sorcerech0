@@ -66,7 +66,7 @@ func _on_body_entered(body):
 			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 		Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-	# Start your dialog timeline.
+
 		#MIGHT NEED TO MAKE DIFFERENT ANIMATION CUTSCENE FOR DIFFERENT CHOICE OPTIONS
 		Dialogic.start("timeline16_9", false)
 		#if Global.alyra_dead == false:

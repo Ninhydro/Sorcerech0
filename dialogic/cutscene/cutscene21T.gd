@@ -4,7 +4,7 @@ var _has_been_triggered: bool = false
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @export var play_only_once: bool = true
 
-@onready var interaction_label = $Label # Make sure you have a Label child named 'Label'
+@onready var interaction_label = $Label 
 
 var target_room = "Room_AerendaleTown"     # Name of the destination room (node or scene)
 var target_spawn = "Spawn_FromJunkyard"    # Name of the spawn marker in the target room
@@ -53,7 +53,7 @@ func handle_interaction():
 			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 		Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-	# Start your dialog timeline.
+
 		#MIGHT NEED TO MAKE DIFFERENT ANIMATION CUTSCENE FOR DIFFERENT CHOICE OPTIONS
 		#Put different dialog timeline17 on animation also later
 	

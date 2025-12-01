@@ -53,7 +53,7 @@ func _apply_destroyed_state():
 	if sprite:
 		sprite.visible = false
 	
-	# Optionally you could also disable this node entirely:
+
 	# set_process(false)
 	# set_physics_process(false)
 

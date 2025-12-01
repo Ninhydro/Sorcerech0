@@ -18,7 +18,7 @@ func _ready():
 	$Timer.timeout.connect(_on_lifetime_timeout) # Connect the timeout signal
 
 	# Optionally, flip the sprite if the initial direction is left
-	# This assumes your fireball sprite is oriented to the right by default
+
 	if direction.x < 0:
 		$Sprite2D.flip_h = true
 
@@ -40,7 +40,7 @@ func _on_lifetime_timeout():
 func set_direction(dir: Vector2):
 	# Set the direction for the fireball
 	direction = dir.normalized() # Ensure it's a unit vector
-	# Adjust sprite orientation if needed (e.g., if you have a directional sprite)
+
 	if direction.x < 0:
 		$Sprite2D.flip_h = true
 	else:

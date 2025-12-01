@@ -35,7 +35,6 @@ var swing_angle = 0.0             # Radians, angle from the grapple point (relat
 const SWING_TORQUE = 10.0         # How much input affects angular velocity
 const ANGULAR_DAMPING = 0.99    # Damping to prevent perpetual motion in the swing
 
-# NEW CONSTANTS FOR SMOOTHER SWING
 const MAX_ANGULAR_VELOCITY = 15.0 # Max speed the swing can achieve (radians/sec)
 const ANGLE_EFFECTIVENESS_FACTOR = 1.5 # How much to boost input torque near the bottom of the swing
 const ANGLE_EFFECTIVENESS_WINDOW = deg_to_rad(60) # Angle (total) around the bottom where input is most effective (e.g., +/- 30 degrees)
@@ -134,7 +133,6 @@ func physics_process(delta):
 
 	else:
 		# Only process regular movement if not grappling
-		# Add your regular movement code here if needed
 		pass
 
 	# Release grapple if "move_up" (jump) is pressed while grappling

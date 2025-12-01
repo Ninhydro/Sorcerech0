@@ -238,5 +238,5 @@ func shoot_laser():
 		print("Canon Laser Enemy: Player eliminated!")
 	
 	# Wait for shooting animation to complete, then reset
-	await get_tree().create_timer(1.5).timeout  # Adjust based on your shooting animation length
+	await get_tree().create_timer(1.5).timeout  
 	set_idle_state()

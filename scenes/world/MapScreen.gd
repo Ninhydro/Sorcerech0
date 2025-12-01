@@ -4,7 +4,7 @@ extends CanvasLayer
 @onready var map_texture = $MapContainer/MapTexture
 @onready var player_container = $PlayerContainer
 @onready var player_icon = $PlayerContainer/PlayerIcon
-@onready var icons_layer =$PlayerContainer/IconsLayer # Make sure you have this
+@onready var icons_layer =$PlayerContainer/IconsLayer 
 
 var quest_icons = {}
 
@@ -15,7 +15,7 @@ func _ready():
 
 func setup_map_scaling():
 	# Scale the entire map container to fit the screen
-	var screen_size = Vector2(320, 180)  # Your viewport size
+	var screen_size = Vector2(320, 180)  
 	var map_size = Vector2(1280, 720)
 	
 	# Calculate scale factor to fit map to screen
@@ -88,8 +88,8 @@ func create_quest_icon(quest_name: String, map_position: Vector2):
 	# Create a new TextureRect for the quest icon
 	var quest_icon = TextureRect.new()
 	quest_icon.name = "QuestIcon_" + quest_name
-	quest_icon.texture = load("res://assets_image/Background/Map/Quest_icon.png")  # Your quest icon texture
-	quest_icon.modulate = Color.YELLOW  # Or any color you want
+	quest_icon.texture = load("res://assets_image/Background/Map/Quest_icon.png")  
+	quest_icon.modulate = Color.YELLOW  
 	quest_icon.scale = Vector2(0.5, 0.5)  # Adjust size as needed
 	quest_icon.position = map_position
 	
@@ -114,7 +114,7 @@ func clear_quest_icons():
 func update_player_icon():
 	print("--- UPDATE PLAYER ICON DEBUG ---")
 	
-	# Check if we need to update to last known position before pausing
+
 	if Global.tracking_paused and Global.should_update_before_pause:
 		var map_pos = world_to_map_position(Global.last_known_player_position)
 		var offset = Vector2(0, -10)

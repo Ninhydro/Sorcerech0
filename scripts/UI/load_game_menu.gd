@@ -6,7 +6,7 @@ extends CanvasLayer
 
 var slot_buttons: Array[Button] = []
 
-signal closed # NEW: Signal to indicate the menu is closing
+signal closed 
 
 
 func _ready():
@@ -68,11 +68,10 @@ func _add_slot_button(button_text: String, slot_name_to_load: String):
 		print("LoadGameMenu: Applied custom font size " + str(font_size) + " to button: " + button_text)
 	else:
 		printerr("LoadGameMenu: No default font found. Button font size might not change.")
-		# As a fallback for SystemFont or missing FontFile, you can try setting a dynamic font
-		# if you have one preloaded or available. However, direct size control on SystemFont is limited.
+
 	
 	button.theme = button_theme
-	# --- END MODIFIED ---
+
 	
 	var slot_info = SaveLoadManager.get_save_slot_info(slot_name_to_load)
 	var timestamp_text = "Empty"

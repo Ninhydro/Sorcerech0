@@ -7,7 +7,7 @@ extends RigidBody2D
 @export var float_height := 5.0
 @export var float_speed := 0.5
 
-# Optional: let you override the texture from inspector
+
 @export var chip_texture: Texture2D = preload("res://assets_image/Objects/collect_objects6.png")
 
 var initial_y: float
@@ -47,7 +47,7 @@ func _process(delta):
 
 
 func _integrate_forces(state):
-	# When the body slows down enough, we start the float tween
+
 	if state.linear_velocity.length() < 5.0 and not has_settled:
 		has_settled = true
 		initial_y = global_position.y

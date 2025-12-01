@@ -14,7 +14,7 @@ extends ParallaxBackground
 	"Restart": $Restart
 }
 
-# Local parallax zones - add these as children in your scene
+
 @onready var local_zones = {}
 
 var current_sky_theme: String = "Aerendale"
@@ -183,7 +183,7 @@ func get_zone_parallax_scale(zone_name: String) -> Vector2:
 		_:
 			return Vector2(0.2, 0.1)
 
-# === YOUR EXISTING CODE ===
+
 
 func check_sprite_visibility():
 	var camera = Global.get_player_camera()
@@ -244,8 +244,8 @@ func update_sky_theme():
 	var target_theme = get_sky_theme_for_area(current_area)
 	set_sky_theme(target_theme)
 
-# === TEST FUNCTION ===
-# Call this manually to test if your zone works
+
+
 func test_junkyard_zone():
 	print("🧪 TEST: Manually activating junkyard zone")
 	activate_specific_zone("junkyard")

@@ -47,7 +47,7 @@ func _process(delta):
 				Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 			Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-		# Start your dialog timeline.
+
 			Dialogic.start("timeline21TB3", false)
 	else:
 		
@@ -75,7 +75,7 @@ func _process(delta):
 					Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 				Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-			# Start your dialog timeline.
+
 				Dialogic.start("Exactlyion_tower_lock", false)
 
 func _on_body_entered(body):

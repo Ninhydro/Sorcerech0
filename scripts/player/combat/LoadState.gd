@@ -9,7 +9,7 @@ func enter():
 	match form:
 		"Magus":
 			#player.anim_sprite.play("magus_attack")
-			# You could also spawn a fireball or magic effect here
+
 			#print("Magus idle")
 			Global.loading = true
 			player.still_animation = true

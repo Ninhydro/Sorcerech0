@@ -10,7 +10,7 @@ extends Node2D
 #var current_selection_index = -1
 #var selection_method = "radial"  # "ui", "direct", or "radial"
 
-#@onready var telekinesis_ui  = $TelekinesisUI  # Path to your ItemList UI
+#@onready var telekinesis_ui  = $TelekinesisUI  
 
 @onready var player: Player = get_parent() as Player 
 #var current_highlighted_object: TelekinesisObject = null
@@ -30,7 +30,7 @@ var _current_highlight_material: ShaderMaterial
 
 
 func _ready():
-	# Load the shader from your .gdshader file and assign it to the material
+
 	#_current_highlight_material = ShaderMaterial.new()
 	#_current_highlight_material.shader = Global.highlight_shader
 	#outline_material = Global.highlight_material
@@ -90,7 +90,7 @@ func open_telekinesis_ui():
 		is_ui_open = true
 		selected_index = 0
 		
-		# CREATE the material here, when we actually need it
+
 		if not _current_highlight_material:
 			_current_highlight_material = ShaderMaterial.new()
 			_current_highlight_material.shader = Global.highlight_shader
@@ -110,7 +110,7 @@ func close_telekinesis_ui():
 				var original_data = _object_original_data[obj]
 				sprite.modulate = original_data["modulate"]
 				sprite.scale = original_data["scale"]
-				# If we were using materials, restore that too
+
 				if "material" in original_data:
 					sprite.material = original_data["material"]
 					
@@ -146,7 +146,7 @@ func update_ui_highlight():
 			
 	#	var sprite = obj.get_node("Sprite2D")
 	#	if sprite:
-	#			# Store the object's original material if we haven't already
+
 	#			if not _object_original_materials.has(obj):
 	#				_object_original_materials[obj] = sprite.material
 	#			

@@ -53,7 +53,7 @@ func _on_body_entered(body):
 			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 		Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-	# Start your dialog timeline.
+
 		if Global.killing == true: #killing = not saving nora
 			Dialogic.start("timeline16_5MV2", false)
 			Global.nora_dead = true

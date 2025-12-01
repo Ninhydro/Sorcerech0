@@ -186,7 +186,7 @@ func handle_animation():
 	elif is_dealing_damage:
 		new_animation = "attack"
 	else:
-	# Treat as "blocked" only if we *barely* moved this frame
+
 		var blocked := moved_x < 0.05  # ~almost zero movement
 
 		if is_stuck_idle or blocked or abs(velocity.x) < idle_velocity_threshold:

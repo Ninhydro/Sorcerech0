@@ -82,7 +82,7 @@ func detect_edges():
 	var wall_colliding = wall_ray.is_colliding()
 	var edge_colliding = edge_detection_ray.is_colliding()
 	
-	# If we lose contact with wall or hit an edge, turn around
+
 	if not wall_colliding or not edge_colliding:
 		turn_around()
 
@@ -207,7 +207,7 @@ func handle_animation():
 		new_animation = "attack"
 	elif is_on_wall:
 		new_animation = "run"
-	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
+	elif is_preparing_attack:  
 		new_animation = "idle"
 		
 	else:

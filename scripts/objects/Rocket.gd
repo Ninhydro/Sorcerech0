@@ -42,7 +42,7 @@ func _physics_process(delta):
 	if not is_instance_valid(target):
 		target = find_closest_enemy()
 
-	var current_target_angle: float # This variable will hold the angle we want the rocket to point towards
+	var current_target_angle: float 
 
 	if target and is_homing_active:
 		# If homing is active and there's a target, aim towards the target
@@ -82,15 +82,14 @@ func find_closest_enemy() -> Node2D:
 				closest_enemy = enemy
 	return closest_enemy
 
-# NEW: Function to set initial properties from the player
+
 func set_initial_properties(initial_dir: Vector2, target_node: Node2D = null):
 	initial_direction_vector = initial_dir.normalized()
 	if target_node:
 		target = target_node
 	# Immediately set the rotation to the initial direction upon creation, for visual consistency.
 	# This line ensures the rocket points the right way from the very first frame.
-	# We add 90 degrees if your sprite is drawn "up" by default (e.g., if (0,-1) is its forward).
-	# If your sprite's forward is naturally (1,0) (pointing right), then just use initial_direction_vector.angle().
+
 	rotation = initial_direction_vector.angle()
 
 

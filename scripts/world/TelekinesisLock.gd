@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var accepted_id := "A"  # Set this to the ID you want to detect ("A", "B", etc.)
+@export var accepted_id := "A"  
 
 func _ready():
 	connect("body_entered", Callable(self, "_on_body_entered"))

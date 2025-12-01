@@ -14,7 +14,7 @@ var speed: float:
 @export var health_max := 100
 @export var knockback_force := 100.0
 
-# Attack type - NEW: Added attack type system
+
 enum AttackType { MELEE, RANGED }
 @export var attack_type: AttackType = AttackType.MELEE
 
@@ -55,7 +55,7 @@ var gravity = 1000.0
 @export var can_jump_chase := false          # enable this per-enemy in Inspector
 @export var jump_speed := 600.0              # vertical speed (similar to player jump_force)
 @export var jump_min_vertical_diff := 24.0   # minimum height difference to bother jumping
-@export var jump_max_vertical_diff := 224.0   # maximum height difference we can reasonably reach
+@export var jump_max_vertical_diff := 224.0   
 @export var jump_horizontal_speed := 220.0 
 @export var jump_horizontal_range := 300.0    # only jump if player roughly within this X range
 @export var jump_cooldown := 1             # seconds between jumps
@@ -72,7 +72,7 @@ var is_jump_rising: bool = false
 var jump_rise_time_left: float = 0.0
 
 @export var vertical_chase_deadzone := 8.0          # if player is this close in X, don't move horizontally
-@export var stop_distance_from_player := 20.0       # NEW: stop this far away from player (in pixels)
+@export var stop_distance_from_player := 20.0      
 @export var stuck_check_speed_threshold := 5.0      # min intended speed to consider "trying to move"
 @export var stuck_position_epsilon := 1.0           # max movement (px) to still count as "stuck"
 @export var stuck_time_threshold := 0.7             # seconds of being stuck before idling
@@ -116,7 +116,7 @@ var is_preparing_attack := false
 
 @export var idle_velocity_threshold := 5.0  # if |velocity.x| < this, use idle instead of run
 
-@export var anim_not_moving_epsilon := 0.5  # how many pixels per frame we consider "not moving"
+@export var anim_not_moving_epsilon := 0.5 
 var last_anim_position: Vector2   
 
 func _ready():
@@ -139,7 +139,7 @@ func _ready():
 	add_child(attack_delay_timer)
 	attack_delay_timer.timeout.connect(_on_attack_delay_timeout)
 	
-	# NEW: jump cooldown
+
 	jump_cooldown_timer = Timer.new()
 	jump_cooldown_timer.one_shot = true
 	add_child(jump_cooldown_timer)
@@ -147,7 +147,7 @@ func _ready():
 	# Initialize enemy-specific components
 	_initialize_enemy()
 	previous_position = global_position
-	last_anim_position = global_position   # NEW
+	last_anim_position = global_position  
 	
 func _on_attack_delay_timeout():
 	can_start_attack = true
@@ -259,7 +259,7 @@ func move(delta):
 		is_roaming = false
 		return
 	
-	# If we are in "stuck idle" state, do not move horizontally
+
 	if is_stuck_idle:
 		velocity.x = 0
 		is_roaming = false
@@ -327,7 +327,7 @@ func move(delta):
 func handle_animation():
 	var new_animation := ""
 	
-	# How much we actually moved since last frame (horizontal only)
+
 	var moved_x: float = abs(global_position.x - last_anim_position.x)
 	
 	if dead:
@@ -350,11 +350,11 @@ func handle_animation():
 	else:
 		# --- NORMAL LOCOMOTION / IDLE ---
 		
-		# 1) If we are in special "stuck idle" state → idle
+		# in special "stuck idle" state → idle
 		if is_stuck_idle:
 			new_animation = "idle"
 		
-		# 2) If we barely moved horizontally at all → idle
+		# 2) barely moved horizontally at all → idle
 		elif moved_x < anim_not_moving_epsilon:
 			new_animation = "idle"
 		
@@ -613,7 +613,7 @@ func _update_stuck_state(delta: float) -> void:
 		stuck_accumulator = 0.0
 		return
 	
-	# If currently idling because we were stuck
+
 	if is_stuck_idle:
 		stuck_idle_timer -= delta
 		if stuck_idle_timer <= 0.0:
@@ -632,11 +632,11 @@ func _update_stuck_state(delta: float) -> void:
 		previous_position = global_position
 		return
 	
-	# Only consider "stuck" if we are *trying* to move horizontally
+
 	if abs(velocity.x) > stuck_check_speed_threshold:
 		var dx = abs(global_position.x - previous_position.x)
 		if dx < stuck_position_epsilon:
-			# Not moving even though we are trying
+
 			stuck_accumulator += delta
 			if stuck_accumulator >= stuck_time_threshold:
 				# Enter idle-stuck state
@@ -644,7 +644,7 @@ func _update_stuck_state(delta: float) -> void:
 				stuck_idle_timer = stuck_idle_duration
 				velocity.x = 0
 		else:
-			# We actually moved, reset counter
+
 			stuck_accumulator = 0.0
 	else:
 		stuck_accumulator = 0.0
@@ -727,7 +727,7 @@ func _try_chase_jump_to_platform() -> void:
 	
 	jump_ray.force_raycast_update()
 	
-	# Only jump if we actually see a platform in that direction
+
 	if not jump_ray.is_colliding():
 		return
 	
@@ -759,14 +759,13 @@ func _update_jump_rise(delta: float) -> void:
 		is_jump_rising = false
 		return
 	
-	# We already applied full gravity earlier:
+
 	# velocity.y += gravity * delta
-	# Here we "undo" part of it, to simulate lighter gravity
+
 	
 	var full_g: float = gravity * delta
 	var reduced_g: float = full_g * (1.0 - jump_gravity_scale)
-	
-	# reduced_g is the part of gravity we DON'T want, so subtract it
+
 	velocity.y -= reduced_g
 
 	

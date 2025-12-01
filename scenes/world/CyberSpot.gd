@@ -3,7 +3,11 @@ extends Area2D
 var player_in_range = null
 @export var player_path: NodePath
 @onready var sprite_2d = $Sprite2D
+@onready var launch_point: Marker2D = $LaunchPoint  # NEW
 
+func get_launch_point_global_position() -> Vector2:
+	return launch_point.global_position
+	
 func _ready() -> void:
 	connect("body_entered", Callable(self, "_on_body_entered"))
 	connect("body_exited", Callable(self, "_on_body_exited"))
@@ -32,8 +36,8 @@ func handle_cannon_rotation():
 	
 	if input_dir != 0:
 		# Rotate the cannon based on input
-		# You can adjust the rotation speed as needed
-		var rotation_speed = 2.0  # Degrees per frame
+		
+		var rotation_speed = 5.0  # Degrees per frame
 		sprite_2d.rotation_degrees += input_dir * rotation_speed
 		
 		# Clamp rotation if needed (optional)

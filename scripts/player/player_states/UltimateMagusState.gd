@@ -23,7 +23,7 @@ var attack_timer := 0.0
 const ATTACK_DURATION := 0.2  # seconds
 
 var teleport_reset_timer: float = 0.0
-var teleport_reset_delay: float = 0.8  # Match this to your animation length
+var teleport_reset_delay: float = 0.8 
 var skill_just_used: bool = false
 
 
@@ -39,7 +39,6 @@ func enter():
 	# CREATE the highlight material using Global's shader
 	_current_highlight_material = Global.create_highlight_material()
 	#_current_highlight_material.shader = Global.highlight_shader
-	# Set any parameters you need
 	#_current_highlight_material.set_shader_parameter("highlight_color", Color(1, 0, 0, 1))
 	
 	# Apply it
@@ -263,7 +262,7 @@ func update_highlight():
 		if is_instance_valid(obj):
 			var sprite = obj.get_node_or_null("Sprite2D")
 			if sprite:
-				# Store the object's original material if we haven't already
+		
 				if not _object_original_materials.has(obj):
 					_object_original_materials[obj] = sprite.material
 				

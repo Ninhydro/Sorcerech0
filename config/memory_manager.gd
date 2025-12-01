@@ -105,7 +105,7 @@ func save_crash_report():
 		file.store_string("\nObject count: " + str(Performance.get_monitor(Performance.OBJECT_COUNT)))
 		file.close()
 
-# Rest of your existing functions...
+
 func get_highlight_material() -> ShaderMaterial:
 	if highlight_material:
 		return highlight_material.duplicate()
@@ -148,8 +148,7 @@ func _deferred_gentle_cleanup():
 	"""Safe deferred cleanup - only operates when scene tree exists"""
 	if not get_tree() or not is_instance_valid(get_tree()):
 		return
-	
-	# Your gentle cleanup logic here...
+
 	pass
 
 

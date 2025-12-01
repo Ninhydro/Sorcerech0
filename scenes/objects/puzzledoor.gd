@@ -61,7 +61,7 @@ func update_door_state():
 	# Open door if station completed and not already open/moving
 	if station_completed and not is_open and not is_moving:
 		open_door()
-	# Close door if station not completed and door is open (optional - in case you need to reset)
+
 	elif not station_completed and is_open and not is_moving:
 		close_door()
 

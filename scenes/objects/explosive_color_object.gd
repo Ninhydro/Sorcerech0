@@ -28,7 +28,7 @@ func _ready():
 	# Try to find the ExplosiveDoor up the tree automatically
 	_find_explosive_door()
 
-	set_process(false)  # we only process when armed
+	set_process(false) 
 
 
 func _find_explosive_door():

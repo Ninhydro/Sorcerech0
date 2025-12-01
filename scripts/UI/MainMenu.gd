@@ -5,7 +5,7 @@ extends CanvasLayer
 @onready var option_button = $UIContainer/ButtonContainer/OptionButton 
 @onready var exit_button = $UIContainer/ButtonContainer/ExitButton 
 
-#@onready var background_dimmer = $BackgroundDimmer # NEW: Reference to the dimmer
+#@onready var background_dimmer = $BackgroundDimmer 
 
 @export var main_game_scene: PackedScene = preload("res://scenes/world/World.tscn")
 @export var cutscene_scene: PackedScene = preload("res://scenes/world/cutscene_intro.tscn")
@@ -75,9 +75,9 @@ func _on_continue_button_pressed():
 	_set_main_menu_buttons_enabled(false)
 
 
-# NEW HELPER FUNCTION: To enable/disable main menu buttons
+
 func _set_main_menu_buttons_enabled(enabled: bool):
-	# Implement this to enable/disable your MainMenu buttons
+
 	# Example:
 	# $VBoxContainer/NewGameButton.disabled = not enabled
 	# $VBoxContainer/LoadGameButton.disabled = not enabled

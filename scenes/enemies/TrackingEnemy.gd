@@ -6,7 +6,6 @@ extends BaseEnemy
 @export var dash_duration := 0.0
 @export var dash_cooldown := 2.0
 
-# NEW — cooldown flags (do nothing unless we use them later)
 var is_attack_cooldown := false
 var is_dash_cooldown := false
 
@@ -46,9 +45,9 @@ func _process(delta):
 	if dash_timer > 0:
 		dash_timer -= delta * Global.global_time_scale
 		if dash_timer <= 0:
-			is_dash_cooldown = false   # NEW (cooldown end)
+			is_dash_cooldown = false  
 
-	# ORIGINAL attack logic (unchanged)
+
 	if is_enemy_chase and player and can_attack and not Global.camouflage and not dead and not taking_damage:
 		var distance = global_position.distance_to(player.global_position)
 
@@ -78,7 +77,7 @@ func move(delta):
 		is_roaming = false
 		return
 
-	# NEW — during cooldown show idle, still allowed to walk
+
 	if is_attack_cooldown or is_dash_cooldown:
 		is_roaming = false
 		return
@@ -120,13 +119,13 @@ func start_attack():
 		await get_tree().create_timer(0.15).timeout
 		is_dealing_damage = false
 
-		# NEW — activate cooldown
+
 		is_attack_cooldown = true
 
 		attack_cooldown_timer.start(attack_cooldown * 0.7)
 
 func _on_attack_cooldown_timeout():
-	# NEW — this is called automatically by BaseEnemy timer
+
 	can_attack = true
 	is_attack_cooldown = false
 
@@ -149,7 +148,7 @@ func start_dash_attack():
 		is_dashing = false
 		velocity.x = 0
 
-		# NEW — dash cooldown
+
 		is_dash_cooldown = true
 		dash_timer = dash_cooldown
 
@@ -170,7 +169,7 @@ func handle_animation():
 		new_animation = "hurt"
 	elif is_dealing_damage:
 		new_animation = "attack"
-	elif is_attack_cooldown or is_dash_cooldown:      # NEW — idle during cooldown
+	elif is_attack_cooldown or is_dash_cooldown:     
 		new_animation = "idle"
 	elif is_enemy_chase and not has_alerted:
 		new_animation = "alert"

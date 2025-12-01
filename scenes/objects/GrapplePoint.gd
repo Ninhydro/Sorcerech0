@@ -18,7 +18,7 @@ func _ready():
 	add_to_group("grapple_targets")
 	#_update_texture()
 	sprite.texture = TEX_EXACTLYION if use_exactlyion_style else TEX_DEFAULT
-	# We don't need _process at all now
+
 	#set_process(false)
 	
 func _process(delta):

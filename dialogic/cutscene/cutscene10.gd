@@ -51,10 +51,10 @@ func _on_body_entered(body: Node) -> void:
 #		start_cutscene()
 
 
-# You can call this directly from Boss2 cutscene:
+
 #   final_cutscene_node.start_cutscene()
 func start_cutscene() -> void:
-	# Ensure we don't start twice
+
 	var tree := get_tree()
 	if tree == null:
 		print("FinalCutscene: start_cutscene() called but node not in scene tree, ignoring.")

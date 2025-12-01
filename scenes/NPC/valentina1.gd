@@ -36,7 +36,7 @@ func _ready():
 	check_visibility_conditions()
 
 func setup_global_connections():
-	# Check periodically for global changes (since we don't have signals)
+
 	check_globals_periodically()
 func show_instantly():
 	"""Show Valentina immediately without movement"""
@@ -94,10 +94,7 @@ func _process(_delta):
 	pass
 
 func check_visibility_conditions():
-	# Check if we should be visible based on global flags
-	#print("Valentina: Checking visibility conditions...")
-	#print("Valentina: minigame_valentina_completed = ", Global.minigame_valentina_completed)
-	#print("Valentina: timeline = ", Global.timeline)
+
 	
 	# 1) Later timeline state should override earlier minigame state
 	if Global.timeline >= 5:

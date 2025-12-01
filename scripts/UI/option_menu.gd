@@ -46,7 +46,7 @@ func _ready():
 	master_volume_slider.value_changed.connect(_on_master_volume_slider_value_changed)
 	bgm_volume_slider.value_changed.connect(_on_bgm_volume_slider_value_changed)
 	sfx_volume_slider.value_changed.connect(_on_sfx_volume_slider_value_changed)
-	voice_volume_slider.value_changed.connect(_on_voice_volume_slider_value_changed) # NEW: Voice volume
+	voice_volume_slider.value_changed.connect(_on_voice_volume_slider_value_changed) 
 	
 	resolution_option_button.clear()
 	for res in Global.available_resolutions:
@@ -96,7 +96,7 @@ func _load_settings_to_ui():
 	master_volume_slider.value = Global.master_vol
 	bgm_volume_slider.value = Global.bgm_vol
 	sfx_volume_slider.value = Global.sfx_vol
-	voice_volume_slider.value = Global.voice_vol # NEW: Voice volume
+	voice_volume_slider.value = Global.voice_vol
 	
 	_update_labels() # Update all labels after setting slider values
 	
@@ -111,7 +111,7 @@ func _update_labels():
 	master_volume_value_label.text = str(snapped(master_volume_slider.value, 0.1)) + "dB"
 	bgm_volume_value_label.text = str(snapped(bgm_volume_slider.value, 0.1)) + "dB"
 	sfx_volume_value_label.text = str(snapped(sfx_volume_slider.value, 0.1)) + "dB"
-	voice_volume_value_label.text = str(snapped(voice_volume_slider.value, 0.1)) + "dB" # NEW: Voice volume
+	voice_volume_value_label.text = str(snapped(voice_volume_slider.value, 0.1)) + "dB" 
 
 # --- Signal Callbacks for Settings ---
 
@@ -165,7 +165,7 @@ func _on_sfx_volume_slider_value_changed(value: float):
 	_update_labels()
 	print("Options: SFX Volume set to: " + str(value) + "dB")
 
-func _on_voice_volume_slider_value_changed(value: float): # NEW: Voice volume
+func _on_voice_volume_slider_value_changed(value: float): 
 	Global.voice_vol = value
 	Global.apply_audio_settings()
 	_update_labels()

@@ -56,7 +56,7 @@ func _on_body_entered(body):
 			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 		Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-	# Start your dialog timeline.
+
 		if Global.killing == true:
 			Global.ult_cyber_form = true
 			Global.replica_fini_dead = true

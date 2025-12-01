@@ -399,8 +399,8 @@ static func customize_file(original_file:String, target_file:String) -> String:
 	var file_text := file.get_as_text()
 	file.close()
 
-	# If we are customizing a scene, we check for any resources used in that scene that are in the same folder.
-	# Those will be copied as well and the scene will be modified to point to them.
+
+
 	if file_text.begins_with('[gd_'):
 		var base_path: String = original_file.get_base_dir()
 
@@ -518,10 +518,10 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 		TYPE_DICTIONARY:
 			input = load("res://addons/dialogic/Editor/Events/Fields/field_dictionary.tscn").instantiate()
 			input.property_name = property_info["name"]
-			# FIX THIS LINE:
+
 			input.value_changed.connect(func(_emitted_prop_name, new_value):
-				# We use property_info.name from the outer scope
-				# and new_value from the signal's second argument
+
+
 				_on_export_dict_submitted(property_info.name, new_value, property_changed)
 			)
 			#input.value_changed.connect(_on_export_dict_submitted.bind(property_changed))

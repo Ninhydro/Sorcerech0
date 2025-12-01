@@ -1,7 +1,7 @@
 extends Node
 class_name BaseState
 
-var player: CharacterBody2D  # Or use your Player.gd class_name if you declared one
+var player: CharacterBody2D  
 
 func _init(p):
 	player = p

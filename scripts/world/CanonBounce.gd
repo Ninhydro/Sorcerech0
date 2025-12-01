@@ -20,7 +20,7 @@ func can_bounce(player_node) -> bool:
 	if not player_node.is_launched:
 		return false
 	
-	# ADDED: Check if player's collision mask includes layer 2 (bounce spots)
+
 	# If player's mask doesn't include layer 2, they should pass through
 	var player_collision_mask = player_node.collision_mask
 	var layer_2_bitmask = 1 << 1  # Layer 2 is bit 1 (value 2)

@@ -33,8 +33,7 @@ var animation_wait := false
 var fade_animation := ""
 var fade_length := 0.5
 
-## For Update only. If bigger then 0, the portrait will tween to the
-## new position (if changed) in this time (in seconds).
+
 var transform_time: float = 0.0
 var transform_ease := Tween.EaseType.EASE_IN_OUT
 var transform_trans := Tween.TransitionType.TRANS_SINE

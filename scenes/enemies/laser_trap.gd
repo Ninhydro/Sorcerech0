@@ -44,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	var ts: float = max(0.0, float(Global.global_time_scale/2))
 	var scaled_delta: float = delta * ts
 	
-	# If we require player near and none is around → always OFF
+
 	if require_player_near and not player_nearby:
 		beam_on = false
 		sprite.visible = false

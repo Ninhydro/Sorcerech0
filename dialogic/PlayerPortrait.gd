@@ -3,8 +3,7 @@ extends Node2D
 
 @onready var portrait_sprite: Sprite2D = $PortraitSprite
 
-# Remove the `@export` from these lines.
-# We will populate these dictionaries manually in code.
+
 var normal_portraits: Dictionary = {}
 var cyber_portraits: Dictionary = {}
 var magus_portraits: Dictionary = {}
@@ -32,8 +31,8 @@ func _ready():
 	print("--------------------------------------------------")
 
 
-# --- NEW FUNCTION TO MANUALLY POPULATE DICTIONARIES ---
-# Call this once when the scene is ready, or if you need to re-initialize portraits.
+
+
 func set_all_portraits():
 	# Normal Portraits
 	normal_portraits = {
@@ -41,7 +40,7 @@ func set_all_portraits():
 		"Happy": preload("res://assets_image/Characters/Phina/Normal/Normal_Happy.png"),
 		"Normal": preload("res://assets_image/Characters/Phina/Normal/Normal_Normal.png"),
 		"Sad": preload("res://assets_image/Characters/Phina/Normal/Normal_Sad.png")
-		# Add "Unique" if you have it for Normal form, it's in your log for Cyber
+
 	}
 	# Cyber Portraits
 	cyber_portraits = {
@@ -49,7 +48,7 @@ func set_all_portraits():
 		"Happy": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Happy.png"),
 		"Normal": preload("res://assets_image/Characters/Phina/Cyber/1Fini_transparent.png"),
 		"Sad": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Sad.png")
-		# Add "Unique" if you have it for Cyber form
+
 	}
 	# Magus Portraits
 	magus_portraits = {
@@ -72,8 +71,8 @@ func set_all_portraits():
 		"Normal": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Normal.jpg"),
 		"Sad": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Sad.png")
 	}
-	# Add any other missing textures/keys if they exist in your file system
-	# Example: If your Cyber form also has a "Unique" texture:
+
+
 	# cyber_portraits["Unique"] = preload("res://assets_image/Characters/Phina/Cyber/Cyber_Unique.png")
 
 
@@ -83,7 +82,7 @@ func _update_portrait(_character: DialogicCharacter, portrait_name_with_parens: 
 		set_all_portraits()
 		portraits_initialized = true
 	
-	# Rest of your _update_portrait function remains the same...
+
 	if not is_instance_valid(portrait_sprite):
 		portrait_sprite = find_child("PortraitSprite") # Or $PortraitSprite if direct child
 		if not is_instance_valid(portrait_sprite):

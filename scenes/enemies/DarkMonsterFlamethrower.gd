@@ -12,7 +12,7 @@ class_name DarkMonsterFlamethrower
 @export var damage_per_second: float = 10.0    # Base DPS when time_scale = 1
 
 # --- Collider grow / slide settings ---
-# These you can tweak in the Inspector to match your values:
+
 # full position when firing:  (-40, 70)
 # idle position when no fire: (50, 70)
 @export var collider_idle_position: Vector2 = Vector2(50, 70)

@@ -6,9 +6,8 @@ extends CanvasLayer
 
 var slot_buttons: Array[Button] = []
 
-# --- NEW: Flag to control manual saving to autosave slot ---
-const ALLOW_MANUAL_SAVE_TO_AUTOSAVE_SLOT = false # Set to 'true' if you want to allow it
-# --- END NEW ---
+
+const ALLOW_MANUAL_SAVE_TO_AUTOSAVE_SLOT = false 
 
 func _ready():
 	print("SaveGameMenu _ready() called! Current paused state: ", get_tree().paused)
@@ -49,15 +48,15 @@ func _add_slot_button(button_text: String, slot_name_to_save: String):
 	button.text = button_text
 	button.flat = false
 
-	# --- MODIFIED: Set custom minimum size and size flags for smaller buttons ---
+
 	# For a 320px wide window, 180px width is more reasonable.
 	# Height of 40-50px should accommodate two lines of text with a small font.
 	button.set_custom_minimum_size(Vector2(240, 10)) # Adjusted size for 4 buttons
 	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER # Center horizontally
 	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER # Center vertically
-	# --- END MODIFIED ---
 
-	# --- MODIFIED: Create a custom theme for the button to control font size ---
+
+
 	var button_theme = Theme.new()
 	var font_size = 10 # Adjust this value (e.g., 8, 10, 12) for desired text size
 	
@@ -74,11 +73,10 @@ func _add_slot_button(button_text: String, slot_name_to_save: String):
 		print("LoadGameMenu: Applied custom font size " + str(font_size) + " to button: " + button_text)
 	else:
 		printerr("LoadGameMenu: No default font found. Button font size might not change.")
-		# As a fallback for SystemFont or missing FontFile, you can try setting a dynamic font
-		# if you have one preloaded or available. However, direct size control on SystemFont is limited.
+
 	
 	button.theme = button_theme
-	# --- END MODIFIED ---
+
 	
 	var slot_info = SaveLoadManager.get_save_slot_info(slot_name_to_save)
 	var timestamp_text = "Empty Slot"
@@ -144,14 +142,14 @@ func _on_save_slot_button_pressed(slot_name: String):
 
 	print("SaveGameMenu: Attempting to save game to slot: ", slot_name if not slot_name.is_empty() else "Autosave")
 	
-	# Get a reference to the Player node.
-	# Assuming your Player node is in the "player" group:
+
+
 	var player_node = get_tree().get_first_node_in_group("player")
 	
 	if player_node == null:
 		printerr("SaveGameMenu: ERROR: Player node not found in 'player' group. Cannot save game.")
-		# You might want to show a message to the user here
-		return # Stop the function if player is not found
+
+		return 
 
 	var save_successful = SaveLoadManager.save_game(player_node, slot_name) # Pass player_node as the first argument
 	

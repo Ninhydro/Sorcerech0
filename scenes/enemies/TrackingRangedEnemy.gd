@@ -163,7 +163,7 @@ func handle_animation():
 	elif is_enemy_chase and has_alerted:
 		# After alert, use run animation for chasing
 		new_animation = "run"
-	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
+	elif is_preparing_attack:  
 		new_animation = "idle"
 		
 	elif is_roaming:
@@ -208,6 +208,6 @@ func handle_animation():
 # Optional: Reset alert state if player leaves and re-enters range
 func _on_range_chase_body_exited(body):
 	if body.name == "Player":
-		# You can choose to reset the alert state when player leaves
-		# has_alerted = false  # Uncomment if you want alert to play every time player enters range
+
+
 		pass

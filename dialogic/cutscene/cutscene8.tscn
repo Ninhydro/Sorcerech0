@@ -110,7 +110,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e4s5f"]
 size = Vector2(20, 277)
 
-[node name="cutscene8" type="Area2D"]
+[node name="cutscene8" type="Area2D" groups=["boss1_cutscene"]]
 position = Vector2(79, 74)
 script = ExtResource("1_35yc7")
 boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])

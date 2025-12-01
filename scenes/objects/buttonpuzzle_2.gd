@@ -38,7 +38,7 @@ func _on_body_exited(body: Node2D) -> void:
 func _is_valid_press_body(body: Node2D) -> bool:
 	if allow_player and body is Player:
 		return true
-	# Adjust the class name if your telekinesis object script is different
+
 	if allow_telekinesis_object and body is TelekinesisObject:
 		return true
 	return false

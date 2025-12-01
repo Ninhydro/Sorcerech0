@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 
 	player = Global.playerBody
 
-	# Basic chase toggle based on your global flags + range area
+
 	if Global.playerAlive and not Global.camouflage and range:
 		is_enemy_chase = true
 	else:

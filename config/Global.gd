@@ -116,8 +116,7 @@ var play_intro_cutscene := false
 var playerBody: Player = null # This is the variable the ProfileScene is looking for
 var selected_form_index: int
 
-# --- MODIFIED: current_form property with setter and signal (Godot 4.x syntax) ---
-# Use a private backing variable for the actual value.
+
 var current_form: String = "Normal" # Initialize with default value for the backing variable
 
 # Declare the signal
@@ -165,7 +164,7 @@ var tracking_paused = false
 
 var kills: int = 0 # Initialize kills
 var affinity: int = 0 # Initialize affinity negative magus, positive cyber
-var player_status: String = "Neutral" # NEW: Player status
+var player_status: String = "Neutral" 
 
 func increment_kills() -> void:
 	if timeline >= 8 and timeline < 9:
@@ -226,7 +225,7 @@ var cutscene_finished1 = false
 
 var global_time_scale: float = 1.0
 func slow_time():
-	global_time_scale = 0.5  # 30% normal speed
+	global_time_scale = 0.5  #change this for time stop/slow
 
 func normal_time():
 	global_time_scale = 1.0  # 100% normal speed
@@ -436,6 +435,12 @@ func _init():
 	master_vol = 0.0 # Override default for master volume
 
 func _process(delta):
+	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
+		#print("persistent_microchips ",persistent_microchips)
+		#print("persistent_magic_stones ",persistent_magic_stones)
+		#print("persistent_video_tapes ",persistent_video_tapes)
+		print("timeline ",timeline)
+	#	print("Player World Position: ", global_position)
 	# Handle unpause cooldown timer
 	if unpause_cooldown_timer > 0:
 		unpause_cooldown_timer -= delta
@@ -472,7 +477,7 @@ func get_save_data() -> Dictionary:
 		"current_scene_path": current_scene_path,
 		"play_intro_cutscene": play_intro_cutscene,
 		"cutscene_finished1": cutscene_finished1,
-		"is_cutscene_active": is_cutscene_active, # NEW: Save cutscene active state
+		"is_cutscene_active": is_cutscene_active, 
 		"cutscene_name": cutscene_name,
 		"cutscene_playback_position": cutscene_playback_position,
 		
@@ -492,7 +497,7 @@ func get_save_data() -> Dictionary:
 
 		"kills": kills, # Save kills
 		"affinity": affinity, # Save affinity
-		"player_status": player_status, # NEW: Save player status
+		"player_status": player_status, 
 		
 		"sub_quest": sub_quest,
 		"active_quests": active_quests,
@@ -649,7 +654,7 @@ func reset_to_defaults():
 	
 	kills = 0 # Reset kills
 	affinity = 0 # Reset affinity
-	player_status = "Neutral" # NEW: Reset player status
+	player_status = "Neutral" 
 	# Reset the form using the setter
 	set_player_form("Normal") 
 	
@@ -692,7 +697,7 @@ func reset_to_defaults():
 	dialog_timeline = ""
 	dialog_current_index = 0
 	dialogic_variables = {}
-	is_cutscene_active = false # NEW: Reset cutscene active state
+	is_cutscene_active = false 
 	
 	revealed_chunks  = {}
 	quest_markers = {}
@@ -774,7 +779,7 @@ func apply_audio_settings():
 	var master_bus_idx = AudioServer.get_bus_index("Master")
 	var bgm_bus_idx = AudioServer.get_bus_index("BGM")
 	var sfx_bus_idx = AudioServer.get_bus_index("SFX")
-	var voice_bus_idx = AudioServer.get_bus_index("Voice") # NEW: Voice bus index
+	var voice_bus_idx = AudioServer.get_bus_index("Voice") 
 
 	if master_bus_idx != -1:
 		AudioServer.set_bus_volume_db(master_bus_idx, master_vol)
@@ -782,7 +787,7 @@ func apply_audio_settings():
 		AudioServer.set_bus_volume_db(bgm_bus_idx, bgm_vol)
 	if sfx_bus_idx != -1:
 		AudioServer.set_bus_volume_db(sfx_bus_idx, sfx_vol)
-	if voice_bus_idx != -1: # NEW: Apply voice volume
+	if voice_bus_idx != -1: 
 		AudioServer.set_bus_volume_db(voice_bus_idx, voice_vol)
 	
 	print("Global: Applied audio settings: Master=" + str(master_vol) + 
@@ -810,7 +815,7 @@ func cleanup_all_shader_materials():
 		if playerBody.has_method("emergency_cleanup_shaders"):
 			playerBody.emergency_cleanup_shaders()
 
-# Add these to your existing variables section (around line 7-8)
+
 var persistent_data_path: String = "user://persistent_data.cfg"  # Changed from .dat to .cfg
 #Later steam cloud:
 #var persistent_data_path: String = "user://SteamCloud/persistent_data.cfg"
@@ -950,7 +955,7 @@ func reset_persistent():
 	persistent_magic_stones = 0
 	persistent_video_tapes = 0
 
-	# NEW: reset unique tape flags
+
 	persistent_video_tape_1_collected = false
 	persistent_video_tape_2_collected = false
 	persistent_video_tape_3_collected = false
@@ -962,7 +967,7 @@ func reset_persistent():
 	save_persistent_data()
 	
 func check_collection_achievements():
-	# Define your total counts (change these to your actual totals)
+
 	var total_video_tapes = 3
 	var total_microchips = 10  
 	var total_magic_stones = 10

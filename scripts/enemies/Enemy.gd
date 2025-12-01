@@ -41,10 +41,10 @@ var is_roaming: bool = true
 
 @onready var attackcoll  :=  $DealAttackArea/CollisionShape2D
 #@export var health := 3
-#@onready var hitbox_area := $HitboxArea  # your Area2D node to detect being hit
+#@onready var hitbox_area := $HitboxArea  
 #signal attack_frame 
 
-# NEW: Add these variables
+
 var attack_target: Node2D = null
 var attack_timer: Timer
 var attack_active := false
@@ -186,7 +186,7 @@ func handle_death():
 #	if body.name == "Player":
 #		print(">> Enemy was touched by player:", body.name)
 #		body.apply_damage(10)
-		# Optional: you could use this for player contact damage
+
 		# But ideally only AttackArea triggers damage		
 	
 func choose(array):
@@ -243,7 +243,7 @@ func _on_animation_player_animation_finished(anim_name):
 func attack_frame():
 	Global.enemyAdealing = true
 	var knockback_dir = (Global.playerBody.global_position - global_position).normalized()
-	Global.enemyAknockback = knockback_dir * 100.0  # You can adjust force here
+	Global.enemyAknockback = knockback_dir * 100.0  
 	
 func _on_deal_attack_area_area_entered(area):
 	if area == Global.playerHitbox and attack_target == null and Global.camouflage == false:

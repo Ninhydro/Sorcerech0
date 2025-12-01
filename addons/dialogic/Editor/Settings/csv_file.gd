@@ -107,7 +107,7 @@ func collect_lines_from_characters(characters: Dictionary) -> void:
 			var nick_array_line := PackedStringArray([nickname_name_line_key, nickname_string])
 			lines.append(nick_array_line)
 
-		# New character item, if needed, add a separator.
+
 		if add_separator:
 			_append_empty()
 
@@ -276,7 +276,7 @@ func collect_lines_from_glossary(glossary: DialogicGlossary) -> void:
 
 			lines.append(glossary_line)
 
-		# New glossary item, if needed, add a separator.
+
 		if add_separator:
 			_append_empty()
 

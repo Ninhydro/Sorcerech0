@@ -99,7 +99,7 @@ func start_cutscene() -> void:
 	else:
 		Dialogic.start("timeline10", false)
 
-	# Optional: you can also play different animations here if you want:
+	# Optional: play different animations here:
 	# if anim_player:
 	#     if Global.first_boss_dead and anim_player.has_animation("intro_alyra_dead"):
 	#         anim_player.play("intro_alyra_dead")
@@ -223,7 +223,7 @@ func _finish_battle_and_start_outro() -> void:
 	# Optionally re-lock or unlock gameplay here if needed
 	# Global.is_cutscene_active = true
 	
-	# Move on to next cutscene (you can branch inside that one using Global.alyra_dead)
+
 	if next_cutscene_path != NodePath("") and has_node(next_cutscene_path):
 		var cs_node: Node = get_node(next_cutscene_path)
 		print("DEBUG: Starting final cutscene from boss2, alyra_dead = ", Global.alyra_dead)

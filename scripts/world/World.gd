@@ -3,10 +3,10 @@ extends Node2D
 @onready var player_spawn_point_initial: Marker2D = $Marker2D # For camera during cutscene
 @onready var player_spawn_point_junkyard: Marker2D = $Room_AerendaleJunkyard/Marker2D # Player's actual spawn after the cutscene
 
-# IMPORTANT: Reference the player that is ALREADY IN THE SCENE TREE
-@onready var player_root_node: Node2D = $Player # Adjust this path if your Player node is not directly named "Player" or is a child of something else. E.g., "$Characters/Player"
 
-@onready var cutscene_manager: Node = $CutsceneIntro# Path to your CutsceneManager node
+@onready var player_root_node: Node2D = $Player 
+
+@onready var cutscene_manager: Node = $CutsceneIntro
 
 @export var pause_menu_scene: PackedScene = preload("res://scenes/ui/pause_menu.tscn")
 
@@ -15,8 +15,8 @@ extends Node2D
 @onready var _player_camera: Camera2D = null # This will be assigned in _ready when player_instance is valid
 
 @onready var  war_effect = $GameHUD/ColorRect
-# Removed the @onready var cutscene_camera_node as we're using the player's camera
-var actual_player_body: Player = null # <--- CHANGE this type hint
+
+var actual_player_body: Player = null
 
 func _unhandled_input(event: InputEvent):
 	if event.is_action_pressed("menu"):
@@ -58,8 +58,7 @@ func _ready():
 		actual_player_body = player_root_node.get_node_or_null("Player") as Player
 
 	if not is_instance_valid(actual_player_body) or not (actual_player_body is Player):
-		printerr("World: CRITICAL ERROR: Could not find or cast CharacterBody2D named 'Player' under PlayerRoot_Node2D! Check your player scene structure.")
-		#print("World: Debug: EXITING _ready() - actual_player_body not found or invalid.")
+		
 		return
 
 	#print("World: Debug: About to assign actual_player_body to Global.playerBody: ", actual_player_body)
@@ -130,8 +129,7 @@ func _ready():
 			cutscene_manager.start_cutscene()
 			print("World: CutsceneManager.start_cutscene() called.")
 
-			# Reset the global flag immediately. This prevents the cutscene from playing
-			# again if you change scenes within the same "new game" session.
+	
 			Global.play_intro_cutscene = false
 			print("World: Global.play_intro_cutscene reset to false.")
 
@@ -159,10 +157,10 @@ func _process(delta):
 	else:
 		war_effect.visible = false
 		war_effect.disable_war_effect()
-# NEW: Function to handle when the cutscene finishes
+
 func _on_cutscene_finished():
 	print("World: _on_cutscene_finished() called. Enabling player and switching camera.")
-	# Now that the cutscene is over, position the player, enable their input, and switch to their camera.
+
 	Cartographer.reveal_chunk("Junkyard")
 	teleport_player_and_enable(true) # This will position player at junkyard, enable input, and switch to player camera
 	print("✅ World: Player enabled and camera switched after cutscene.")
@@ -214,27 +212,21 @@ func _on_global_brightness_changed(new_brightness_value: float):
 	else:
 		printerr("World: WARNING: canvas_modulate is null, cannot update brightness.")
 
-# This function is no longer needed as we're not switching to a separate cutscene camera.
-# The player's camera is simply repositioned.
+
 func switch_to_cutscene_camera(cutscene_cam: Camera2D):
-	# In Godot 4, you don't call set_current(false) on the old camera.
-	# You just make the new camera current.
-	# The 'player_camera.is_current()' check is still useful for debugging or conditional logic,
-	# but the actual unsetting is implicit when make_current() is called on another camera.
+
 
 	if cutscene_cam and is_instance_valid(cutscene_cam):
-		# Ensure the cutscene camera is enabled and processing before making it current
+
 		cutscene_cam.enabled = true
 		cutscene_cam.set_process_mode(Node.PROCESS_MODE_INHERIT) # Ensure it processes
-		cutscene_cam.make_current() # THIS IS THE KEY CHANGE
+		cutscene_cam.make_current() 
 		print("✅ World.gd: Cutscene camera activated: ", cutscene_cam.name)
 	else:
 		printerr("World.gd: Failed to switch to cutscene camera: invalid reference.")
 
 func switch_to_player_camera():
-	# When switching back to the player camera, we simply make it current.
-	# The previously current camera (e.g., cutscene_cam) will automatically become non-current.
-	# We can optionally disable the old camera here if it's no longer needed for processing.
+
 
 	var previous_camera = get_viewport().get_camera_2d() # Get the camera that *was* current
 
@@ -244,12 +236,9 @@ func switch_to_player_camera():
 		_player_camera.make_current() # THIS IS THE KEY CHANGE
 		print("✅ World.gd: Player camera activated.")
 
-		# Optional: If the previous camera was the cutscene camera, you can disable it here
-		# to prevent it from consuming resources if it's not needed.
+
 		if previous_camera and previous_camera != _player_camera and is_instance_valid(previous_camera):
-			# You might want to check its name or type if you have multiple types of cutscene cameras
-			# For example, if your cutscene camera is always named "Camera2D":
-			# if previous_camera.name == "Camera2D":
+
 			previous_camera.enabled = false
 			previous_camera.set_process_mode(Node.PROCESS_MODE_DISABLED)
 			print("World.gd: Deactivated previous camera (", previous_camera.name, ").")

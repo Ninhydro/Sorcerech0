@@ -79,7 +79,7 @@ func _ready():
 				move_to_station(0)
 			print("Nora: Starting minigame from beginning")
 
-# New function to check individual station completions from global flags
+
 func check_individual_station_completions():
 	# Update local completion array from global flags
 	if Global.nora_station_1_completed and stations_completed.size() > 0:
@@ -157,8 +157,7 @@ func setup_current_station():
 	
 	if station_already_completed:
 		print("Nora: This station is already completed!")
-		# You could skip setup or show different message
-		# For now, we'll still set it up but maybe show different UI
+
 	else:
 		setup_station_objects()
 	
@@ -235,7 +234,7 @@ func handle_player_interaction():
 	# Check if current station is already completed
 	if stations_completed.size() > current_station_index and stations_completed[current_station_index]:
 		print("Nora: This station is already completed! Let's move to the next one.")
-		# You could auto-advance here if you want
+
 		return
 	
 	if not minigame_enabled:
@@ -296,7 +295,6 @@ func complete_minigame(success: bool):
 			Dialogic.timeline_ended.connect(_on_dialogic_finished)
 			Dialogic.start("timeline7M", false)
 
-# New function to set individual station global flags
 func set_station_global_flag(station_index: int, completed: bool):
 	match station_index:
 		0:  # Station 1 - Green
@@ -417,7 +415,7 @@ func reset_current_minigame():
 	
 	print("Nora: RESET COMPLETE! Recreated ", reset_count, " objects")
 
-# NEW FUNCTION: Get the correct color for each object at each station
+
 func get_correct_color_for_object(object_name: String, station_index: int) -> ColorObject.ColorType:
 	match station_index:
 		0:  # Station 0 - Green goal (3 objects)
@@ -446,7 +444,7 @@ func get_correct_color_for_object(object_name: String, station_index: int) -> Co
 	
 func determine_color_from_name(object_name: String) -> ColorObject.ColorType:
 	# Determine color based on object name pattern
-	# Adjust this based on your naming convention
+
 	if "ColorObject" in object_name:
 		match object_name:
 			"ColorObject", "ColorObject5":
@@ -462,7 +460,7 @@ func determine_color_from_name(object_name: String) -> ColorObject.ColorType:
 	
 func get_original_colors_for_station(station_index: int) -> Dictionary:
 	# Define what color each object should be at each station
-	# Adjust this based on your actual station setups
+
 	match station_index:
 		0:  # Station 1 (Green goal)
 			return {
@@ -491,7 +489,7 @@ func get_original_colors_for_station(station_index: int) -> Dictionary:
 # Helper functions for the reset system
 func get_expected_objects_for_station(station_index: int) -> Array:
 	# Define which objects should exist at each station
-	# Adjust this based on your actual station setups
+
 	match station_index:
 		0:  # Station 1 (Green goal)
 			return ["ColorObject", "ColorObject2", "ColorObject3"]
@@ -504,7 +502,7 @@ func get_expected_objects_for_station(station_index: int) -> Array:
 
 func get_color_from_object_name(object_name: String) -> ColorObject.ColorType:
 	# Determine color based on object name pattern
-	# Adjust this based on your actual naming convention
+
 	if "ColorObject" in object_name:
 		# Default colors for numbered objects
 		match object_name:

@@ -7,16 +7,16 @@ extends Control
 
 const CHAR_TIME = 0.05      # Time each character stays on screen (Increase for slower text)
 
-# NEW: Constants for dynamic margin offsets
+
 const MARGIN_OFFSET_FEW_WORDS = 20
 const MARGIN_OFFSET_MANY_WORDS = 50
 const CHARACTER_THRESHOLD_FOR_LARGE_MARGIN = 20 # If text is 20 chars or less, use small margin
 
-const PANEL_SPEED_MULTIPLIER = 0.2 # Adjust if you want panel faster/slower than text
+const PANEL_SPEED_MULTIPLIER = 0.2 
 const Y_OFFSET_POPUP = 20   # How many pixels the bubble will pop up vertically
 
 # CRITICAL FIX: Adjusted MAX_TEXT_DISPLAY_WIDTH to a practical value.
-# This is the maximum width your text content will try to occupy before wrapping.
+
 const MAX_TEXT_DISPLAY_WIDTH = 400.0 # <--- THIS IS THE MOST IMPORTANT CHANGE!
 
 var current_wait_time: float = 0.0
@@ -68,7 +68,7 @@ func set_text(text_content: String, wait_time: float = 3.0):
 	# With Autowrap Mode 'Word', this tells it to calculate its content height
 	# if forced to this width.
 	rich_text_label.size.x = MAX_TEXT_DISPLAY_WIDTH
-	# If Autowrap Mode is 'Off', you'd set size.x = 99999 here instead to get full single-line width.
+
 
 	# Yield for one physics frame to allow RichTextLabel to calculate its content size
 	await get_tree().physics_frame
@@ -94,7 +94,7 @@ func set_text(text_content: String, wait_time: float = 3.0):
 	var min_panel_height = 50.0 # Base minimum height
 
 	# Target width for the panel: required text width + 2x margin (left and right)
-	# We cap the target width to prevent it from becoming excessively wide
+
 	var target_width = max(min_panel_width, required_text_width + (current_margin_offset * 4))
 	target_width = min(target_width, MAX_TEXT_DISPLAY_WIDTH + (current_margin_offset * 4))
 
@@ -167,6 +167,5 @@ func _on_Tween_finished():
 func _on_Timer_timeout():
 	visible = false
 
-# Example of how to use this script from another script (e.g., your Player script)
-# func _on_Player_interacted_with_NPC():
-#     $Path/To/SpeechBubbleNode.set_text("Hello there! How are you?", 5.0)
+
+

@@ -101,9 +101,9 @@ const BOUNCE_GRACE := 0.2 # How long to ignore new bounce collisions after a bou
 
 var inventory = []
 
-# --- NEW FLAG FOR DEFERRED POSITION APPLICATION ---
+
 var _should_apply_loaded_position: bool = false 
-# --- END NEW FLAG ---
+
 
 signal health_changed(health, health_max)
 signal form_changed(new_form_name)
@@ -139,7 +139,7 @@ var normal_collision_mask: int = 0
 var cannon_collision_mask: int = 0
 
 
-# Add these with your other variables
+
 var area_pass_count: int = 0
 var max_area_passes: int = 2
 var is_area_goal_complete: bool = false
@@ -151,7 +151,7 @@ var area_pass_cooldown: float = 0.5  # Minimum time between counting passes (sec
 var base_launch_speed: float = 500.0  # Store the original speed
 var speed_increase_multiplier: float = 1.2  # 20% speed increase each pass
 var current_speed_boost: float = 1.0  # Current speed multiplier
-# Add these variables to your Player script
+
 var last_bounce_direction: Vector2 = Vector2.ZERO
 var bounce_direction_change_threshold: float = 0.3  # Minimum change required to count as new bounce
 
@@ -187,9 +187,8 @@ const SKILL_HEALTH_COSTS := {
 func disable_input():
 	print("Player: Input disabled.")
 	set_physics_process(false) # Stop _physics_process from running normal movement
-	set_process(false) # Stop _process if you have non-physics input in it
-	# You might also set Global.is_cutscene_active = true from the Cutscene Area2D directly,
-	# and have your player's input check this global variable.
+	set_process(false) 
+
 
 # Method to enable player input
 func enable_input():
@@ -200,7 +199,10 @@ func enable_input():
 
 
 func _ready():
+	#Global.affinity += 1
 	#Global.reset_persistent()
+	camera.zoom = Vector2(0.8,0.8)
+	camera.position = Vector2(0,-40)
 	jump_force = 250.0
 
 	normal_collision_mask = collision_mask & ~(1 << 1) # Remove layer 2 from mas
@@ -253,8 +255,7 @@ func _ready():
 	damage_cooldown_timer.one_shot = true
 	add_child(damage_cooldown_timer)
 	damage_cooldown_timer.timeout.connect(_on_damage_cooldown_timeout)
-	
-	# --- MODIFIED _ready() LOGIC FOR SAVE/LOAD ---
+
 	# Check if there's loaded data from Global
 	if Global.current_loaded_player_data != null and not Global.current_loaded_player_data.is_empty():
 		print("Player._ready: Loaded data detected. Setting flag for deferred application.")
@@ -289,7 +290,7 @@ func _ready():
 		combat_fsm.change_state(IdleState.new(self)) # Reset FSM state
 
 	else:
-		# Original logic for initial setup if no save data is loaded (New Game)
+
 		print("Player._ready: No loaded data. Setting initial default state.")
 		current_state_index = unlocked_states.find("Normal")
 		if current_state_index == -1:
@@ -302,11 +303,11 @@ func _ready():
 	
 
 	#switch_state("Normal")
-	# --- END MODIFIED _ready() LOGIC ---
 
-# This is your main physics processing loop
+
+
 func _physics_process(delta):
-	# --- APPLY LOADED POSITION (ONE-TIME) ---
+
 	#print(Global.timeline)
 	#Global.magus_form = true
 	#print(can_attack)
@@ -337,15 +338,14 @@ func _physics_process(delta):
 		collision_mask = normal_collision_mask
 		print("DEBUG: Collision mask forced to normal after load: ", collision_mask)
 		
-	
-	# --- END APPLY LOADED POSITION ---
+
 
 	# --- CUTSCENE OVERRIDE ---
 	if Global.is_cutscene_active:
 		velocity = Vector2.ZERO
 	# --- END CUTSCENE OVERRIDE ---
 
-	# Your existing FSM updates
+
 	if combat_fsm:
 		combat_fsm.update_physics(delta)
 	if current_state:
@@ -360,14 +360,14 @@ func _physics_process(delta):
 	else:
 		UI_telekinesis = false
 
-	# --- NEW: CHECK IF PLAYER IS BUSY (can't perform normal actions) ---
+
 	var is_busy = (dead or Global.is_cutscene_active or player_hit or knockback_timer > 0 or 
 				  is_grappling_active or Global.dashing or is_launched or canon_enabled or 
 				  telekinesis_enabled or is_grabbing_ledge or area_goal_locked or
 				  Global.attacking or Global.is_dialog_open or Global.teleporting)
 	
 
-	# --- END NEW BUSY CHECK ---
+
 
 	# --- Player Input and Movement (Only if NOT busy and NOT dead) ---
 	if not dead and not Global.is_cutscene_active: # <-- IMPORTANT: Add Global.is_cutscene_active check here
@@ -403,7 +403,7 @@ func _physics_process(delta):
 					current_state_index = normal_index
 					switch_state("Normal")
 					combat_fsm.change_state(IdleState.new(self))
-					# Note: We don't set can_switch_form = false or start timer for cannon mode
+
 					print("Cannon mode: Switched to Normal form")
 			
 			# Prevent form switching while in cannon mode
@@ -427,7 +427,7 @@ func _physics_process(delta):
 
 
 		else: # Normal movement and input processing
-			# --- NEW: Only process movement if not busy ---
+
 			if not is_busy:
 				#print(Global.loading)
 				if facing_direction == -1: # No need for !dead check here, already done above
@@ -464,7 +464,7 @@ func _physics_process(delta):
 					#velocity.y = -jump_force # * Global.global_time_scale
 				elif is_grabbing_ledge:
 					velocity.y += gravity+delta
-			# --- END NEW BUSY CHECK FOR MOVEMENT ---
+
 		
 		if is_launched and cannon_form_switched:
 	# Restore previous form after launch
@@ -478,7 +478,7 @@ func _physics_process(delta):
 		#	can_switch_form = true
 		#	print("Exited cannon mode: Form switching re-enabled")
 	
-		# --- NEW: Only process attack/skill inputs if not busy ---
+
 		if not is_busy:
 			#print(Global.is_dialog_open)
 			#print("not busy??")
@@ -567,10 +567,10 @@ func _physics_process(delta):
 				start_cooldown()
 				if skill_started:
 					can_skill = false
-					# Add your skill logic here (e.g., combat_fsm.change_state(SkillState.new(self)))
 
-			check_hitbox() # Call your hitbox update logic
-		# --- END NEW BUSY CHECK FOR ATTACK/SKILL ---
+
+			check_hitbox() 
+
 
 	# --- Dead state ---
 	if dead:
@@ -597,6 +597,9 @@ func _physics_process(delta):
 		print("FIRE!")
 		# Calculate launch direction accounting for the sprite's orientation
 		if is_instance_valid(current_cannon):
+			if current_cannon.has_method("get_launch_point_global_position"):
+				global_position = current_cannon.get_launch_point_global_position()
+			
 			# If sprite faces right by default, use its rotation directly
 			# If it faces up by default, subtract 90 degrees
 			var cannon_rotation_rad = deg_to_rad(current_cannon.sprite_2d.rotation_degrees - 90)
@@ -634,7 +637,7 @@ func _physics_process(delta):
 			var collider = collision.get_collider()
 
 			if collider and collider.has_method("get_bounce_data"):
-			# Check if we can bounce (only in cannon mode)
+
 				var layer_2_bitmask = 1 << 1
 				var can_collide_with_bounce = (collision_mask & layer_2_bitmask) != 0
 				
@@ -705,12 +708,12 @@ func _physics_process(delta):
 		if not is_on_floor() and not is_in_cannon and not telekinesis_enabled and not Global.is_cutscene_active: # <-- Add cutscene check
 			velocity.y += gravity * delta
 
-	# IMPORTANT: Only one move_and_slide() call per _physics_process frame.
+
 	# This should be at the very end of _physics_process after all velocity calculations.
 	handle_ledge_grab()
 	move_and_slide()
 
-	# --- FORM ROTATION (Only if NOT in a cutscene and NOT busy) ---
+
 	if not Global.is_cutscene_active and not is_busy: # <-- IMPORTANT: Add is_busy check here
 		if Input.is_action_just_pressed("form_next"):
 			Global.selected_form_index = (Global.selected_form_index + 1) % unlocked_states.size()
@@ -794,13 +797,12 @@ func enter_cannon(cannon_ref = null):
 	# Optionally disable animations or switch to a "cannon idle" sprite
 	
 func show_aim_ui(visible: bool):
-	# Ensure you have a Node2D named "AimUI" as a child of your player
-	# This node should represent your aiming indicator.
+
 	if has_node("AimUI"):
 		$AimUI.visible = visible
 
 func update_aim_ui(angle):
-	# Update the rotation of your AimUI node
+
 	if has_node("AimUI"):
 		$AimUI.rotation_degrees = angle
 	
@@ -891,15 +893,8 @@ func take_damage(damage):
 		# Emit health change signal
 		health_changed.emit(Global.health, Global.health_max)
 		
-		# DEBUG: Check combat FSM state before changing
-		print("DEBUG: Before damage - FSM state: ", combat_fsm.current_state.name if combat_fsm and combat_fsm.current_state else "null")
-		
-		# Change to hurt state via FSM
-		#if combat_fsm:
-		#	combat_fsm.change_state(HurtState.new(self))
-		
-		# DEBUG: Check combat FSM state after changing
-		print("DEBUG: After damage - FSM state: ", combat_fsm.current_state.name if combat_fsm and combat_fsm.current_state else "null")
+
+
 		
 		# Start damage cooldown
 		take_damage_cooldown(1.0)
@@ -916,7 +911,7 @@ func handle_death():
 	Global.playerAlive = false
 	print("PLAYER DEAD")
 	
-	# Play death animation through your combat FSM
+
 	if combat_fsm:
 		combat_fsm.change_state(DieState.new(self))
 	
@@ -940,7 +935,6 @@ func handle_death():
 func load_from_save_slot(slot_number: int):
 	print("Loading from save slot: ", slot_number)
 	
-	# Build the slot name (adjust based on your SaveLoadManager naming)
 	var slot_name = SaveLoadManager.MANUAL_SAVE_SLOT_PREFIX + str(slot_number)
 	
 	# Load the game data
@@ -1085,11 +1079,7 @@ func load_game_over_scene():
 	# Add it to the current scene's root (Viewport)
 	get_tree().current_scene.add_child(game_over_instance)
 	
-	# Optionally, you might want to disable player input/physics completely
-	# after loading the game over scene, as the game over scene handles pausing.
-	# For example, by setting Global.playerAlive to false your _physics_process
-	# already handles stopping movement. You could also hide the player character.
-	# visible = false 
+
 	
 func apply_knockback(vector: Vector2):
 	knockback_velocity = vector
@@ -1272,21 +1262,14 @@ func apply_load_data(data: Dictionary):
 			unlocked_states.append(state)
 	print("Player loaded unlocked states: " + str(unlocked_states))
 
-	# current_state_index and Global.selected_form_index are set in _ready()
-	# The switch_state should have already happened in _ready() too
 	print("Player loaded form: " + get_current_form_id()) # Use get_current_form_id as state is set in _ready
 
-	# No need to await physics_frame here, as position is handled in _physics_process
-	# velocity = Vector2.ZERO is handled in _physics_process after position is applied.
-	
-	# Re-enable input and visibility
+
 	visible = true
-	# --- REMOVED NON-EXISTENT FUNCTION CALLS ---
-	# Your input logic is already handled in _physics_process based on Global.is_dialog_open.
-	# Ensure Global.is_dialog_open is false when no dialog is present.
+
 	set_physics_process(true) # Ensure physics processing is enabled
 	set_process(true) # Ensure regular processing is enabled
-	# --- END REMOVED ---
+
 
 
 func try_push_objects(direction: Vector2):
@@ -1305,7 +1288,7 @@ func try_push_objects(direction: Vector2):
 		var collider = collision.get_collider()
 		
 		if collider and collider.has_method("push"):
-			# Use your existing facing_direction for push direction
+
 			var push_direction = Vector2(facing_direction, 0)
 			collider.push(push_direction, 200.0)  # Adjust force as needed
 			
@@ -1321,8 +1304,7 @@ func move_during_cutscene(target_position: Vector2, duration: float):
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", target_position, duration)\
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	# Connect to the tween's finished signal if you need to do something after this specific move
-	# tween.finished.connect(Callable(self, "_on_cutscene_move_finished"))
+
 
 # This function could be called to play an animation (e.g., 'walk', 'run', 'idle')
 func play_player_animation(anim_name: String):
@@ -1334,7 +1316,7 @@ func play_player_animation(anim_name: String):
 
 # This function could be called to make the player face a certain direction
 func set_player_direction(direction_vector: Vector2):
-	# Assuming your player's sprite is flipped based on direction
+
 	if direction_vector.x < 0:
 		$Sprite2D.flip_h = true
 		AreaAttackColl.position = Vector2(16,-8.75)
@@ -1343,7 +1325,7 @@ func set_player_direction(direction_vector: Vector2):
 		AreaAttackColl.position = Vector2(-16,-8.75)
 	print("Player: Facing direction: ", direction_vector)
 
-# NEW: Call this from your Cutscene Animation (Call Method Track via Test_dialog proxy)
+
 # to make the player move to a specific global position using a Tween
 func move_player_to_position(target_pos: Vector2, duration: float, ease_type: Tween.EaseType = Tween.EASE_IN_OUT, trans_type: Tween.TransitionType = Tween.TRANS_SINE):
 	if not is_instance_valid(self): return # Safety check
@@ -1353,17 +1335,12 @@ func move_player_to_position(target_pos: Vector2, duration: float, ease_type: Tw
 
 	print("Player: Moving to ", target_pos, " over ", duration, " seconds.")
 	var tween = create_tween()
-	# NO EXPLICIT CASTING HERE. The parameters 'ease_type' and 'trans_type' are already
-	# the correct enum types because of the type hints in the function signature,
-	# assuming the values passed into this function were valid integers that Godot converted.
+
 	tween.tween_property(self, "global_position", target_pos, duration)\
 		.set_ease(ease_type).set_trans(trans_type)
   
-	# Connect to a signal if you need to know when this specific move finishes
-	# tween.finished.connect(Callable(self, "_on_cutscene_move_finished_specific"))
 
-# NEW: Call this from your Cutscene Animation (Call Method Track via Test_dialog proxy)
-# to set a continuous velocity for a duration (e.g., walking, running)
+
 func set_player_cutscene_velocity(direction_vector: Vector2, speed_multiplier: float = 1.0):
 	if not is_instance_valid(self): return
 	if not Global.is_cutscene_active:
@@ -1373,25 +1350,19 @@ func set_player_cutscene_velocity(direction_vector: Vector2, speed_multiplier: f
 	velocity = direction_vector.normalized() * (move_speed * speed_multiplier) # Use player's base speed
 	print("Player: Setting cutscene velocity to: ", velocity)
 	
-	# Update visual direction if your sprite needs it
+
 	if direction_vector.x < 0:
 		sprite.flip_h = true
 	elif direction_vector.x > 0:
 		sprite.flip_h = false
 
-# NEW: Call this from your Cutscene Animation (Call Method Track via Test_dialog proxy)
-# to play a visual animation on the player's own AnimationPlayer
+
 func play_player_visual_animation(anim_name: String):
 	if not is_instance_valid(self): return
 	
 	if combat_fsm and is_instance_valid(combat_fsm):
-		# Attempt to find the corresponding state in your FSM
-		# You'll need a way for your FSM to transition to a state that plays the desired animation.
-		# This might be more complex than a direct state name mapping.
-		# Example: If anim_name is "idle", you'd want to go to IdleState.
-		# If anim_name is "walk", you'd want to go to WalkState.
-		
-		# This is a conceptual example. You'll need to adapt it to your FSM's actual state classes.
+
+
 		match anim_name:
 			"idle":
 				combat_fsm.change_state(IdleState.new(self))
@@ -1422,8 +1393,7 @@ func play_player_visual_animation(anim_name: String):
 		else:
 			printerr("Player: Cannot play visual animation '", anim_name, "'. AnimationPlayer missing or animation not found.")
 
-# NEW: Call this from your Cutscene Animation (Call Method Track via Test_dialog proxy)
-# to make the player face a certain direction instantly
+
 func set_player_face_direction(direction: int): # 1 for right, -1 for left
 	if not is_instance_valid(self): return
 	facing_direction = direction
@@ -1433,21 +1403,15 @@ func set_player_face_direction(direction: int): # 1 for right, -1 for left
 		sprite.flip_h = false
 	print("Player: Facing direction set to: ", direction)
 
-# This function is called by the Test_dialog Area2D script
-# when a cutscene begins, via its proxy.
+
 func disable_player_input_for_cutscene():
 	Global.is_cutscene_active = true # Set the global flag
 	print("Player: Input and direct control disabled for cutscene.")
 	# Stop normal physics processing (movement, input handling)
 	set_physics_process(false)
-	set_process(false) # If you have non-physics input in _process
+	set_process(false) 
 	velocity = Vector2.ZERO # Stop any current player movement
-	# You might also want to temporarily hide the player or switch to a cutscene-specific animation.
-	# visible = false # Example: if player should disappear
-	# animation_player.play("cutscene_idle") # Example: play a special idle during cutscene
 
-# This function is called by the Test_dialog Area2D script's end_cutscene (via proxy)
-# or from the final Call Method Track in your Cutscene Animation (via proxy)
 func enable_player_input_after_cutscene():
 	Global.is_cutscene_active = false # Clear the global flag
 	print("Player: Input and direct control enabled after cutscene.")
@@ -1464,8 +1428,7 @@ func enable_player_input_after_cutscene():
 	else:
 		# Fallback if FSM is not used or not valid
 		if animation_player:
-			# Note: You had `combat_fsm.change_state(IdleState.new(self))` here again,
-			# which would error if combat_fsm is null. Changed to direct animation play.
+
 			animation_player.play("idle")
 	
 	# visible = true # Example: if player was hidden
@@ -1542,8 +1505,7 @@ func complete_area_goal():
 	area_goal_locked = false
 	
 	# Optionally unlock after dialog completes
-	# You can connect to Dialogic's signal to know when dialog ends
-	# area_goal_locked = false
+
 
 func reset_area_goal():
 	area_pass_count = 0
@@ -1565,8 +1527,7 @@ func show_area_pass_feedback():
 	
 	tween.tween_property(sprite, "modulate", flash_color, 0.1)
 	tween.tween_property(sprite, "modulate", Color(1, 1, 1), 0.1)
-	
-	# Optional: Screen shake effect (if you have a camera)
+
 	if camera:
 		var shake_strength = min(10.0, (current_speed_boost - 1.0) * 50.0)
 		apply_screen_shake(shake_strength)
@@ -1589,7 +1550,7 @@ func heal(amount: int):
 		Global.health = min(Global.health, Global.health_max)
 		print("Player healed! Current health: ", Global.health)
 		
-		# Emit signal if you have health changed events
+
 		if health_changed:
 			health_changed.emit(Global.health, Global.health_max)
 
@@ -1602,14 +1563,13 @@ func _try_pay_health_generic(action: String) -> bool:
 			return false
 	# If health_max is 0 (weird), just allow to avoid division error
 
-	# If we are NOT using HP as mana, we still respect the 20% lock above,
-	# but we don't consume health.
+
 	if not use_health_as_mana:
 		return true
 
 	var form_id := get_current_form_id()
 
-	# Godot doesn't like the `?` operator in your version, so do it explicitly:
+
 	var cost_dict
 	if action == "attack":
 		cost_dict = ATTACK_HEALTH_COSTS
@@ -1621,8 +1581,7 @@ func _try_pay_health_generic(action: String) -> bool:
 	if cost <= 0:
 		return true  # no cost for this form / action
 
-	# Decide if you allow self-kill or not.
-	# Here we keep at least 1 HP.
+
 	var min_hp_left := 1
 
 	if Global.health - cost < min_hp_left:

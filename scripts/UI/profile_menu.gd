@@ -1,12 +1,14 @@
 # res://scripts/ui/profile_scene.gd
 extends CanvasLayer
 
-@onready var player_name_label = $Panel/MainContainer/HBoxContainer/VBoxContainer/PlayerNameLabel
+#@onready var player_name_label = $Panel/MainContainer/HBoxContainer/VBoxContainer/PlayerNameLabel
+@onready var quest_label_1 = $Panel/MainContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PlayerNameLabel
+@onready var quest_label_2 = $Panel/MainContainer/HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/PlayerNameLabel2
 @onready var player_sprite_profile = $Panel/MainContainer/HBoxContainer/PlayerSpriteProfile # Removed form_logo_texture
 @onready var kills_label = $Panel/MainContainer/HBoxContainer/VBoxContainer/KillsRow/KillsLabel
-@onready var status_label =$Panel/MainContainer/HBoxContainer/VBoxContainer/KillsRow/Status # NEW: Status Label
-@onready var affinity_label = $Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityLabel # NEW: Affinity value label
-#@onready var affinity_progress_bar = $Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow/AffinityProgressBar/AffinityProgressBar # NEW: Affinity progress bar
+@onready var status_label =$Panel/MainContainer/HBoxContainer/VBoxContainer/KillsRow/Status 
+@onready var affinity_label = $Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityLabel 
+#@onready var affinity_progress_bar = $Panel/MainContainer/HBoxContainer/VBoxContainer/AffinityRow/AffinityProgressBar/AffinityProgressBar 
 @onready var inventory_grid = $Panel/MainContainer/HBoxContainer/VBoxContainer/InventoryContainer # Changed to GridContainer
 @onready var back_button = $Panel/MainContainer/Button
 
@@ -18,7 +20,6 @@ const MIN_AFFINITY = -10
 const MAX_AFFINITY = 10
 
 # --- Exported dictionaries for form-specific assets ---
-# Drag your form icon textures here in the inspector (e.g., res://assets/icons/magus_icon.png)
 #@export var form_logos: Dictionary = {
 #	"Normal": preload("res://assets/player/forms/normal_icon.png") if ResourceLoader.exists("res://assets/player/forms/normal_icon.png") else null,
 #	"Magus": preload("res://assets/player/forms/magus_icon.png") if ResourceLoader.exists("res://assets/player/forms/magus_icon.png") else null,
@@ -45,11 +46,11 @@ const INVENTORY_SLOT_SIZE = Vector2(20, 20) # Size of each inventory box in pixe
 const MAX_INVENTORY_SLOTS = 10 # Total number of inventory slots to display (e.g., 4 rows of 5)
 # --- End Inventory Slot Settings ---
 
-var status_text_color_normal : Color = Color.DIM_GRAY # Default to white, you can change this in the Inspector
-var status_text_color_bad : Color = Color.RED # Default to white, you can change this in the Inspector
-var status_text_color_good : Color = Color.GREEN # Default to white, you can change this in the Inspector
-var status_text_color_magus : Color = Color.YELLOW # Default to white, you can change this in the Inspector
-var status_text_color_cyber : Color = Color.BLUE # Default to white, you can change this in the Inspector
+var status_text_color_normal : Color = Color.DIM_GRAY
+var status_text_color_bad : Color = Color.RED 
+var status_text_color_good : Color = Color.GREEN 
+var status_text_color_magus : Color = Color.YELLOW 
+var status_text_color_cyber : Color = Color.BLUE
 
 @export var item_icons: Dictionary = {
 	"Microchip": preload("res://assets_image/Objects/collect_objects7.png"),
@@ -100,8 +101,22 @@ func deferred_update_profile_data():
 func update_profile_data():
 	# Assume player name is stored in Global or can be set here
 	# For now, let's hardcode a player name or fetch from a Global variable if you add it
-	player_name_label.text = "Goal: put Quest here" # You can replace "Hero" with Global.player_name if you add it
-
+	var quests := Global.active_quests  # Array of quest names
+	
+	if quests.size() == 0:
+		quest_label_1.text = " None "
+		quest_label_2.text = ""
+		quest_label_2.visible = false
+	elif quests.size() == 1:
+		quest_label_1.text = " " + str(quests[0])
+		quest_label_2.text = ""
+		quest_label_2.visible = false
+	else:
+		# If 2 or more quests, show first two only
+		quest_label_1.text = " " + str(quests[0])
+		quest_label_2.visible = true
+		quest_label_2.text = " " + str(quests[1])
+		
 	if Global.playerBody:
 		# Get data from Global or playerBody directly
 		kills_label.text = "Kills: " + str(Global.kills)
@@ -124,14 +139,46 @@ func update_profile_data():
 		# Update form-related visuals
 		update_form_visuals(Global.get_player_form()) # Use Global.get_player_form()
 		
-		# Update inventory
-		_update_inventory_display(Global.playerBody.inventory) # Inventory is still in Player.gd
+		# Build a list from persistent data instead of Player inventory
+		var inventory_list: Array = []
+
+		# 1) Microchips (stackable)
+		for i in range(Global.persistent_microchips):
+			inventory_list.append("Microchip")
+
+		# 2) Magic Stones (stackable)
+		for i in range(Global.persistent_magic_stones):
+			inventory_list.append("MagicStone")
+
+		# 3) Video tapes (unique each)
+		if Global.persistent_video_tape_1_collected:
+			inventory_list.append("Tape_A")   # Past
+		if Global.persistent_video_tape_2_collected:
+			inventory_list.append("Tape_B")   # Present
+		if Global.persistent_video_tape_3_collected:
+			inventory_list.append("Tape_C")   # Future
+
+		_update_inventory_display(inventory_list)
 	else:
 		printerr("ProfileScene: Global.playerBody is not set!")
 		kills_label.text = "Kills: N/A"
 		status_label.text = " N/A"
 		_update_affinity_display(0) # Default affinity
-		_update_inventory_display([]) # Show empty inventory
+		 # Still show persistent collection even if playerBody is missing
+		var inventory_list: Array = []
+
+		for i in range(Global.persistent_microchips):
+			inventory_list.append("Microchip")
+		for i in range(Global.persistent_magic_stones):
+			inventory_list.append("MagicStone")
+		if Global.persistent_video_tape_1_collected:
+			inventory_list.append("Tape_A")
+		if Global.persistent_video_tape_2_collected:
+			inventory_list.append("Tape_B")
+		if Global.persistent_video_tape_3_collected:
+			inventory_list.append("Tape_C")
+
+		_update_inventory_display(inventory_list)
 
 func update_form_visuals(form_id: String):
 	# Update full-body sprite (logo removed)
@@ -155,9 +202,7 @@ func _update_inventory_display(inventory_list: Array):
 			counts[item_id] += 1
 		else:
 			counts[item_id] = 1
-	
-	# Preserve order roughly by iterating original list and only
-	# using each id the first time we see it
+
 	var unique_ids: Array = []
 	for item_id in inventory_list:
 		if not unique_ids.has(item_id):

@@ -39,13 +39,43 @@ func _ready() -> void:
 	if boss_timer:
 		boss_timer.one_shot = true
 		boss_timer.wait_time = 60.0  # 2 minutes
+	
+	_reset_for_retry()
 
+func _reset_for_retry() -> void:
+	# Only reset if the boss is NOT permanently finished
+	# (adjust this condition if you have a different “boss cleared” flag)
+	if Global.first_boss_dead and Global.timeline > 5.2:
+		# Boss already truly done → you may even want to queue_free() this trigger
+		print("Boss1: already cleared, leaving trigger disabled.")
+		collision_shape.disabled = true
+		return
 
+	print("Boss1: resetting state for retry")
+	_has_been_triggered = false
+	battle_active = false
+	battle_cancelled_on_player_death = false
+	boss_instance = null
+	
+	if boss_timer:
+		boss_timer.stop()
+	
+	_deactivate_barriers()
+	
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
+		
 func _process(delta: float) -> void:
 	# Enable trigger only on specific timeline
 	if Global.timeline == 5:
+		if collision_shape.disabled:
+			print("Boss1: timeline=5 but collision_shape is disabled")
 		collision_shape.disabled = false
 	else:
+		if not collision_shape.disabled:
+			print("Boss1: timeline!=5 (", Global.timeline, "), disabling trigger")
 		collision_shape.disabled = true
 		
 	if Global.timeline == 6:
@@ -61,6 +91,7 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node) -> void:
+	print("Boss1: body_entered, has_been_triggered=", _has_been_triggered, " timeline=", Global.timeline)
 	if body.is_in_group("player") and not _has_been_triggered:
 		player_in_range = body
 		print("Player entered boss cutscene trigger area. Starting intro cutscene.")
@@ -79,7 +110,7 @@ func _on_body_entered(body: Node) -> void:
 
 
 func start_intro_cutscene() -> void:
-	Global.is_cutscene_active = true  # Disable gameplay input if your player respects this flag
+	Global.is_cutscene_active = true  
 
 	# --- Remember player's camera (but don't touch its 'current' flag) ---
 	if player_in_range:
@@ -94,14 +125,14 @@ func start_intro_cutscene() -> void:
 	# --- Optional intro animation (can be empty for now) ---
 	if anim_player and anim_player.has_animation("intro"):
 		anim_player.play("intro")
-		# await anim_player.animation_finished   # if you want to wait
+		# await anim_player.animation_finished  
 
 	# --- Start dialogic intro ---
 	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 	Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-	Dialogic.start("timeline9", false)  # your intro timeline
+	Dialogic.start("timeline9", false)  
 
 func _on_dialogic_finished(_timeline_name: String = "") -> void:
 	print("Boss intro Dialogic timeline finished. Starting battle.")
@@ -218,7 +249,10 @@ func _handle_battle_fail() -> void:
 
 func _finish_battle_and_start_outro(success: bool) -> void:
 	# Hide timer label
-	
+	if not Global.playerAlive or Global.health <= 0:
+		print("Boss1: Player is dead, skipping outro cutscene and boss2 trigger.")
+		return
+		
 	if timer_label:
 		timer_label.visible = false
 	if timer_color:

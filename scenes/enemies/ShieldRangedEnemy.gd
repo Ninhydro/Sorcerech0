@@ -202,7 +202,7 @@ func handle_animation():
 		new_animation = "idle"  # Special idle animation when shield is active
 	elif is_dealing_damage:
 		new_animation = "attack"
-	elif is_preparing_attack:  # ADDED: Preparation state uses idle animation
+	elif is_preparing_attack:  
 		new_animation = "idle"
 	else:
 		if is_stuck_idle or moved_x < anim_not_moving_epsilon or abs(velocity.x) < idle_velocity_threshold:

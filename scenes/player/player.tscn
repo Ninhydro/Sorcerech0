@@ -2144,8 +2144,8 @@ use_health_as_mana = true
 [node name="CameraPivot" type="Node2D" parent="Player"]
 
 [node name="Camera2D" type="Camera2D" parent="Player/CameraPivot"]
-position = Vector2(0, -20)
-zoom = Vector2(0.8, 0.8)
+position = Vector2(0, -40)
+zoom = Vector2(0.4, 0.4)
 position_smoothing_enabled = true
 
 [node name="Hitbox" type="Area2D" parent="Player"]

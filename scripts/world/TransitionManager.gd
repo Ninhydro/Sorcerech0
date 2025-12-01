@@ -5,7 +5,7 @@ extends CanvasLayer
 
 func _ready():
 	if fade_rect == null:
-		push_error("FadeRect not found! Check your TransitionManager scene!")
+		push_error("FadeRect not found! Check TransitionManager scene!")
 	fade_rect.modulate.a = 0.0
 	fade_rect.visible = false
 	fade_rect.anchors_preset = Control.PRESET_FULL_RECT

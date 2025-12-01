@@ -17,7 +17,7 @@ func enter():
 		
 		"Magus":
 			#player.anim_sprite.play("magus_attack")
-			# You could also spawn a fireball or magic effect here
+
 			#print("Magus hurt")
 			player.anim_state.travel("hurt_magus")
 			player.still_animation = true

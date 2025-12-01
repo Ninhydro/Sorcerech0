@@ -8,7 +8,7 @@ func enter():
 	match form:
 		"Magus":
 			#player.anim_sprite.play("magus_attack")
-			# You could also spawn a fireball or magic effect here
+
 			pass
 		"Cyber":
 			#player.anim_sprite.play("cyber_slash")
