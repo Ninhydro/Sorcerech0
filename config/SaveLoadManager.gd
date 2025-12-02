@@ -161,9 +161,15 @@ func delete_save_slot(slot_name: String = "") -> bool:
 	if FileAccess.file_exists(file_path):
 		var dir = DirAccess.open(SAVE_DIR)
 		if dir:
-			dir.remove(file_path)
-			print("Deleted save file: ", file_path)
-			return true
+			# Extract just the file name from the full path
+			var file_name = file_path.get_file()
+			var err = dir.remove(file_name)
+			if err == OK:
+				print("Deleted save file: ", file_path)
+				return true
+			else:
+				printerr("Error deleting save file: Could not remove '", file_name, "'. Error: ", err)
+				return false
 		else:
 			printerr("Error deleting save file: Could not open directory '", SAVE_DIR, "'.")
 			return false

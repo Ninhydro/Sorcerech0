@@ -4,119 +4,198 @@ var _has_been_triggered: bool = false
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @export var play_only_once: bool = true
 
+var target_room := "Room_ExactlyionTown"
+var target_spawn := "Spawn_FromExactlyionValentina"
 
-
-var target_room = "Room_ExactlyionTown"     # Name of the destination room (node or scene)
-var target_spawn = "Spawn_FromExactlyionValentina"    # Name of the spawn marker in the target room
-
-var player_in_range = null
+var player_in_range: Node = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
+@onready var fail_timer: Timer = $FailTimer
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
+# ⏱️ Timer UI
+@onready var timer_label: Label = $CanvasLayer/TimerLabel
+@onready var timer_color: ColorRect = $CanvasLayer/ColorRect
+
+# Success trigger (goal area the player must touch)
+@onready var goal_area: Area2D = $GoalArea
+
+var rocket_reached: bool = false
+var outcome_resolved: bool = false
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Global.timeline == 6.5 and Global.after_battle_replica == true and Global.replica_fini_dead == false and Global.ult_cyber_form == false: 
-		collision_shape.disabled = false
-	else:
-		collision_shape.disabled = true
+func _ready() -> void:
+	add_to_group("valentina_minigame_controller")
 
+	# Only active if we are in the Valentina route:
+	var should_be_active := (
+		not Global.replica_fini_dead
+		and not Global.ult_cyber_form
+	)
 
-func _on_body_entered(body):
-	#print("Player position: ",player_node_ref.global_position)
-	if (body.is_in_group("player") and not _has_been_triggered):  #and Global.cutscene_finished1 == false:
-		player_in_range = body
-		print("Player entered cutscene trigger area. Starting cutscene.")
-
+	if not should_be_active:
 		if collision_shape:
-			collision_shape.set_deferred("disabled", true)
-		else:
-			printerr("Cutscene Area2D: WARNING: CollisionShape2D is null, cannot disable it. Using Area2D monitoring instead.")
-			set_deferred("monitorable", false)
-			set_deferred("monitoring", false)
+			collision_shape.disabled = true
+			monitoring = false
+		set_process(false)
+		# Hide UI just in case
+		if timer_label:
+			timer_label.visible = false
+		if timer_color:
+			timer_color.visible = false
+		return
 
-		#start_cutscene(cutscene_animation_name_to_play, 0.0)
+	# Force sane timer settings
+	if fail_timer:
+		fail_timer.stop()
+		fail_timer.one_shot = true
+		fail_timer.wait_time = 15.0  # ← adjust if you want longer
+		if not fail_timer.timeout.is_connected(_on_fail_timer_timeout):
+			fail_timer.timeout.connect(_on_fail_timer_timeout)
 
-		if play_only_once:
-			_has_been_triggered = true
-			
+	# Connect goal area
+	if goal_area and not goal_area.body_entered.is_connected(_on_goal_area_body_entered):
+		goal_area.body_entered.connect(_on_goal_area_body_entered)
 
-		Global.is_cutscene_active = true
-		#Global.cutscene_name = cutscene_animation_name
-		#Global.cutscene_playback_position = start_position
-		#Dialogic.start("timeline1", false)
-		if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
-		Dialogic.timeline_ended.connect(_on_dialogic_finished)
+	# Hide timer UI until minigame actually starts
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
 
-
-		if Global.killing == true: #killing = not saving valentina
-			Dialogic.start("timeline16_5CV2", false)
-			Global.valentina_dead = true
-		elif Global.killing == false:
-			Dialogic.start("timeline16_5C", false)
-			Global.valentina_dead = false
-			Global.persistent_saved_valentina = true
-			Global.check_100_percent_completion()
-			Global.save_persistent_data()
-		#if Global.alyra_dead == false:
-		#	Dialogic.start("timeline13V2", false) #alive alive
-
-		#elif Global.alyra_dead == true:
-		#	Dialogic.start("timeline13", false) #alive dead
+	set_process(true)
+	print("ValentinaRocket: minigame ready. Timer wait_time =", fail_timer.wait_time)
 
 
+func _on_body_entered(body: Node) -> void:
+	if outcome_resolved:
+		return
+	if not body.is_in_group("player"):
+		return
 
-func _on_dialogic_finished(_timeline_name = ""):
-	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
-	# Dialog is done. Now, fade out the black screen.
+	player_in_range = body
+	print("ValentinaRocket: player entered rocket minigame zone.")
 
-	Global.is_cutscene_active = false
-	
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	
-	# Disconnect the signal to prevent unintended calls.
-	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+	# Start timer + show UI
+	if fail_timer and fail_timer.is_stopped():
+		fail_timer.start()
+		print("ValentinaRocket: fail timer started (wait_time =", fail_timer.wait_time, ")")
+
+	if timer_label:
+		timer_label.visible = true
+	if timer_color:
+		timer_color.visible = true
 
 
+func _process(delta: float) -> void:
+	# Only update label while timer is running
+	if not fail_timer or fail_timer.is_stopped() or not timer_label:
+		return
 
-	Global.timeline = 6.5
-	
+	var remaining: int = int(ceil(fail_timer.time_left))
+	var minutes: int = remaining / 60
+	var seconds: int = remaining % 60
+	timer_label.text = "%02d:%02d" % [minutes, seconds]
+
+
+func _on_goal_area_body_entered(body: Node) -> void:
+	if outcome_resolved:
+		return
+	if not body.is_in_group("player"):
+		return
+
+	player_in_range = body
+	on_rocket_hit_by_player()
+
+
+func on_rocket_hit_by_player() -> void:
+	if outcome_resolved:
+		return
+
+	rocket_reached = true
+	outcome_resolved = true
+
+	if fail_timer:
+		fail_timer.stop()
+
+	print("ValentinaRocket: Rocket hit by player in time → Valentina saved route.")
+
 	Global.ult_cyber_form = true
-	
-	player_in_range.unlock_and_force_form("UltimateCyber")
-	#player_in_range.unlock_state("UltimateCyber")
-	#player_in_range.switch_state("UltimateCyber")
-	#Global.selected_form_index = 4
-	#player_in_range.current_state_index = Global.selected_form_index
-	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
-	
+	Global.valentina_dead = false
+	Global.affinity += 1
+	Global.persistent_saved_valentina = true
+	Global.check_100_percent_completion()
+	Global.save_persistent_data()
+
+	if Dialogic.timeline_ended.is_connected(_on_valentina_save_finished):
+		Dialogic.timeline_ended.disconnect(_on_valentina_save_finished)
+	Dialogic.timeline_ended.connect(_on_valentina_save_finished)
+
+	Dialogic.start("timeline16_5C", false)
+
+
+func _on_valentina_save_finished(_timeline_name: String = "") -> void:
+	print("ValentinaRocket: valentina_save_cutscene3 finished.")
+	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+	if Dialogic.timeline_ended.is_connected(_on_valentina_save_finished):
+		Dialogic.timeline_ended.disconnect(_on_valentina_save_finished)
+
+	Global.ult_cyber_form = true
+
 	if player_in_range:
-			transition_manager.travel_to(player_in_range, target_room, target_spawn)
+		player_in_range.unlock_and_force_form("UltimateCyber")
+
 	Global.remove_quest_marker("Meet the Cyber Queen")
-	
-	#if player_in_range:
-	#		transition_manager.travel_to(player_in_range, target_room, target_spawn)
-	#End Demo/Part 1
-	
-	
-	#Global.magus_form = true
-	#player_in_range.unlock_state("Magus")
-	#player_in_range.switch_state("Magus")
-	#Global.selected_form_index = 1
-	#player_in_range.current_state_index = Global.selected_form_index
-	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
-	
-	#Global.set_player_form(get_current_form_id())
-	#Global.current_form = get_current_form_id()
-	#Global.first_tromarvelia = true
+
+	# Hide timer UI
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
+
+	if player_in_range:
+		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 
 
+func _on_fail_timer_timeout() -> void:
+	if outcome_resolved:
+		return
 
-func _on_body_exited(body):
-	pass # Replace with function body.
+	outcome_resolved = true
+
+	print("ValentinaRocket: Timer expired, goal not reached → Valentina dead route.")
+
+	Global.ult_cyber_form = true
+	Global.valentina_dead = true
+
+	if Dialogic.timeline_ended.is_connected(_on_valentina_dead_finished):
+		Dialogic.timeline_ended.disconnect(_on_valentina_dead_finished)
+	Dialogic.timeline_ended.connect(_on_valentina_dead_finished)
+
+	Dialogic.start("timeline16_5CV2", false)
+
+
+func _on_valentina_dead_finished(_timeline_name: String = "") -> void:
+	print("ValentinaRocket: valentina_dead_cutscene3 finished.")
+	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+	if Dialogic.timeline_ended.is_connected(_on_valentina_dead_finished):
+		Dialogic.timeline_ended.disconnect(_on_valentina_dead_finished)
+
+	Global.ult_cyber_form = true
+
+	if player_in_range:
+		player_in_range.unlock_and_force_form("UltimateCyber")
+
+	Global.remove_quest_marker("Meet the Cyber Queen")
+
+	# Hide timer UI
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
+
+	if player_in_range:
+		transition_manager.travel_to(player_in_range, target_room, target_spawn)
+
+
+func _on_body_exited(body: Node) -> void:
+	pass

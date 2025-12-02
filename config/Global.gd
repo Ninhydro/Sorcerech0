@@ -1,6 +1,7 @@
 # res://scripts/globals/Global.gd
 extends Node
 
+var version = 1.0
 # Game State Variables
 var gameStarted: bool = false
 var sub_quest: Dictionary = {}
@@ -883,7 +884,7 @@ func save_persistent_data():
 	config.set_value("collections", "magic_stone_ids", persistent_magic_stone_ids)
 
 	config.set_value("metadata", "timestamp", Time.get_unix_time_from_system())
-	config.set_value("metadata", "version", "1.0")
+	config.set_value("metadata", "version", version)
 	
 	
 	var error = config.save(persistent_data_path)
@@ -898,6 +899,10 @@ func load_persistent_data():
 	
 	if error == OK:
 		# Load all persistent variables
+		var file_version = config.get_value("metadata", "version", version)
+		version = float(file_version)
+
+		
 		persistent_ending_magus = config.get_value("achievements", "ending_magus", false)
 		persistent_ending_cyber = config.get_value("achievements", "ending_cyber", false)
 		persistent_ending_genocide = config.get_value("achievements", "ending_genocide", false)
@@ -925,6 +930,17 @@ func load_persistent_data():
 		
 		persistent_microchip_ids = config.get_value("collections", "microchip_ids", [])
 		persistent_magic_stone_ids = config.get_value("collections", "magic_stone_ids", [])
+
+		
+		#if version < 1.1:
+		#	print("Migrating persistent data from v1.0 → v1.1")
+
+			# Add new fields introduced in patch 1.1
+		#	persistent_special_collectable = false
+
+			# bump version
+		#	version = 1.1
+		#	save_persistent_data()
 
 		print("Persistent data loaded successfully")
 	else:

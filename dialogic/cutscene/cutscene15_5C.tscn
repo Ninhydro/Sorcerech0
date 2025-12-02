@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://c6na53py5hyof"]
+[gd_scene load_steps=8 format=3 uid="uid://c6na53py5hyof"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene15_5C.gd" id="1_43ht4"]
 
@@ -107,6 +107,9 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ekhh6"]
+size = Vector2(83, 36)
+
 [node name="cutscene15_5C" type="Area2D"]
 position = Vector2(79, 74)
 script = ExtResource("1_43ht4")
@@ -125,6 +128,32 @@ position = Vector2(-2, -27)
 zoom = Vector2(2, 2)
 
 [node name="npc1" type="Sprite2D" parent="."]
+
+[node name="FailTimer" type="Timer" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" groups=["boss1_cutscene"]]
+visible = false
+modulate = Color(0.380392, 0.380392, 0.380392, 0.784314)
+offset_left = 256.0
+offset_right = 320.0
+offset_bottom = 32.0
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer"]
+visible = false
+offset_left = 280.0
+offset_top = 8.0
+offset_right = 320.0
+offset_bottom = 21.0
+text = "Time"
+metadata/_edit_use_anchors_ = true
+
+[node name="GoalArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalArea"]
+position = Vector2(-459, 111)
+shape = SubResource("RectangleShape2D_ekhh6")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

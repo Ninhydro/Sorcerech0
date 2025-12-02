@@ -16,6 +16,22 @@ func _ready():
 func travel_to(player: Node2D, target_room_name: String, target_spawn_name: String) -> void:
 	# 1. Fade out
 	#print("traveling")
+	# 0. Force-cancel grappling / skills BEFORE we freeze physics and teleport
+	if player.has_method("force_release_grapple"):
+		player.force_release_grapple()
+	else:
+		# fallback just in case, so at least we don't keep sliding
+		if "is_grappling_active" in player:
+			player.is_grappling_active = false
+		if "still_animation" in player:
+			player.still_animation = false
+		if player.has_node("GrappleLine"):
+			var gl := player.get_node("GrappleLine")
+			if gl is Line2D:
+				gl.clear_points()
+
+	player.velocity = Vector2.ZERO
+	
 	player.set_physics_process(false)
 	fade_rect.visible = true
 	var tween_out = get_tree().create_tween()

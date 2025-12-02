@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bronoe2p580sf"]
+[gd_scene load_steps=8 format=3 uid="uid://bronoe2p580sf"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene14C.gd" id="1_4js64"]
 
@@ -107,12 +107,16 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
-[node name="cutscene14C" type="Area2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a1io0"]
+size = Vector2(20, 306.5)
+
+[node name="cutscene14C" type="Area2D" groups=["replica_boss_cutscene"]]
 position = Vector2(79, 74)
 script = ExtResource("1_4js64")
+boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(84.5, 32.5)
+position = Vector2(-7, -26)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -120,11 +124,47 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-2, -27)
-zoom = Vector2(2, 2)
+[node name="BossCamera2D" type="Camera2D" parent="."]
+position = Vector2(9, -74)
+zoom = Vector2(0.6, 0.6)
 
 [node name="npc1" type="Sprite2D" parent="."]
+
+[node name="BossSpawnMarker" type="Marker2D" parent="."]
+position = Vector2(-7, 38)
+
+[node name="BossTimer" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" groups=["boss1_cutscene"]]
+visible = false
+modulate = Color(0.380392, 0.380392, 0.380392, 0.784314)
+offset_left = 256.0
+offset_right = 320.0
+offset_bottom = 32.0
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer"]
+offset_left = 280.0
+offset_top = 8.0
+offset_right = 320.0
+offset_bottom = 21.0
+text = "Time"
+metadata/_edit_use_anchors_ = true
+
+[node name="BarrierLeft" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
+position = Vector2(-263, -74)
+shape = SubResource("RectangleShape2D_a1io0")
+
+[node name="BarrierRight" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
+position = Vector2(281, -75.25)
+shape = SubResource("RectangleShape2D_a1io0")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

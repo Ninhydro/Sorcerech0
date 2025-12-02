@@ -925,6 +925,10 @@ func handle_death():
 			if node.has_method("cancel_boss2_battle_on_player_death"):
 				node.cancel_boss2_battle_on_player_death()
 		
+		for node in tree.get_nodes_in_group("replica_boss_cutscene"):
+			if node.has_method("cancel_replica_boss_battle_on_player_death"):
+				node.cancel_replica_boss_battle_on_player_death()
+		
 	# Wait for death animation to play (adjust time as needed)
 	await get_tree().create_timer(1.5).timeout
 	
@@ -1626,3 +1630,16 @@ func unlock_and_force_form(form_name: String) -> void:
 
 	print("unlock_and_force_form: forced form to ", form_name, " at index ", idx)
 
+
+func force_release_grapple() -> void:
+	# Only do this if your current state is CyberState
+	if current_state is CyberState:
+		var cyber_state := current_state as CyberState
+		cyber_state.release_grapple()  # this already clears flags + line + velocity handling
+
+	# Extra safety: clear any player-side flags/visuals
+	is_grappling_active = false
+	still_animation = false
+
+	if grapple_line:
+		grapple_line.clear_points()
