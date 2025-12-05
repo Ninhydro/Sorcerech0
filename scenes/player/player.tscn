@@ -2188,7 +2188,7 @@ width = 5.0
 position = Vector2(9, -27)
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
-position = Vector2(1, -32)
+position = Vector2(1, 2.5)
 scale = Vector2(0.6, 0.625)
 texture = ExtResource("2_2avrg")
 hframes = 9

@@ -603,7 +603,13 @@ func _on_range_chase_body_exited(body):
 
 func _on_hitbox_area_entered(area):
 	var damage = Global.playerDamageAmount
+	#print(name, " hitbox entered by: ", area.name)
 	if area == Global.playerDamageZone:
+		#print(" -> matches Global.playerDamageZone, taking damage: ", damage)
+		take_damage(damage)
+	elif area.is_in_group("player_attack"):
+		# Optional fallback: if you have a group on the player's attack hitbox
+	#	print(" -> in group 'player_attack', taking damage: ", damage)
 		take_damage(damage)
 
 func _update_stuck_state(delta: float) -> void:

@@ -378,8 +378,7 @@ shape = SubResource("RectangleShape2D_bv27b")
 [node name="Sprite2D" type="Sprite2D" parent="LaserBeam"]
 texture = ExtResource("5_vxe17")
 
-[node name="LaserOrigin" type="Marker2D" parent="."]
-visible = false
+[node name="LaserOrigin" type="Marker2D" parent="LaserBeam"]
 position = Vector2(20, -34.2857)
 scale = Vector2(1, 1)
 

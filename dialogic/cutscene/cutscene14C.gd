@@ -150,47 +150,65 @@ func _start_boss_battle() -> void:
 	_activate_barriers()
 	battle_cancelled_on_player_death = false
 	battle_active = false
-	
-	#Global.timeline = 6.5
+
 	Global.meet_replica = true
-	# Heal player fully for boss
 	Global.health = Global.health_max
 	if is_instance_valid(Global.player):
 		Global.player.health_changed.emit(Global.health, Global.health_max)
-	
+
 	if not boss_scene:
 		printerr("ReplicaBoss: boss_scene not assigned!")
 		return
-	
+
 	boss_instance = boss_scene.instantiate()
 	if boss_instance == null:
 		printerr("ReplicaBoss: Failed to instance boss_scene.")
 		return
-	
+
 	var parent := get_parent()
 	if parent:
 		parent.add_child(boss_instance)
 	else:
 		get_tree().current_scene.add_child(boss_instance)
-	
+
 	if boss_spawn_marker:
 		boss_instance.global_position = boss_spawn_marker.global_position
-	
+
+	# >>> NEW: pass 6 markers into the boss <<<
+	var markers: Array = []
+	if parent:
+		var marker_names = [
+			"ReplicaMarker_LowLeft",
+			"ReplicaMarker_MidLeft",
+			"ReplicaMarker_HighLeft",
+			"ReplicaMarker_LowRight",
+			"ReplicaMarker_MidRight",
+			"ReplicaMarker_HighRight"
+		]
+		for name in marker_names:
+			if parent.has_node(name):
+				var m = parent.get_node(name)
+				markers.append(m)
+
+	if boss_instance.has_method("setup_markers"):
+		boss_instance.call("setup_markers", markers)
+	# <<< END NEW >>>
+
 	# Listen for boss death
 	if not boss_instance.tree_exited.is_connected(_on_boss_died):
 		boss_instance.tree_exited.connect(_on_boss_died)
-	
+
 	battle_active = true
-	
-	# Start timer + show UI
+
 	if boss_timer:
 		boss_timer.start()
 	if timer_label:
 		timer_label.visible = true
 	if timer_color:
 		timer_color.visible = true
-	
+
 	print("ReplicaBoss: Battle started.")
+
 
 
 func _on_boss_timer_timeout() -> void:
