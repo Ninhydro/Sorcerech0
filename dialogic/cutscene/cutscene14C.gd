@@ -42,6 +42,12 @@ var target_spawn2 = "Spawn_FromExactlyionValentina"    # Name of the spawn marke
 
 @export var boss_barriers: Array[NodePath] = []
 
+@onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
+@onready var health_timer: Timer = $HealthTimer
+
+@export var health_pickup_scene: PackedScene = preload("res://scenes/objects/health_pickup.tscn")
+
+var current_health_pickup: Node2D = null
 
 
 # Called when the node enters the scene tree for the first time.
@@ -51,11 +57,16 @@ func _ready():
 	
 	if boss_timer:
 		boss_timer.one_shot = true
-		boss_timer.wait_time = 60.0  # e.g. 60s or 120s
+		#boss_timer.wait_time = 60.0  # e.g. 60s or 120s
 		if not boss_timer.timeout.is_connected(_on_boss_timer_timeout):
 			boss_timer.timeout.connect(_on_boss_timer_timeout)
 
-
+	if health_timer:
+		health_timer.one_shot = false
+		health_timer.wait_time = 30.0  # drop every 30 seconds
+		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
+			health_timer.timeout.connect(_on_health_timer_timeout)
+			
 func _reset_visuals() -> void:
 	_deactivate_barriers()
 	if timer_label:
@@ -206,6 +217,8 @@ func _start_boss_battle() -> void:
 		timer_label.visible = true
 	if timer_color:
 		timer_color.visible = true
+	if health_timer:
+		health_timer.start()
 
 	print("ReplicaBoss: Battle started.")
 
@@ -255,7 +268,12 @@ func _on_boss_died() -> void:
 func _handle_battle_success() -> void:
 	# Branch: player directly killed the Replica Fini
 	_reset_visuals()
-	
+	if health_timer:
+		health_timer.stop()
+	if current_health_pickup and is_instance_valid(current_health_pickup):
+		current_health_pickup.queue_free()
+		current_health_pickup = null
+		
 	Global.ult_cyber_form = true
 	Global.replica_fini_dead = true
 	Global.affinity -= 1
@@ -305,6 +323,12 @@ func _handle_battle_fail() -> void:
 	# Branch: player survived timer, didn't kill Replica
 	_reset_visuals()
 	
+	if health_timer:
+		health_timer.stop()
+	if current_health_pickup and is_instance_valid(current_health_pickup):
+		current_health_pickup.queue_free()
+		current_health_pickup = null
+		
 	Global.ult_cyber_form = false
 	Global.replica_fini_dead = false
 	Global.affinity += 1
@@ -361,6 +385,12 @@ func cancel_replica_boss_battle_on_player_death() -> void:
 	
 	if boss_timer:
 		boss_timer.stop()
+	if health_timer:
+		health_timer.stop()
+	if current_health_pickup and is_instance_valid(current_health_pickup):
+		current_health_pickup.queue_free()
+		current_health_pickup = null
+		
 	
 	if boss_instance and is_instance_valid(boss_instance):
 		if boss_instance.tree_exited.is_connected(_on_boss_died):
@@ -435,3 +465,39 @@ func _restore_player_camera() -> void:
 		if cam:
 			cam.enabled = true
 			cam.make_current()
+			
+func _on_health_timer_timeout() -> void:
+	# Only spawn if fight is on and player alive
+	if not battle_active or not Global.playerAlive:
+		return
+
+	# Don’t spawn a new one if the old one is still sitting there
+	if current_health_pickup and is_instance_valid(current_health_pickup):
+		return
+
+	if not health_pickup_scene:
+		printerr("ReplicaBoss: health_pickup_scene not assigned!")
+		return
+	if not health_spawn_marker:
+		printerr("ReplicaBoss: health_spawn_marker not assigned!")
+		return
+
+	var parent := get_parent()
+	if parent == null:
+		parent = get_tree().current_scene
+
+	current_health_pickup = health_pickup_scene.instantiate()
+	parent.add_child(current_health_pickup)
+	var spawn_pos := health_spawn_marker.global_position
+	spawn_pos.y -= 8   # 4–16 pixels is usually enough depending on your tile size
+	current_health_pickup.global_position = spawn_pos
+	#current_health_pickup.global_position = health_spawn_marker.global_position
+
+	# When the pickup is collected/removed, clear our reference
+	if not current_health_pickup.tree_exited.is_connected(_on_health_pickup_removed):
+		current_health_pickup.tree_exited.connect(_on_health_pickup_removed)
+
+	print("ReplicaBoss: spawned health pickup at ", current_health_pickup.global_position)
+
+func _on_health_pickup_removed() -> void:
+	current_health_pickup = null

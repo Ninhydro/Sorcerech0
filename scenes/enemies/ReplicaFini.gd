@@ -1,4 +1,4 @@
-extends BaseEnemy 
+extends BaseEnemy
 class_name ReplicaFini
 
 # --- Tunable pattern values ---
@@ -10,22 +10,19 @@ class_name ReplicaFini
 
 @export var walk_phase_duration: float = 1.0      # how long she "hunts" slowly before melee
 @export var idle_before_melee: float = 0.5        # stand still before melee
-@export var idle_after_melee: float = 1        # short pause after melee
-@export var tired_duration: float = 3          # how long she stays tired
+@export var idle_after_melee: float = 1.0         # short pause after melee
+@export var tired_duration: float = 3.0           # how long she stays tired
 
 @export var melee_damage: int = 10                # melee slash damage
 @export var laser_damage: int = 20                # laser damage
 @export var laser_duration: float = 0.8           # how long the beam stays on
 
-
 @onready var laser_beam = $LaserBeam
-
+@onready var laser_origin_marker: Marker2D = $LaserOrigin
 
 var pattern_running: bool = false
+var on_platform: bool = false                     # true after jumping to an upper marker
 
-var on_platform: bool = false                     # true after jumping to a marker
-
-@onready var laser_origin_marker: Marker2D = $LaserOrigin
 var marker_low_left: Marker2D
 var marker_mid_left: Marker2D
 var marker_high_left: Marker2D
@@ -33,17 +30,26 @@ var marker_low_right: Marker2D
 var marker_mid_right: Marker2D
 var marker_high_right: Marker2D
 
-var on_upper_platform: bool = false   # true when she’s on mid/high markers
+var on_upper_platform: bool = false   # (not strictly needed now, kept for clarity)
+var is_hurting: bool = false
 
 var jump_markers: Array[Node2D] = []
-@export var jump_check_vertical_diff: float = 48.0  # how much higher the player must be
+@export var jump_check_vertical_diff: float = 48.0  # how much higher the player must be to trigger jump
+@export var melee_engage_distance: float = 60.0     # how close she wants to be before melee
+@export var max_walk_before_force_melee: float = 2.0  # safety timeout in seconds
+
+var last_attack_dir: int = 1  # +1 or -1, used to keep melee + backstep consistent
+var was_taking_damage: bool = false
+# ===================================================================
+#                      MARKER SETUP / DEBUG
+# ===================================================================
 
 func setup_markers(markers: Array) -> void:
 	for m in markers:
 		if not (m is Marker2D):
 			continue
 
-		# Add EVERY marker to jump_markers so _jump_to_best_marker() has candidates
+		# Add every marker to jump_markers so _jump_to_best_marker() has candidates
 		jump_markers.append(m)
 
 		match m.name:
@@ -62,6 +68,7 @@ func setup_markers(markers: Array) -> void:
 
 	_print_marker_debug()
 
+
 func _print_marker_debug() -> void:
 	print("=== ReplicaFini marker debug ===")
 	if marker_low_left:
@@ -79,12 +86,15 @@ func _print_marker_debug() -> void:
 	print("===============================")
 
 
+# ===================================================================
+#                      READY / PROCESS
+# ===================================================================
 
 func _ready() -> void:
-	# Call BaseEnemy setup
+	collision_layer = 3
 	super._ready()
 
-	# We control everything manually here
+	# Boss-specific behaviour flags
 	can_drop_health = true
 	use_edge_detection = false
 	can_jump_chase = false
@@ -93,7 +103,7 @@ func _ready() -> void:
 	enemy_damage = melee_damage
 	attack_type = AttackType.MELEE
 
-	# Make sure she doesn't randomly roam/chase from BaseEnemy logic
+	# Disable generic BaseEnemy chase/roam
 	is_enemy_chase = false
 	is_roaming = false
 
@@ -101,31 +111,32 @@ func _ready() -> void:
 	if laser_beam:
 		laser_beam.damage = laser_damage
 
-	# Start pattern coroutine
+	# Start AI pattern
 	_run_pattern()
 
 
 func _process(delta: float) -> void:
-	# Basic time scaling for animations
+	# Timescale for animations
 	if animation_player:
 		animation_player.speed_scale = Global.global_time_scale
 
-	# Simple gravity
+	# Gravity
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	# Track player from Global
+	# Track player
 	player = Global.playerBody
 
-	# If dead, stop movement
+	# If dead, just slide with zero x and bail
 	if dead:
 		velocity.x = 0.0
 		move_and_slide()
 		return
 
-	# --- HURT PRIORITY ---
+	# --- HURT PRIORITY (visual / movement) ---
 	if taking_damage:
-		velocity.x = 0.0  # no sliding while hurt
+		was_taking_damage = true  # remember we were hurt
+		velocity.x = 0.0
 
 		if animation_player and animation_player.has_animation("hurt"):
 			if current_animation != "hurt":
@@ -139,68 +150,119 @@ func _process(delta: float) -> void:
 		move_and_slide()
 		return
 	# --- END HURT PRIORITY ---
-
-	# Normal movement from pattern
+	# Just *left* hurt state this frame → force idle
+	if was_taking_damage:
+		was_taking_damage = false
+		velocity.x = 0.0
+		if animation_player and animation_player.has_animation("idle"):
+			if current_animation != "idle":
+				current_animation = "idle"
+				animation_player.play("idle")
 	move_and_slide()
+
+
+# ===================================================================
+#                     HURT / INTERRUPT HELPER
+# ===================================================================
+
+func _wait_if_hurt() -> void:
+
+	var was_hurt_local := false
+
+	# Stop pattern progression while taking damage
+	while taking_damage and not dead:
+		was_hurt_local = true
+		velocity.x = 0.0
+		await get_tree().process_frame
+
+	# When hurt period ends inside a phase, also snap back to idle
+	if was_hurt_local and not dead and animation_player and animation_player.has_animation("idle"):
+		if current_animation != "idle":
+			current_animation = "idle"
+			animation_player.play("idle")
 
 
 # ===================================================================
 #                     MAIN PATTERN LOOP
 # ===================================================================
+
 func _run_pattern() -> void:
 	if pattern_running:
 		return
 	pattern_running = true
 
 	while not dead:
+		await _wait_if_hurt()
+		if dead:
+			break
+
 		if on_platform:
-			# Special pattern when sitting on a marker/platform:
-			# idle → laser → tired → repeat
+			# Upper platform pattern: idle → laser → tired → repeat
 			await _phase_platform_idle_laser_tired()
 			if dead:
 				break
 			continue
 
 		# === GROUND PATTERN ===
+		await _wait_if_hurt()
+		if dead:
+			break
 		await _phase_idle_walk()
 		if dead:
 			break
 
+		await _wait_if_hurt()
+		if dead:
+			break
 		await _phase_melee()
 		if dead:
 			break
 
+		await _wait_if_hurt()
+		if dead:
+			break
 		await _phase_idle_after_melee()
 		if dead:
 			break
-		
 
+		await _wait_if_hurt()
+		if dead:
+			break
 		await _phase_backstep()
 		if dead:
 			break
 
+		await _wait_if_hurt()
+		if dead:
+			break
 		await _phase_laser()
 		if dead:
 			break
 
+		await _wait_if_hurt()
+		if dead:
+			break
 		await _phase_tired()
 
 
 # ===================================================================
 #                    PHASE 1 – IDLE + SLOW WALK
 # ===================================================================
+
 func _phase_idle_walk() -> void:
 	var elapsed: float = 0.0
 
-	# We're on ground pattern now
+	# We are in ground pattern now
 	on_platform = false
 
-	while elapsed < walk_phase_duration and not dead:
-		# From ground: if player is clearly above, jump to marker and switch to platform pattern
+	while not dead:
+		if taking_damage:
+			await _wait_if_hurt()
+			return
+
+		# Ground → platform check
 		if is_on_floor() and player and is_instance_valid(player) and not jump_markers.is_empty():
 			var dy := player.global_position.y - global_position.y
-			# Remember: more negative y is higher on screen
-			# So player above boss => dy < 0
 			if player.global_position.y < global_position.y - jump_check_vertical_diff:
 				print("ReplicaFini: player above, trying to jump. ",
 					"boss_y=", global_position.y,
@@ -215,26 +277,30 @@ func _phase_idle_walk() -> void:
 					"boss_y=", global_position.y,
 					" player_y=", player.global_position.y,
 					" dy=", dy)
-					
+
 		if player and is_instance_valid(player):
-			var dx := player.global_position.x - global_position.x
+			var dx = player.global_position.x - global_position.x
+			var dist_x = abs(dx)
 
 			# Face player
 			if dx != 0.0:
 				dir.x = sign(dx)
 				sprite.flip_h = (dir.x < 0.0)
 
-			# Only move if not too close
-			if abs(dx) > 20.0:
-				velocity.x = dir.x * walk_speed
-				if current_animation != "walk" and animation_player.has_animation("walk"):
-					current_animation = "walk"
-					animation_player.play("walk")
-			else:
+			# If close enough, stop walking and go to melee phase
+			if dist_x <= melee_engage_distance:
 				velocity.x = 0.0
-				if current_animation != "idle" and animation_player.has_animation("idle"):
-					current_animation = "idle"
-					animation_player.play("idle")
+				if animation_player.has_animation("idle"):
+					if current_animation != "idle":
+						current_animation = "idle"
+						animation_player.play("idle")
+				break
+
+			# Otherwise, walk toward player
+			velocity.x = dir.x * walk_speed
+			if current_animation != "walk" and animation_player.has_animation("walk"):
+				current_animation = "walk"
+				animation_player.play("walk")
 		else:
 			# No player reference – idle
 			velocity.x = 0.0
@@ -245,18 +311,29 @@ func _phase_idle_walk() -> void:
 		await get_tree().process_frame
 		elapsed += get_process_delta_time()
 
+		# Just in case player runs away forever: after some time, force melee anyway
+		if elapsed >= max_walk_before_force_melee:
+			break
+
+
 # ===================================================================
 #                    PHASE 2 – MELEE ATTACK (SLASH)
 # ===================================================================
+
 func _phase_melee() -> void:
 	if dead:
 		return
 
-	# Face the player first
+	await _wait_if_hurt()
+	if dead:
+		return
+
+	# Face the player first and lock direction
 	if player and is_instance_valid(player):
 		var dx = player.global_position.x - global_position.x
 		if dx != 0.0:
-			dir.x = sign(dx)
+			last_attack_dir = sign(dx)   # LOCKED for melee + backstep
+			dir.x = last_attack_dir
 			sprite.flip_h = (dir.x < 0.0)
 
 	# Short idle before attack
@@ -265,6 +342,10 @@ func _phase_melee() -> void:
 		current_animation = "idle"
 		animation_player.play("idle")
 	await get_tree().create_timer(idle_before_melee / Global.global_time_scale).timeout
+
+	if taking_damage:
+		await _wait_if_hurt()
+		return
 
 	# Play attack animation and slide forward a bit
 	var total_time = melee_dash_time
@@ -276,12 +357,15 @@ func _phase_melee() -> void:
 		current_animation = "attack"
 		if sprite.flip_h == true:
 			sprite.position = Vector2(-20, -53)
-			animation_player.play("attack")
 		else:
 			sprite.position = Vector2(20, -53)
-			animation_player.play("attack")
+		animation_player.play("attack")
 
 	while moved < melee_forward_distance and not dead:
+		if taking_damage:
+			await _wait_if_hurt()
+			return
+
 		var dt = get_process_delta_time()
 		var step = dash_speed * dt
 		moved += step
@@ -304,7 +388,12 @@ func _phase_melee() -> void:
 # ===================================================================
 #                PHASE 3 – SHORT IDLE AFTER MELEE
 # ===================================================================
+
 func _phase_idle_after_melee() -> void:
+	if dead:
+		return
+
+	await _wait_if_hurt()
 	if dead:
 		return
 
@@ -319,32 +408,43 @@ func _phase_idle_after_melee() -> void:
 # ===================================================================
 #                     PHASE 4 – BACKSTEP
 # ===================================================================
+
 func _phase_backstep() -> void:
 	if dead:
 		return
 
-	# Move away from player (backwards)
-	var step_dir = -dir.x
-	if step_dir == 0.0:
-		step_dir = -1.0
+	await _wait_if_hurt()
+	if dead:
+		return
+
+	# Move away from where the last melee went
+	var step_dir = -last_attack_dir
+	if step_dir == 0:
+		step_dir = -1
 
 	var total_time = backstep_time
 	var moved = 0.0
 	var speed = backstep_distance / max(total_time, 0.01)
 
-	# Optional: use "walk" going backwards or just "idle"
+	# Face same way as melee (optional, feels consistent)
+	dir.x = last_attack_dir
+	sprite.flip_h = (dir.x < 0.0)
+
 	if animation_player.has_animation("walk"):
 		current_animation = "walk"
 		animation_player.play("walk")
 
 	while moved < backstep_distance and not dead:
+		if taking_damage:
+			await _wait_if_hurt()
+			return
+
 		var dt = get_process_delta_time()
 		var step = speed * dt
 		moved += step
 		velocity.x = step_dir * speed
 		await get_tree().process_frame
 
-	# Stop after backstep
 	velocity.x = 0.0
 
 
@@ -353,6 +453,10 @@ func _phase_backstep() -> void:
 # ===================================================================
 
 func _phase_laser() -> void:
+	if dead:
+		return
+
+	await _wait_if_hurt()
 	if dead:
 		return
 
@@ -369,7 +473,7 @@ func _phase_laser() -> void:
 
 	dir.x = dir_sign
 	sprite.flip_h = (dir_sign < 0.0)
-	laser_origin_marker.position.x = 20*dir_sign
+	laser_origin_marker.position.x = 20 * dir_sign
 
 	enemy_damage = laser_damage
 
@@ -381,21 +485,18 @@ func _phase_laser() -> void:
 	if animation_player.has_animation("laser"):
 		current_animation = "laser"
 		animation_player.play("laser")
-	#elif animation_player.has_animation("attack"):
-	#	current_animation = "attack"
-	#	if sprite.flip_h:
-	#		sprite.position = Vector2(-20, -53)
-	#	else:
-	#		sprite.position = Vector2(20, -53)
-	#	animation_player.play("attack")
 
 	# Short windup
 	await get_tree().create_timer(0.3 / Global.global_time_scale).timeout
 
+	if taking_damage:
+		await _wait_if_hurt()
+		return
+
 	# === FIRE BEAM ===
 	if laser_beam:
 		laser_beam.damage = laser_damage
-		laser_beam.fire(dir_sign)  # stretches 1000px in this direction
+		laser_beam.fire(dir_sign)  # stretches beam in this direction
 
 	# Beam stays active
 	await get_tree().create_timer(laser_duration / Global.global_time_scale).timeout
@@ -406,10 +507,16 @@ func _phase_laser() -> void:
 	# Small tail / recovery
 	await get_tree().create_timer(0.3 / Global.global_time_scale).timeout
 
+
 # ===================================================================
 #                     PHASE 6 – TIRED / VULNERABLE
 # ===================================================================
+
 func _phase_tired() -> void:
+	if dead:
+		return
+
+	await _wait_if_hurt()
 	if dead:
 		return
 
@@ -424,24 +531,26 @@ func _phase_tired() -> void:
 
 	await get_tree().create_timer(tired_duration / Global.global_time_scale).timeout
 
+
+# ===================================================================
+#                     DAMAGE / DEATH
+# ===================================================================
+
 func take_damage(dmg: int) -> void:
-	# Ignore if already dead
 	if dead:
 		return
 
-	# Let BaseEnemy handle HP, flags, hit_stun_timer, taking_damage, etc.
 	super.take_damage(dmg)
-
 	print("ReplicaFini took damage: ", dmg, " -> HP: ", health, "/", health_max)
 
-	# If she died, handle boss death explicitly
 	if health <= 0:
 		_handle_boss_death()
-		
+
+
 func _handle_boss_death() -> void:
-	if dead: # super.take_damage already set this
+	if dead:
 		print("ReplicaFini: death sequence start")
-	
+
 	# Stop pattern + movement + laser
 	pattern_running = false
 	velocity = Vector2.ZERO
@@ -456,15 +565,23 @@ func _handle_boss_death() -> void:
 
 	queue_free()
 
+
+# ===================================================================
+#                     JUMP HELPERS
+# ===================================================================
+
 func _jump_to_best_marker() -> void:
 	if player == null or not is_instance_valid(player) or jump_markers.is_empty():
 		print("ReplicaFini: _jump_to_best_marker aborted: player or markers missing")
 		return
 
-	var best_marker: Node2D = null
+	var best_marker: Marker2D = null
 	var best_score := INF
 
 	for m in jump_markers:
+		if not (m is Marker2D):
+			continue
+		
 		var dx = abs(m.global_position.x - player.global_position.x)
 		var dy := player.global_position.y - m.global_position.y
 		var score = dx + abs(dy) * 0.5
@@ -473,12 +590,11 @@ func _jump_to_best_marker() -> void:
 			best_marker = m
 
 	if best_marker:
+		
 		print("ReplicaFini: best marker chosen: ", best_marker.name,
 			" at ", best_marker.global_position,
 			" score=", best_score)
-		await _jump_to_position(best_marker.global_position)
-		on_platform = true
-		print("ReplicaFini: finished jump_to_position, now on_platform=", on_platform)
+		await _jump_to_marker(best_marker)
 	else:
 		print("ReplicaFini: _jump_to_best_marker found no best_marker somehow")
 
@@ -497,6 +613,10 @@ func _jump_to_position(target: Vector2) -> void:
 	velocity = Vector2.ZERO
 
 	while t < duration and not dead:
+		if taking_damage:
+			await _wait_if_hurt()
+			return
+
 		var dt: float = get_process_delta_time()
 		t += dt
 		var alpha: float = clampf(t / duration, 0.0, 1.0)
@@ -508,7 +628,57 @@ func _jump_to_position(target: Vector2) -> void:
 	print("ReplicaFini: landed at ", global_position)
 
 
+func _jump_to_marker(target: Marker2D) -> void:
+	if not target:
+		return
+
+	var start_pos := global_position
+	var end_pos := target.global_position
+	var duration := 0.4
+	var t := 0.0
+	collision_layer = 0
+	if animation_player and animation_player.has_animation("jump"):
+		current_animation = "jump"
+		animation_player.play("jump")
+
+	while t < duration and not dead:
+		if taking_damage:
+			await _wait_if_hurt()
+			return
+
+		t += get_physics_process_delta_time()
+		var alpha = clamp(t / duration, 0.0, 1.0)
+		global_position = start_pos.lerp(end_pos, alpha)
+		await get_tree().physics_frame
+	
+	global_position = end_pos
+	velocity = Vector2.ZERO
+	collision_layer = 3
+	# Decide if this is a platform position or ground
+	var ground_y := global_position.y
+	if marker_low_left:
+		ground_y = marker_low_left.global_position.y
+	elif marker_low_right:
+		ground_y = marker_low_right.global_position.y
+
+	# If we are significantly above the "low" markers, we are on platform
+	on_platform = global_position.y < ground_y - 60.0
+
+	print("ReplicaFini: landed on marker ", target.name,
+		" at ", global_position,
+		" | ground_y=", ground_y,
+		" | on_platform=", on_platform)
+
+
+# ===================================================================
+#                     PLATFORM HELPERS
+# ===================================================================
+
 func _phase_platform_idle_laser_tired() -> void:
+	if dead:
+		return
+
+	await _wait_if_hurt()
 	if dead:
 		return
 
@@ -523,7 +693,7 @@ func _phase_platform_idle_laser_tired() -> void:
 			ground_y = marker_low_right.global_position.y
 
 		# If player is near or below "ground", stop platform mode
-		if player.global_position.y > ground_y - 8.0:
+		if player.global_position.y > ground_y - 60.0:
 			on_platform = false
 			print("ReplicaFini: player near ground again, leaving platform mode")
 			return
@@ -539,6 +709,10 @@ func _phase_platform_idle_laser_tired() -> void:
 					" (dist=", dist, ")")
 				await _jump_to_marker(best_marker)
 
+	if taking_damage:
+		await _wait_if_hurt()
+		return
+
 	# --- 2) IDLE on platform ---
 	velocity.x = 0.0
 	if animation_player.has_animation("idle"):
@@ -547,9 +721,17 @@ func _phase_platform_idle_laser_tired() -> void:
 	print("ReplicaFini: platform idle on upper platform at ", global_position)
 	await get_tree().create_timer(1.0 / Global.global_time_scale).timeout
 
+	if taking_damage:
+		await _wait_if_hurt()
+		return
+
 	# --- 3) LASER ONLY (no melee in air) ---
 	print("ReplicaFini: platform laser at ", global_position)
 	await _phase_laser()
+
+	if taking_damage:
+		await _wait_if_hurt()
+		return
 
 	# --- 4) TIRED / VULNERABLE ---
 	velocity.x = 0.0
@@ -563,39 +745,9 @@ func _phase_platform_idle_laser_tired() -> void:
 	print("ReplicaFini: platform tired at ", global_position)
 	await get_tree().create_timer(3.0 / Global.global_time_scale).timeout
 
-func _jump_to_marker(target: Marker2D, duration: float = 0.4) -> void:
-	if target == null:
-		print("ReplicaFini: _jump_to_marker called with null target")
-		return
-
-	print("ReplicaFini: jumping to marker ", target.name, 
-		" from ", global_position, " to ", target.global_position)
-
-	var start_pos: Vector2 = global_position
-	var t: float = 0.0
-
-	while t < duration:
-		t += get_process_delta_time()
-		var alpha = clampf(t / duration, 0.0, 1.0) # clampf to avoid that warning
-		global_position = start_pos.lerp(target.global_position, alpha)
-		await get_tree().process_frame
-
-	global_position = target.global_position
-
-	# Decide if this is an upper platform marker
-	on_upper_platform = (
-		target == marker_mid_left  or target == marker_mid_right  or
-		target == marker_high_left or target == marker_high_right
-	)
-	
-	on_platform = on_upper_platform  # <<< important
-	
-	print("ReplicaFini: landed on marker ", target.name,
-		" at ", global_position,
-		" | on_upper_platform = ", on_upper_platform,
-		" | is_on_floor() = ", is_on_floor())
 
 func _get_best_marker_for_player() -> Marker2D:
+	# (Currently unused helper – closest of all markers)
 	if not player or not is_instance_valid(player):
 		return null
 
@@ -620,9 +772,10 @@ func _get_best_marker_for_player() -> Marker2D:
 			best = m
 			best_dist = d
 
-	print("ReplicaFini: best marker for player = ", best.name, 
+	print("ReplicaFini: best marker for player = ", best.name,
 		" at ", best.global_position, " (dist=", best_dist, ")")
 	return best
+
 
 func _get_best_upper_marker_for_player() -> Marker2D:
 	if not player or not is_instance_valid(player):

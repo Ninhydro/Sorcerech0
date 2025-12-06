@@ -108,7 +108,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a1io0"]
-size = Vector2(20, 306.5)
+size = Vector2(20, 417.25)
 
 [node name="cutscene14C" type="Area2D" groups=["replica_boss_cutscene"]]
 position = Vector2(79, 74)
@@ -125,16 +125,16 @@ libraries = {
 }
 
 [node name="BossCamera2D" type="Camera2D" parent="."]
-position = Vector2(9, -74)
-zoom = Vector2(0.6, 0.6)
+position = Vector2(9, -58)
+zoom = Vector2(0.7, 0.7)
 
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="BossSpawnMarker" type="Marker2D" parent="."]
-position = Vector2(-7, 38)
+position = Vector2(113, 46)
 
 [node name="BossTimer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 120.0
 one_shot = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -157,14 +157,19 @@ metadata/_edit_use_anchors_ = true
 [node name="BarrierLeft" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
-position = Vector2(-263, -74)
+position = Vector2(-231, -130)
 shape = SubResource("RectangleShape2D_a1io0")
 
 [node name="BarrierRight" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
-position = Vector2(281, -75.25)
+position = Vector2(249, -130)
 shape = SubResource("RectangleShape2D_a1io0")
+
+[node name="HealthSpawnMarker" type="Marker2D" parent="."]
+position = Vector2(-7, -202)
+
+[node name="HealthTimer" type="Timer" parent="."]
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

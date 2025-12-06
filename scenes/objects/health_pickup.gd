@@ -11,6 +11,7 @@ var has_settled := false
 
 func _ready():
 	# RigidBody2D settings
+	collision_mask = 1 && 2   # bit 1 = layer 2
 	gravity_scale = 1.0  # Enable gravity
 	linear_damp = 0.5    # Air resistance
 	can_sleep = true     # Allow to sleep when settled
@@ -23,6 +24,12 @@ func _ready():
 	
 	# Store initial Y for floating animation
 	initial_y = global_position.y
+	call_deferred("_apply_spawn_impulse")
+
+func _apply_spawn_impulse() -> void:
+	# Now the body is fully in the physics world, less chance of tunneling
+	apply_central_impulse(Vector2(randf_range(-50, 50), -bounce_force))
+
 
 func _process(delta):
 	# Only start floating after the RigidBody has settled
@@ -35,6 +42,7 @@ func _integrate_forces(state):
 	if state.linear_velocity.length() < 5.0 and not has_settled:
 		has_settled = true
 		initial_y = global_position.y  # Update initial_y to settled position
+		
 		start_floating_animation()
 
 func start_floating_animation():

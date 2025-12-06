@@ -9,7 +9,7 @@ size = Vector2(8, 14)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jeilx"]
 size = Vector2(21, 21)
 
-[node name="MicrochipPickup" type="RigidBody2D"]
+[node name="Health" type="RigidBody2D"]
 collision_mask = 3
 script = ExtResource("1_gkluw")
 
