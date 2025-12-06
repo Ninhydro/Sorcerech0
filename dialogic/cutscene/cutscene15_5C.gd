@@ -16,8 +16,8 @@ var player_in_range: Node = null
 @onready var timer_label: Label = $CanvasLayer/TimerLabel
 @onready var timer_color: ColorRect = $CanvasLayer/ColorRect
 
-# Success trigger (goal area the player must touch)
-@onready var goal_area: Area2D = $GoalArea
+# Moving rocket / goal the player must touch
+@onready var goal_area: Area2D = $GoalArea  # This has Rocket.gd attached
 
 var rocket_reached: bool = false
 var outcome_resolved: bool = false
@@ -26,7 +26,6 @@ var outcome_resolved: bool = false
 func _ready() -> void:
 	add_to_group("valentina_minigame_controller")
 
-	# Only active if we are in the Valentina route:
 	var should_be_active := (
 		not Global.replica_fini_dead
 		and not Global.ult_cyber_form
@@ -37,26 +36,28 @@ func _ready() -> void:
 			collision_shape.disabled = true
 			monitoring = false
 		set_process(false)
-		# Hide UI just in case
 		if timer_label:
 			timer_label.visible = false
 		if timer_color:
 			timer_color.visible = false
 		return
 
-	# Force sane timer settings
+	# Timer
 	if fail_timer:
 		fail_timer.stop()
 		fail_timer.one_shot = true
-		fail_timer.wait_time = 15.0  # ← adjust if you want longer
+		fail_timer.wait_time = 20.0  # adjust as you like
 		if not fail_timer.timeout.is_connected(_on_fail_timer_timeout):
 			fail_timer.timeout.connect(_on_fail_timer_timeout)
 
-	# Connect goal area
-	if goal_area and not goal_area.body_entered.is_connected(_on_goal_area_body_entered):
-		goal_area.body_entered.connect(_on_goal_area_body_entered)
+	# Hook rocket Area2D
+	if goal_area:
+		print("ValentinaRocket: goal_area =", goal_area, "script =", goal_area.get_script())
+		if not goal_area.body_entered.is_connected(_on_goal_area_body_entered):
+			goal_area.body_entered.connect(_on_goal_area_body_entered)
+	else:
+		push_warning("ValentinaRocket: goal_area is NULL – make sure there's a child node named GoalArea.")
 
-	# Hide timer UI until minigame actually starts
 	if timer_label:
 		timer_label.visible = false
 	if timer_color:
@@ -71,11 +72,13 @@ func _on_body_entered(body: Node) -> void:
 		return
 	if not body.is_in_group("player"):
 		return
+	if play_only_once and _has_been_triggered:
+		return
 
+	_has_been_triggered = true
 	player_in_range = body
 	print("ValentinaRocket: player entered rocket minigame zone.")
 
-	# Start timer + show UI
 	if fail_timer and fail_timer.is_stopped():
 		fail_timer.start()
 		print("ValentinaRocket: fail timer started (wait_time =", fail_timer.wait_time, ")")
@@ -85,9 +88,15 @@ func _on_body_entered(body: Node) -> void:
 	if timer_color:
 		timer_color.visible = true
 
+	# 🚀 Activate the moving rocket
+	if goal_area and goal_area.has_method("activate"):
+		print("ValentinaRocket: activating rocket via GoalArea.activate()")
+		goal_area.call_deferred("activate")
+	else:
+		print("ValentinaRocket: WARNING – goal_area missing or has no activate() method.")
 
+		
 func _process(delta: float) -> void:
-	# Only update label while timer is running
 	if not fail_timer or fail_timer.is_stopped() or not timer_label:
 		return
 
@@ -98,6 +107,11 @@ func _process(delta: float) -> void:
 
 
 func _on_goal_area_body_entered(body: Node) -> void:
+	print("ValentinaRocket: _on_goal_area_body_entered body =", body,
+		"player_in_range =", player_in_range,
+		"rocket_pos =", goal_area.global_position if goal_area else "N/A",
+		"body_pos =", body.global_position if body is Node2D else "N/A")
+
 	if outcome_resolved:
 		return
 	if not body.is_in_group("player"):
@@ -152,6 +166,10 @@ func _on_valentina_save_finished(_timeline_name: String = "") -> void:
 	if timer_color:
 		timer_color.visible = false
 
+	# Optional: hide rocket
+	if goal_area:
+		goal_area.visible = false
+
 	if player_in_range:
 		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 
@@ -192,6 +210,10 @@ func _on_valentina_dead_finished(_timeline_name: String = "") -> void:
 		timer_label.visible = false
 	if timer_color:
 		timer_color.visible = false
+
+	# Optional: hide rocket
+	if goal_area:
+		goal_area.visible = false
 
 	if player_in_range:
 		transition_manager.travel_to(player_in_range, target_room, target_spawn)

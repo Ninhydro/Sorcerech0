@@ -63,7 +63,7 @@ func _ready():
 
 	if health_timer:
 		health_timer.one_shot = false
-		health_timer.wait_time = 30.0  # drop every 30 seconds
+		#health_timer.wait_time = 30.0  # drop every 30 seconds
 		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
 			health_timer.timeout.connect(_on_health_timer_timeout)
 			

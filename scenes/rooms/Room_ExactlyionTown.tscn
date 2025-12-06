@@ -938,6 +938,18 @@ visible = false
 position = Vector2(2622, -788)
 zoom = Vector2(0.4, 0.4)
 
+[node name="RocketMarker1" type="Marker2D" parent="."]
+position = Vector2(3059, -789)
+
+[node name="RocketMarker2" type="Marker2D" parent="."]
+position = Vector2(2731, -750)
+
+[node name="RocketMarker3" type="Marker2D" parent="."]
+position = Vector2(2322, -732)
+
+[node name="RocketMarker4" type="Marker2D" parent="."]
+position = Vector2(2231, -479)
+
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]
 [connection signal="body_entered" from="Doors/Door_Factory" to="." method="_on_door_factory_body_entered"]

@@ -170,6 +170,7 @@ shape = SubResource("RectangleShape2D_a1io0")
 position = Vector2(-7, -202)
 
 [node name="HealthTimer" type="Timer" parent="."]
+wait_time = 60.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -3,7 +3,7 @@ class_name ReplicaFini
 
 # --- Tunable pattern values ---
 @export var walk_speed: float = 40.0              # slow walk toward player
-@export var melee_forward_distance: float = 32.0  # how far she slides forward on melee
+@export var melee_forward_distance: float = 50.0  # how far she slides forward on melee
 @export var melee_dash_time: float = 0.18         # seconds of forward motion
 @export var backstep_distance: float = 48.0       # how far she moves back before laser
 @export var backstep_time: float = 0.22           # seconds of backward motion
@@ -35,11 +35,18 @@ var is_hurting: bool = false
 
 var jump_markers: Array[Node2D] = []
 @export var jump_check_vertical_diff: float = 48.0  # how much higher the player must be to trigger jump
-@export var melee_engage_distance: float = 60.0     # how close she wants to be before melee
+@export var melee_engage_distance: float = 100.0     # how close she wants to be before melee
 @export var max_walk_before_force_melee: float = 2.0  # safety timeout in seconds
 
 var last_attack_dir: int = 1  # +1 or -1, used to keep melee + backstep consistent
 var was_taking_damage: bool = false
+
+@export var close_melee_threshold: float = 30.0      # "too close" distance
+@export var extra_backstep_multiplier: float = 1.8   # how much farther she retreats if too close
+
+var last_melee_start_dist: float = 0.0               # distance to player when melee started
+
+
 # ===================================================================
 #                      MARKER SETUP / DEBUG
 # ===================================================================
@@ -289,6 +296,9 @@ func _phase_idle_walk() -> void:
 
 			# If close enough, stop walking and go to melee phase
 			if dist_x <= melee_engage_distance:
+				# Remember how far we were when we decided to melee
+				last_melee_start_dist = dist_x
+
 				velocity.x = 0.0
 				if animation_player.has_animation("idle"):
 					if current_animation != "idle":
@@ -312,8 +322,8 @@ func _phase_idle_walk() -> void:
 		elapsed += get_process_delta_time()
 
 		# Just in case player runs away forever: after some time, force melee anyway
-		if elapsed >= max_walk_before_force_melee:
-			break
+		#if elapsed >= max_walk_before_force_melee:
+		#	break
 
 
 # ===================================================================
@@ -417,6 +427,14 @@ func _phase_backstep() -> void:
 	if dead:
 		return
 
+	# Decide how far to backstep:
+	# - normal backstep if melee started at a "nice" distance
+	# - longer backstep if she ended up too close to the player
+	var use_backstep_distance: float = backstep_distance
+	if last_melee_start_dist > 0.0 and last_melee_start_dist <= close_melee_threshold:
+		# She started melee very close to the player → retreat more before laser
+		use_backstep_distance = backstep_distance * extra_backstep_multiplier
+
 	# Move away from where the last melee went
 	var step_dir = -last_attack_dir
 	if step_dir == 0:
@@ -424,7 +442,7 @@ func _phase_backstep() -> void:
 
 	var total_time = backstep_time
 	var moved = 0.0
-	var speed = backstep_distance / max(total_time, 0.01)
+	var speed = use_backstep_distance / max(total_time, 0.01)
 
 	# Face same way as melee (optional, feels consistent)
 	dir.x = last_attack_dir
@@ -434,7 +452,7 @@ func _phase_backstep() -> void:
 		current_animation = "walk"
 		animation_player.play("walk")
 
-	while moved < backstep_distance and not dead:
+	while moved < use_backstep_distance and not dead:
 		if taking_damage:
 			await _wait_if_hurt()
 			return
@@ -655,20 +673,29 @@ func _jump_to_marker(target: Marker2D) -> void:
 	velocity = Vector2.ZERO
 	collision_layer = 3
 	# Decide if this is a platform position or ground
-	var ground_y := global_position.y
-	if marker_low_left:
-		ground_y = marker_low_left.global_position.y
-	elif marker_low_right:
-		ground_y = marker_low_right.global_position.y
+	#var ground_y := global_position.y
+	#if marker_low_left:
+	#	ground_y = marker_low_left.global_position.y
+	#elif marker_low_right:
+	#	ground_y = marker_low_right.global_position.y
 
 	# If we are significantly above the "low" markers, we are on platform
-	on_platform = global_position.y < ground_y - 60.0
-
+	#on_platform = global_position.y < ground_y - 50.0
+	on_platform = _is_platform_marker(target)
 	print("ReplicaFini: landed on marker ", target.name,
 		" at ", global_position,
-		" | ground_y=", ground_y,
+	#	" | ground_y=", ground_y,
 		" | on_platform=", on_platform)
 
+func _is_platform_marker(marker: Marker2D) -> bool:
+	if marker == null:
+		return false
+
+	# Treat mid/high as "upper platform"
+	return marker == marker_mid_left \
+		or marker == marker_mid_right \
+		or marker == marker_high_left \
+		or marker == marker_high_right
 
 # ===================================================================
 #                     PLATFORM HELPERS
@@ -693,7 +720,7 @@ func _phase_platform_idle_laser_tired() -> void:
 			ground_y = marker_low_right.global_position.y
 
 		# If player is near or below "ground", stop platform mode
-		if player.global_position.y > ground_y - 60.0:
+		if player.global_position.y > ground_y - 70.0:
 			on_platform = false
 			print("ReplicaFini: player near ground again, leaving platform mode")
 			return
