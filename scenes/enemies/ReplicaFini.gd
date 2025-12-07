@@ -654,37 +654,74 @@ func _jump_to_marker(target: Marker2D) -> void:
 	var end_pos := target.global_position
 	var duration := 0.4
 	var t := 0.0
-	collision_layer = 0
-	if animation_player and animation_player.has_animation("jump"):
-		current_animation = "jump"
-		animation_player.play("jump")
 
+	# Disable collisions while "teleport jumping"
+	collision_layer = 0
+	velocity = Vector2.ZERO
+
+	# Face towards the target horizontally (optional but nice)
+	if end_pos.x < start_pos.x:
+		dir.x = -1
+		sprite.flip_h = true
+	else:
+		dir.x = 1
+		sprite.flip_h = false
+
+	# ========= JUMP IN (disappear / start teleport) =========
+	if animation_player and animation_player.has_animation("jump_in"):
+		current_animation = "jump_in"
+		animation_player.play("jump_in")
+
+		# Wait until jump_in finishes, unless interrupted
+		while animation_player.is_playing() \
+				and animation_player.current_animation == "jump_in" \
+				and not dead:
+			if taking_damage:
+				await _wait_if_hurt()
+				# If interrupted, stop the jump completely
+				collision_layer = 3
+				return
+			await get_tree().process_frame
+
+	# ========= MOVEMENT (lerp from start to marker) =========
 	while t < duration and not dead:
 		if taking_damage:
 			await _wait_if_hurt()
+			# If interrupted mid-air, stop the jump
+			collision_layer = 3
 			return
 
 		t += get_physics_process_delta_time()
 		var alpha = clamp(t / duration, 0.0, 1.0)
 		global_position = start_pos.lerp(end_pos, alpha)
 		await get_tree().physics_frame
-	
+
+	# Snap exactly to target at the end
 	global_position = end_pos
 	velocity = Vector2.ZERO
-	collision_layer = 3
-	# Decide if this is a platform position or ground
-	#var ground_y := global_position.y
-	#if marker_low_left:
-	#	ground_y = marker_low_left.global_position.y
-	#elif marker_low_right:
-	#	ground_y = marker_low_right.global_position.y
 
-	# If we are significantly above the "low" markers, we are on platform
-	#on_platform = global_position.y < ground_y - 50.0
+	# ========= JUMP OUT (appear / land on marker) =========
+	if animation_player and animation_player.has_animation("jump_out"):
+		current_animation = "jump_out"
+		animation_player.play("jump_out")
+
+		while animation_player.is_playing() \
+				and animation_player.current_animation == "jump_out" \
+				and not dead:
+			if taking_damage:
+				await _wait_if_hurt()
+				collision_layer = 3
+				return
+			await get_tree().process_frame
+
+	# Re-enable collisions
+	collision_layer = 3
+
+	# Decide if this is a platform marker or ground
 	on_platform = _is_platform_marker(target)
+
 	print("ReplicaFini: landed on marker ", target.name,
 		" at ", global_position,
-	#	" | ground_y=", ground_y,
 		" | on_platform=", on_platform)
 
 func _is_platform_marker(marker: Marker2D) -> bool:
