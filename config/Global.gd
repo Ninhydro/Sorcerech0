@@ -344,6 +344,9 @@ var explode_door = false
 var cannon_goal_door_destroyed = false
 var final_puzzle_door = false
 
+var is_boss_battle
+var gawr_failed_route_used
+
 
 # Function to add/update quest markers
 func add_quest_marker(quest_name: String, world_position: Vector2):
@@ -441,6 +444,8 @@ func _process(delta):
 		#print("persistent_magic_stones ",persistent_magic_stones)
 		#print("persistent_video_tapes ",persistent_video_tapes)
 		print("timeline ",timeline)
+		Global.killing =  !Global.killing
+		print(Global.killing)
 	#	print("Player World Position: ", global_position)
 	# Handle unpause cooldown timer
 	if unpause_cooldown_timer > 0:

@@ -314,9 +314,10 @@ func _physics_process(delta):
 	#print(Global.global_time_scale)
 	#Global.timeline = 11
 	#print(Global.timeline)
-	#if Input.is_action_just_pressed("debug2"):  # Assign a key like F1
-	#	print("Player World Position: ", global_position)
-	
+	#if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
+		#print("Player World Position: ", global_position)
+		#Global.killing =  !Global.killing
+		#print(Global.killing)
 	
 	
 	Global.playerBody = self

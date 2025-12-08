@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8qiiy2j7u2t5"]
+
+[ext_resource type="Script" path="res://scenes/enemies/gawr_boss_controller.gd" id="1_5ivvf"]
+[ext_resource type="PackedScene" uid="uid://d174avsoubith" path="res://scenes/enemies/BaseEnemy.tscn" id="2_sr8cs"]
+
+[node name="GawrBossController" type="Node2D"]
+script = ExtResource("1_5ivvf")
+boss_scene = ExtResource("2_sr8cs")
+
+[node name="FailTimer" type="Timer" parent="."]
+
+[node name="BossSpawnMarker" type="Marker2D" parent="."]
