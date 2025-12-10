@@ -4,12 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://cx6bmveui8ju6" path="res://assets_image/Characters/Gawr/Gawr-Sheet.png" id="2_fso2y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_13llt"]
+size = Vector2(260, 320)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ijdn5"]
+size = Vector2(140, 100)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7kaaq"]
+size = Vector2(200, 140)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pd23g"]
+size = Vector2(640, 160)
 
 [node name="GawrBoss" type="CharacterBody2D"]
 script = ExtResource("1_tlyjb")

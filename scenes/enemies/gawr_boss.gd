@@ -46,7 +46,7 @@ var player: Node2D
 # READY
 # -------------------------------------------------------------
 func _ready():
-	health = max_health
+health = max_health
 	_disable_all_hitboxes()
 	_disable_all_weakspots()
 	fire_sprite.visible = false
@@ -56,10 +56,10 @@ func _ready():
 	_connect_weakspot(left_weakspot)
 	_connect_weakspot(right_weakspot)
 
-	# Connect attack callbacks
-	left_hitbox.body_entered.connect(_on_attack_hitbox_body_entered)
-	right_hitbox.body_entered.connect(_on_attack_hitbox_body_entered)
-	fire_hitbox.body_entered.connect(_on_attack_hitbox_body_entered)
+# Connect attack callbacks
+left_hitbox.body_entered.connect(_on_attack_hitbox_body_entered.bind(left_hitbox))
+right_hitbox.body_entered.connect(_on_attack_hitbox_body_entered.bind(right_hitbox))
+fire_hitbox.body_entered.connect(_on_attack_hitbox_body_entered.bind(fire_hitbox))
 
 	set_physics_process(false)
 	set_process(false)
@@ -285,10 +285,11 @@ func _disable_all_weakspots():
 	_disable_weakspot(right_weakspot)
 
 
-func _on_attack_hitbox_body_entered(body):
-	if dead: return
-	if body.is_in_group("player"):
-		body.take_damage(slam_damage)
+func _on_attack_hitbox_body_entered(body: Node, source_hitbox: Area2D):
+if dead: return
+if body.is_in_group("player"):
+var dmg := fire_damage if source_hitbox == fire_hitbox else slam_damage
+body.take_damage(dmg)
 
 
 func _on_weakspot_entered(area):
