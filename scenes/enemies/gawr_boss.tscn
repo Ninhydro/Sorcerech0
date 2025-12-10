@@ -1,14 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://dtq452st0b2yu"]
+[gd_scene load_steps=7 format=3 uid="uid://dtq452st0b2yu"]
 
 [ext_resource type="Script" path="res://scenes/enemies/gawr_boss.gd" id="1_tlyjb"]
+[ext_resource type="Texture2D" uid="uid://cx6bmveui8ju6" path="res://assets_image/Characters/Gawr/Gawr-Sheet.png" id="2_fso2y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_13llt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ijdn5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7kaaq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pd23g"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ijdn5"]
 
 [node name="GawrBoss" type="CharacterBody2D"]
 script = ExtResource("1_tlyjb")
@@ -18,54 +19,64 @@ shape = SubResource("RectangleShape2D_13llt")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
-[node name="Sprite_Body_Light" type="Sprite2D" parent="."]
+[node name="SpriteBody" type="Sprite2D" parent="."]
+texture = ExtResource("2_fso2y")
+hframes = 4
+vframes = 10
+frame = 15
 
-[node name="Sprite_Body_Dark" type="Sprite2D" parent="."]
+[node name="Head" type="Node2D" parent="."]
 
-[node name="Sprite_Head_LightOpen" type="Sprite2D" parent="."]
+[node name="HeadSprite" type="Sprite2D" parent="Head"]
 
-[node name="Sprite_Head_Dark" type="Sprite2D" parent="."]
+[node name="HeadWeakspot" type="Area2D" parent="Head"]
 
-[node name="LeftArmRoot" type="Node2D" parent="."]
-
-[node name="Sprite_LeftArm" type="Sprite2D" parent="LeftArmRoot"]
-
-[node name="Sprite_LeftHand_Open" type="Sprite2D" parent="LeftArmRoot"]
-
-[node name="Sprite_LeftHand_Closed" type="Sprite2D" parent="LeftArmRoot"]
-
-[node name="SlamHitbox_Left" type="Area2D" parent="LeftArmRoot"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftArmRoot/SlamHitbox_Left"]
-shape = SubResource("RectangleShape2D_7kaaq")
-
-[node name="RightArmRoot" type="Node2D" parent="."]
-
-[node name="Sprite_RightArm" type="Sprite2D" parent="RightArmRoot"]
-
-[node name="Sprite_RightHand_Open" type="Sprite2D" parent="RightArmRoot"]
-
-[node name="Sprite_RightHand_Closed" type="Sprite2D" parent="RightArmRoot"]
-
-[node name="SlamHitbox_Right" type="Area2D" parent="RightArmRoot"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightArmRoot/SlamHitbox_Right"]
-shape = SubResource("RectangleShape2D_7kaaq")
-
-[node name="WingsRoot" type="Node2D" parent="."]
-
-[node name="Sprite_Wings" type="Sprite2D" parent="WingsRoot"]
-
-[node name="FireOrigin" type="Marker2D" parent="."]
-
-[node name="FireBreath" type="Area2D" parent="FireOrigin"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FireOrigin/FireBreath"]
-shape = SubResource("RectangleShape2D_pd23g")
-
-[node name="Sprite_Flame" type="Sprite2D" parent="FireOrigin/FireBreath"]
-
-[node name="Hurtbox" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head/HeadWeakspot"]
 shape = SubResource("RectangleShape2D_ijdn5")
+
+[node name="LeftArm" type="Node2D" parent="."]
+
+[node name="ArmSpriteL" type="Sprite2D" parent="LeftArm"]
+
+[node name="LeftHand" type="Node2D" parent="LeftArm"]
+
+[node name="HandSpriteL" type="Sprite2D" parent="LeftArm/LeftHand"]
+
+[node name="LeftSlamHitbox" type="Area2D" parent="LeftArm/LeftHand"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftArm/LeftHand/LeftSlamHitbox"]
+shape = SubResource("RectangleShape2D_7kaaq")
+
+[node name="LeftWeakspot" type="Area2D" parent="LeftArm/LeftHand"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftArm/LeftHand/LeftWeakspot"]
+shape = SubResource("RectangleShape2D_ijdn5")
+
+[node name="RightArm" type="Node2D" parent="."]
+
+[node name="ArmSpriteR" type="Sprite2D" parent="RightArm"]
+
+[node name="RightHand" type="Node2D" parent="RightArm"]
+
+[node name="HandSpriteR" type="Sprite2D" parent="RightArm/RightHand"]
+
+[node name="RightSlamHitbox" type="Area2D" parent="RightArm/RightHand"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightArm/RightHand/RightSlamHitbox"]
+shape = SubResource("RectangleShape2D_7kaaq")
+
+[node name="RightWeakspot" type="Area2D" parent="RightArm/RightHand"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightArm/RightHand/RightWeakspot"]
+shape = SubResource("RectangleShape2D_ijdn5")
+
+[node name="Wings" type="Sprite2D" parent="."]
+
+[node name="FirePivot" type="Node2D" parent="."]
+
+[node name="FireSprite" type="Sprite2D" parent="FirePivot"]
+
+[node name="FireHitbox" type="Area2D" parent="FirePivot"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FirePivot/FireHitbox"]
+shape = SubResource("RectangleShape2D_pd23g")
