@@ -15,7 +15,7 @@ signal boss_died
 
 # Slam timings
 @export var slam_windup_time: float = 0.35
-@export var slam_stun_time: float = 1.8
+@export var slam_stun_time: float = 5
 @export var slam_return_time: float = 0.6
 
 # Breath timings
@@ -76,13 +76,46 @@ var _desired_attack: String = ""  # "slam_left", "slam_right", "breath"
 
 var _facing: int = 1 # 1 = facing right, -1 = facing left
 
+@export var desired_attack_distance: float = 220.0  # how far boss wants to stand from player before attacking
+@export var min_move_distance: float = 25.0         # ignore tiny moves to prevent jitter
+
+var _move_active: bool = false
+var _target_x: float = 0.0
+
+@export var chase_stop_distance: float = 220.0  # stand this far from player
+@export var chase_deadzone: float = 20.0        # don’t jitter
+@export var chase_enabled: bool = true
+
+@export var attack_cooldown: float = 0.6
+var _next_attack_time: float = 0.0
+@export var slam_side_offset: float = 140.0  # distance from player
+
+@export var hurt_flash_color: Color = Color(1, 1, 1, 1)
+@export var hurt_flash_strength: float = 1.0 # 1.0 = pure white, >1 doesn't work with modulate
+@export var hurt_flash_up_time: float = 0.05
+@export var hurt_flash_down_time: float = 0.10
+
+var _hurt_tween: Tween
+var _base_modulate: Color = Color(1, 1, 1, 1)
+
+@export var breath_post_flame_vuln_time: float = 0.6
+@export var breath_recover_vuln_time: float = 1.0
+
+
+
+@export var flash_up_time := 0.05
+@export var flash_down_time := 0.10
+
+var _flash_mat: ShaderMaterial
+var _flash_targets: Array[CanvasItem] = []
+
 func _ts() -> float:
 	return max(Global.global_time_scale, 0.05)
 
 
 func _ready() -> void:
 	randomize()
-
+	_base_modulate = body_pivot.modulate
 	health = max_health
 	_disable_all_hitboxes()
 	_disable_all_weakspots()
@@ -104,19 +137,87 @@ func _ready() -> void:
 
 	# IMPORTANT: This boss should not block the player.
 	# Boss stands on ground (layer 2), but does not collide with player (layer 1).
-	collision_layer = 4
-	collision_mask = 2
+	#collision_layer = 4
+	#collision_mask = 2
 
 	set_physics_process(true)
 	set_process(true)
 	
 	_force_fire_nodes_clean()
-	
+	_setup_flash_targets()
 	print("GawrBoss READY: ", name, "  layer=", collision_layer, " mask=", collision_mask)
 
-func _process(delta):
-	if anim:
-		anim.speed_scale = _ts()
+func _physics_process(delta: float) -> void:
+	# reacquire player first (so debug print won't crash)
+	player = Global.playerBody as Node2D
+	if player == null or not is_instance_valid(player):
+		player = get_tree().get_first_node_in_group("player") as Node2D
+
+	if Engine.get_frames_drawn() % 60 == 0 and player:
+		print("adx=", abs(player.global_position.x - global_position.x),
+			" velx=", velocity.x,
+			" move_active=", _move_active,
+			" attack=", _attack_running)
+		
+
+	if dead:
+		velocity.x = 0
+		move_and_slide()
+		return
+
+	# Freeze conditions (boss won't move while attacking/hurt/camo)
+	if taking_damage or _attack_running or Global.camouflage:
+		velocity.x = 0
+		move_and_slide()
+		return
+
+	if player == null or not chase_enabled:
+		velocity.x = 0
+		move_and_slide()
+		return
+
+	# --- AI-command move has priority ---
+	if _move_active:
+		var dx_to_target := _target_x - global_position.x
+		_set_facing_from_dx(dx_to_target)
+
+		if abs(dx_to_target) <= align_tolerance:
+			velocity.x = 0
+			_move_active = false
+			if anim and anim.has_animation("idle"):
+				anim.play("idle")
+		else:
+	# dx_to_target can sometimes end up weird; force a direction if sign()==0
+			var dir = sign(dx_to_target)
+			if dir == 0:
+				dir = 1 if dx_to_target > 0.0 else -1
+
+			velocity.x = dir * walk_speed * _ts()
+			if anim and anim.has_animation("walk"):
+				anim.play("walk")
+
+		move_and_slide()
+		return  # IMPORTANT: only return when using move_active
+
+	# --- Normal chase (only when not move_active) ---
+	var dx := player.global_position.x - global_position.x
+	_set_facing_from_dx(dx)
+
+	var adx = abs(dx)
+	var desired := chase_stop_distance
+
+	if adx > desired + chase_deadzone:
+		velocity.x = sign(dx) * walk_speed * _ts()
+		if anim and anim.has_animation("walk"):
+			anim.play("walk")
+	else:
+		velocity.x = 0
+		if anim and anim.has_animation("idle"):
+			anim.play("idle")
+
+	move_and_slide()
+
+
 # -------------------------------------------------------------
 # PUBLIC API
 # -------------------------------------------------------------
@@ -164,86 +265,97 @@ func _run_ai_loop() -> void:
 	
 	
 	while not dead:
-		# reacquire player EVERY LOOP (robust)
 		player = Global.playerBody as Node2D
-		if Global.camouflage:
-			# stop any active breath visuals/hitboxes just in case
-			_disable_hitbox(fire_hitbox)
-			_stop_flame_immediately()
-			await _play_idle(0.4 / _ts())
-			continue
-		
 		if player == null or not is_instance_valid(player):
 			player = get_tree().get_first_node_in_group("player") as Node2D
 
 		if player == null:
-			# THIS is the reason bosses “idle forever” most often.
-			print("GawrBoss: player not found (Global.playerBody null and group 'player' missing).")
-			await _play_idle(0.6)
+			await _play_idle(0.2)
+			continue
+
+		if Global.camouflage:
+			_disable_hitbox(fire_hitbox)
+			_stop_flame_immediately()
+			await _play_idle(0.2)
 			continue
 
 		if taking_damage:
 			await get_tree().process_frame
 			continue
 
-		var dist_x: float = abs(player.global_position.x - global_position.x)
+		# --- WAIT UNTIL WE ARE IN A GOOD RANGE TO ATTACK ---
+		var dx = player.global_position.x - global_position.x
+		var adx = abs(dx)
 
-		# Debug every cycle (you can comment later)
-		#print("GawrBoss: dist_x=", dist_x, " engage=", engage_distance, " attacking=", _attack_running)
+		#var desired := chase_stop_distance
+		#var in_sweet_spot = abs(adx - desired) <= (chase_deadzone + 10.0)
 
-		#if dist_x > engage_distance:
-		#	await _move_closer_phase()
+		# If far, do NOT attack. Let _physics_process chase.
+		#if not in_sweet_spot:
+		#	await get_tree().process_frame
 		#	continue
 
-		# Near player: idle then pick attack
-		await _play_idle(0.4)
+		# Cooldown so we don't perma-attack
+		var now := Time.get_ticks_msec() / 1000.0
+		if now < _next_attack_time:
+			await get_tree().process_frame
+			continue
+
+		# Step 1: walk to player's center first (feels aggressive)
+		await _move_to_target_x(player.global_position.x)
+
+		# short beat so it doesn’t jitter
+		await _play_idle(0.15)
 		if dead: break
 
-		# Decide attack
-		if randi() % 2 == 0:
-			_desired_attack = "slam"
-			var use_left: bool = (randi() % 2 == 0)
-			_move_target_x = player.global_position.x + (slam_left_offset if use_left else slam_right_offset)
+		# Decide attack (1/4 breath, 3/4 slam)
+		if randi() % 4 == 0:
+			await _fire_breath_phase()
+		else:
+			var use_left := _choose_closer_hand()
+			await _move_to_target_x(_slam_target_x(use_left))
+			await _slam_phase_with_hand(use_left)
+
+		_next_attack_time = Time.get_ticks_msec() / 1000.0 + attack_cooldown
+		#if randi() % 2 == 0:
+		#	_desired_attack = "slam"
+		#	var use_left: bool = (randi() % 2 == 0)
+		#	_move_target_x = player.global_position.x + (slam_left_offset if use_left else slam_right_offset)
 
 			# Walk to the correct side first (only if not already close enough)
-			if abs(_move_target_x - global_position.x) > engage_distance * 0.25:
-				await _move_to_target_x(_move_target_x)
+		#	if abs(_move_target_x - global_position.x) > engage_distance * 0.25:
+		#		await _move_to_target_x(_move_target_x)
 
 			# Now do the slam using the same hand you planned
-			await _slam_phase_with_hand(use_left)
-		else:
-			_desired_attack = "breath"
-			_move_target_x = player.global_position.x  # center for breath
-			if abs(_move_target_x - global_position.x) > engage_distance * 0.25:
-				await _move_to_target_x(_move_target_x)
+		#	await _slam_phase_with_hand(use_left)
+		#else:
+		#	_desired_attack = "breath"
+		#	_move_target_x = player.global_position.x  # center for breath
+		#	if abs(_move_target_x - global_position.x) > engage_distance * 0.25:
+		#		await _move_to_target_x(_move_target_x)
 
-			await _fire_breath_phase()
+		#	await _fire_breath_phase()
 
 	_ai_running = false
 	print("GawrBoss AI LOOP ENDED.")
 
 func _play_idle(seconds: float) -> void:
-	if anim and anim.has_animation("idle"):
-		anim.play("idle")
-	await get_tree().create_timer(seconds/ _ts()).timeout
+	# Don't force animations here. Physics handles walk/idle.
+	await get_tree().create_timer(seconds / _ts()).timeout
 
 func _move_to_target_x(target_x: float) -> void:
-	if player == null or not is_instance_valid(player):
-		return
+	_target_x = target_x
+	_move_active = true
 
-	if anim and anim.has_animation("walk"):
-		anim.play("walk")
+	var start_time := Time.get_ticks_msec()
+	var max_ms := 1500  # 1.5s safety timeout
 
-	while not dead and not taking_damage:
-		var dx: float = target_x - global_position.x
-		_set_facing_from_dx(dx) 
-
-		if abs(dx) <= align_tolerance:
+	while _move_active and not dead and not taking_damage and not Global.camouflage:
+		# safety: if we get stuck, abort so AI can continue
+		if Time.get_ticks_msec() - start_time > max_ms:
+			print("GawrBoss: move_to_target TIMEOUT. target=", _target_x, " pos=", global_position.x)
+			_move_active = false
 			break
-
-		var dir: int = -1 if dx < 0.0 else 1
-		global_position.x += float(dir) * walk_speed * get_physics_process_delta_time() * _ts()
-
 		await get_tree().process_frame
 
 
@@ -345,17 +457,22 @@ func _fire_breath_phase() -> void:
 	_disable_hitbox(fire_hitbox)
 
 	_stop_flame()
-	await get_tree().create_timer(flame_stop_time/ _ts()).timeout
-
+	await get_tree().create_timer(flame_stop_time / _ts()).timeout
 	if dead:
 		_attack_running = false
 		return
 
+	# ✅ punish window AFTER flames are gone
 	_enable_weakspot(head_weakspot)
+
+	# keep the "breath_fire" pose a bit longer (optional)
+	await get_tree().create_timer(breath_post_flame_vuln_time / _ts()).timeout
 
 	if anim and anim.has_animation("breath_recover"):
 		anim.play("breath_recover")
-	await get_tree().create_timer(breath_recover_time/ _ts()).timeout
+
+	# ✅ stay vulnerable through recover too
+	await get_tree().create_timer((breath_recover_time + breath_recover_vuln_time) / _ts()).timeout
 
 	_disable_weakspot(head_weakspot)
 	_attack_running = false
@@ -406,11 +523,21 @@ func take_damage(amount: int) -> void:
 		_die()
 
 func _flash_hurt() -> void:
-	if body_pivot and body_pivot is CanvasItem:
-		var ci: CanvasItem = body_pivot as CanvasItem
-		var old: Color = ci.modulate
-		ci.modulate = Color(1, 0.7, 0.7, 1)
-		call_deferred("_restore_modulate", ci, old)
+	if _flash_mat == null:
+		return
+
+	if _hurt_tween and _hurt_tween.is_running():
+		_hurt_tween.kill()
+
+	_flash_mat.set_shader_parameter("flash", 1.0)
+
+	_hurt_tween = create_tween()
+	_hurt_tween.tween_method(
+		func(v): _flash_mat.set_shader_parameter("flash", v),
+		1.0, 0.0,
+		flash_down_time / _ts()
+	)
+
 
 func _restore_modulate(ci: CanvasItem, old_color: Color) -> void:
 	await get_tree().create_timer(hurt_flash_time/ _ts()).timeout
@@ -434,8 +561,14 @@ func _die() -> void:
 func _connect_weakspot(spot: Area2D) -> void:
 	if spot == null:
 		return
-	if not spot.area_entered.is_connected(_on_weakspot_entered):
-		spot.area_entered.connect(_on_weakspot_entered)
+
+	spot.monitoring = true
+	spot.monitorable = true
+
+	# Only Area2D attacks should count
+	if not spot.area_entered.is_connected(_on_weakspot_area_entered):
+		spot.area_entered.connect(_on_weakspot_area_entered)
+
 
 func _enable_hitbox(box: Area2D) -> void:
 	if box == null:
@@ -602,3 +735,83 @@ func _set_facing_from_dx(dx: float) -> void:
 
 	# IMPORTANT: when flipping via scale, rotations become mirrored.
 	# So we’ll apply fire_pivot rotation in local space later (see below).
+
+func _get_attack_stand_x() -> float:
+	if player == null or not is_instance_valid(player):
+		return global_position.x
+	var dx := player.global_position.x - global_position.x
+	var side := 1.0 if dx >= 0.0 else -1.0
+	# Stand at a fixed distance in front of the player (so boss actually “chases”)
+	return player.global_position.x - side * desired_attack_distance
+
+func _choose_closer_hand() -> bool:
+	# returns true = use_left, false = use_right
+	if player == null or not is_instance_valid(player):
+		return true
+
+	# If you have hitboxes, this is the most reliable even with flipping
+	if left_hitbox and right_hitbox:
+		var dl = abs(player.global_position.x - left_hitbox.global_position.x)
+		var dr = abs(player.global_position.x - right_hitbox.global_position.x)
+		return dl <= dr
+
+	# fallback
+	return (player.global_position.x < global_position.x)
+
+func _slam_target_x(use_left: bool) -> float:
+	# use_left = slam with left hand -> boss stands left side of player
+	var off := slam_side_offset
+	return player.global_position.x + (-off if use_left else off)
+
+func _on_weakspot_area_entered(area: Area2D) -> void:
+	if dead or area == null:
+		return
+
+	# --- BASE ENEMY STYLE: exact match with Global.playerDamageZone ---
+	var is_player_damage_zone := (area == Global.playerDamageZone)
+
+	# --- Fallback 1: sometimes Global.playerDamageZone is a parent node of the hitbox
+	if not is_player_damage_zone and Global.playerDamageZone and area.get_parent() == Global.playerDamageZone:
+		is_player_damage_zone = true
+
+	# --- Fallback 2: if your player attack Area2D isn't assigned to Global.playerDamageZone,
+	# match by known names (your debug shows AttackArea / Hitbox)
+	if not is_player_damage_zone:
+		if area.name == "AttackArea" or area.name == "Hitbox":
+			is_player_damage_zone = true
+
+	if not is_player_damage_zone:
+		return
+
+	# Damage amount exactly like BaseEnemy
+	var dmg := Global.playerDamageAmount
+
+	# Optional: if your attack area carries its own damage
+	if "damage" in area:
+		dmg = int(area.damage)
+
+	take_damage(dmg)
+
+func _setup_flash_targets() -> void:
+	_flash_targets.clear()
+
+	# Collect everything visual under the boss rig
+	for n in body_pivot.get_children():
+		_collect_canvas_items_recursive(n)
+
+	# Make 1 shared instance for THIS boss (so it doesn't affect other bosses)
+	var shader := load("res://shaders/flash_white.gdshader") as Shader
+	_flash_mat = ShaderMaterial.new()
+	_flash_mat.shader = shader
+	_flash_mat.set_shader_parameter("flash", 0.0)
+
+	# Apply to each sprite/animated sprite
+	for ci in _flash_targets:
+		# IMPORTANT: duplicate so per-node edits don't fight
+		ci.material = _flash_mat
+
+func _collect_canvas_items_recursive(node: Node) -> void:
+	if node is CanvasItem:
+		_flash_targets.append(node)
+	for c in node.get_children():
+		_collect_canvas_items_recursive(c)
