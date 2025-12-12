@@ -142,13 +142,14 @@ func _start_boss_battle() -> void:
 	battle_cancelled_on_player_death = false
 	battle_active = false
 
-	# STORY FLAGS: entering Gawr fight
-	Global.meet_gawr = true           # met Gawr at least once
-	Global.after_battle_gawr = false  # not resolved yet
+	# STORY FLAGS
+	Global.meet_gawr = true
+	Global.after_battle_gawr = false
 	Global.ult_magus_form = false
 	Global.gawr_dead = false
 	Global.is_boss_battle = true
 
+	# Heal player at start
 	Global.health = Global.health_max
 	if is_instance_valid(Global.player):
 		Global.player.health_changed.emit(Global.health, Global.health_max)
@@ -168,17 +169,79 @@ func _start_boss_battle() -> void:
 	else:
 		get_tree().current_scene.add_child(boss_instance)
 
+	# Position
 	if boss_spawn_marker and boss_instance is Node2D:
 		boss_instance.global_position = boss_spawn_marker.global_position
 
-	# Listen for boss death (simple way)
-	if not boss_instance.tree_exited.is_connected(_on_boss_died):
-		boss_instance.tree_exited.connect(_on_boss_died)
+	# ---------------------------------------------------------
+	# COLLISION RULES (player can pass through boss)
+	# ---------------------------------------------------------
+	# Layers: 1=player, 2=platform, 3=enemy, 4=gawr
+	# Bits:   1<<0,     1<<1,        1<<2,    1<<3
+	var LAYER_PLAYER := 1
+	var LAYER_PLATFORM := 2
+	var LAYER_GAWR := 4
 
+	if boss_instance is CollisionObject2D:
+		var co := boss_instance as CollisionObject2D
+
+		# Put boss on layer 4
+		co.collision_layer = 0
+		co.set_collision_layer_value(LAYER_GAWR, true)
+
+		# Only collide with platforms (layer 2), NOT player
+		co.collision_mask = 0
+		co.set_collision_mask_value(LAYER_PLATFORM, true)
+		co.set_collision_mask_value(LAYER_PLAYER, false)
+
+	# Also ensure any child bodies don't block the player (best-effort)
+	for child in boss_instance.get_children():
+		if child is CollisionObject2D:
+			var cco := child as CollisionObject2D
+			cco.set_collision_mask_value(LAYER_PLAYER, false)
+
+	# ---------------------------------------------------------
+	# WAKE UP THE BOSS AI
+	# ---------------------------------------------------------
+
+	# If it's your custom GawrBoss (independent script)
+	if boss_instance.has_method("reset_for_battle"):
+		print("GawrCutscene: calling boss.reset_for_battle()")
+		boss_instance.call_deferred("reset_for_battle")
+
+	# If it's a BaseEnemy (simple placeholder) -> force it to actually do something
+	# These are variables your BaseEnemy uses.
+	if "range" in boss_instance:
+		boss_instance.range = true   # pretend player is inside chase range
+	if "is_enemy_chase" in boss_instance:
+		boss_instance.is_enemy_chase = true
+	if "dir" in boss_instance:
+		# pick a default roam dir so it doesn't stay idle
+		boss_instance.dir = Vector2.LEFT if randf() < 0.5 else Vector2.RIGHT
+	if "player_in_area" in boss_instance:
+		boss_instance.player_in_area = true
+
+	# If your BaseEnemy needs a player reference:
+	if "player" in boss_instance:
+		boss_instance.player = Global.playerBody
+
+	# ---------------------------------------------------------
+	# Death detection
+	# ---------------------------------------------------------
+	# tree_exited works for BaseEnemy (it queue_free() on death),
+	# but for custom bosses it's better to use a boss_died signal if available.
+	if boss_instance.has_signal("boss_died"):
+		if not boss_instance.boss_died.is_connected(_on_boss_died):
+			boss_instance.boss_died.connect(_on_boss_died)
+	else:
+		if not boss_instance.tree_exited.is_connected(_on_boss_died):
+			boss_instance.tree_exited.connect(_on_boss_died)
+
+	# Start timers/UI
 	battle_active = true
 
 	if boss_timer:
-		boss_timer.start()  # set wait_time in Inspector (e.g. 60s)
+		boss_timer.start()
 	if timer_label:
 		timer_label.visible = true
 	if timer_color:
@@ -186,7 +249,7 @@ func _start_boss_battle() -> void:
 	if health_timer:
 		health_timer.start()
 
-	print("GawrCutscene: Gawr battle started (simple boss).")
+	print("GawrCutscene: Gawr battle started (simple boss). boss=", boss_instance)
 
 
 func _on_boss_timer_timeout() -> void:

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bg247tjmx5fln"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene14M.gd" id="1_2r6pg"]
-[ext_resource type="PackedScene" uid="uid://b2tbmn1dan8yx" path="res://scenes/enemies/BeastEnemy.tscn" id="2_hcx58"]
+[ext_resource type="PackedScene" uid="uid://dtq452st0b2yu" path="res://scenes/enemies/gawr_boss.tscn" id="2_7foni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(309, 195)
@@ -114,7 +114,7 @@ size = Vector2(20, 417.25)
 [node name="cutscene14M" type="Area2D"]
 position = Vector2(79, 74)
 script = ExtResource("1_2r6pg")
-boss_scene = ExtResource("2_hcx58")
+boss_scene = ExtResource("2_7foni")
 boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -133,7 +133,7 @@ zoom = Vector2(0.6, 0.6)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="BossSpawnMarker" type="Marker2D" parent="."]
-position = Vector2(113, 46)
+position = Vector2(-7, 78)
 
 [node name="BossTimer" type="Timer" parent="."]
 wait_time = 120.0

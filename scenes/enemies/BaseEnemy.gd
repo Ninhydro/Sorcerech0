@@ -119,6 +119,7 @@ var is_preparing_attack := false
 @export var anim_not_moving_epsilon := 0.5 
 var last_anim_position: Vector2   
 
+
 func _ready():
 	# Initialize attack cooldown timer
 	attack_cooldown_timer = Timer.new()
