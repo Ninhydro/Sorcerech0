@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://0gdwofoh8pbg"]
+[gd_scene load_steps=9 format=3 uid="uid://0gdwofoh8pbg"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene15_5M.gd" id="1_ec8bb"]
+[ext_resource type="Texture2D" uid="uid://cj3hygu68bt2p" path="res://assets_image/Objects/object1.png" id="2_dmtv0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(652, 399)
@@ -107,6 +108,9 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6fbaa"]
+size = Vector2(58, 19)
+
 [node name="cutscene15_5M" type="Area2D"]
 position = Vector2(79, 74)
 script = ExtResource("1_ec8bb")
@@ -114,17 +118,95 @@ script = ExtResource("1_ec8bb")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-73, -74.5)
 shape = SubResource("RectangleShape2D_xwwtj")
+metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-2, -27)
-zoom = Vector2(2, 2)
+[node name="BossCamera2D" type="Camera2D" parent="."]
+visible = false
+position = Vector2(1, -26)
+zoom = Vector2(0.7, 0.7)
 
 [node name="npc1" type="Sprite2D" parent="."]
+
+[node name="SuccessTimer" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+
+[node name="ChargeTimer" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" groups=["boss1_cutscene"]]
+modulate = Color(0.380392, 0.380392, 0.380392, 0.784314)
+offset_left = 248.0
+offset_right = 320.0
+offset_bottom = 40.0
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer"]
+offset_left = 256.0
+offset_top = 8.0
+offset_right = 296.0
+offset_bottom = 21.0
+text = "Time1"
+metadata/_edit_use_anchors_ = true
+
+[node name="ChargeLabel" type="Label" parent="CanvasLayer"]
+offset_left = 256.0
+offset_top = 24.0
+offset_right = 296.0
+offset_bottom = 37.0
+text = "Time2"
+metadata/_edit_use_anchors_ = true
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1, 14)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StaticBody2D"]
+position = Vector2(105, 22)
+shape = SubResource("RectangleShape2D_6fbaa")
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/StaticBody2D"]
+position = Vector2(105, 22)
+texture = ExtResource("2_dmtv0")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Platforms"]
+position = Vector2(-71, -34)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StaticBody2D2"]
+position = Vector2(104, 24)
+shape = SubResource("RectangleShape2D_6fbaa")
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/StaticBody2D2"]
+position = Vector2(104, 24)
+texture = ExtResource("2_dmtv0")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Platforms"]
+position = Vector2(-143, -74)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StaticBody2D3"]
+position = Vector2(104, 24)
+shape = SubResource("RectangleShape2D_6fbaa")
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/StaticBody2D3"]
+position = Vector2(104, 24)
+texture = ExtResource("2_dmtv0")
+
+[node name="FinalFlameMarker" type="Marker2D" parent="."]
+position = Vector2(-207, 46)
+
+[node name="BossStart" type="Marker2D" parent="."]
+position = Vector2(-55, 118)
+
+[node name="PlayerStart" type="Marker2D" parent="."]
+position = Vector2(169, 110)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

@@ -122,6 +122,23 @@ var _breath_streak := 0
 var _next_breath_allowed_time := 0.0
 @export var fire_extra_length_px := 80.0  # tweak this
 
+signal minigame_head_hit
+
+@export var minigame_slam_range := 220.0
+var nora_minigame_active := false
+var _minigame_charge_time := 10.0
+var _minigame_final_marker: Node2D = null
+var _minigame_doing_slam := false
+
+@export var minigame_slam_cooldown := 2.5
+var _next_minigame_slam_time := 0.0
+
+var _force_facing_left := false
+
+@export var minigame_slam_x_range := 150.0
+@export var minigame_slam_y_range := 200.0   # prevents slam when player is far above/below
+@export var minigame_requires_front := false
+
 # ----------------------------
 # HELPERS
 # ----------------------------
@@ -185,6 +202,36 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	player = _get_player()
+	
+	if nora_minigame_active:
+		_facing = -1
+		body_pivot.scale.x = -abs(body_pivot.scale.x)
+		velocity = Vector2.ZERO
+		move_and_slide()
+
+			# keep facing left (we’ll force it below)
+		_force_face_left_minigame()
+		
+		player = _get_player()
+		if player:
+			var dx := player.global_position.x - global_position.x
+			var dy := player.global_position.y - global_position.y
+
+			var close_x = abs(dx) <= minigame_slam_x_range
+			var close_y = abs(dy) <= minigame_slam_y_range
+
+			var in_front := true
+			if minigame_requires_front:
+				# boss facing left => "front" is player on left side
+				in_front = (dx < 0.0)
+
+			var now := Time.get_ticks_msec() / 1000.0
+			if close_x and close_y and in_front and not _minigame_doing_slam and now >= _next_minigame_slam_time and not Global.camouflage:
+				_next_minigame_slam_time = now + minigame_slam_cooldown
+				call_deferred("_do_minigame_slam_interrupt")
+
+		return
+	
 
 	if dead:
 		velocity.x = 0
@@ -227,7 +274,9 @@ func _physics_process(delta: float) -> void:
 		if reached:
 			velocity.x = 0
 			_move_active = false
-			if anim and anim.has_animation("idle"):
+			if nora_minigame_active:
+				_ensure_minigame_idle()
+			elif anim and anim.has_animation("idle"):
 				anim.play("idle")
 		else:
 			var dir = sign(dx_to_target)
@@ -251,7 +300,9 @@ func _physics_process(delta: float) -> void:
 			anim.play("walk")
 	else:
 		velocity.x = 0
-		if anim and anim.has_animation("idle"):
+		if nora_minigame_active:
+			_ensure_minigame_idle()
+		elif anim and anim.has_animation("idle"):
 			anim.play("idle")
 
 	move_and_slide()
@@ -269,7 +320,9 @@ func reset_for_battle() -> void:
 	_disable_all_weakspots()
 	_stop_flame_immediately()
 
-	if anim and anim.has_animation("idle"):
+	if nora_minigame_active:
+		_ensure_minigame_idle()
+	elif anim and anim.has_animation("idle"):
 		anim.play("idle")
 
 	if not _ai_running:
@@ -403,7 +456,9 @@ func _slam_phase_with_hand(use_left: bool) -> void:
 	await get_tree().create_timer(slam_return_time / _ts()).timeout
 
 	# 5) back to idle
-	if anim and anim.has_animation("idle"):
+	if nora_minigame_active:
+		_ensure_minigame_idle()
+	elif anim and anim.has_animation("idle"):
 		anim.play("idle")
 
 	_attack_running = false
@@ -517,7 +572,8 @@ func _breath_phase() -> void:
 func take_damage(amount: int) -> void:
 	if dead:
 		return
-
+	if nora_minigame_active:
+		return
 	health -= amount
 	taking_damage = true
 
@@ -574,6 +630,14 @@ func _on_weakspot_area_entered(area: Area2D) -> void:
 	if _last_hit_time_by_attacker.has(key) and (now_ms - int(_last_hit_time_by_attacker[key])) < int(weakspot_hit_cooldown * 1000.0):
 		return
 	_last_hit_time_by_attacker[key] = now_ms
+	
+	# Nora minigame: hitting head resets the charge timer (controller listens to this)
+	if nora_minigame_active: #get_signal_connection_list("minigame_head_hit").size() >= 0:
+		# only when the head weakspot was the one being hit
+		# (If you want this strictly, easiest is: check if head weakspot overlaps the attack area right now)
+		if head_weakspot and head_weakspot.overlaps_area(area):
+			minigame_head_hit.emit()
+		return  
 
 	# damage amount
 	var dmg := Global.playerDamageAmount
@@ -694,6 +758,10 @@ func _flash_hurt() -> void:
 # MISC
 # ----------------------------
 func _set_facing_from_dx(dx: float) -> void:
+	
+	if nora_minigame_active and _force_facing_left:
+		return
+		
 	var new_facing := -1 if dx < 0.0 else 1
 	if new_facing == _facing:
 		return
@@ -1003,6 +1071,183 @@ func _breath_fire_sequence_only() -> void:
 		anim.play("breath_recover")
 	await get_tree().create_timer(breath_recover_time / _ts()).timeout
 
-	if anim and anim.has_animation("idle"):
+	if nora_minigame_active:
+		_ensure_minigame_idle()
+	elif anim and anim.has_animation("idle"):
 		anim.play("idle")
 
+func start_nora_minigame(charge_time: float, final_marker: Node2D) -> void:
+	nora_minigame_active = true
+	# HARD LOCK
+	velocity = Vector2.ZERO
+	_move_active = false
+	_attack_running = false
+	chase_enabled = false
+	set_physics_process(true)
+
+	_minigame_charge_time = charge_time
+	_minigame_final_marker = final_marker
+	
+	_force_facing_left = true
+	_facing = -1
+	body_pivot.scale.x = -abs(body_pivot.scale.x)
+	
+
+	# stop normal AI movement/attacks
+	velocity.x = 0
+
+	# head weakspot ALWAYS ON in this minigame
+	_enable_weakspot(head_weakspot)
+
+	# start charge loop visuals (no flame sprite)
+	_play_minigame_charge_anims()
+
+func stop_nora_minigame() -> void:
+	#nora_minigame_active = false
+	#chase_enabled = true
+	_disable_weakspot(head_weakspot)
+
+	_stop_flame_immediately()
+	
+	if nora_minigame_active:
+		_ensure_minigame_idle()
+	elif anim and anim.has_animation("idle"):
+		anim.play("idle")
+
+func _play_minigame_charge_anims() -> void:
+	if not anim: return
+	if anim.has_animation("breath_lower_2"):
+		anim.play("breath_lower_2")
+	await get_tree().create_timer(0.25 / _ts()).timeout
+	if not nora_minigame_active: return
+	if anim.has_animation("breath_fire_2"):
+		anim.play("breath_fire_2")
+
+
+func _do_minigame_slam_interrupt() -> void:
+	if not nora_minigame_active or _minigame_doing_slam: return
+	_minigame_doing_slam = true
+
+	# stop charge anim momentarily
+	if anim and anim.has_animation("slam_minigame"):
+		anim.play("slam_minigame")
+
+	# hit player back (damage + knock)
+	player = _get_player()
+	if player and player.is_in_group("player"):
+		#if player.has_method("take_damage"):
+		#	player.call("take_damage", slam_damage)
+
+		# optional knockback if your player supports it
+		var dir = sign(player.global_position.x - global_position.x)
+		if player.has_method("apply_knockback"):
+			player.call("apply_knockback", Vector2(dir * 260.0, -200.0))
+		elif ("velocity" in player):
+			player.velocity.x = dir * 100.0
+			player.velocity.y = -100.0
+
+	await get_tree().create_timer(0.35 / _ts()).timeout
+
+	if anim and anim.has_animation("slam_minigame_return"):
+		anim.play("slam_minigame_return")
+	await get_tree().create_timer(0.25 / _ts()).timeout
+
+	# resume charge anims (lower_2 -> fire_2) but TIMER is controlled by controller (not here)
+	await _play_minigame_charge_anims()
+
+	_minigame_doing_slam = false
+
+func do_final_flame_at(world_pos: Vector2) -> void:
+	# ✅ short, obvious burst
+	if dead:
+		return
+
+	# keep minigame state if you call this right before stopping minigame
+	_disable_hitbox(fire_hitbox)
+	_stop_flame_immediately()
+
+	# Pose for final flame
+	if anim:
+		if anim.has_animation("breath_lower_2"):
+			anim.play("breath_lower_2")
+		await get_tree().create_timer(0.25 / _ts()).timeout
+
+		if anim.has_animation("breath_fire_2"):
+			anim.play("breath_fire_2")
+
+	# Visual + hitbox burst
+	_start_flame_sprite()
+	await get_tree().create_timer(flame_start_time / _ts()).timeout
+	_enable_hitbox(fire_hitbox)
+
+	var t := 0.0
+	var burst_time := 1.0
+	while t < burst_time and not dead:
+		_update_fire_to_world_pos(world_pos)
+		_ensure_flame_cycle()
+		await get_tree().process_frame
+		t += get_process_delta_time() * _ts()
+
+	_disable_hitbox(fire_hitbox)
+	_stop_flame_sprite()
+
+	# return to charge pose if still in minigame
+	_ensure_minigame_idle()
+
+
+func _force_face_left_minigame() -> void:
+	# left means _facing = -1 in your system
+	if _facing != -1:
+		_facing = -1
+		if body_pivot:
+			body_pivot.scale.x = -abs(body_pivot.scale.x)
+
+func _ensure_minigame_idle() -> void:
+	if not nora_minigame_active:
+		return
+	if not anim:
+		return
+
+	# Always show charge pose instead of idle
+	if anim.has_animation("breath_fire_2"):
+		if anim.current_animation != "breath_fire_2":
+			anim.play("breath_fire_2")
+
+func _update_fire_to_world_pos(target: Vector2) -> void:
+	if mouth_marker == null or fire_pivot == null:
+		return
+
+	var origin: Vector2 = mouth_marker.global_position
+	var to_t: Vector2 = target - origin
+	var dist: float = max(to_t.length() + fire_extra_length_px, 1.0)
+
+	# Put pivot at mouth
+	fire_pivot.global_position = origin
+
+	# Aim directly at target (optionally clamp if you want)
+	fire_pivot.global_rotation = to_t.angle()
+
+	# Reset local transforms
+	if fire_hitbox:
+		fire_hitbox.position = Vector2.ZERO
+		fire_hitbox.rotation = 0.0
+		fire_hitbox.scale = Vector2.ONE
+
+	# Stretch collision to distance
+	if fire_shape and fire_shape.shape is RectangleShape2D:
+		var rect := fire_shape.shape as RectangleShape2D
+		rect.size = Vector2(dist, rect.size.y)
+		fire_shape.position = Vector2(dist * 0.5, 0.0)
+
+	# Stretch flame sprite
+	if flame_sprite:
+		flame_sprite.visible = true
+		flame_sprite.position = Vector2(dist * 0.5, 0.0)
+
+		var base_width := 64.0
+		if flame_sprite.sprite_frames:
+			var tex := flame_sprite.sprite_frames.get_frame_texture(flame_sprite.animation, flame_sprite.frame)
+			if tex:
+				base_width = float(tex.get_width())
+		if base_width > 0.0:
+			flame_sprite.scale = Vector2(dist / base_width, 1.0)

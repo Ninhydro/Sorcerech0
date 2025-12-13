@@ -52,7 +52,9 @@ func _ready() -> void:
 		health_timer.wait_time = 60.0  # health drop every 30 seconds
 		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
 			health_timer.timeout.connect(_on_health_timer_timeout)
-
+	
+	if boss_camera:
+		boss_camera.add_to_group("gawr_boss_camera")
 
 func _reset_visuals() -> void:
 	_deactivate_barriers()
@@ -104,7 +106,7 @@ func _start_intro_cutscene() -> void:
 
 	# Store and disable player camera
 	if player_in_range:
-		var player_cam: Camera2D = player_in_range.get_node_or_null("Camera2D")
+		var player_cam: Camera2D = player_in_range.get_node_or_null("CameraPivot/Camera2D")
 		if player_cam:
 			previous_player_camera = player_cam
 			player_cam.enabled = false
@@ -159,6 +161,7 @@ func _start_boss_battle() -> void:
 		return
 
 	boss_instance = boss_scene.instantiate()
+	boss_instance.add_to_group("gawr_boss")
 	if boss_instance == null:
 		printerr("GawrCutscene: Failed to instance boss_scene.")
 		return
@@ -261,9 +264,11 @@ func _on_boss_timer_timeout() -> void:
 	var boss_alive := is_instance_valid(boss_instance)
 	if boss_alive:
 		print("GawrCutscene: Timer finished, boss still alive → Nora route setup.")
-		if boss_instance:
-			boss_instance.queue_free()
-			boss_instance = null
+
+		# ✅ keep boss alive for the Nora minigame
+		if boss_instance and boss_instance.has_method("prepare_for_nora_minigame"):
+			boss_instance.call_deferred("prepare_for_nora_minigame")
+
 		_handle_battle_fail()
 	else:
 		print("GawrCutscene: Timer finished but boss already dead → treat as success.")
@@ -320,8 +325,8 @@ func _on_gawr_win_dialog_finished(_timeline_name := "") -> void:
 	if Dialogic.timeline_ended.is_connected(_on_gawr_win_dialog_finished):
 		Dialogic.timeline_ended.disconnect(_on_gawr_win_dialog_finished)
 
+	Global.is_cutscene_active = false
 	Global.timeline = 6.5
-
 	# Ensure flags are in winning state
 	Global.ult_magus_form = true
 	Global.gawr_dead = true
@@ -375,7 +380,7 @@ func _on_gawr_fail_dialog_finished(_timeline_name := "") -> void:
 	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
 	if Dialogic.timeline_ended.is_connected(_on_gawr_fail_dialog_finished):
 		Dialogic.timeline_ended.disconnect(_on_gawr_fail_dialog_finished)
-
+	Global.is_cutscene_active = false
 	# Match what your Nora cutscene expects:
 	# timeline == 6.5, after_battle_gawr == true, gawr_dead == false, ult_magus_form == false
 	Global.timeline = 6.5
@@ -394,7 +399,7 @@ func cancel_gawr_boss_battle_on_player_death() -> void:
 	# Call this from Player.handle_death() for group "gawr_boss_cutscene"
 	if not battle_active:
 		return
-
+	Global.is_cutscene_active = false
 	print("GawrCutscene: Battle cancelled due to player death.")
 	battle_active = false
 	battle_cancelled_on_player_death = true
@@ -454,7 +459,8 @@ func _restore_player_camera() -> void:
 		player = Global.playerBody
 
 	if player:
-		var cam: Camera2D = player.get_node_or_null("Camera2D")
+		var cam: Camera2D = player.get_node_or_null("CameraPivot/Camera2D")
+
 		if cam:
 			cam.enabled = true
 			cam.make_current()
