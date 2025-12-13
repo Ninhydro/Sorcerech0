@@ -157,12 +157,14 @@ text = "Time"
 metadata/_edit_use_anchors_ = true
 
 [node name="BarrierLeft" type="StaticBody2D" parent="."]
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
 position = Vector2(-239, -106)
 shape = SubResource("RectangleShape2D_2t62y")
 
 [node name="BarrierRight" type="StaticBody2D" parent="."]
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
 position = Vector2(233, -106)

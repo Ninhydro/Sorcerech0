@@ -1,16 +1,11 @@
-[gd_scene load_steps=56 format=3 uid="uid://dtq452st0b2yu"]
+[gd_scene load_steps=54 format=3 uid="uid://dtq452st0b2yu"]
 
-[ext_resource type="Shader" path="res://scenes/enemies/flash_white.gdshader" id="1_3dweh"]
 [ext_resource type="Script" path="res://scenes/enemies/gawr_boss.gd" id="1_tlyjb"]
 [ext_resource type="Texture2D" uid="uid://cx6bmveui8ju6" path="res://assets_image/Characters/Gawr/Gawr-Sheet.png" id="2_fso2y"]
 [ext_resource type="Texture2D" uid="uid://dlr1lrcuebmqq" path="res://assets_image/Characters/Enemies/flame.png" id="3_o7b8m"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tv7wm"]
-shader = ExtResource("1_3dweh")
-shader_parameter/flash = 0.0
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_13llt"]
-size = Vector2(156, 306)
+size = Vector2(156, 313.889)
 
 [sub_resource type="Animation" id="Animation_5s25o"]
 length = 0.001
@@ -340,7 +335,7 @@ tracks/10/path = NodePath("BodyPivot/RightArm/RightHand/HandSpriteR:modulate")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -352,7 +347,7 @@ tracks/11/path = NodePath("BodyPivot/LeftArm/LeftHand/HandSpriteL:modulate")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 0.4),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -487,7 +482,7 @@ tracks/10/path = NodePath("BodyPivot/RightArm/RightHand/HandSpriteR:modulate")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
+"times": PackedFloat32Array(0, 0.6, 1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(1, 1, 1, 1)]
@@ -499,7 +494,7 @@ tracks/11/path = NodePath("BodyPivot/LeftArm/LeftHand/HandSpriteL:modulate")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
+"times": PackedFloat32Array(0, 0.6, 1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(1, 1, 1, 1)]
@@ -1713,7 +1708,7 @@ size = Vector2(51.5, 112)
 size = Vector2(62, 150)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idycm"]
-size = Vector2(109, 77)
+size = Vector2(109, 91.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8x0ak"]
 atlas = ExtResource("3_o7b8m")
@@ -1874,15 +1869,17 @@ size = Vector2(48.5, 124.5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_shgxy"]
 size = Vector2(56, 146)
 
-[node name="GawrBoss" type="CharacterBody2D" groups=["Enemies"]]
+[node name="GawrBoss" type="CharacterBody2D"]
 z_index = -1
-material = SubResource("ShaderMaterial_tv7wm")
+scale = Vector2(0.9, 0.9)
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_tlyjb")
+left_slam_marker = NodePath("BodyPivot/LeftArm/LeftHand/LeftSlamHitbox/Marker2D")
+right_slam_marker = NodePath("BodyPivot/RightArm/RightHand/RightSlamHitbox/Marker2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -152)
+position = Vector2(0, -148.056)
 shape = SubResource("RectangleShape2D_13llt")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -1932,8 +1929,13 @@ position = Vector2(-83.7506, 87.1649)
 position = Vector2(95.5758, -30.3481)
 shape = SubResource("RectangleShape2D_7kaaq")
 
-[node name="RightWeakspot" type="Area2D" parent="BodyPivot/RightArm/RightHand"]
+[node name="Marker2D" type="Marker2D" parent="BodyPivot/RightArm/RightHand/RightSlamHitbox"]
+position = Vector2(74.7188, -2.22743)
+
+[node name="RightWeakspot" type="Area2D" parent="BodyPivot/RightArm/RightHand" groups=["Enemies", "EnemyWeakspot"]]
 position = Vector2(-102.938, 103.191)
+collision_layer = 264
+collision_mask = 385
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/RightArm/RightHand/RightWeakspot"]
 position = Vector2(113, -42)
@@ -1960,11 +1962,13 @@ hframes = 4
 vframes = 10
 frame = 16
 
-[node name="HeadWeakspot" type="Area2D" parent="BodyPivot/HeadPivot"]
+[node name="HeadWeakspot" type="Area2D" parent="BodyPivot/HeadPivot" groups=["Enemies", "EnemyWeakspot"]]
 position = Vector2(-34, 204)
+collision_layer = 264
+collision_mask = 385
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/HeadPivot/HeadWeakspot"]
-position = Vector2(64, -229)
+position = Vector2(64, -221.75)
 shape = SubResource("RectangleShape2D_idycm")
 
 [node name="MouthMarker" type="Marker2D" parent="BodyPivot/HeadPivot"]
@@ -1993,7 +1997,6 @@ shape = SubResource("RectangleShape2D_pd23g")
 
 [node name="LeftArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(-21, -143)
-rotation = 0.174533
 
 [node name="ArmSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm"]
 position = Vector2(40, -101)
@@ -2020,8 +2023,13 @@ position = Vector2(58.1036, 111.002)
 position = Vector2(-79.75, -52.25)
 shape = SubResource("RectangleShape2D_aos2u")
 
-[node name="LeftWeakspot" type="Area2D" parent="BodyPivot/LeftArm/LeftHand"]
+[node name="Marker2D" type="Marker2D" parent="BodyPivot/LeftArm/LeftHand/LeftSlamHitbox"]
+position = Vector2(-57.3258, -21.8909)
+
+[node name="LeftWeakspot" type="Area2D" parent="BodyPivot/LeftArm/LeftHand" groups=["Enemies", "EnemyWeakspot"]]
 position = Vector2(59.1036, 116.002)
+collision_layer = 264
+collision_mask = 385
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/LeftArm/LeftHand/LeftWeakspot"]
 position = Vector2(-80, -57)
