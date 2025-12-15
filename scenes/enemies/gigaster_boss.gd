@@ -167,7 +167,13 @@ var _force_facing_left := false
 @export var surround_telegraph_time := 1.0
 @export var laser_on_time := 0.6
 @export var laser_off_gap := 0.35
-@export var laser_scene: PackedScene
+
+@export var slam_high_y_threshold := -40.0
+
+func _is_high_slam() -> bool:
+	if player == null:
+		return false
+	return (player.global_position.y - global_position.y) < slam_high_y_threshold
 
 # ----------------------------
 # HELPERS
@@ -446,55 +452,56 @@ func _start_phase2_intermission() -> void:
 func _slam_attack() -> void:
 	if dead:
 		return
+
 	_attack_running = true
+
 	var use_left := true
 	if player:
-		use_left = (player.global_position.x < global_position.x)
+		use_left = player.global_position.x < global_position.x
+
+	var is_high := _is_high_slam()
 
 	var hitbox: Area2D = left_hitbox if use_left else right_hitbox
 	var weakspot: Area2D = left_weakspot if use_left else right_weakspot
 
-	# 1) slam windup (one-shot)
+	# -----------------
+	# 1) WINDUP SLAM
+	# -----------------
 	if anim:
-		if use_left and anim.has_animation("slam_left"):
-			anim.play("slam_left")
-		elif (not use_left) and anim.has_animation("slam_right"):
-			anim.play("slam_right")
+		if use_left:
+			anim.play("slam_left_high" if is_high else "slam_left")
+		else:
+			anim.play("slam_right_high" if is_high else "slam_right")
 
 	await get_tree().create_timer(slam_windup_time / _ts()).timeout
 	if dead:
 		_attack_running = false
 		return
 
-	# 2) damage window (short)
+	# -----------------
+	# 2) DAMAGE WINDOW
+	# -----------------
 	_enable_hitbox(hitbox)
 	await get_tree().create_timer(slam_hit_active_time / _ts()).timeout
 	_disable_hitbox(hitbox)
 
-	# 3) vulnerable idle for this hand (cycle)
+	# -----------------
+	# 3) FREEZE (NO IDLE)
+	# -----------------
 	_enable_weakspot(weakspot)
-	if anim:
-		if use_left and anim.has_animation("slam_left_idle"):
-			anim.play("slam_left_idle")
-		elif (not use_left) and anim.has_animation("slam_right_idle"):
-			anim.play("slam_right_idle")
-
 	await get_tree().create_timer(slam_stun_time / _ts()).timeout
 	_disable_weakspot(weakspot)
 
-	# 4) return (one-shot)
+	# -----------------
+	# 4) RETURN
+	# -----------------
 	if anim:
-		if use_left and anim.has_animation("slam_left_return"):
-			anim.play("slam_left_return")
-		elif (not use_left) and anim.has_animation("slam_right_return"):
-			anim.play("slam_right_return")
+		if use_left:
+			anim.play("slam_left_high_return" if is_high else "slam_left_return")
+		else:
+			anim.play("slam_right_high_return" if is_high else "slam_right_return")
 
 	await get_tree().create_timer(slam_return_time / _ts()).timeout
-
-	# 5) back to idle
-
-	if anim and anim.has_animation("idle"):
-		anim.play("idle")
 
 	_attack_running = false
 
@@ -1223,8 +1230,12 @@ func take_damage(amount: int) -> void:
 
 
 func _spawn_laser_at(pos: Vector2) -> LaserColumn:
-	var laser := laser_scene.instantiate() as LaserColumn
-	get_parent().add_child(laser)
+	if laser_column_scene == null:
+		push_error("GigasterBoss: laser_column_scene is NOT assigned!")
+		return null
+
+	var laser := laser_column_scene.instantiate() as LaserColumn
+	get_tree().current_scene.add_child(laser)
 	laser.global_position = pos
 	laser.deactivate()
 	return laser
