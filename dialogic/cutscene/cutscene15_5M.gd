@@ -35,7 +35,7 @@ var player_camera: Camera2D = null
 var minigame_started := false
 
 func _show_ui(show: bool) -> void:
-	if timer_label: timer_label.visible = show
+	#if timer_label: timer_label.visible = show
 	if charge_label: charge_label.visible = show
 	if timer_color: timer_color.visible = show
 	

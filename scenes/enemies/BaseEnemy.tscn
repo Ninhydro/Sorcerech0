@@ -138,7 +138,7 @@ radius = 136.059
 
 [node name="BaseEnemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 4
-collision_mask = 15
+collision_mask = 14
 script = ExtResource("1_qwxg3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

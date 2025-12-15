@@ -149,6 +149,7 @@ offset_right = 320.0
 offset_bottom = 40.0
 
 [node name="TimerLabel" type="Label" parent="CanvasLayer"]
+visible = false
 offset_left = 256.0
 offset_top = 8.0
 offset_right = 296.0

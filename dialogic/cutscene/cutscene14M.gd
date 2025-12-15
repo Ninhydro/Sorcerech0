@@ -16,7 +16,7 @@ var previous_player_camera: Camera2D = null
 # --- Boss spawn / timers / UI ---
 @onready var boss_spawn_marker: Marker2D = $BossSpawnMarker
 @onready var boss_timer: Timer = $BossTimer        # acts as fail timer
-@onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
+#@onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
 @onready var health_timer: Timer = $HealthTimer
 
 @onready var timer_label: Label = $CanvasLayer/TimerLabel
@@ -24,6 +24,7 @@ var previous_player_camera: Camera2D = null
 
 # --- Boss / health pickup ---
 @export var boss_scene: PackedScene                 # assign a simple BaseEnemy scene in Inspector
+@onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
 @export var health_pickup_scene: PackedScene = preload("res://scenes/objects/health_pickup.tscn")
 
 var boss_instance: Node2D = null

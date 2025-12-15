@@ -140,7 +140,7 @@ radius = 308.69
 [node name="MagusEnemy" type="CharacterBody2D" groups=["Enemies"]]
 scale = Vector2(0.7, 0.7)
 collision_layer = 4
-collision_mask = 15
+collision_mask = 14
 script = ExtResource("1_n8eo0")
 enemy_damage = 8
 projectile_scene = ExtResource("2_kbfc2")

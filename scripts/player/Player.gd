@@ -199,6 +199,7 @@ func enable_input():
 
 
 func _ready():
+	#Global.affinity -= 5
 	#Global.affinity += 1
 	#Global.reset_persistent()
 	camera.zoom = Vector2(0.8,0.8)
@@ -499,11 +500,11 @@ func _physics_process(delta):
 				var current_form = get_current_form_id()
 				var attack_started = false
 				if current_form == "Cyber":
-					attack_cooldown_timer.start(1.0)
+					attack_cooldown_timer.start(0.5)
 					attack_started = true
 					not_busy = false
 				elif current_form == "Magus":
-					attack_cooldown_timer.start(1.0)
+					attack_cooldown_timer.start(0.5)
 					attack_started = true
 					not_busy = false
 				elif current_form == "UltimateCyber":
@@ -539,7 +540,7 @@ func _physics_process(delta):
 				var current_form = get_current_form_id()
 				var skill_started = false
 				if current_form == "UltimateMagus" and not_busy: # Check for UltimateMagus first
-					skill_cooldown_timer.start(2.0)
+					skill_cooldown_timer.start(1.0)
 					skill_started = true
 					not_busy = false
 
@@ -549,14 +550,14 @@ func _physics_process(delta):
 					not_busy = false
 
 				elif current_form == "Magus" and not_busy:
-					skill_cooldown_timer.start(6.0)
+					skill_cooldown_timer.start(4.0)
 					skill_started = true
 					not_busy = false
 					if combat_fsm:
 						combat_fsm.change_state(SkillState.new(self))
 
 				elif current_form == "UltimateCyber" and not_busy:
-					skill_cooldown_timer.start(11.0)
+					skill_cooldown_timer.start(9.0)
 					skill_started = true
 					not_busy = false
 					if combat_fsm:
@@ -1147,7 +1148,7 @@ func find_closest_enemy_for_rockets() -> Node2D:
 
 func _on_combo_timer_timeout():
 	can_attack = false
-	attack_cooldown_timer.start(2.0)
+	attack_cooldown_timer.start(1.0)
 	print("combo,timer attack start")
 
 #var next_ledge_position

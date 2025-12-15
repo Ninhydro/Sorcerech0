@@ -140,7 +140,7 @@ radius = 256.0
 [node name="ArachneEnemy" type="CharacterBody2D" groups=["Enemies"]]
 scale = Vector2(0.7, 0.7)
 collision_layer = 4
-collision_mask = 15
+collision_mask = 14
 script = ExtResource("1_816w7")
 enemy_damage = 8
 health = 50

@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://x12ytvh5ybag"]
+
+[ext_resource type="Script" path="res://scenes/enemies/laser_collumn.gd" id="1_kk8uh"]
+[ext_resource type="Texture2D" uid="uid://bdw68gybu2q3b" path="res://assets_image/Objects/laser5.png" id="2_qk4gf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vohmu"]
+size = Vector2(40, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t2qnd"]
+radius = 208.154
+
+[node name="LaserCollumn" type="Area2D"]
+position = Vector2(224, 88)
+script = ExtResource("1_kk8uh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-24, 0)
+shape = SubResource("RectangleShape2D_vohmu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-24, 0)
+scale = Vector2(0.625, 0.5625)
+texture = ExtResource("2_qk4gf")
+
+[node name="LaserOrigin" type="Marker2D" parent="."]
+
+[node name="LaserRay" type="RayCast2D" parent="LaserOrigin"]
+target_position = Vector2(10, 0)
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_t2qnd")

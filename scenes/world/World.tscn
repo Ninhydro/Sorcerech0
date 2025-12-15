@@ -725,7 +725,7 @@ position = Vector2(-2920, -152)
 position = Vector2(-5088, 2656)
 
 [node name="Room_TromarveliaCastle" parent="." instance=ExtResource("12_bfh2l")]
-position = Vector2(-32, 4120)
+position = Vector2(272, 4104)
 
 [node name="Room_TromarveliaDungeon" parent="." instance=ExtResource("13_wwr1u")]
 position = Vector2(-5392, 5088)
@@ -746,7 +746,7 @@ position = Vector2(7952, -1352)
 position = Vector2(8816, -1304)
 
 [node name="Room_ExactlyionMainframe" parent="." instance=ExtResource("18_rdbnv")]
-position = Vector2(6096, -2432)
+position = Vector2(5848, -2456)
 
 [node name="Room_ExactlyionValentina" parent="." instance=ExtResource("19_ojk8u")]
 position = Vector2(6565, 2023)

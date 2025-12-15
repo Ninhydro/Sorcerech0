@@ -140,7 +140,7 @@ radius = 136.059
 
 [node name="TankEnemy" type="CharacterBody2D" groups=["Enemies"]]
 collision_layer = 4
-collision_mask = 15
+collision_mask = 14
 script = ExtResource("1_5vand")
 enemy_damage = 8
 projectile_scene = ExtResource("2_mf550")

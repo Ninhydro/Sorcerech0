@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://domkt1qmgve2v"]
+[gd_scene load_steps=9 format=3 uid="uid://domkt1qmgve2v"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene20M.gd" id="1_hu8g8"]
+[ext_resource type="PackedScene" uid="uid://bqps2coqsm63e" path="res://scenes/enemies/gigaster_boss.tscn" id="2_eblvc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(323, 190)
@@ -107,9 +108,14 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_faemg"]
+size = Vector2(20, 417.25)
+
 [node name="cutscene20M" type="Area2D"]
 position = Vector2(79, 74)
 script = ExtResource("1_hu8g8")
+gigaster_scene = ExtResource("2_eblvc")
+boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(91.5, 30)
@@ -120,11 +126,37 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="BossCamera" type="Camera2D" parent="."]
 position = Vector2(-2, -27)
-zoom = Vector2(2, 2)
+zoom = Vector2(0.6, 0.6)
 
 [node name="npc1" type="Sprite2D" parent="."]
+
+[node name="HealthSpawnMarker" type="Marker2D" parent="."]
+position = Vector2(-7, -186)
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(1, 86)
+
+[node name="BarrierLeft" type="StaticBody2D" parent="."]
+collision_layer = 4
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
+position = Vector2(-279, -74)
+shape = SubResource("RectangleShape2D_faemg")
+metadata/_edit_lock_ = true
+
+[node name="BarrierRight" type="StaticBody2D" parent="."]
+collision_layer = 4
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
+position = Vector2(273, -74)
+shape = SubResource("RectangleShape2D_faemg")
+
+[node name="Timer_HealthPickup" type="Timer" parent="."]
+wait_time = 60.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
