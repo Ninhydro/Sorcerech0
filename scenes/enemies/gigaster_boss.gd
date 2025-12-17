@@ -13,10 +13,10 @@ signal boss_died
 @export var head_laser_damage: int = 16
 @export var surround_laser_damage: int = 16
 
-@export var slam_windup_time: float = 0.35
-@export var slam_stun_time: float = 3.0
+@export var slam_windup_time: float = 0.2
+@export var slam_stun_time: float = 3.0 #freeze/stun
 @export var slam_return_time: float = 0.6
-@export var slam_hit_active_time: float = 0.12
+@export var slam_hit_active_time: float = 0.2
 
 @export var laser_lower_time: float = 0.4
 @export var laser_cycle_time: float = 1.0
@@ -180,14 +180,24 @@ func _is_high_slam() -> bool:
 # ----------------------------
 
 func _get_surround_laser_markers() -> Array[Marker2D]:
-	return [
-		$LaserPivot/Laser_FarLeft,
-		$LaserPivot/Laser_FarRight,
-		$LaserPivot/Laser_MidLeft,
-		$LaserPivot/Laser_MidRight,
-		$LaserPivot/Laser_NearLeft,
-		$LaserPivot/Laser_NearRight
-	]
+	var markers: Array[Marker2D] = []
+	
+	# Try different possible locations
+	if has_node("SurroundLaserMarkers"):
+		var root = $SurroundLaserMarkers
+		for child in root.get_children():
+			if child is Marker2D:
+				markers.append(child)
+	
+	# Also check the laser pivot path
+	if has_node("LaserPivot"):
+		var pivot = $LaserPivot
+		for child in pivot.get_children():
+			if child is Marker2D and child.name.contains("Laser_"):
+				markers.append(child)
+	
+	print("🎯 Found ", markers.size(), " surround laser markers")
+	return markers
 	
 func _ts() -> float:
 	return max(Global.global_time_scale, 0.05)
@@ -220,12 +230,20 @@ func _ready() -> void:
 	# connect attack hitboxes -> damage player
 	if left_hitbox:
 		left_hitbox.body_entered.connect(_on_attack_hitbox_body_entered.bind(left_hitbox))
+		left_hitbox.add_to_group("boss_hitbox")  # ADD THIS
+		print("✅ Left hitbox added to boss_hitbox group")
+	
 	if right_hitbox:
 		right_hitbox.body_entered.connect(_on_attack_hitbox_body_entered.bind(right_hitbox))
+		right_hitbox.add_to_group("boss_hitbox")  # ADD THIS
+		print("✅ Right hitbox added to boss_hitbox group")
+	
 	if laser_hitbox:
 		laser_hitbox.body_entered.connect(_on_attack_hitbox_body_entered.bind(laser_hitbox))
+		laser_hitbox.add_to_group("boss_hitbox")  # ADD THIS
+		print("✅ Laser hitbox added to boss_hitbox group")
 
-	_force_fire_nodes_clean()
+	#_force_fire_nodes_clean()
 	
 	#if flame_sprite:
 	#	flame_sprite.z_index = 100
@@ -250,63 +268,52 @@ func _ready() -> void:
 
 	print("GawrBoss READY: ", name, " flash_targets=", _flash_targets.size())
 
+
 func _physics_process(delta: float) -> void:
 	player = _get_player()
-	
 
-	if dead:
+	if _attack_running or dead or taking_damage or Global.camouflage or player == null or not chase_enabled:
 		velocity.x = 0
 		move_and_slide()
 		return
 	
-	if invulnerable and _did_phase2_transition and _summon_ref != null and is_instance_valid(_summon_ref):
-		velocity = Vector2.ZERO
-		move_and_slide()
-		return
-		
-	# allow AI reposition movement even if we're "in an attack phase"
-	if taking_damage or Global.camouflage or (_attack_running and not _move_active):
-		velocity.x = 0
-		move_and_slide()
-		return
-
-	if player == null or not chase_enabled:
-		velocity.x = 0
-		move_and_slide()
-		return
-
-	# move to target
-	if _move_active:
+	# --- AI-Driven Movement ---
+	if not _attack_running and _move_active:
 		var dx_to_target := _target_x - global_position.x
 		_set_facing_from_dx(dx_to_target)
+		var reached := false
 
-		if abs(dx_to_target) <= align_tolerance:
+		if _move_goal_type == 0:
+			reached = abs(dx_to_target) <= align_tolerance
+		elif _move_goal_type == 1:
+			var slam_x := _get_slam_point_world_x(_move_goal_use_left)
+			reached = abs(_move_goal_player_x - slam_x) <= align_tolerance
+
+		if reached:
 			velocity.x = 0
 			_move_active = false
-			if anim and anim.has_animation("idle"):
+			if anim.has_animation("idle"):
 				anim.play("idle")
 		else:
 			velocity.x = sign(dx_to_target) * walk_speed * _ts()
-			if anim and anim.has_animation("walk"):
+			if anim.has_animation("walk"):
 				anim.play("walk")
 
 		move_and_slide()
 		return
 
-	# normal chase
+	# --- Normal chase ---
 	var dx := player.global_position.x - global_position.x
 	_set_facing_from_dx(dx)
 	var adx = abs(dx)
-
 	if adx > chase_stop_distance + chase_deadzone:
 		velocity.x = sign(dx) * walk_speed * _ts()
-		if anim and anim.has_animation("walk"):
+		if anim.has_animation("walk"):
 			anim.play("walk")
 	else:
 		velocity.x = 0
-		if anim and anim.has_animation("idle"):
+		if anim.has_animation("idle"):
 			anim.play("idle")
-
 	move_and_slide()
 
 # ----------------------------
@@ -327,6 +334,7 @@ func reset_for_battle() -> void:
 	_disable_all_weakspots()
 	_stop_flame_immediately()
 
+	_check_hitbox_settings()
 
 	if anim and anim.has_animation("idle"):
 		anim.play("idle")
@@ -336,6 +344,9 @@ func reset_for_battle() -> void:
 		call_deferred("_start_ai")
 
 func _start_ai() -> void:
+	print("🎮 Gigaster AI LOOP STARTED. Phase: ", _phase)
+	
+	
 	while not dead:
 		player = _get_player()
 		if player == null:
@@ -349,55 +360,94 @@ func _start_ai() -> void:
 
 		# Trigger summon at 50%
 		if (not _did_phase2_transition) and float(health) <= float(max_health) * phase2_trigger_ratio:
+			print("🎮 Gigaster: Health at ", health, "/", max_health, " - Starting Phase 2 intermission")
 			await _start_phase2_intermission()
+			_phase = 2
+			print("🎮 Gigaster: Now in Phase ", _phase)
+			continue
+
+		# Wait until current attack finishes
+		if _attack_running:
+			await get_tree().process_frame
 			continue
 
 		# Cooldown gate
 		var now := Time.get_ticks_msec() / 1000.0
 		if now < _next_attack_time:
+			print("⏱️ Waiting for cooldown: ", _next_attack_time - now, " seconds")
+
 			await get_tree().process_frame
 			continue
-
+		
 		# Wait until player is close enough
-		var dx = abs(player.global_position.x - global_position.x)
-		if dx > chase_stop_distance:
-			await get_tree().process_frame
+		var mouth_x := mouth_marker.global_position.x if mouth_marker else global_position.x
+		var dist_to_player = abs(player.global_position.x - mouth_x)
+		
+		# If player is far, just keep looping so _physics_process handles chase/walk/idle
+		if dist_to_player > chase_stop_distance:
+			await get_tree().create_timer(0.5 / _ts()).timeout  # Longer wait when far
 			continue
 
-		# === ATTACK LOOP ===
-		await _slam_attack()
+		# Small readability pause
+		await get_tree().create_timer(0.12 / _ts()).timeout
 		if dead: break
 
-		await get_tree().create_timer(0.2 / _ts()).timeout
-		if dead: break
-
-		await _surround_lasers_attack()
+		# === ATTACK SELECTION BASED ON PHASE ===
+		if _phase == 1:
+			print("🎮 Phase 1: Choosing attack...")
+			if randf() < phase1_laser_chance:
+				print("🎮 Phase 1: Surround laser attack")
+				await _surround_lasers_attack()
+				# Head weakspot vulnerable after attack
+				_enable_weakspot(head_weakspot)
+				await get_tree().create_timer(breath_vulnerable_time / _ts()).timeout
+				_disable_weakspot(head_weakspot)
+			else:
+				print("🎮 Phase 1: Slam attack")
+				# CHANGED: Use aligned slam instead of regular slam
+				await _slam_align_and_execute()
+		else:  # Phase 2
+			print("🎮 Phase 2: Choosing attack...")
+			if randf() < phase2_surround_chance:
+				print("🎮 Phase 2: Surround laser attack")
+				await _surround_lasers_attack()
+				# Head weakspot vulnerable after attack
+				_enable_weakspot(head_weakspot)
+				await get_tree().create_timer(breath_vulnerable_time / _ts()).timeout
+				_disable_weakspot(head_weakspot)
+			else:
+				print("🎮 Phase 2: Slam attack")
+				# CHANGED: Use aligned slam instead of regular slam
+				await _slam_align_and_execute()
 
 		_next_attack_time = (Time.get_ticks_msec() / 1000.0) + attack_cooldown
 
+	print("🎮 Gigaster AI LOOP ENDED.")
 	_ai_running = false
 
-
 func _move_to_target_x(x: float, goal_type := MOVE_GOAL_CENTER, player_x_snapshot := 0.0, use_left := true) -> void:
-
 	_target_x = x
 	_move_active = true
-
+	
 	_move_goal_type = goal_type
 	_move_goal_player_x = player_x_snapshot
 	_move_goal_use_left = use_left
-
-	var start_time := Time.get_ticks_msec()
-	var max_ms := int(slam_max_move_ms) if goal_type == MOVE_GOAL_SLAM_ALIGN else 1500
-
-	while _move_active and not dead and not taking_damage and not Global.camouflage:
-		if Time.get_ticks_msec() - start_time > max_ms:
-			print("GawrBoss: move_to_target TIMEOUT. goal=", goal_type, " target=", _target_x, " pos=", global_position.x)
-			_move_active = false
-			break
-		await get_tree().process_frame
 	
+	print("🎯 Starting movement to target X: ", x, " goal_type: ", goal_type)
 	
+	# Wait until movement is complete
+	#var timeout = 3.0  # 3 second timeout
+	#var start_time = Time.get_ticks_msec() / 1000.0
+	
+	#while _move_active and not dead:
+	#	await get_tree().process_frame
+		
+		# Timeout check
+	#	var current_time = Time.get_ticks_msec() / 1000.0
+	#	if current_time - start_time > timeout:
+	#		print("⚠️ Movement timeout, forcing stop")
+	#		_move_active = false
+	#		break
 func _start_phase2_intermission() -> void:
 	_did_phase2_transition = true
 	_phase = 2
@@ -450,13 +500,13 @@ func _start_phase2_intermission() -> void:
 # SLAM (uses ONLY your listed animations)
 # ----------------------------
 func _slam_attack() -> void:
-	if dead:
+	if dead or _attack_running:
 		return
 
 	_attack_running = true
 
 	var use_left := true
-	if player:
+	if player and is_instance_valid(player):
 		use_left = player.global_position.x < global_position.x
 
 	var is_high := _is_high_slam()
@@ -464,46 +514,89 @@ func _slam_attack() -> void:
 	var hitbox: Area2D = left_hitbox if use_left else right_hitbox
 	var weakspot: Area2D = left_weakspot if use_left else right_weakspot
 
-	# -----------------
-	# 1) WINDUP SLAM
-	# -----------------
+	# IMPORTANT: Stop any current movement BEFORE starting attack
+	_move_active = false
+	velocity.x = 0
+	
+	print("💥 Slam attack: left=", use_left, " high=", is_high)
+
+	# 1) Windup animation (with high/low variants)
 	if anim:
 		if use_left:
-			anim.play("slam_left_high" if is_high else "slam_left")
+			if is_high and anim.has_animation("slam_left_high"):
+				anim.play("slam_left_high")
+			elif anim.has_animation("slam_left"):
+				anim.play("slam_left")
 		else:
-			anim.play("slam_right_high" if is_high else "slam_right")
+			if is_high and anim.has_animation("slam_right_high"):
+				anim.play("slam_right_high")
+			elif anim.has_animation("slam_right"):
+				anim.play("slam_right")
 
 	await get_tree().create_timer(slam_windup_time / _ts()).timeout
 	if dead:
 		_attack_running = false
 		return
 
-	# -----------------
-	# 2) DAMAGE WINDOW
-	# -----------------
+	# 2) Damage window
+	print("💥 Enabling hitbox: ", hitbox.name)
 	_enable_hitbox(hitbox)
+	
+	# Apply damage to player if close (keep your direct damage logic)
+	if player and is_instance_valid(player) and player.has_method("take_damage"):
+		var player_pos = player.global_position
+		var hitbox_pos = hitbox.global_position
+		var distance = player_pos.distance_to(hitbox_pos)
+		print("🎯 Player distance to hitbox: ", distance)
+		
+		if distance < 120:  # Adjust based on your hitbox size
+			print("💥 Applying slam damage to player")
+			player.take_damage(slam_damage)
+	
 	await get_tree().create_timer(slam_hit_active_time / _ts()).timeout
 	_disable_hitbox(hitbox)
 
-	# -----------------
-	# 3) FREEZE (NO IDLE)
-	# -----------------
+	# 3) Stun/vulnerable phase (with high/low idle variants if available)
+	print("💥 Enabling weakspot for vulnerability: ", weakspot.name)
 	_enable_weakspot(weakspot)
+	
+	# Play idle/stunned animation if available
+	if anim:
+		if use_left:
+			if is_high and anim.has_animation("slam_left_high_idle"):
+				anim.play("slam_left_high_idle")
+			elif anim.has_animation("slam_left_idle"):
+				anim.play("slam_left_idle")
+		else:
+			if is_high and anim.has_animation("slam_right_high_idle"):
+				anim.play("slam_right_high_idle")
+			elif anim.has_animation("slam_right_idle"):
+				anim.play("slam_right_idle")
+	
 	await get_tree().create_timer(slam_stun_time / _ts()).timeout
 	_disable_weakspot(weakspot)
 
-	# -----------------
-	# 4) RETURN
-	# -----------------
+	# 4) Return animation (with high/low variants)
 	if anim:
 		if use_left:
-			anim.play("slam_left_high_return" if is_high else "slam_left_return")
+			if is_high and anim.has_animation("slam_left_high_return"):
+				anim.play("slam_left_high_return")
+			elif anim.has_animation("slam_left_return"):
+				anim.play("slam_left_return")
 		else:
-			anim.play("slam_right_high_return" if is_high else "slam_right_return")
+			if is_high and anim.has_animation("slam_right_high_return"):
+				anim.play("slam_right_high_return")
+			elif anim.has_animation("slam_right_return"):
+				anim.play("slam_right_return")
 
 	await get_tree().create_timer(slam_return_time / _ts()).timeout
-
+	
+	# 5) Back to idle
+	if anim and anim.has_animation("idle"):
+		anim.play("idle")
+		
 	_attack_running = false
+	print("💥 Slam attack complete")
 
 # Accurate slam targeting:
 # move boss so "slam contact point" ends up at player_x (+ optional lead)
@@ -576,40 +669,52 @@ func _surround_lasers_attack() -> void:
 		return
 
 	_attack_running = true
+	
+	# IMPORTANT: Stop any current movement
+	_move_active = false
+	velocity.x = 0
 
 	# 1) Summon animation
 	if anim and anim.has_animation("summon_laser"):
 		anim.play("summon_laser")
+	elif anim and anim.has_animation("idle"):
+		anim.play("idle")  # Fallback to idle
 
 	await get_tree().create_timer(surround_telegraph_time / _ts()).timeout
 	if dead:
 		_attack_running = false
 		return
 
-	# 2) Spawn lasers OFF
+	# 2) Spawn and activate lasers (keep your existing code)
 	var markers := _get_surround_laser_markers()
-	var lasers: Array[LaserColumn] = []
+	if markers.is_empty():
+		print("⚠️ Gigaster: No surround laser markers found!")
+		_attack_running = false
+		return
 
+	# Activate lasers one-by-one
 	for m in markers:
-		lasers.append(_spawn_laser_at(m.global_position))
-
-	# 3) Activate lasers one-by-one
-	for laser in lasers:
 		if dead:
 			break
-
-		laser.activate()
-		await get_tree().create_timer(laser_on_time / _ts()).timeout
-
-		laser.deactivate()
-		await get_tree().create_timer(laser_off_gap / _ts()).timeout
-
-	# 4) Cleanup
-	for l in lasers:
-		if is_instance_valid(l):
-			l.queue_free()
+			
+		var laser = _spawn_laser_at(m.global_position)
+		if laser:
+			print("🎯 Laser spawned at: ", m.global_position)
+			laser.activate()
+			
+			# Keep laser active for laser_on_time
+			await get_tree().create_timer(laser_on_time / _ts()).timeout
+			
+			# Deactivate laser
+			laser.deactivate()
+			
+			# Wait gap before next laser
+			await get_tree().create_timer(laser_off_gap / _ts()).timeout
+		else:
+			print("❌ Failed to spawn laser at: ", m.global_position)
 
 	_attack_running = false
+	print("💫 Surround laser attack complete")
 
 func _get_surround_markers() -> Array[Marker2D]:
 	var out: Array[Marker2D] = []
@@ -752,25 +857,57 @@ func _on_weakspot_area_entered(area: Area2D) -> void:
 # PLAYER DAMAGE FROM BOSS HITBOXES
 # ----------------------------
 func _on_attack_hitbox_body_entered(body: Node, source_hitbox: Area2D) -> void:
+	print("🎯 Gigaster hitbox body entered: ", body.name, " hitbox: ", source_hitbox.name)
+	
 	if dead or body == null:
 		return
+		
 	if not body.is_in_group("player"):
+		print("❌ Not player, group check failed")
 		return
 
-	var dmg: int = head_laser_damage if source_hitbox == laser_hitbox else slam_damage
+	var dmg := slam_damage
 	if source_hitbox == laser_hitbox:
 		dmg = head_laser_damage
-		
+	
+	print("💥 Gigaster dealing ", dmg, " damage to player from ", source_hitbox.name)
+	
 	if body.has_method("take_damage"):
 		body.call("take_damage", dmg)
+	else:
+		print("❌ Player doesn't have take_damage method")
+
+func _on_attack_hitbox_area_entered(area: Area2D, source_hitbox: Area2D) -> void:
+	if dead or area == null:
+		return
+
+	# player hurtbox / damage receiver
+	if not area.is_in_group("player_hurtbox"):
+		return
+
+	var player := area.get_parent()
+	if player == null:
+		return
+
+	var dmg = surround_laser_damage if source_hitbox == laser_hitbox else slam_damage
+
+	if player.has_method("take_damage"):
+		player.take_damage(dmg)
 
 # ----------------------------
 # HITBOX HELPERS
 # ----------------------------
 func _enable_hitbox(box: Area2D) -> void:
-	if box == null: return
+	if box == null: 
+		print("❌ _enable_hitbox: box is null")
+		return
+		
 	var shape := box.get_node_or_null("CollisionShape2D") as CollisionShape2D
-	if shape: shape.disabled = false
+	if shape: 
+		shape.disabled = false
+		print("✅ Enabled hitbox: ", box.name, " shape disabled=", shape.disabled)
+	else:
+		print("❌ _enable_hitbox: no shape found for ", box.name)
 
 func _disable_hitbox(box: Area2D) -> void:
 	if box == null: return
@@ -785,6 +922,7 @@ func _disable_all_hitboxes() -> void:
 func _enable_weakspot(ws: Area2D) -> void:
 	
 	if ws == null: return
+	ws.visible = true
 	var shape := ws.get_node_or_null("CollisionShape2D") as CollisionShape2D
 	if shape: shape.disabled = false
 	print("ENABLE WEAKSPOT:", ws.name, " disabled=", shape.disabled)
@@ -792,6 +930,7 @@ func _enable_weakspot(ws: Area2D) -> void:
 
 func _disable_weakspot(ws: Area2D) -> void:
 	if ws == null: return
+	ws.visible = false
 	var shape := ws.get_node_or_null("CollisionShape2D") as CollisionShape2D
 	if shape: shape.disabled = true
 
@@ -876,7 +1015,8 @@ func _stop_flame_immediately() -> void:
 	if laser_sprite:
 		laser_sprite.visible = false
 		laser_sprite.stop()
-
+	_force_fire_nodes_clean()
+	
 func _force_fire_nodes_clean() -> void:
 	if laser_pivot:
 		laser_pivot.position = Vector2.ZERO
@@ -1071,27 +1211,32 @@ func _breath_target_x(player_x: float, desired_mouth_distance: float) -> float:
 func _slam_align_and_execute() -> void:
 	if dead or _attack_running:
 		return
-	_attack_running = true
+	#_attack_running = true
 
 	# pick hand
 	var use_left := _choose_closer_hand()
 	var px := player.global_position.x # snapshot
-
+	
+	var target_x := _slam_target_x(use_left)
+	
 	# move so the slam contact marker aligns to player snapshot X
-	await _move_to_target_x(
-		_slam_target_x(use_left),
+	_move_to_target_x(
+		target_x,
 		MOVE_GOAL_SLAM_ALIGN,
 		px,
 		use_left
 	)
 
+	while _move_active and not dead:
+		await get_tree().process_frame
+		
 	if dead:
-		_attack_running = false
+		#_attack_running = false
 		return
 
 	await _slam_attack()
 
-	_attack_running = false
+	#_attack_running = false
 
 func _breath_backstep_and_fire() -> void:
 	if dead or _attack_running:
@@ -1218,13 +1363,14 @@ func _spawn_laser_column_at(world_pos: Vector2) -> void:
 # DAMAGE / DIE
 # ----------------------------
 func take_damage(amount: int) -> void:
-	if dead:
-		return
-	if invulnerable:
+	if dead or invulnerable:
+		print("❌ Cannot take damage: dead=", dead, " invuln=", invulnerable)
 		return
 
+	print("💥 Gigaster taking ", amount, " damage! Health: ", health, " -> ", health - amount)
 	health -= amount
-
+	_flash_hurt()
+	
 	if health <= 0:
 		_die()
 
@@ -1236,7 +1382,80 @@ func _spawn_laser_at(pos: Vector2) -> LaserColumn:
 
 	var laser := laser_column_scene.instantiate() as LaserColumn
 	get_tree().current_scene.add_child(laser)
+
 	laser.global_position = pos
-	laser.deactivate()
+	#laser.global_position.y = get_viewport_rect().position.y
+	laser.visible = true
+	laser.active = false
+	# Stretch to screen height
+	#var screen_h := get_viewport_rect().size.y
+	#if laser.has_node("CollisionShape2D"):
+	#	var cs := laser.get_node("CollisionShape2D") as CollisionShape2D
+	#	if cs.shape is RectangleShape2D:
+	#		cs.shape.size.y = screen_h
+	#		cs.position.y = screen_h * 0.5
+
+	if laser.has_node("Sprite2D"):
+		var sp := laser.get_node("Sprite2D") as Sprite2D
+		sp.visible = false  # Start hidden, will show when activated
+		sp.modulate = Color(1, 0.5, 0.5, 0.8)  # Reddish tint
+	
+	if "damage" in laser:
+		laser.damage = surround_laser_damage
+		
+	#laser.deactivate()
 	return laser
 	
+func _update_laser_between_markers(
+	laser_area: Area2D,
+	from_marker: Marker2D,
+	to_marker: Marker2D
+) -> void:
+	if not laser_area or not from_marker or not to_marker:
+		return
+
+	var shape = laser_area.get_node("CollisionShape2D").shape
+	if not shape or not shape is RectangleShape2D:
+		return
+
+	var from := from_marker.global_position
+	var to := to_marker.global_position
+
+	var dir := to - from
+	var length := dir.length()
+	if length < 1.0:
+		return
+
+	# Position laser in the middle
+	laser_area.global_position = from + dir * 0.5
+	laser_area.rotation = dir.angle()
+
+	# Stretch rectangle
+	shape.extents.x = length * 0.5
+	shape.extents.y = 20   # LASER WIDTH (adjust here)
+
+	# Optional debug visual
+	if laser_area.has_node("DebugRect"):
+		var rect := laser_area.get_node("DebugRect")
+		rect.size = Vector2(length, shape.extents.y * 2)
+		rect.position = Vector2(-length * 0.5, -shape.extents.y)
+
+# Add this function to your Player.gd
+
+func _check_hitbox_settings() -> void:
+	print("🔍 Checking hitbox settings...")
+	
+	for hb in [left_hitbox, right_hitbox, laser_hitbox]:
+		if hb:
+			print("  ", hb.name, ":")
+			print("    Monitoring: ", hb.monitoring)
+			print("    Monitorable: ", hb.monitorable)
+			print("    Collision Layer: ", hb.collision_layer)
+			print("    Collision Mask: ", hb.collision_mask)
+			
+			# Check if collision shape exists
+			var shape = hb.get_node_or_null("CollisionShape2D") as CollisionShape2D
+			if shape:
+				print("    Shape disabled: ", shape.disabled)
+				print("    Shape type: ", shape.shape)
+

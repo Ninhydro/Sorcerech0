@@ -1,7 +1,7 @@
 extends Area2D
 class_name LaserColumn
 
-@export var damage := 999
+@export var damage := 16  # Changed from 999 to match surround_laser_damage
 @export var max_length := 3000.0
 
 @onready var sprite := $Sprite2D
@@ -11,22 +11,36 @@ var active := false
 
 func _ready() -> void:
 	_disable()
+	# Make sure sprite is visible when activated
+	if sprite:
+		sprite.visible = false
+		sprite.modulate = Color(1, 0.3, 0.3, 0.9)  # Red laser
 
 func activate() -> void:
 	active = true
-	sprite.visible = true
-	shape.disabled = false
+	if sprite:
+		sprite.visible = true
+	if shape:
+		shape.disabled = false
+	print("⚡ LaserColumn ACTIVATED at: ", global_position)
 
 func deactivate() -> void:
-	_disable()
+	active = false
+	if sprite:
+		sprite.visible = false
+	if shape:
+		shape.disabled = true
 
 func _disable() -> void:
 	active = false
-	sprite.visible = false
-	shape.disabled = true
+	if sprite:
+		sprite.visible = false
+	if shape:
+		shape.disabled = true
 
 func _on_body_entered(body: Node) -> void:
 	if not active:
 		return
-	if body is Player and body.can_take_damage and not body.dead:
-		body.handle_death()
+	if body.has_method("take_damage"):
+		print("⚡ LaserColumn hit player!")
+		body.take_damage(damage)

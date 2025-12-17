@@ -2244,26 +2244,32 @@ position = Vector2(0, -15)
 [node name="LedgeRightLower" type="RayCast2D" parent="Player/Raycast/LedgeGrab"]
 position = Vector2(2, -22)
 target_position = Vector2(7, 0)
+collision_mask = 5
 
 [node name="LedgeRightUpper" type="RayCast2D" parent="Player/Raycast/LedgeGrab"]
 position = Vector2(2, -31)
 target_position = Vector2(12, 0)
+collision_mask = 5
 
 [node name="LedgeRightUpper2" type="RayCast2D" parent="Player/Raycast/LedgeGrab"]
 position = Vector2(2, -38)
 target_position = Vector2(12, 0)
+collision_mask = 5
 
 [node name="LedgeLeftLower" type="RayCast2D" parent="Player/Raycast/LedgeGrab"]
 position = Vector2(0, -22)
 target_position = Vector2(-7, 0)
+collision_mask = 5
 
 [node name="LedgeLeftUpper" type="RayCast2D" parent="Player/Raycast/LedgeGrab"]
 position = Vector2(0, -31)
 target_position = Vector2(-12, 0)
+collision_mask = 5
 
 [node name="LedgeLeftUpper2" type="RayCast2D" parent="Player/Raycast/LedgeGrab"]
 position = Vector2(0, -38)
 target_position = Vector2(-12, 0)
+collision_mask = 5
 
 [connection signal="animation_finished" from="Player/AnimationPlayer" to="Player" method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="Player/AnimationTree" to="Player" method="_on_animation_tree_animation_finished"]

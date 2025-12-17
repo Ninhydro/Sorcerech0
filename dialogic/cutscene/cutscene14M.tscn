@@ -111,7 +111,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2t62y"]
 size = Vector2(20, 417.25)
 
-[node name="cutscene14M" type="Area2D"]
+[node name="cutscene14M" type="Area2D" groups=["gawr_boss_cutscene"]]
 position = Vector2(79, 74)
 script = ExtResource("1_2r6pg")
 boss_scene = ExtResource("2_7foni")

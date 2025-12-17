@@ -341,7 +341,7 @@ region_rect = Rect2(2.98834, 368.32, 536.478, 711.584)
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D19" type="Sprite2D" parent="Background"]
-position = Vector2(-2240, -928)
+position = Vector2(-2192, -928)
 scale = Vector2(0.625, 0.581482)
 texture = ExtResource("6_qnd7j")
 flip_v = true

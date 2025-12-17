@@ -857,6 +857,11 @@ func check_hitbox():
 	if hitbox_areas:
 		for area in hitbox_areas:
 			# Spikes
+			if area.is_in_group("boss_hitbox"):
+				print("🎯 Found boss hitbox: ", area.name)
+				damage = 12  # Default slam damage
+				break
+				
 			if area.is_in_group("spikes"):
 				hit_spike_ref = area as SpikeTrap
 				break
@@ -867,7 +872,8 @@ func check_hitbox():
 				return
 
 	if can_take_damage:
-		if Global.enemyAdealing == true and damage > 0:
+		if damage > 0:
+			print("💥 Player taking ", damage, " damage from boss hitbox")
 			take_damage(damage)
 		elif hit_spike_ref != null:
 			respawn_nearby_spike(hit_spike_ref)
@@ -931,6 +937,14 @@ func handle_death():
 			if node.has_method("cancel_replica_boss_battle_on_player_death"):
 				node.cancel_replica_boss_battle_on_player_death()
 		
+		for node in tree.get_nodes_in_group("gawr_boss_cutscene"):
+			if node.has_method("cancel_gawr_boss_battle_on_player_death"):
+				node.cancel_gawr_boss_battle_on_player_death()
+	
+		for node in tree.get_nodes_in_group("gigaster_boss_cutscene"):
+			if node.has_method("cancel_gigaster_boss_battle_on_player_death"):
+				node.cancel_gigaster_boss_battle_on_player_death()
+	
 	# Wait for death animation to play (adjust time as needed)
 	await get_tree().create_timer(1.5).timeout
 	
@@ -1645,3 +1659,20 @@ func force_release_grapple() -> void:
 
 	if grapple_line:
 		grapple_line.clear_points()
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	print("🎯 Player hurtbox area entered: ", area.name)
+	
+	# Check if this is a boss hitbox
+	if area.is_in_group("boss_hitbox"):
+		var damage := 0
+		
+		# Determine damage based on hitbox
+		if "LeftSlamHitbox" in area.name or "RightSlamHitbox" in area.name:
+			damage = 12  # Gigaster slam damage
+		elif "LaserHitbox" in area.name:
+			damage = 16  # Gigaster laser damage
+		
+		if damage > 0 and can_take_damage and not dead:
+			print("💥 Player hit by boss hitbox: ", area.name, " damage: ", damage)
+			take_damage(damage)

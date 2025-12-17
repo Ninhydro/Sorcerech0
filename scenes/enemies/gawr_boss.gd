@@ -22,7 +22,7 @@ signal boss_died
 @export var breath_recover_time: float = 0.8
 @export var flame_start_time: float = 0.20
 @export var flame_stop_time: float = 0.20
-@export var breath_vulnerable_time: float = 1.0 # after stop, boss stays in breath_fire pose
+@export var breath_vulnerable_time: float = 2.0 # after stop, boss stays in breath_fire pose
 
 @export var hurt_lock_time: float = 0.15
 @export var attack_cooldown: float = 0.6
