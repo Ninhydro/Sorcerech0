@@ -93,7 +93,6 @@ frame = 2
 metadata/_edit_lock_ = true
 
 [node name="cutscene20M" parent="." instance=ExtResource("5_wbc4c")]
-visible = false
 position = Vector2(352, -48)
 metadata/_edit_lock_ = true
 

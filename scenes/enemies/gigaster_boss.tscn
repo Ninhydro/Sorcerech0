@@ -1,98 +1,16 @@
-[gd_scene load_steps=53 format=3 uid="uid://bqps2coqsm63e"]
+[gd_scene load_steps=55 format=3 uid="uid://bqps2coqsm63e"]
 
 [ext_resource type="Script" path="res://scenes/enemies/gigaster_boss.gd" id="1_x6e3h"]
+[ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="2_0c052"]
 [ext_resource type="Texture2D" uid="uid://bq2wy4bqjhk86" path="res://assets_image/Characters/GigaSter/Gigaster-Sheet.png" id="2_s7f57"]
 [ext_resource type="Texture2D" uid="uid://dlr1lrcuebmqq" path="res://assets_image/Characters/Enemies/flame.png" id="3_8uypt"]
+[ext_resource type="PackedScene" uid="uid://x12ytvh5ybag" path="res://scenes/enemies/laser_collumn.tscn" id="3_rqdh2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_13llt"]
 size = Vector2(115.556, 296.112)
 
 [sub_resource type="Animation" id="Animation_5s25o"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("BodyPivot/RightArm/RightHand/HandSpriteR:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [33]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("BodyPivot/LeftArm/LeftHand/HandSpriteL:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [37]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("BodyPivot/HeadPivot/HeadSprite:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [16]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("BodyPivot/BodySprite:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [15]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("BodyPivot/RightArm/ArmSpriteR:frame")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [20]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("BodyPivot/LeftArm/ArmSpriteL:frame")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [16]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("BodyPivot/Door:frame")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [39]
-}
 
 [sub_resource type="Animation" id="Animation_goq7f"]
 resource_name = "die"
@@ -3698,6 +3616,10 @@ scale = Vector2(0.9, 0.9)
 collision_layer = 8
 collision_mask = 2
 script = ExtResource("1_x6e3h")
+summon_enemy_scene = ExtResource("2_0c052")
+summon_marker_path = NodePath("SummonMarker")
+laser_column_scene = ExtResource("3_rqdh2")
+surround_markers_root_path = NodePath("LaserPivot")
 left_slam_marker = NodePath("BodyPivot/LeftArm/LeftHand/LeftSlamHitbox/Marker2D")
 right_slam_marker = NodePath("BodyPivot/RightArm/RightHand/RightSlamHitbox/Marker2D")
 
@@ -3719,11 +3641,10 @@ position = Vector2(-62.2222, -241.111)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 15
 
 [node name="HeadPivot" type="Node2D" parent="BodyPivot"]
 position = Vector2(34, -212)
-rotation = 0.0872665
+rotation = -0.0872665
 
 [node name="HeadSprite" type="Sprite2D" parent="BodyPivot/HeadPivot"]
 z_index = 1
@@ -3731,7 +3652,7 @@ position = Vector2(-96.2222, -20.2222)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 16
+frame = 4
 
 [node name="HeadWeakspot" type="Area2D" parent="BodyPivot/HeadPivot" groups=["Enemies", "EnemyWeakspot"]]
 position = Vector2(-34, 204)
@@ -3768,7 +3689,7 @@ shape = SubResource("RectangleShape2D_pd23g")
 
 [node name="RightArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(88.8889, -150.222)
-rotation = 0.261799
+rotation = -0.296706
 
 [node name="ArmSpriteR" type="Sprite2D" parent="BodyPivot/RightArm"]
 position = Vector2(-146.764, -89.0607)
@@ -3779,7 +3700,6 @@ frame = 20
 
 [node name="RightHand" type="Node2D" parent="BodyPivot/RightArm"]
 position = Vector2(46.769, 59.8444)
-rotation = -0.174533
 
 [node name="HandSpriteR" type="Sprite2D" parent="BodyPivot/RightArm/RightHand"]
 z_index = 1
@@ -3787,7 +3707,7 @@ position = Vector2(-199.098, -146.85)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 33
+frame = 32
 
 [node name="RightSlamHitbox" type="Area2D" parent="BodyPivot/RightArm/RightHand"]
 position = Vector2(-83.7506, 87.1649)
@@ -3823,7 +3743,7 @@ frame = 39
 
 [node name="LeftArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(-21, -143)
-rotation = 0.261799
+rotation = -0.698132
 
 [node name="ArmSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm"]
 position = Vector2(-45.4117, -92.6779)
@@ -3833,7 +3753,8 @@ vframes = 11
 frame = 16
 
 [node name="LeftHand" type="Node2D" parent="BodyPivot/LeftArm"]
-position = Vector2(-42, 45)
+position = Vector2(-20, 65)
+rotation = -0.872665
 
 [node name="HandSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm/LeftHand"]
 z_index = 1
@@ -3841,7 +3762,7 @@ position = Vector2(0.777776, -143.111)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 37
+frame = 31
 
 [node name="LeftSlamHitbox" type="Area2D" parent="BodyPivot/LeftArm/LeftHand"]
 position = Vector2(58.1036, 111.002)

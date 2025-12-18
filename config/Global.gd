@@ -439,13 +439,13 @@ func _init():
 	master_vol = 0.0 # Override default for master volume
 
 func _process(delta):
-	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
+	#if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
 		#print("persistent_microchips ",persistent_microchips)
 		#print("persistent_magic_stones ",persistent_magic_stones)
 		#print("persistent_video_tapes ",persistent_video_tapes)
-		print("timeline ",timeline)
-		Global.killing =  !Global.killing
-		print(Global.killing)
+	#	print("timeline ",timeline)
+	#	Global.killing =  !Global.killing
+	#	print(Global.killing)
 	#	print("Player World Position: ", global_position)
 	# Handle unpause cooldown timer
 	if unpause_cooldown_timer > 0:

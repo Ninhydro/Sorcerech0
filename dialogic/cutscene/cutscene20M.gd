@@ -37,13 +37,16 @@ func _ready() -> void:
 
 	if health_timer:
 		health_timer.one_shot = false
-		health_timer.wait_time = 60.0  # health drop every 30 seconds
+		#health_timer.wait_time = 30.0  # health drop every 30 seconds
 		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
 			health_timer.timeout.connect(_on_health_timer_timeout)
 	
 	if boss_camera:
 		boss_camera.add_to_group("gigaster_boss_camera")
-		
+
+func _process(delta):
+	#print("health",health_timer.time_left)
+	pass
 func _on_body_entered(body: Node) -> void:
 	if not body.is_in_group("player"):
 		return
@@ -65,6 +68,9 @@ func _can_start_cutscene() -> bool:
 # INTRO CUTSCENE
 # ---------------------------------------------------------
 func _start_intro_cutscene() -> void:
+	if health_timer:
+		health_timer.start()
+		print("TIMERRRRRRRRRRRRR")
 	battle_active = true
 	battle_cancelled_on_player_death = false
 	Global.is_cutscene_active = true
@@ -106,7 +112,8 @@ func _spawn_gigaster() -> void:
 	print("GigasterCutscene: Boss positioned at: ", boss_instance.global_position)
 	
 	#add_child(boss_instance)
-	boss_instance.tree_exited.connect(_on_boss_died)
+	if boss_instance.has_signal("boss_died"):
+		boss_instance.boss_died.connect(_on_boss_died)
 	#if boss_instance.has_signal("boss_died"):
 	#	print("GigasterCutscene: Connecting to boss_died signal")
 	#	boss_instance.connect("boss_died", _on_boss_died)
@@ -118,8 +125,9 @@ func _spawn_gigaster() -> void:
 		boss_instance.reset_for_battle()
 	
 
-	if health_timer and not health_timer.is_stopped():
-		health_timer.start()
+	#if health_timer and not health_timer.is_stopped():
+	#	health_timer.start()
+	#	print("TIMERRRRRR HEALTTTTTTTTTTTTT")
 
 	# Safety: mark this controller so Player can cancel it
 	add_to_group("gigaster_boss_cutscene")
