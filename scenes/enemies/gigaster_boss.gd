@@ -36,8 +36,8 @@ signal boss_died
 @export var chase_enabled: bool = true
 
 # attack chances
-@export var phase1_laser_chance := 0.1  # phase1: 25% head laser, 75% slam
-@export var phase2_surround_chance := 0.1 # phase2: 25% surround lasers, 75% slam
+@export var phase1_laser_chance := 0.9  # phase1: 25% head laser, 75% slam
+@export var phase2_surround_chance := 0.9 # phase2: 25% surround lasers, 75% slam
 
 # phase transition
 @export var phase2_trigger_ratio := 0.5  # at 50% hp
@@ -48,7 +48,7 @@ var _did_phase2_transition := false
 @export var summon_enemy_scene: PackedScene
 @export var summon_marker_path: NodePath
 @export var intermission_anim := "die"     # “die” used as stunned/intermission pose
-@export var resume_anim := "idle"
+@export var resume_anim := "die_recover"
 
 # surround lasers
 @export var laser_column_scene: PackedScene    # (optional) a simple Area2D laser column
@@ -410,11 +410,14 @@ func _start_ai() -> void:
 			print("🎮 Phase 1: Choosing attack...")
 			if randf() < phase1_laser_chance:
 				print("🎮 Phase 1: Surround laser attack")
+				
+				_enable_weakspot(head_weakspot)
 				await _surround_lasers_attack()
 				# Head weakspot vulnerable after attack
-				_enable_weakspot(head_weakspot)
+				
 				await get_tree().create_timer(breath_vulnerable_time / _ts()).timeout
 				_disable_weakspot(head_weakspot)
+				anim.play("summon_laser_recover")
 			else:
 				print("🎮 Phase 1: Slam attack")
 				# CHANGED: Use aligned slam instead of regular slam
@@ -423,11 +426,13 @@ func _start_ai() -> void:
 			print("🎮 Phase 2: Choosing attack...")
 			if randf() < phase2_surround_chance:
 				print("🎮 Phase 2: Surround laser attack")
+				_enable_weakspot(head_weakspot)
 				await _surround_lasers_attack()
 				# Head weakspot vulnerable after attack
-				_enable_weakspot(head_weakspot)
+
 				await get_tree().create_timer(breath_vulnerable_time / _ts()).timeout
 				_disable_weakspot(head_weakspot)
+				anim.play("summon_laser_recover")
 			else:
 				print("🎮 Phase 2: Slam attack")
 				# CHANGED: Use aligned slam instead of regular slam
@@ -830,8 +835,8 @@ func _surround_lasers_attack() -> void:
 
 	if anim and anim.has_animation("summon_laser"):
 		anim.play("summon_laser")
-	else:
-		anim.play("idle")
+	#else:
+	#	anim.play("summon_laser_tired")
 
 	await get_tree().create_timer(surround_telegraph_time / _ts()).timeout
 	if dead:
@@ -858,7 +863,7 @@ func _surround_lasers_attack() -> void:
 
 		await get_tree().create_timer(laser_off_gap / _ts()).timeout
 
-	anim.play("idle")
+	anim.play("summon_laser_tired")
 	#movement_locked = false
 	_attack_running = false
 
