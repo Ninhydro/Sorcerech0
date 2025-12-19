@@ -36,8 +36,8 @@ signal boss_died
 @export var chase_enabled: bool = true
 
 # attack chances
-@export var phase1_laser_chance := 0.9  # phase1: 25% head laser, 75% slam
-@export var phase2_surround_chance := 0.9 # phase2: 25% surround lasers, 75% slam
+@export var phase1_laser_chance := 0.3  # phase1: 25% head laser, 75% slam
+@export var phase2_surround_chance := 0.3 # phase2: 25% surround lasers, 75% slam
 
 # phase transition
 @export var phase2_trigger_ratio := 0.5  # at 50% hp
@@ -167,8 +167,8 @@ var _next_minigame_slam_time := 0.0
 var _force_facing_left := false
 
 @export var surround_telegraph_time := 1.0
-@export var laser_on_time := 0.6
-@export var laser_off_gap := 0.35
+@export var laser_on_time := 0.5
+@export var laser_off_gap := 0.01
 
 @export var slam_high_y_threshold := -40.0
 
@@ -602,7 +602,7 @@ func _choose_closer_hand() -> bool:
 func take_damage(amount: int) -> void:
 	if dead:
 		return
-
+	print("DAMAGINGGGGGGG")
 	# 🔒 Damage gate
 	if not damage_window_open:
 		return   # hit registered, but no damage, no flash
@@ -829,25 +829,29 @@ func _surround_lasers_attack() -> void:
 		return
 
 	_attack_running = true
-	#movement_locked = true
 	_move_active = false
 	velocity = Vector2.ZERO
 
+	# -------------------------------------------------
+	# 1) WINDUP / TELEGRAPH (one-shot)
+	# -------------------------------------------------
 	if anim and anim.has_animation("summon_laser"):
 		anim.play("summon_laser")
-	#else:
-	#	anim.play("summon_laser_tired")
 
 	await get_tree().create_timer(surround_telegraph_time / _ts()).timeout
 	if dead:
-		#movement_locked = false
 		_attack_running = false
 		return
+
+	# -------------------------------------------------
+	# 2) LASER LOOP PHASE (idle loop while firing)
+	# -------------------------------------------------
+	if anim and anim.has_animation("summon_laser_idle"):
+		anim.play("summon_laser_idle")
 
 	var markers := _get_surround_laser_markers()
 	if markers.is_empty():
 		print("⚠️ No surround laser markers")
-		#movement_locked = false
 		_attack_running = false
 		return
 
@@ -863,8 +867,38 @@ func _surround_lasers_attack() -> void:
 
 		await get_tree().create_timer(laser_off_gap / _ts()).timeout
 
-	anim.play("summon_laser_tired")
-	#movement_locked = false
+	# -------------------------------------------------
+	# 3) TIRED / STUNNED PHASE
+	# -------------------------------------------------
+	if anim and anim.has_animation("summon_laser_tired"):
+		anim.play("summon_laser_tired")
+	
+
+	# Boss is vulnerable / stunned here
+	_enable_weakspot(head_weakspot)
+	await get_tree().create_timer(3.0 / _ts()).timeout
+	_disable_weakspot(head_weakspot)
+
+	if dead:
+		_attack_running = false
+		return
+
+	# -------------------------------------------------
+	# 4) RECOVER (one-shot)
+	# -------------------------------------------------
+	if anim and anim.has_animation("summon_laser_recover"):
+		anim.play("summon_laser_recover")
+
+	# Wait for recover animation to finish if it exists
+	if anim and anim.has_animation("summon_laser_recover"):
+		await anim.animation_finished
+
+	# -------------------------------------------------
+	# 5) BACK TO IDLE
+	# -------------------------------------------------
+	if anim and anim.has_animation("idle"):
+		anim.play("idle")
+
 	_attack_running = false
 
 func _spawn_laser_at(pos: Vector2) -> LaserColumn:

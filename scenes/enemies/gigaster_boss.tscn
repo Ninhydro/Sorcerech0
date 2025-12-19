@@ -1,10 +1,11 @@
-[gd_scene load_steps=55 format=3 uid="uid://bqps2coqsm63e"]
+[gd_scene load_steps=57 format=3 uid="uid://bqps2coqsm63e"]
 
 [ext_resource type="Script" path="res://scenes/enemies/gigaster_boss.gd" id="1_x6e3h"]
 [ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="2_0c052"]
 [ext_resource type="Texture2D" uid="uid://bq2wy4bqjhk86" path="res://assets_image/Characters/GigaSter/Gigaster-Sheet.png" id="2_s7f57"]
 [ext_resource type="Texture2D" uid="uid://dlr1lrcuebmqq" path="res://assets_image/Characters/Enemies/flame.png" id="3_8uypt"]
 [ext_resource type="PackedScene" uid="uid://x12ytvh5ybag" path="res://scenes/enemies/laser_collumn.tscn" id="3_rqdh2"]
+[ext_resource type="Texture2D" uid="uid://bdw68gybu2q3b" path="res://assets_image/Objects/laser5.png" id="5_40qm8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_13llt"]
 size = Vector2(115.556, 296.112)
@@ -2862,6 +2863,18 @@ tracks/14/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("BodyPivot/HeadPivot/Laser:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
 
 [sub_resource type="Animation" id="Animation_pmekc"]
 resource_name = "summon_laser_recover"
@@ -3040,6 +3053,18 @@ tracks/14/path = NodePath("BodyPivot/Door:visible")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("BodyPivot/HeadPivot/Laser:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -3225,6 +3250,18 @@ tracks/14/path = NodePath("BodyPivot/Door:visible")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("BodyPivot/HeadPivot/Laser:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -3416,6 +3453,202 @@ tracks/14/keys = {
 "values": [false]
 }
 
+[sub_resource type="Animation" id="Animation_xyk3i"]
+resource_name = "summon_laser_idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodyPivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 5), Vector2(0, 0), Vector2(0, 5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BodyPivot/RightArm:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.523599]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BodyPivot/LeftArm:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.523599]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BodyPivot/RightArm/RightHand:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BodyPivot/LeftArm/LeftHand:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.5708]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("BodyPivot/HeadPivot:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(34, -210), Vector2(34, -212), Vector2(34, -210)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("BodyPivot/LeftArm/LeftHand/HandSpriteL:frame")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [31]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("BodyPivot/RightArm/RightHand/HandSpriteR:frame")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [39]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("BodyPivot/HeadPivot/HeadSprite:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [14, 15, 12, 15, 14, 15, 12, 15, 14, 15, 12, 15]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("BodyPivot/BodySprite:frame")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("BodyPivot/RightArm/ArmSpriteR:frame")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [20]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("BodyPivot/LeftArm/ArmSpriteL:frame")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("BodyPivot/RightArm/RightHand:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(46.769, 59.8444)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("BodyPivot/LeftArm/LeftHand:position")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-42, 45)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("BodyPivot/Door:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("BodyPivot/HeadPivot/Laser:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_smide"]
 _data = {
 "RESET": SubResource("Animation_5s25o"),
@@ -3437,6 +3670,7 @@ _data = {
 "slam_right_idle": SubResource("Animation_sd4xp"),
 "slam_right_return": SubResource("Animation_fbgdg"),
 "summon_laser": SubResource("Animation_msi8g"),
+"summon_laser_idle": SubResource("Animation_xyk3i"),
 "summon_laser_recover": SubResource("Animation_pmekc"),
 "summon_laser_tired": SubResource("Animation_4fdb2"),
 "walk": SubResource("Animation_446ms")
@@ -3633,7 +3867,6 @@ libraries = {
 }
 
 [node name="BodyPivot" type="Node2D" parent="."]
-position = Vector2(0, 10)
 
 [node name="BodySprite" type="Sprite2D" parent="BodyPivot"]
 z_index = -2
@@ -3641,11 +3874,9 @@ position = Vector2(-62.2222, -241.111)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 3
 
 [node name="HeadPivot" type="Node2D" parent="BodyPivot"]
-position = Vector2(34, -209)
-rotation = -0.0872665
+position = Vector2(34, -212)
 
 [node name="HeadSprite" type="Sprite2D" parent="BodyPivot/HeadPivot"]
 z_index = 1
@@ -3653,7 +3884,15 @@ position = Vector2(-96.2222, -20.2222)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 7
+frame = 8
+
+[node name="Laser" type="Sprite2D" parent="BodyPivot/HeadPivot"]
+visible = false
+z_index = 1
+position = Vector2(6, -181.284)
+rotation = 1.5708
+scale = Vector2(5.55709, 1.79862)
+texture = ExtResource("5_40qm8")
 
 [node name="HeadWeakspot" type="Area2D" parent="BodyPivot/HeadPivot" groups=["Enemies", "EnemyWeakspot"]]
 position = Vector2(-34, 204)
@@ -3690,18 +3929,17 @@ shape = SubResource("RectangleShape2D_pd23g")
 
 [node name="RightArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(88.8889, -150.222)
-rotation = -0.0872665
+rotation = -0.296706
 
 [node name="ArmSpriteR" type="Sprite2D" parent="BodyPivot/RightArm"]
 position = Vector2(-146.764, -89.0607)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 23
+frame = 20
 
 [node name="RightHand" type="Node2D" parent="BodyPivot/RightArm"]
 position = Vector2(46.769, 59.8444)
-rotation = 0.0698132
 
 [node name="HandSpriteR" type="Sprite2D" parent="BodyPivot/RightArm/RightHand"]
 z_index = 1
@@ -3709,7 +3947,7 @@ position = Vector2(-199.098, -146.85)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 34
+frame = 36
 
 [node name="RightSlamHitbox" type="Area2D" parent="BodyPivot/RightArm/RightHand"]
 position = Vector2(-83.7506, 87.1649)
@@ -3736,6 +3974,7 @@ metadata/_edit_lock_ = true
 position = Vector2(3.93624, 57.5852)
 
 [node name="Door" type="Sprite2D" parent="BodyPivot"]
+visible = false
 position = Vector2(-62.2222, -241.111)
 texture = ExtResource("2_s7f57")
 hframes = 4
@@ -3744,17 +3983,17 @@ frame = 43
 
 [node name="LeftArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(-21, -143)
+rotation = 0.261799
 
 [node name="ArmSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm"]
 position = Vector2(-45.4117, -92.6779)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 19
+frame = 16
 
 [node name="LeftHand" type="Node2D" parent="BodyPivot/LeftArm"]
 position = Vector2(-42, 45)
-rotation = -0.0698132
 
 [node name="HandSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm/LeftHand"]
 z_index = 1
@@ -3762,7 +4001,7 @@ position = Vector2(0.777776, -143.111)
 texture = ExtResource("2_s7f57")
 hframes = 4
 vframes = 11
-frame = 26
+frame = 28
 
 [node name="LeftSlamHitbox" type="Area2D" parent="BodyPivot/LeftArm/LeftHand"]
 position = Vector2(58.1036, 111.002)
@@ -3795,22 +4034,64 @@ position = Vector2(38.8889, -136.667)
 [node name="LaserPivot" type="Node2D" parent="."]
 position = Vector2(17.7778, 0)
 
-[node name="Laser_FarLeft" type="Marker2D" parent="LaserPivot"]
-position = Vector2(-160, -240)
+[node name="Laser_1" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-302.222, -355.556)
 
-[node name="Laser_MidLeft" type="Marker2D" parent="LaserPivot"]
-position = Vector2(-88.8889, -240)
+[node name="Laser_2" type="Marker2D" parent="LaserPivot"]
+position = Vector2(337.778, -355.556)
 
-[node name="Laser_NearLeft" type="Marker2D" parent="LaserPivot"]
-position = Vector2(-26.6667, -240)
+[node name="Laser_3" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-266.667, -355.556)
 
-[node name="Laser_NearRight" type="Marker2D" parent="LaserPivot"]
-position = Vector2(62.2222, -240)
+[node name="Laser_4" type="Marker2D" parent="LaserPivot"]
+position = Vector2(302.222, -355.556)
 
-[node name="Laser_MidRight" type="Marker2D" parent="LaserPivot"]
-position = Vector2(124.444, -240)
+[node name="Laser_5" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-231.111, -355.556)
 
-[node name="Laser_FarRight" type="Marker2D" parent="LaserPivot"]
-position = Vector2(195.556, -240)
+[node name="Laser_6" type="Marker2D" parent="LaserPivot"]
+position = Vector2(266.667, -355.556)
+
+[node name="Laser_7" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-195.556, -355.556)
+
+[node name="Laser_8" type="Marker2D" parent="LaserPivot"]
+position = Vector2(231.111, -355.556)
+
+[node name="Laser_9" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-160, -355.556)
+
+[node name="Laser_10" type="Marker2D" parent="LaserPivot"]
+position = Vector2(195.556, -355.556)
+
+[node name="Laser_11" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-124.444, -355.556)
+
+[node name="Laser_12" type="Marker2D" parent="LaserPivot"]
+position = Vector2(160, -355.556)
+
+[node name="Laser_13" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-88.8889, -355.556)
+
+[node name="Laser_14" type="Marker2D" parent="LaserPivot"]
+position = Vector2(124.444, -355.556)
+
+[node name="Laser_15" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-53.3334, -355.556)
+
+[node name="Laser_16" type="Marker2D" parent="LaserPivot"]
+position = Vector2(88.8889, -355.556)
+
+[node name="Laser_17" type="Marker2D" parent="LaserPivot"]
+position = Vector2(-17.7778, -355.556)
+
+[node name="Laser_18" type="Marker2D" parent="LaserPivot"]
+position = Vector2(53.3333, -355.556)
+
+[node name="Laser_19" type="Marker2D" parent="LaserPivot"]
+position = Vector2(8.88887, -355.556)
+
+[node name="Laser_20" type="Marker2D" parent="LaserPivot"]
+position = Vector2(26.6666, -355.556)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

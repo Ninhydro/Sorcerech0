@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://x12ytvh5ybag"]
+[gd_scene load_steps=4 format=3 uid="uid://x12ytvh5ybag"]
 
 [ext_resource type="Script" path="res://scenes/enemies/laser_collumn.gd" id="1_kk8uh"]
 [ext_resource type="Texture2D" uid="uid://bdw68gybu2q3b" path="res://assets_image/Objects/laser5.png" id="2_qk4gf"]
@@ -6,11 +6,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vohmu"]
 size = Vector2(40, 8)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_27sr6"]
-size = Vector2(66, 20)
-
 [node name="LaserCollumn" type="Area2D"]
 position = Vector2(224, 88)
+collision_layer = 8
 script = ExtResource("1_kk8uh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -26,9 +24,3 @@ texture = ExtResource("2_qk4gf")
 
 [node name="LaserRay" type="RayCast2D" parent="LaserOrigin"]
 target_position = Vector2(10, 0)
-
-[node name="DetectionArea" type="Area2D" parent="."]
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="DetectionArea"]
-position = Vector2(-23, 0)
-shape = SubResource("RectangleShape2D_27sr6")
