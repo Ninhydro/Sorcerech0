@@ -116,3 +116,15 @@ shape = SubResource("RectangleShape2D_rosig")
 position = Vector2(344, 6)
 scale = Vector2(5.25, 0.84375)
 texture = ExtResource("8_uci3q")
+
+[node name="Marker2D" type="Marker2D" parent="." groups=["SterlingJumpMarker"]]
+position = Vector2(192, -16)
+
+[node name="Marker2D2" type="Marker2D" parent="." groups=["SterlingJumpMarker"]]
+position = Vector2(496, -16)
+
+[node name="Marker2D3" type="Marker2D" parent="." groups=["SterlingJumpMarker"]]
+position = Vector2(168, 56)
+
+[node name="Marker2D4" type="Marker2D" parent="." groups=["SterlingJumpMarker"]]
+position = Vector2(520, 56)
