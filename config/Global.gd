@@ -439,7 +439,20 @@ func _init():
 	master_vol = 0.0 # Override default for master volume
 
 func _process(delta):
-	#if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
+	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
+		print("timeline: ", Global.timeline)
+		print("route status: ", Global.route_status)
+		print("kills: ", Global.kills)
+		print("alyra_dead: ", Global.alyra_dead)
+		print("gawr_dead: ", Global.gawr_dead)
+		print("nora_dead: ", Global.nora_dead)
+		print("replica_fini_dead: ", Global.replica_fini_dead)
+		print("valentina_dead: ", Global.valentina_dead)
+		
+		
+
+		#Global.timeline = 8
+	#Global.timeline == 8 and Global.route_status == "Cyber"
 		#print("persistent_microchips ",persistent_microchips)
 		#print("persistent_magic_stones ",persistent_magic_stones)
 		#print("persistent_video_tapes ",persistent_video_tapes)

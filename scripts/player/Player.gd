@@ -200,7 +200,7 @@ func enable_input():
 
 func _ready():
 	#Global.affinity -= 5
-	#Global.affinity += 1
+	#Global.affinity += 10
 	#Global.reset_persistent()
 	camera.zoom = Vector2(0.8,0.8)
 	camera.position = Vector2(0,-40)
@@ -315,8 +315,8 @@ func _physics_process(delta):
 	#print(Global.global_time_scale)
 	#Global.timeline = 11
 	#print(Global.timeline)
-	#if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
-		#print("Player World Position: ", global_position)
+	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
+		print("Player World Position: ", global_position)
 		#Global.killing =  !Global.killing
 		#print(Global.killing)
 	
@@ -813,16 +813,16 @@ func get_nearby_telekinesis_objects() -> Array[TelekinesisObject]:
 	var radius = 150
 
 	var all = get_tree().get_nodes_in_group("TelekinesisObject")
-	print("Found in group:" + str(all.size()))
+	#print("Found in group:" + str(all.size()))
 
 	for obj in all:
-		print("Checking:" + obj.name)
+		#print("Checking:" + obj.name)
 		var dist = obj.global_position.distance_to(global_position)
-		print("Distance to player:" + str(dist))
+		#print("Distance to player:" + str(dist))
 		if dist < radius:
 			results.append(obj)
 
-	print("Final results:" + str(results))
+	#print("Final results:" + str(results))
 	return results
 	
 func _on_form_cooldown_timer_timeout():

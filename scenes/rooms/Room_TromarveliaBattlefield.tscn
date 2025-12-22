@@ -399,11 +399,10 @@ region_rect = Rect2(-0.0288048, 2102.84, 1290.52, 1268.44)
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D32" type="Sprite2D" parent="Background"]
-position = Vector2(5111, 1205)
+position = Vector2(4578, 1189)
 texture = ExtResource("6_iyp6n")
 region_enabled = true
-region_rect = Rect2(-0.0288048, 2102.84, 1290.52, 1268.44)
-metadata/_edit_lock_ = true
+region_rect = Rect2(-0.0288048, 2102.84, 365.438, 1268.44)
 
 [node name="Sprite2D5" type="Sprite2D" parent="Background"]
 position = Vector2(-1583, 625)

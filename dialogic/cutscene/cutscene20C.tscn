@@ -1,6 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dlibmhqndrefk"]
+[gd_scene load_steps=10 format=3 uid="uid://dlibmhqndrefk"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene20C.gd" id="1_mbgcu"]
+[ext_resource type="PackedScene" uid="uid://bh7vqlg3umd4" path="res://scenes/enemies/MagusKing.tscn" id="2_5wop8"]
+[ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="3_bxies"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(323, 190)
@@ -107,12 +109,18 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
-[node name="cutscene20C" type="Area2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_554ym"]
+size = Vector2(20, 417.25)
+
+[node name="cutscene20C" type="Area2D" groups=["magus_king_boss_cutscene"]]
 position = Vector2(79, 74)
 script = ExtResource("1_mbgcu")
+magus_king_scene = ExtResource("2_5wop8")
+boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])
+health_pickup_scene = ExtResource("3_bxies")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(91.5, 30)
+position = Vector2(-47, 6)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -120,11 +128,37 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="BossCamera" type="Camera2D" parent="."]
 position = Vector2(-2, -27)
-zoom = Vector2(2, 2)
+zoom = Vector2(0.6, 0.6)
 
-[node name="npc1" type="Sprite2D" parent="."]
+[node name="npc2" type="Sprite2D" parent="."]
+
+[node name="HealthSpawnMarker" type="Marker2D" parent="."]
+position = Vector2(-15, -106)
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(49, -2)
+
+[node name="BarrierLeft" type="StaticBody2D" parent="."]
+collision_layer = 4
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
+position = Vector2(-279, -74)
+shape = SubResource("RectangleShape2D_554ym")
+metadata/_edit_lock_ = true
+
+[node name="BarrierRight" type="StaticBody2D" parent="."]
+collision_layer = 4
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
+position = Vector2(273, -74)
+shape = SubResource("RectangleShape2D_554ym")
+
+[node name="Timer_HealthPickup" type="Timer" parent="."]
+wait_time = 30.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

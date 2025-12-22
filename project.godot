@@ -81,6 +81,7 @@ directories/dtl_directory={
 "timeline20M": "res://dialogic/timeline/timeline20M.dtl",
 "timeline20T": "res://dialogic/timeline/timeline20T.dtl",
 "timeline20TP": "res://dialogic/timeline/timeline20TP.dtl",
+"timeline20_5C": "res://dialogic/timeline/timeline20_5C.dtl",
 "timeline20_5M": "res://dialogic/timeline/timeline20_5M.dtl",
 "timeline21R": "res://dialogic/timeline/timeline21R.dtl",
 "timeline21T": "res://dialogic/timeline/timeline21T.dtl",

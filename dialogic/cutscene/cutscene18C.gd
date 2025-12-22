@@ -31,6 +31,7 @@ func _process(delta):
 
 func _on_body_entered(body):
 	#print("Player position: ",player_node_ref.global_position)
+	#print("entered")
 	if (body.is_in_group("player") and not _has_been_triggered):  #and Global.cutscene_finished1 == false:
 		player_in_range = body
 		print("Player entered cutscene trigger area. Starting cutscene.")
@@ -62,11 +63,14 @@ func _on_body_entered(body):
 		if Global.nora_dead == true:
 			Global.is_cutscene_active = false
 			Global.timeline = 8.5
+			print("Global.nora_dead")
 		elif Global.nora_dead == false:
 			if Global.valentina_dead == true:
 				Dialogic.start("timeline18C", false)
+				print("Global.valentina_dead")
 			elif Global.valentina_dead == false:
 				Dialogic.start("timeline18CV2", false)
+				print("Global.valentina_dead NOT")
 		#if Global.alyra_dead == false:
 		#	Dialogic.start("timeline13V2", false) #alive alive
 

@@ -91,17 +91,16 @@ region_rect = Rect2(0, 3106.6, 1280, 93.4031)
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D4" type="Sprite2D" parent="Background"]
-position = Vector2(16, -272)
-scale = Vector2(1, 0.6)
+position = Vector2(44, -272)
+scale = Vector2(0.95625, 0.6)
 texture = ExtResource("4_pgvmx")
 vframes = 4
 frame = 3
 region_enabled = true
 region_rect = Rect2(0, 3106.6, 1280, 93.4031)
-metadata/_edit_lock_ = true
 
 [node name="cutscene20C" parent="." instance=ExtResource("5_1upmd")]
-position = Vector2(-461, -265)
+position = Vector2(-344, -208)
 
 [node name="cutscene21_5B2" parent="." instance=ExtResource("6_apnbt")]
 position = Vector2(-583.838, -202.794)
@@ -124,6 +123,13 @@ position = Vector2(-112, -240)
 [node name="TObject6" parent="." instance=ExtResource("7_i0p6g")]
 position = Vector2(-112, -304)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-344, -224)
-zoom = Vector2(0.6, 0.6)
+[node name="PlatformMarkers" type="Node2D" parent="."]
+
+[node name="Platform_Low" type="Marker2D" parent="PlatformMarkers"]
+position = Vector2(-176, -112)
+
+[node name="Platform_Mid" type="Marker2D" parent="PlatformMarkers"]
+position = Vector2(-176, -208)
+
+[node name="Platform_High" type="Marker2D" parent="PlatformMarkers"]
+position = Vector2(-176, -288)

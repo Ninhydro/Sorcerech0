@@ -340,7 +340,7 @@ hframes = 8
 vframes = 10
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(13, -53)
+position = Vector2(5.88889, -53)
 texture = ExtResource("3_llnw3")
 hframes = 9
 vframes = 12

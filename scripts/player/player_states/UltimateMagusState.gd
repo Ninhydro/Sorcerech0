@@ -247,7 +247,7 @@ func update_highlight():
 		_current_highlight_material = Global.create_highlight_material()
 		print("Recreated highlight material: ", _current_highlight_material)
 	
-	debug_shader_visibility()	
+	#debug_shader_visibility()	
 	available_objects = available_objects.filter(func(obj): return is_instance_valid(obj))
 	
 	if available_objects.size() == 0:
