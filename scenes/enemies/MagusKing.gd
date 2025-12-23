@@ -44,11 +44,19 @@ signal boss_died
 var consecutive_summons := 0  # Track consecutive summons
 var max_consecutive_summons := 2  # Maximum consecutive summons allowed
 
+var platform_warning_low: Sprite2D
+var platform_warning_mid: Sprite2D
+var platform_warning_high: Sprite2D
+
 var platform_low: Marker2D
 var platform_mid: Marker2D
 var platform_high: Marker2D
 var current_platform: Marker2D  # Where the boss CURRENTLY IS
 var target_platform: Marker2D   # Where the boss SHOULD GO (NEW!)
+
+var warning_tween_low: Tween
+var warning_tween_mid: Tween
+var warning_tween_high: Tween
 
 # =====================================================
 # NODES - ADDED MELEE NODES
@@ -95,7 +103,8 @@ var  casting = false
 # READY - UPDATED WITH MELEE SETUP
 # =====================================================
 func _ready() -> void:
-	#Global.alyra_dead = false
+	Global.gawr_dead = true
+	Global.alyra_dead = false
 	super._ready()
 	
 	add_to_group("boss")
@@ -211,11 +220,13 @@ func set_platform_markers(low: Marker2D, mid: Marker2D, high: Marker2D) -> void:
 		global_position = platform_low.global_position
 		print("MAGUS KING: Position set to low platform: ", global_position)
 		
+		# Find platform warning sprites in the world
+		_find_platform_warnings()
+		
 		# Start AI immediately
 		_start_ai()
 	else:
 		print("MAGUS KING: ERROR - platform_low is null!")
-
 # =====================================================
 # PROCESS - UPDATED WITH INVULNERABILITY
 # =====================================================
@@ -602,6 +613,8 @@ func _attack_laser() -> void:
 		sprite.flip_h = dx < 0
 		print("MAGUS KING: Facing player for laser, dx=", dx)
 	
+	_start_platform_warning(global_position.y)
+	
 	# Play cast_prepare animation
 	if Global.alyra_dead:
 		anim.play("cast_prepare")
@@ -613,8 +626,10 @@ func _attack_laser() -> void:
 	await get_tree().create_timer(3.0).timeout
 	
 	if dead:
+		_stop_platform_warning(global_position.y)
 		return
 	
+	_stop_platform_warning(global_position.y)
 	# --- PHASE 2: CAST & FIRE LASER ---
 	print("MAGUS KING: Starting cast phase")
 	
@@ -987,6 +1002,8 @@ func _die() -> void:
 	if melee_hitbox:
 		melee_hitbox.monitoring = false
 	
+
+	
 	# Stop all timers
 	if attack_decision_timer:
 		attack_decision_timer.stop()
@@ -1016,7 +1033,6 @@ func _die() -> void:
 	print("MAGUS KING: Emitting boss_died signal and queue_free")
 	emit_signal("boss_died")
 	queue_free()
-
 # =====================================================
 # CLEANUP
 # =====================================================
@@ -1152,3 +1168,149 @@ func _on_animation_finished(anim_name: String) -> void:
 		print("MAGUS KING: Death animation finished, emitting signal")
 		emit_signal("boss_died")
 		queue_free()
+
+func _find_platform_warnings() -> void:
+	print("MAGUS KING: Searching for platform warning sprites...")
+	
+	# Find all Sprite2D nodes in the scene that are platform warnings
+	var all_sprites = get_tree().get_nodes_in_group("platform_warning")
+	
+	for sprite_node in all_sprites:
+		if not sprite_node is Sprite2D:
+			continue
+		
+		# Determine which platform this warning belongs to based on Y position
+		var sprite_y = sprite_node.global_position.y
+		
+		# Compare with platform marker Y positions
+		if platform_low and abs(sprite_y - platform_low.global_position.y) < 50:
+			platform_warning_low = sprite_node
+			print("MAGUS KING: Found low platform warning at: ", sprite_node.global_position)
+		elif platform_mid and abs(sprite_y - platform_mid.global_position.y) < 50:
+			platform_warning_mid = sprite_node
+			print("MAGUS KING: Found mid platform warning at: ", sprite_node.global_position)
+		elif platform_high and abs(sprite_y - platform_high.global_position.y) < 50:
+			platform_warning_high = sprite_node
+			print("MAGUS KING: Found high platform warning at: ", sprite_node.global_position)
+	
+	# Alternative: You could also search by specific node names
+	# Try to find by specific names if group search didn't work
+	if not platform_warning_low:
+		var node = get_tree().get_root().get_node_or_null("PlatformWarningLow")
+		if node and node is Sprite2D:
+			platform_warning_low = node
+			print("MAGUS KING: Found low platform warning by name")
+	
+	if not platform_warning_mid:
+		var node = get_tree().get_root().get_node_or_null("PlatformWarningMid")
+		if node and node is Sprite2D:
+			platform_warning_mid = node
+			print("MAGUS KING: Found mid platform warning by name")
+	
+	if not platform_warning_high:
+		var node = get_tree().get_root().get_node_or_null("PlatformWarningHigh")
+		if node and node is Sprite2D:
+			platform_warning_high = node
+			print("MAGUS KING: Found high platform warning by name")
+	
+	# Debug: Check what we found
+	print("MAGUS KING: Warning sprite references - low: ", platform_warning_low, " mid: ", platform_warning_mid, " high: ", platform_warning_high)
+	
+	# IMPORTANT: DO NOT hide the background sprites! They should stay visible.
+	# Just make sure they start with normal color
+	if platform_warning_low:
+		platform_warning_low.modulate = Color.WHITE
+	if platform_warning_mid:
+		platform_warning_mid.modulate = Color.WHITE
+	if platform_warning_high:
+		platform_warning_high.modulate = Color.WHITE
+
+
+func _start_platform_warning(platform_y: float) -> void:
+	print("MAGUS KING: Starting platform warning for Y position: ", platform_y)
+	
+	# Determine which platform to warn based on Y position
+	var warning_sprite: Sprite2D = null
+	
+	if platform_low and abs(platform_y - platform_low.global_position.y) < 50:
+		warning_sprite = platform_warning_low
+		print("MAGUS KING: Warning low platform")
+	elif platform_mid and abs(platform_y - platform_mid.global_position.y) < 50:
+		warning_sprite = platform_warning_mid
+		print("MAGUS KING: Warning mid platform")
+	elif platform_high and abs(platform_y - platform_high.global_position.y) < 50:
+		warning_sprite = platform_warning_high
+		print("MAGUS KING: Warning high platform")
+	
+	if warning_sprite:
+		print("MAGUS KING: Found warning sprite: ", warning_sprite.name)
+		# Start flashing animation using Tween for smooth transitions
+		_flash_warning_sprite_tween(warning_sprite)
+	else:
+		print("MAGUS KING: ERROR - No warning sprite found for platform Y: ", platform_y)
+
+func _stop_platform_warning(platform_y: float) -> void:
+	print("MAGUS KING: Stopping platform warning for Y position: ", platform_y)
+	
+	# Determine which platform to stop warning based on Y position
+	var warning_sprite: Sprite2D = null
+	
+	if platform_low and abs(platform_y - platform_low.global_position.y) < 50:
+		warning_sprite = platform_warning_low
+	elif platform_mid and abs(platform_y - platform_mid.global_position.y) < 50:
+		warning_sprite = platform_warning_mid
+	elif platform_high and abs(platform_y - platform_high.global_position.y) < 50:
+		warning_sprite = platform_warning_high
+	
+	if warning_sprite:
+		# Stop any active tween and reset to normal color
+		_stop_warning_tween(warning_sprite)
+		
+		# Smoothly fade back to normal white
+		var tween = create_tween()
+		tween.tween_property(warning_sprite, "modulate", Color.WHITE, 0.5)
+		print("MAGUS KING: Stopped warning for sprite: ", warning_sprite.name)
+
+func _flash_warning_sprite_tween(sprite: Sprite2D) -> void:
+	if not sprite or dead:
+		return
+	
+	print("MAGUS KING: Starting flash tween for sprite: ", sprite.name)
+	
+	# Create a repeating tween that pulses between pink and white
+	var tween = create_tween()
+	
+	# Pink color (adjust the values to get the pink you want)
+	var pink_color = Color(1.0, 0.5, 0.8, 1.0)  # Bright pink
+	# Or for a more subtle pink: Color(1.0, 0.7, 0.9, 1.0)
+	
+	# Set up the flashing animation
+	# Pulse between white and pink 10 times over 3 seconds
+	tween.set_loops(10)  # Flash 10 times during the 3-second warning
+	
+	# First half of loop: fade to pink (0.15 seconds)
+	tween.tween_property(sprite, "modulate", pink_color, 0.15)
+	# Second half of loop: fade back to white (0.15 seconds)
+	tween.tween_property(sprite, "modulate", Color.WHITE, 0.15)
+	
+	# Store the tween reference so we can stop it later if needed
+	if sprite == platform_warning_low:
+		warning_tween_low = tween
+	elif sprite == platform_warning_mid:
+		warning_tween_mid = tween
+	elif sprite == platform_warning_high:
+		warning_tween_high = tween
+	
+	print("MAGUS KING: Flash tween started for sprite: ", sprite.name)
+
+func _stop_warning_tween(sprite: Sprite2D) -> void:
+	# Stop the appropriate tween based on which sprite
+	if sprite == platform_warning_low and warning_tween_low and warning_tween_low.is_running():
+		warning_tween_low.stop()
+		warning_tween_low = null
+	elif sprite == platform_warning_mid and warning_tween_mid and warning_tween_mid.is_running():
+		warning_tween_mid.stop()
+		warning_tween_mid = null
+	elif sprite == platform_warning_high and warning_tween_high and warning_tween_high.is_running():
+		warning_tween_high.stop()
+		warning_tween_high = null

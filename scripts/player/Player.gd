@@ -944,6 +944,10 @@ func handle_death():
 		for node in tree.get_nodes_in_group("gigaster_boss_cutscene"):
 			if node.has_method("cancel_gigaster_boss_battle_on_player_death"):
 				node.cancel_gigaster_boss_battle_on_player_death()
+				
+		for node in tree.get_nodes_in_group("magus_king_boss_cutscene"):
+			if node.has_method("cancel_magus_king_boss_battle_on_player_death"):
+				node.cancel_magus_king_boss_battle_on_player_death()
 	
 	# Wait for death animation to play (adjust time as needed)
 	await get_tree().create_timer(1.5).timeout
@@ -990,6 +994,17 @@ func respawn_at_save_point():
 	Global.playerAlive = true
 	player_hit = false
 	can_take_damage = true
+	Global.is_cutscene_active = false
+	knockback_timer = 0
+	is_grappling_active = false
+	Global.dashing = false
+	is_launched = false
+	canon_enabled = false
+	telekinesis_enabled = false
+	is_grabbing_ledge = false
+	Global.attacking =false
+	Global.is_dialog_open = false
+	Global.teleporting = false
 	
 	# Reset any other combat states
 	if combat_fsm:

@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bps10xv2v18d"]
+[gd_scene load_steps=12 format=3 uid="uid://bps10xv2v18d"]
 
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_bbbin"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_nlimn"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_qvsyk"]
+[ext_resource type="Texture2D" uid="uid://cobfpvtg3xop4" path="res://assets_image/Background/Tromarvelia_Castle/castle_background.png" id="4_iuppo"]
 [ext_resource type="Texture2D" uid="uid://bcee3cgfx1cd5" path="res://assets_image/Background/Tromarvelia_Castle/Tromarvelia Castle-Sheet.png" id="4_pgvmx"]
 [ext_resource type="PackedScene" uid="uid://dlibmhqndrefk" path="res://dialogic/cutscene/cutscene20C.tscn" id="5_1upmd"]
 [ext_resource type="PackedScene" uid="uid://cuxaeo2kjkia3" path="res://dialogic/cutscene/cutscene21_5B2.tscn" id="6_apnbt"]
@@ -18,7 +19,6 @@ size = Vector2(26.5, 24)
 [node name="RoomTromarveliaCastle" type="Node2D"]
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 script = ExtResource("1_bbbin")
 area_name = "Tromarvelia Castle Throne"
 chunk_name = "Tromarvelia Castle Throne"
@@ -63,13 +63,39 @@ modulate = Color(0.784314, 0.784314, 0.784314, 1)
 z_index = -10
 metadata/_edit_lock_ = true
 
+[node name="Sprite2D5" type="Sprite2D" parent="Background" groups=["platform_warning"]]
+position = Vector2(-379, -329)
+texture = ExtResource("4_iuppo")
+vframes = 3
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D6" type="Sprite2D" parent="Background" groups=["platform_warning"]]
+position = Vector2(-391, -229)
+texture = ExtResource("4_iuppo")
+vframes = 3
+frame = 1
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D7" type="Sprite2D" parent="Background" groups=["platform_warning"]]
+position = Vector2(-366, -130)
+texture = ExtResource("4_iuppo")
+vframes = 3
+frame = 2
+metadata/_edit_lock_ = true
+
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
+visible = false
 position = Vector2(88, -240)
 scale = Vector2(1.1125, 1.18)
 texture = ExtResource("4_pgvmx")
 vframes = 4
 frame = 2
 metadata/_edit_lock_ = true
+
+[node name="GawrFlamethrower" parent="Background" instance=ExtResource("8_vl1ak")]
+position = Vector2(-564, -166)
+scale = Vector2(0.6, 0.65)
+flip_h = true
 
 [node name="Sprite2D2" type="Sprite2D" parent="Background"]
 position = Vector2(8, -96)
@@ -103,9 +129,11 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene20C" parent="." instance=ExtResource("5_1upmd")]
 position = Vector2(-344, -208)
+metadata/_edit_lock_ = true
 
 [node name="cutscene21_5B2" parent="." instance=ExtResource("6_apnbt")]
 position = Vector2(-583.838, -202.794)
+metadata/_edit_lock_ = true
 
 [node name="TObject" parent="." instance=ExtResource("7_i0p6g")]
 position = Vector2(-592, -208)
@@ -114,7 +142,7 @@ position = Vector2(-592, -208)
 position = Vector2(-592, -304)
 
 [node name="TObject3" parent="." instance=ExtResource("7_i0p6g")]
-position = Vector2(-528, -112)
+position = Vector2(-495, -112)
 
 [node name="PlatformMarkers" type="Node2D" parent="."]
 
@@ -126,9 +154,3 @@ position = Vector2(-176, -208)
 
 [node name="Platform_High" type="Marker2D" parent="PlatformMarkers"]
 position = Vector2(-176, -304)
-
-[node name="GawrFlamethrower" parent="." instance=ExtResource("8_vl1ak")]
-z_index = -1
-position = Vector2(-572, -163)
-scale = Vector2(0.5, 0.5)
-flip_h = true

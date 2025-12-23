@@ -9,7 +9,7 @@ var available_objects := []
 var current_object: TelekinesisObject = null
 
 var hold_time := 0.0
-var hold_threshold := 1
+var hold_threshold := 0.5
 var is_holding := false
 
 var _object_original_materials: Dictionary = {} 

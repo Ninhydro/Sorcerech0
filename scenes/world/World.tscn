@@ -722,10 +722,10 @@ position = Vector2(6768, 3496)
 position = Vector2(-2920, -152)
 
 [node name="Room_TromarveliaBattlefield" parent="." instance=ExtResource("11_rs5ry")]
-position = Vector2(-5088, 2656)
+position = Vector2(-5086, 2656)
 
 [node name="Room_TromarveliaCastle" parent="." instance=ExtResource("12_bfh2l")]
-position = Vector2(272, 4104)
+position = Vector2(258, 4098)
 
 [node name="Room_TromarveliaDungeon" parent="." instance=ExtResource("13_wwr1u")]
 position = Vector2(-5392, 5088)

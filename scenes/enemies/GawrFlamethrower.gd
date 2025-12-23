@@ -81,6 +81,7 @@ func _process(delta: float) -> void:
 		detection_area.monitoring = false
 		flame_area.monitoring = false
 		flame_block.disabled = true
+		queue_free()
 		return
 	else:
 		set_process(true)
