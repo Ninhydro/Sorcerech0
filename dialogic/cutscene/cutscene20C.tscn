@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="3_bxies"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
-size = Vector2(323, 190)
+size = Vector2(385.5, 190)
 
 [sub_resource type="Animation" id="Animation_3uu3n"]
 resource_name = "cutscene1"
@@ -120,7 +120,7 @@ boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight
 health_pickup_scene = ExtResource("3_bxies")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-47, 6)
+position = Vector2(-78.25, 6)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

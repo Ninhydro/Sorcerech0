@@ -9,7 +9,7 @@ signal boss_died
 #var movement_locked := false
 
 @export var max_health: int = 400
-@export var walk_speed: float = 60.0
+@export var walk_speed: float = 60.0 * Global.global_time_scale  
 
 @export var slam_damage: int = 12
 @export var head_laser_damage: int = 16
@@ -275,13 +275,15 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	
+	if anim:
+		anim.speed_scale = Global.global_time_scale
 	#print(collision_layer)
 	player = _get_player()
 	
 	if Input.is_action_just_pressed("debug1"): 
 		_debug_movement_state()
 	# allow AI reposition movement even if we're "in an attack phase"
-	if dead or taking_damage or Global.camouflage or (_attack_running and not _move_active) or player == null or not chase_enabled:
+	if dead or taking_damage or (_attack_running and not _move_active) or player == null or not chase_enabled:
 		velocity.x = 0
 		move_and_slide()
 		return
@@ -475,7 +477,7 @@ func _move_to_target_x(x: float, goal_type := MOVE_GOAL_CENTER, player_x_snapsho
 	var start_time := Time.get_ticks_msec()
 	var max_ms := int(slam_max_move_ms) if goal_type == MOVE_GOAL_SLAM_ALIGN else 1500
 
-	while _move_active and not dead and not taking_damage and not Global.camouflage:
+	while _move_active and not dead and not taking_damage:
 		if Time.get_ticks_msec() - start_time > max_ms:
 			print("GigasterBoss: move_to_target TIMEOUT. goal=", goal_type, " target=", _target_x, " pos=", global_position.x)
 			_move_active = false

@@ -22,7 +22,9 @@ func _ready():
 	else:
 		print("ExplosiveDoor: Global.explode_door is FALSE → door active")
 
-
+func _process(delta):
+	if $AnimationPlayer:
+		$AnimationPlayer.speed_scale = Global.global_time_scale
 # Called by ExplosiveColorObject when its explosion hits the door
 func on_explosive_hit():
 	if destroyed:

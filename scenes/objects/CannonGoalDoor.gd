@@ -12,6 +12,10 @@ class_name CannonGoalDoor
 
 var destroyed: bool = false
 
+func _process(delta):
+	if $AnimationPlayer:
+		$AnimationPlayer.speed_scale = Global.global_time_scale
+		
 func _ready() -> void:
 	# Listen for player hitting the door
 	if hit_area:

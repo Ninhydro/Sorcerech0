@@ -4,7 +4,7 @@ class_name SterlingEnemy
 # =====================================================
 # CONFIG
 # =====================================================
-@export var move_speed := 50.0
+@export var move_speed := 50.0 * Global.global_time_scale  
 @export var melee_range := 48.0
 @export var melee_damage := 12
 

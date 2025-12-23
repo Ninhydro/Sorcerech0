@@ -244,8 +244,8 @@ func _can_see_player() -> bool:
 	if not player or not Global.playerAlive:
 		return false
 	
-	if Global.camouflage:
-		return false
+	#if Global.camouflage:
+	#	return false
 	
 	return detection_area.overlaps_body(player)
 

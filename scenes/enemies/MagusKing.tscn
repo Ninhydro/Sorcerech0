@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/enemies/MagusKing.gd" id="1_jfxin"]
 [ext_resource type="Texture2D" uid="uid://c1qwfwmuqooib" path="res://assets_image/Characters/Enemies/Magus_soldier-Sheet.png" id="2_bp2yv"]
-[ext_resource type="PackedScene" uid="uid://di82tt5tgv3ib" path="res://scenes/enemies/MagusSoldierEnemy.tscn" id="2_ngt83"]
+[ext_resource type="PackedScene" uid="uid://dfpyxgqho5nqr" path="res://scenes/enemies/MagusSoldierEnemySummon.tscn" id="2_sng80"]
 [ext_resource type="Texture2D" uid="uid://c2um2hrfogp46" path="res://assets_image/Characters/Zach/Zach-Sheet.png" id="4_1v1jc"]
 [ext_resource type="Texture2D" uid="uid://cl7q6qj34r6si" path="res://assets_image/Objects/SpikeStrip2.png" id="5_8faf2"]
 
@@ -758,7 +758,7 @@ scale = Vector2(0.7, 0.7)
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_jfxin")
-summon_scene = ExtResource("2_ngt83")
+summon_scene = ExtResource("2_sng80")
 laser_beam = NodePath("LaserBeam")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -1,7 +1,7 @@
 extends Area2D
 class_name Rocket
 
-@export var speed = 150.0          # How fast the rocket travels
+@export var speed = 150.0 * Global.global_time_scale             # How fast the rocket travels
 @export var rotation_speed = 50.0   # How quickly the rocket turns towards its target
 @export var damage = 30            # How much damage the rocket deals
 @export var lifetime = 2.0         # How long the rocket exists before despawning (seconds)

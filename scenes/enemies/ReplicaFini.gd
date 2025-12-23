@@ -2,7 +2,7 @@ extends BaseEnemy
 class_name ReplicaFini
 
 # --- Tunable pattern values ---
-@export var walk_speed: float = 40.0              # slow walk toward player
+@export var walk_speed: float = 40.0 *  Global.global_time_scale             # slow walk toward player
 @export var melee_forward_distance: float = 50.0  # how far she slides forward on melee
 @export var melee_dash_time: float = 0.18         # seconds of forward motion
 @export var backstep_distance: float = 48.0       # how far she moves back before laser

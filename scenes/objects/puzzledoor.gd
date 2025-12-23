@@ -28,6 +28,9 @@ func _process(delta):
 	if is_moving:
 		move_door(delta)
 
+	if $AnimationPlayer:
+		$AnimationPlayer.speed_scale = Global.global_time_scale
+
 func check_initial_state():
 	"""Check the door state immediately when the scene loads"""
 	if has_checked_initial_state:

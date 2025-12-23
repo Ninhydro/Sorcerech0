@@ -3,7 +3,7 @@ extends RigidBody2D  # Changed from Area2D to RigidBody2D
 @export var health_amount := 20
 @export var bounce_force := 100.0
 @export var float_height := 10.0
-@export var float_speed := 3.0
+@export var float_speed := 3.0 * Global.global_time_scale  
 
 var initial_y: float
 var time := 0.0

@@ -11,7 +11,7 @@ var current_timeline: String = ""
 @export var marker_timeline_5: Marker2D
 var is_moving: bool = false
 
-@export var walk_speed: float = 60.0  # Pixels per second
+@export var walk_speed: float = 60.0 * Global.global_time_scale # Pixels per second
 @export var use_speed_based_movement: bool = true  # Toggle between speed-based and d
 @export var show_instantly_flag: bool = false
 
@@ -35,6 +35,9 @@ func _ready():
 	setup_global_connections()
 	check_visibility_conditions()
 
+
+
+		
 func setup_global_connections():
 
 	check_globals_periodically()
@@ -91,7 +94,8 @@ func _process(_delta):
 		return
 	
 	# Handle any ongoing animations or behaviors
-	pass
+	if $AnimationPlayer:
+		$AnimationPlayer.speed_scale = Global.global_time_scale
 
 func check_visibility_conditions():
 

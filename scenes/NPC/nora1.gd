@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name NoraNPC
 
-@export var movement_speed: float = 50.0
+@export var movement_speed: float = 50.0 * Global.global_time_scale
 @export var minigame_stations: Array[NodePath] = []
 
 # Control flags
@@ -79,6 +79,10 @@ func _ready():
 				move_to_station(0)
 			print("Nora: Starting minigame from beginning")
 
+
+func _process(delta):
+	if $AnimationPlayer:
+		$AnimationPlayer.speed_scale = Global.global_time_scale
 
 func check_individual_station_completions():
 	# Update local completion array from global flags

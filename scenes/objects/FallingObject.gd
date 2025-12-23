@@ -102,7 +102,7 @@ func _physics_process(_delta):
 	#	can_be_pushed = false
 	#	freeze = true
 	pass
-const MAX_PUSH_SPEED := 200.0  # tune this
+var MAX_PUSH_SPEED := 200.0 * Global.global_time_scale # tune this
 const PUSH_FORCE := 50.0       # lower than before
 
 func push(direction: Vector2, force: float = 200.0):

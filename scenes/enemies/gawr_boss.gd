@@ -7,7 +7,7 @@ signal boss_died
 # CONFIG
 # ----------------------------
 @export var max_health: int = 300
-@export var walk_speed: float = 60.0
+@export var walk_speed: float = 60.0 * Global.global_time_scale  
 
 @export var slam_damage: int = 10
 @export var fire_damage: int = 15
@@ -203,6 +203,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	player = _get_player()
 	
+	if anim:
+		anim.speed_scale = Global.global_time_scale
+		
 	if nora_minigame_active:
 		_facing = -1
 		body_pivot.scale.x = -abs(body_pivot.scale.x)

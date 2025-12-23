@@ -6,7 +6,7 @@ signal boss_died
 # =====================================================
 # CONFIG - ADDED MELEE ATTACK CONFIG
 # =====================================================
-@export var move_speed := 80.0
+@export var move_speed := 80.0 * Global.global_time_scale  
 @export var melee_range := 50.0
 @export var chase_range := 300.0
 @export var melee_damage := 20  # ADDED
@@ -96,7 +96,7 @@ var laser_active := false  # ADDED: Track if laser is dddcurrently active
 var  casting = false
 #var laser_duration_timer: Timer  # ADDED: For laser duration
 @export var platform_width := 2000.0  # Adjust based on your actual platform width
-
+@export var max_summons_in_field := 3 
 
 
 # =====================================================
@@ -396,7 +396,7 @@ func _run_ai() -> void:
 			player = Global.playerBody
 			if not player:
 				print("MAGUS KING: No player found, waiting...")
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.1/Global.global_time_scale).timeout
 				continue
 		
 		# 1. FIRST: Check if we should teleport to player's platform
@@ -418,7 +418,7 @@ func _run_ai() -> void:
 			if dist_to_player > melee_range:
 				print("MAGUS KING: Same platform, chasing player")
 				_chase_player()
-				await get_tree().create_timer(0.1).timeout
+				await get_tree().create_timer(0.1/Global.global_time_scale).timeout
 			else:
 				# In melee range, check if we should melee attack
 				if can_melee and randf() < 0.3 and Global.alyra_dead:  # 30% chance to melee when in range
@@ -429,13 +429,13 @@ func _run_ai() -> void:
 					velocity.x = 0
 					if anim.has_animation("idle"):
 						anim.play("idle")
-					await get_tree().create_timer(0.1).timeout
+					await get_tree().create_timer(0.1/Global.global_time_scale).timeout
 		else:
 			print("MAGUS KING: Not on same platform, idling")
 			velocity.x = 0
 			if anim.has_animation("idle"):
 				anim.play("idle")
-			await get_tree().create_timer(0.1).timeout
+			await get_tree().create_timer(0.1/Global.global_time_scale).timeout
 	
 	print("MAGUS KING: _run_ai() stopped - dead=", dead, " ai_active=", ai_active)
 
@@ -468,13 +468,19 @@ func _choose_attack(dist_to_player: float) -> void:
 	attack_running = true
 	velocity = Vector2.ZERO
 	
+	var current_mob_count = _count_summons_in_field()
 	print("MAGUS KING: Cooldown status - can_summon=", can_summon, " can_laser=", can_laser, " can_melee=", can_melee)
 	
 	# Create a list of available attacks
 	var available_attacks = []
 	
+	# Check if summon is available AND mob count is below limit
 	if can_summon and summon_scene and consecutive_summons < max_consecutive_summons:
-		available_attacks.append("summon")
+		if current_mob_count < max_summons_in_field:
+			available_attacks.append("summon")
+			print("MAGUS KING: Summon available (", current_mob_count, " mobs < ", max_summons_in_field, " max)")
+		else:
+			print("MAGUS KING: Summon blocked - too many mobs in field (", current_mob_count, " >= ", max_summons_in_field, ")")
 	
 	if can_laser and laser_beam:
 		available_attacks.append("laser")
@@ -520,7 +526,7 @@ func _choose_attack(dist_to_player: float) -> void:
 				await _attack_melee()
 	else:
 		print("MAGUS KING: All attacks unavailable or on cooldown, waiting")
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0/Global.global_time_scale).timeout
 
 	attack_running = false
 	print("MAGUS KING: _choose_attack completed")
@@ -556,14 +562,14 @@ func _attack_melee() -> void:
 		anim.play("idle")
 	
 	# Enable melee hitbox after a brief delay (when the attack would connect)
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.2/Global.global_time_scale).timeout
 	
 	if melee_hitbox and not dead:
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(0.2/Global.global_time_scale).timeout
 		if not dead:
 			melee_hitbox.monitoring = true
 			print("MAGUS KING: Melee hitbox activated (backup)")
-			await get_tree().create_timer(0.2).timeout
+			await get_tree().create_timer(0.2/Global.global_time_scale).timeout
 			melee_hitbox.monitoring = false
 			print("MAGUS KING: Melee hitbox deactivated")
 	# Wait for animation to finish
@@ -623,7 +629,7 @@ func _attack_laser() -> void:
 
 	
 	# Wait 3 seconds for prepare phase
-	await get_tree().create_timer(3.0).timeout
+	await get_tree().create_timer(3.0/Global.global_time_scale).timeout
 	
 	if dead:
 		_stop_platform_warning(global_position.y)
@@ -655,7 +661,7 @@ func _attack_laser() -> void:
 			print("MAGUS KING: Playing laser crushing animation")
 	
 	# Keep laser active for duration
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(2.0/Global.global_time_scale).timeout
 	
 	if dead:
 		return
@@ -675,7 +681,7 @@ func _attack_laser() -> void:
 		anim.play("idle")
 	
 	# Wait 3 seconds recovery
-	await get_tree().create_timer(3.0).timeout
+	await get_tree().create_timer(3.0/Global.global_time_scale).timeout
 	
 	if dead:
 		return
@@ -788,7 +794,7 @@ func _attack_summon() -> void:
 		anim.play("summon")
 		await anim.animation_finished
 	else:
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0/Global.global_time_scale).timeout
 	
 	_do_summon()
 	consecutive_summons += 1
@@ -800,7 +806,7 @@ func _attack_summon() -> void:
 	if anim.has_animation("idle"):
 		anim.play("idle")
 	
-	await get_tree().create_timer(post_summon_idle_time).timeout
+	await get_tree().create_timer(post_summon_idle_time/Global.global_time_scale).timeout
 	
 	
 	print("MAGUS KING: _attack_summon completed")
@@ -891,7 +897,7 @@ func _teleport_to_player_platform() -> void:
 		await anim.animation_finished
 	else:
 		sprite.modulate = Color(0.5, 0.5, 1.0, 0.5)
-		await get_tree().create_timer(0.3).timeout
+		await get_tree().create_timer(0.3/Global.global_time_scale).timeout
 	
 	var old_position = global_position
 	current_platform = target_platform
@@ -1027,7 +1033,7 @@ func _die() -> void:
 		print("MAGUS KING: Death animation finished")
 	else:
 		print("MAGUS KING: No death animation, waiting briefly")
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.5/Global.global_time_scale).timeout
 	
 	# Emit signal and queue free
 	print("MAGUS KING: Emitting boss_died signal and queue_free")
@@ -1314,3 +1320,21 @@ func _stop_warning_tween(sprite: Sprite2D) -> void:
 	elif sprite == platform_warning_high and warning_tween_high and warning_tween_high.is_running():
 		warning_tween_high.stop()
 		warning_tween_high = null
+
+# Add this function in the utility functions section or near the attack functions
+func _count_summons_in_field() -> int:
+	var count = 0
+	# Get all mobs in the scene (you might need to adjust the group name)
+	var mobs = get_tree().get_nodes_in_group("mobs")  # Make sure your summoned mobs are in a "mobs" group
+	
+	# Alternatively, if you have a specific group for summoned minions:
+	# var mobs = get_tree().get_nodes_in_group("summoned_minions")
+	
+	# Or count all instances of the summon_scene type:
+	if summon_scene:
+		var scene_name = summon_scene.resource_path.get_file().get_basename()
+		for node in get_tree().get_nodes_in_group("enemies"):  # Or get_children() of parent
+			if node.filename.get_file().get_basename() == scene_name:
+				count += 1
+	
+	return count

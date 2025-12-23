@@ -5,7 +5,7 @@ extends RigidBody2D
 @export var bounce_force := 100.0
 @export var inventory_id := "MagicStone"
 @export var float_height := 5.0
-@export var float_speed := 0.5
+@export var float_speed := 0.5 * Global.global_time_scale  
 
 @export var stone_texture: Texture2D = preload("res://assets_image/Objects/collect_objects6.png")
 

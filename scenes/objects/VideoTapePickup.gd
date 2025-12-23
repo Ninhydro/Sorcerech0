@@ -6,7 +6,7 @@ extends RigidBody2D
 
 @export var bounce_force := 100.0
 @export var float_height := 10.0
-@export var float_speed := 3.0
+@export var float_speed := 3.0 * Global.global_time_scale  
 
 @export var tape_texture: Texture2D
 

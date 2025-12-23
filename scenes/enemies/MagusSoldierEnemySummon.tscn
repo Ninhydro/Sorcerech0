@@ -1,0 +1,204 @@
+[gd_scene load_steps=15 format=3 uid="uid://dfpyxgqho5nqr"]
+
+[ext_resource type="Script" path="res://scenes/enemies/RangedEnemy.gd" id="1_d71mc"]
+[ext_resource type="PackedScene" uid="uid://cevk7kxsj1nyx" path="res://scenes/enemies/magic_bullet.tscn" id="2_7dm56"]
+[ext_resource type="Texture2D" uid="uid://c1qwfwmuqooib" path="res://assets_image/Characters/Enemies/Magus_soldier-Sheet.png" id="3_e51xh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
+size = Vector2(32, 44.2857)
+
+[sub_resource type="Animation" id="Animation_a6itw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_xjc00"]
+resource_name = "attack"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.8),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"attack_frame"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_2r7oh"]
+resource_name = "death"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11, 12, 13, 14]
+}
+
+[sub_resource type="Animation" id="Animation_evimy"]
+resource_name = "hurt"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [16, 17, 18, 19]
+}
+
+[sub_resource type="Animation" id="Animation_h6kap"]
+resource_name = "idle"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [32, 33, 34, 35, 36]
+}
+
+[sub_resource type="Animation" id="Animation_4olnp"]
+resource_name = "run"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [24, 25, 26, 27, 28, 29, 30, 31]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l2ty1"]
+_data = {
+"RESET": SubResource("Animation_a6itw"),
+"attack": SubResource("Animation_xjc00"),
+"death": SubResource("Animation_2r7oh"),
+"hurt": SubResource("Animation_evimy"),
+"idle": SubResource("Animation_h6kap"),
+"run": SubResource("Animation_4olnp")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ljdqk"]
+size = Vector2(80, 57.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a7b8b"]
+size = Vector2(64, 50)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4pq4r"]
+radius = 308.69
+
+[node name="MagusEnemySummon" type="CharacterBody2D" groups=["Enemies", "mobs"]]
+scale = Vector2(0.7, 0.7)
+collision_layer = 4
+collision_mask = 14
+script = ExtResource("1_d71mc")
+enemy_damage = 8
+projectile_scene = ExtResource("2_7dm56")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -12.1429)
+shape = SubResource("RectangleShape2D_mo267")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-3, -53)
+texture = ExtResource("3_e51xh")
+hframes = 8
+vframes = 5
+frame = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_l2ty1")
+}
+
+[node name="DirectionTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -19.25)
+shape = SubResource("RectangleShape2D_ljdqk")
+
+[node name="DealAttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DealAttackArea"]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_a7b8b")
+
+[node name="RangeChase" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RangeChase"]
+position = Vector2(0, -20)
+shape = SubResource("CircleShape2D_4pq4r")
+
+[node name="ProjectileSpawn" type="Marker2D" parent="."]
+position = Vector2(-32, -24)
+
+[node name="EdgeRayLeft" type="RayCast2D" parent="."]
+position = Vector2(-16, 8)
+
+[node name="EdgeRayRight" type="RayCast2D" parent="."]
+position = Vector2(16, 8)
+
+[node name="JumpRay" type="RayCast2D" parent="."]
+position = Vector2(0, -16)
+target_position = Vector2(32, -40)
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_entered" from="DealAttackArea" to="." method="_on_deal_attack_area_area_entered"]
+[connection signal="area_exited" from="DealAttackArea" to="." method="_on_deal_attack_area_area_exited"]
+[connection signal="body_entered" from="RangeChase" to="." method="_on_range_chase_body_entered"]
+[connection signal="body_exited" from="RangeChase" to="." method="_on_range_chase_body_exited"]
