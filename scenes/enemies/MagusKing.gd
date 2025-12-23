@@ -103,8 +103,8 @@ var  casting = false
 # READY - UPDATED WITH MELEE SETUP
 # =====================================================
 func _ready() -> void:
-	Global.gawr_dead = true
-	Global.alyra_dead = false
+	#Global.gawr_dead = true
+	#Global.alyra_dead = false
 	super._ready()
 	
 	add_to_group("boss")
