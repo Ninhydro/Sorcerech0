@@ -13,7 +13,19 @@ signal boss_died
 @export var melee_cooldown := 2.0  # ADDED
 
 @export var summon_scene: PackedScene  # SET THIS IN INSPECTOR!
-@export var laser_area: Area2D
+@export var laser_beam: Area2D
+@onready var laser_shape: CollisionShape2D = $LaserBeam/CollisionShape2D
+@onready var laser_sprite: Sprite2D = $LaserBeam/Sprite2D
+@onready var laser_sprite2: Sprite2D = $LaserBeam/Sprite2D2
+@onready var laser_sprite3: Sprite2D = $LaserBeam/Sprite2D3
+@onready var laser_sprite4: Sprite2D = $LaserBeam/Sprite2D4
+@onready var laser_sprite5: Sprite2D = $LaserBeam/Sprite2D5
+@onready var laser_sprite6: Sprite2D = $LaserBeam/Sprite2D6
+@onready var laser_sprite7: Sprite2D = $LaserBeam/Sprite2D7
+@onready var laser_sprite8: Sprite2D = $LaserBeam/Sprite2D8
+@onready var laser_sprite9: Sprite2D = $LaserBeam/Sprite2D9
+@onready var laser_sprite10: Sprite2D = $LaserBeam/Sprite2D10
+
 @export var laser_damage := 20
 @export var laser_duration := 0.3  # ADDED
 @export var laser_windup := 0.6  # ADDED
@@ -27,6 +39,11 @@ signal boss_died
 @export var melee_chance := 0.5  # ADDED - Chance to use melee attack when available
 
 # Platform markers
+# ADDED: Summon configuration
+@export var post_summon_idle_time := 4.0  # Increased idle time after summoning
+var consecutive_summons := 0  # Track consecutive summons
+var max_consecutive_summons := 2  # Maximum consecutive summons allowed
+
 var platform_low: Marker2D
 var platform_mid: Marker2D
 var platform_high: Marker2D
@@ -39,9 +56,7 @@ var target_platform: Marker2D   # Where the boss SHOULD GO (NEW!)
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var summon_marker: Marker2D = $SummonMarker
 @onready var melee_hitbox: Area2D = $MeleeHitbox  # ADD THIS NODE IN SCENE!
-@onready var laser_beam: Sprite2D = $LaserBeam/Sprite2D  # ADD THIS FOR VISUAL LASER
-@onready var laser_collision: CollisionShape2D = $LaserBeam/CollisionShape2D  # FOR LASER COLLISION
-
+@onready var anim_laser: AnimationPlayer = $LaserBeam/AnimationPlayer
 # =====================================================
 # STATE - ADDED MELEE STATE
 # =====================================================
@@ -69,18 +84,22 @@ var melee_timer: Timer  # ADDED
 # Debug tracking
 var debug_frame_count := 0
 var last_attack_decision_time := 0.0
-var laser_active := false  # ADDED: Track if laser is currently active
-var laser_duration_timer: Timer  # ADDED: For laser duration
+var laser_active := false  # ADDED: Track if laser is dddcurrently active
+var  casting = false
+#var laser_duration_timer: Timer  # ADDED: For laser duration
+@export var platform_width := 2000.0  # Adjust based on your actual platform width
+
 
 
 # =====================================================
 # READY - UPDATED WITH MELEE SETUP
 # =====================================================
 func _ready() -> void:
+	#Global.alyra_dead = false
 	super._ready()
 	
 	add_to_group("boss")
-	
+	_select_sprite_by_route() 
 	# Disable BaseEnemy systems
 	is_enemy_chase = false
 	is_roaming = false
@@ -93,6 +112,9 @@ func _ready() -> void:
 	
 	print("MAGUS KING: _ready() called, health=", health, " player exists=", (Global.playerBody != null))
 	
+	if anim:
+		anim.animation_finished.connect(_on_animation_finished)
+		
 	# Initialize melee hitbox if exists
 	if melee_hitbox:
 		melee_hitbox.monitoring = false
@@ -100,16 +122,25 @@ func _ready() -> void:
 		print("MAGUS KING: Melee hitbox initialized")
 	
 	# Initialize laser if exists
-	if laser_beam:
-		laser_beam.visible = false
+	if laser_sprite:
+		laser_sprite.visible = false
+		laser_sprite2.visible = false
+		laser_sprite3.visible = false
+		laser_sprite4.visible = false
+		laser_sprite5.visible = false
+		laser_sprite6.visible = false
+		laser_sprite7.visible = false
+		laser_sprite8.visible = false
+		laser_sprite9.visible = false
+		laser_sprite10.visible = false
 		print("MAGUS KING: Laser beam sprite initialized")
-		print("MAGUS KING: Laser beam texture: ", laser_beam.texture)
-		print("MAGUS KING: Laser beam size: ", laser_beam.texture.get_size() if laser_beam.texture else "No texture")
+		print("MAGUS KING: Laser beam texture: ", laser_sprite.texture)
+		print("MAGUS KING: Laser beam size: ", laser_sprite.texture.get_size() if laser_sprite.texture else "No texture")
 	else:
 		print("MAGUS KING: ERROR - laser_beam is null!")
 	
-	if laser_collision:
-		laser_collision.disabled = true
+	if laser_shape:
+		laser_shape.disabled = true
 		print("MAGUS KING: Laser collision initialized")
 	
 	# Initialize timers
@@ -133,10 +164,10 @@ func _ready() -> void:
 	add_child(melee_timer)
 	melee_timer.timeout.connect(_on_melee_cooldown_timeout)
 	
-	laser_duration_timer = Timer.new()
-	laser_duration_timer.one_shot = true
-	add_child(laser_duration_timer)
-	laser_duration_timer.timeout.connect(_on_laser_duration_timeout)
+	#laser_duration_timer = Timer.new()
+	#laser_duration_timer.one_shot = true
+	#add_child(laser_duration_timer)
+	#laser_duration_timer.timeout.connect(_on_laser_duration_timeout)
 	
 	attack_decision_timer = Timer.new()
 	attack_decision_timer.one_shot = false
@@ -145,9 +176,17 @@ func _ready() -> void:
 	attack_decision_timer.timeout.connect(_on_attack_decision_timeout)
 	
 	# Initialize laser area if it exists (for backward compatibility)
-	if laser_area:
-		laser_area.monitoring = false
+	if laser_beam:
+		#laser_beam.z_index = 10
+		laser_beam.collision_layer = 1 << 6   # enemy_attack
+		laser_beam.collision_mask  = 1 << 0   # player
+
+		laser_beam.monitoring = false
+		_configure_laser_shape()
+		laser_beam.body_entered.connect(_on_laser_hit)
 		print("MAGUS KING: Laser area initialized (legacy)")
+		
+	laser_beam.body_entered.connect(_on_laser_body_entered)
 	
 	print("MAGUS KING: Ready complete, waiting for platform setup")
 
@@ -183,84 +222,127 @@ func set_platform_markers(low: Marker2D, mid: Marker2D, high: Marker2D) -> void:
 func _process(delta: float) -> void:
 	if not ai_active:
 		return
+	
+	if dead:
+		return
 		
 	debug_frame_count += 1
 	if debug_frame_count % 60 == 0:
-		print("MAGUS KING: Frame ", debug_frame_count, ", AI active=", ai_active, ", dead=", dead, ", platforms_set=", platforms_set)
+		print("MAGUS KING: Frame ", debug_frame_count, ", AI active=", ai_active, ", dead=", dead)
 		print("  Position: ", global_position, ", Velocity: ", velocity)
-		print("  State: casting=", is_casting, ", teleporting=", is_teleporting, ", attack_running=", attack_running)
-		print("  Cooldowns: summon=", can_summon, ", laser=", can_laser, ", teleport=", can_teleport, ", melee=", can_melee)
-		
+		print("  State: taking_damage=", taking_damage, ", attack_running=", attack_running)
+		print("  Health: ", health)
+	
+	# Scale animation speed
 	if anim:
 		anim.speed_scale = Global.global_time_scale
-
+	
+	# Apply gravity
 	if not is_on_floor():
 		velocity.y += gravity * delta
-
-	if taking_damage:
-		print("MAGUS KING: In taking_damage state, health=", health)
-		was_taking_damage = true
-		velocity.x = 0.0
-		
-		if laser_active:
-			_stop_laser()
-			
-		if anim.has_animation("hurt"):
-			anim.play("hurt")
-			print("MAGUS KING: Playing hurt animation")
-			await anim.animation_finished
-			print("MAGUS KING: Hurt animation finished")
-		else:
-			anim.play("idle")
-			print("MAGUS KING: No hurt animation, playing idle")
-			await get_tree().create_timer(0.3).timeout
-
-		move_and_slide()
-		
-		taking_damage = false
-		print("MAGUS KING: taking_damage reset to false")
-		return
-
-	if was_taking_damage:
+	
+	# Update laser position if active
+	if laser_active:
+		var dir := -1 if sprite.flip_h else 1
+		laser_beam.global_position = global_position + Vector2(32 * dir, 10)
+	
+	# Simple state check for was_taking_damage cleanup
+	if was_taking_damage and not taking_damage and not anim.is_playing():
 		print("MAGUS KING: was_taking_damage cleanup")
 		was_taking_damage = false
 		velocity = Vector2.ZERO
-		anim.play("idle")
-
+		if anim.has_animation("idle"):
+			anim.play("idle")
+	
 	move_and_slide()
 
+# Create a separate function for taking damage handling
+func _handle_taking_damage() -> void:
+	print("MAGUS KING: In taking_damage state, health=", health)
+	
+	was_taking_damage = true
+	velocity.x = 0.0
+	
+	if laser_active:
+		_stop_laser()
+	
+	# Play hurt animation
+	if anim.has_animation("hurt"):
+		anim.play("hurt")
+		print("MAGUS KING: Playing hurt animation")
+	else:
+		anim.play("idle")
+		print("MAGUS KING: No hurt animation, playing idle")
+	
+	# Start a timer to end the damage state (instead of await)
+	var hurt_timer = get_tree().create_timer(0.3)
+	hurt_timer.timeout.connect(_end_taking_damage, CONNECT_ONE_SHOT)
+
+func _end_taking_damage() -> void:
+	if not taking_damage:
+		return
+		
+	taking_damage = false
+	was_taking_damage = false
+	velocity = Vector2.ZERO
+	
+	# Reset animation to idle
+	if anim.has_animation("idle"):
+		anim.play("idle")
+	
+	print("MAGUS KING: taking_damage reset to false")
+	
+	# CRITICAL FIX: Always restart the attack decision timer
+	if attack_decision_timer and not dead and ai_active:
+		attack_decision_timer.start()
+		print("MAGUS KING: Attack decision timer RESTARTED after damage")
+	
 func take_damage(amount: int) -> void:
 	print("MAGUS KING: take_damage called with amount=", amount)
 	
-	if dead or invulnerable_during_attack:
-		print("MAGUS KING: Ignoring damage - dead:", dead, " invulnerable:", invulnerable_during_attack)
+	if dead:
+		print("MAGUS KING: Already dead, ignoring damage")
+		return
+	
+	if invulnerable_during_attack:
+		print("MAGUS KING: Ignoring damage - invulnerable during melee attack")
 		return
 	
 	if taking_damage:
 		print("MAGUS KING: Already taking damage, ignoring additional damage")
 		return
 	
+	# Stop any active attacks
 	if laser_active:
 		_stop_laser()
-	
 	
 	health -= amount
 	print("MAGUS KING: Health reduced to ", health)
 	
-	taking_damage = true
-	print("MAGUS KING: taking_damage set to true")
-	
-	attack_running = false
-	is_casting = false
-	is_teleporting = false
-	invulnerable_during_attack = false  # Reset invulnerability if hit
-	
-	velocity = Vector2.ZERO
-	
+	# Check for death BEFORE setting taking_damage state
 	if health <= 0:
 		print("MAGUS KING: Health <= 0, calling _die()")
 		_die()
-
+		return  # CRITICAL: Exit early to avoid setting damage states
+	
+	# Only set damage state if not dead
+	taking_damage = true
+	print("MAGUS KING: taking_damage set to true")
+	
+	# Reset attack states
+	attack_running = false
+	is_casting = false
+	is_teleporting = false
+	invulnerable_during_attack = false
+	
+	velocity = Vector2.ZERO
+	
+	# Stop attack decision timer
+	if attack_decision_timer:
+		attack_decision_timer.stop()
+	
+	# Handle hurt animation
+	_handle_taking_damage()
 # =====================================================
 # MAIN AI LOOP - UPDATED WITH MELEE CONDITION
 # =====================================================
@@ -328,7 +410,7 @@ func _run_ai() -> void:
 				await get_tree().create_timer(0.1).timeout
 			else:
 				# In melee range, check if we should melee attack
-				if can_melee and randf() < 0.3:  # 30% chance to melee when in range
+				if can_melee and randf() < 0.3 and Global.alyra_dead:  # 30% chance to melee when in range
 					print("MAGUS KING: In melee range, attempting melee attack")
 					await _attack_melee()
 				else:
@@ -380,31 +462,41 @@ func _choose_attack(dist_to_player: float) -> void:
 	# Create a list of available attacks
 	var available_attacks = []
 	
-	if can_summon and summon_scene:
+	if can_summon and summon_scene and consecutive_summons < max_consecutive_summons:
 		available_attacks.append("summon")
 	
-	if can_laser and laser_area:
+	if can_laser and laser_beam:
 		available_attacks.append("laser")
 	
-	if can_melee and dist_to_player <= melee_range * 1.5:  # Melee only if close
+	if can_melee and dist_to_player <= melee_range * 1.5 and Global.alyra_dead:  # Melee only if close
 		available_attacks.append("melee")
 	
 	print("MAGUS KING: Available attacks: ", available_attacks)
-	_attack_laser()
-	"""
+
+
 	if available_attacks.size() > 0:
 		# Weighted selection based on distance and cooldowns
 		var selected_attack = ""
 		
-		if dist_to_player <= melee_range and "melee" in available_attacks and randf() < melee_chance:
+		# Reset consecutive summons if we choose a non-summon attack
+		if "summon" in available_attacks and consecutive_summons >= max_consecutive_summons:
+			print("MAGUS KING: Reached max consecutive summons, resetting counter")
+			consecutive_summons = 0
+		
+		if dist_to_player <= melee_range and "melee" in available_attacks and randf() < melee_chance and Global.alyra_dead:
 			selected_attack = "melee"
+			consecutive_summons = 0  # Reset summon counter on melee attack
 		elif "laser" in available_attacks and randf() < laser_chance:
 			selected_attack = "laser"
+			consecutive_summons = 0  # Reset summon counter on laser attack
 		elif "summon" in available_attacks:
 			selected_attack = "summon"
 		else:
 			# Fallback to first available
 			selected_attack = available_attacks[0]
+			if selected_attack != "summon":
+				consecutive_summons = 0  # Reset if fallback isn't summon
+		
 		
 		print("MAGUS KING: Selected ", selected_attack, " attack")
 		
@@ -418,7 +510,7 @@ func _choose_attack(dist_to_player: float) -> void:
 	else:
 		print("MAGUS KING: All attacks unavailable or on cooldown, waiting")
 		await get_tree().create_timer(1.0).timeout
-	"""
+
 	attack_running = false
 	print("MAGUS KING: _choose_attack completed")
 
@@ -446,14 +538,11 @@ func _attack_melee() -> void:
 		print("MAGUS KING: Facing player for melee, dx=", dx)
 	
 	# Play melee animation
-	if anim.has_animation("melee"):
+	if anim.has_animation("melee") and Global.alyra_dead:
 		anim.play("melee")
+
 	else:
-		# Fallback to attack animation if melee doesn't exist
-		if anim.has_animation("attack"):
-			anim.play("attack")
-		else:
-			anim.play("idle")
+		anim.play("idle")
 	
 	# Enable melee hitbox after a brief delay (when the attack would connect)
 	await get_tree().create_timer(0.2).timeout
@@ -497,12 +586,15 @@ func _attack_laser() -> void:
 		print("MAGUS KING: Laser on cooldown, aborting")
 		return
 	
-	invulnerable_during_attack = true
-	is_casting = true
+	attack_running = true
 	can_laser = false
+	casting = true
+	#invulnerable_during_attack = true
+	
 	velocity = Vector2.ZERO
 	
-	print("MAGUS KING: Starting laser attack sequence")
+	# --- PHASE 1: PREPARE (3 seconds) ---
+	print("MAGUS KING: Starting prepare phase (3 seconds)")
 	
 	# Face player
 	if player:
@@ -510,42 +602,77 @@ func _attack_laser() -> void:
 		sprite.flip_h = dx < 0
 		print("MAGUS KING: Facing player for laser, dx=", dx)
 	
-	# Windup animation
-	if anim.has_animation("cast"):
-		anim.play("cast")
-		# Wait for windup part of animation
-		await get_tree().create_timer(laser_windup / Global.global_time_scale).timeout
+	# Play cast_prepare animation
+	if Global.alyra_dead:
+		anim.play("cast_prepare")
 	else:
-		anim.play("idle")
-		await get_tree().create_timer(laser_windup / Global.global_time_scale).timeout
+		anim.play("cast_2")
+
 	
-	if taking_damage or dead:
-		_stop_laser()
-		invulnerable_during_attack = false
-		is_casting = false
+	# Wait 3 seconds for prepare phase
+	await get_tree().create_timer(3.0).timeout
+	
+	if dead:
 		return
 	
-	# START LASER HERE (NOT in animation callback)
-	print("MAGUS KING: Starting laser visuals")
+	# --- PHASE 2: CAST & FIRE LASER ---
+	print("MAGUS KING: Starting cast phase")
+	
+	# Play cast animation
+	if  Global.alyra_dead:
+		anim.play("cast")
+	else:
+		anim.play("cast_2")
+
+	
+	# DON'T reposition the laser - it stays where it was configured
+	# The laser is already positioned relative to the boss in _configure_laser_shape()
+	print("MAGUS KING: Laser position is fixed relative to boss")
+	
+	# FIRE THE LASER
+	print("MAGUS KING: Firing laser!")
 	_start_laser()
 	
-	# Wait for laser duration
-	print("MAGUS KING: Laser active for ", laser_duration, " seconds")
-	await get_tree().create_timer(laser_duration / Global.global_time_scale).timeout
+	# Play laser sprite "crushing" animation
+	if anim_laser:
+		if anim_laser.has_animation("crushing"):
+			anim_laser.play("crushing")
+			print("MAGUS KING: Playing laser crushing animation")
 	
-	# Stop laser
+	# Keep laser active for duration
+	await get_tree().create_timer(2.0).timeout
+	
+	if dead:
+		return
+	
 	print("MAGUS KING: Stopping laser")
 	_stop_laser()
 	
-	# Recovery time
-	await get_tree().create_timer(laser_recovery / Global.global_time_scale).timeout
+	# Stop laser animation
+	if anim_laser and anim_laser.is_playing():
+		anim_laser.stop()
+		print("MAGUS KING: Stopped laser animation")
 	
+	# --- PHASE 3: RECOVERY (3 seconds idle) ---
+	print("MAGUS KING: Starting recovery phase (3 seconds idle)")
+	
+	if anim.has_animation("idle"):
+		anim.play("idle")
+	
+	# Wait 3 seconds recovery
+	await get_tree().create_timer(3.0).timeout
+	
+	if dead:
+		return
+	
+	# --- COOLDOWN & CLEANUP ---
 	laser_timer.start(laser_cooldown)
 	
-	invulnerable_during_attack = false
-	is_casting = false
-	print("MAGUS KING: _attack_laser completed")
-
+	casting = false
+	#invulnerable_during_attack = false
+	attack_running = false
+	print("MAGUS KING: _attack_laser completed - ready to choose next attack/chase player")
+	
 func _do_laser_attack() -> void:
 	print("MAGUS KING: _do_laser_attack called")
 	
@@ -556,42 +683,68 @@ func _do_laser_attack() -> void:
 	laser_active = true
 	
 	# Show laser beam sprite
-	if laser_beam:
-		laser_beam.visible = true
+	if laser_sprite:
+		laser_sprite.visible = true
+		laser_sprite2.visible = true
+		laser_sprite3.visible = true
+		laser_sprite4.visible = true
+		laser_sprite5.visible = true
+		laser_sprite6.visible = true
+		laser_sprite7.visible = true
+		laser_sprite8.visible = true
+		laser_sprite9.visible = true
+		laser_sprite10.visible = true
 		# Adjust laser direction based on sprite flip
-		if sprite.flip_h:
-			laser_beam.scale.x = -abs(laser_beam.scale.x)
-		else:
-			laser_beam.scale.x = abs(laser_beam.scale.x)
+		#if sprite.flip_h:
+		#	laser_sprite.scale.x = -abs(laser_sprite.scale.x)
+		#else:
+		#	laser_sprite.scale.x = abs(laser_sprite.scale.x)
 	
 	# Enable collisions
-	if laser_collision:
-		laser_collision.disabled = false
+	if laser_shape:
+		laser_shape.disabled = false
 	
 	# Legacy laser area support
-	if laser_area:
-		laser_area.monitoring = true
-		if laser_area.has_node("CollisionShape2D"):
-			laser_area.get_node("CollisionShape2D").disabled = false
+	if laser_beam:
+		laser_beam.monitoring = true
+		if laser_beam.has_node("CollisionShape2D"):
+			laser_beam.get_node("CollisionShape2D").disabled = false
 			
 func _stop_laser() -> void:
+	print("MAGUS KING: ===== STOPPING LASER =====")
+	print("  Laser active before stop:", laser_active)
+	
 	if not laser_active:
+		print("MAGUS KING: Laser not active, skipping")
 		return
 	
-	print("MAGUS KING: Stopping laser attack")
 	laser_active = false
 	
-	if laser_beam:
-		laser_beam.visible = false
+	# Hide sprites
+	if laser_sprite:
+		laser_sprite.visible = false
+		laser_sprite2.visible = false
+		laser_sprite3.visible = false
+		laser_sprite4.visible = false
+		laser_sprite5.visible = false
+		laser_sprite6.visible = false
+		laser_sprite7.visible = false
+		laser_sprite8.visible = false
+		laser_sprite9.visible = false
+		laser_sprite10.visible = false
+		print("MAGUS KING: Primary laser sprite hidden")
 	
-	if laser_collision:
-		laser_collision.disabled = true
-	
-	if laser_area:
-		laser_area.monitoring = false
-		if laser_area.has_node("CollisionShape2D"):
-			laser_area.get_node("CollisionShape2D").disabled = true
 
+	
+	# Disable collision
+	if laser_shape:
+		laser_shape.disabled = true
+		print("MAGUS KING: Laser collision shape disabled")
+	
+	# Disable area monitoring
+	if laser_beam:
+		laser_beam.monitoring = false
+		print("MAGUS KING: Laser beam monitoring disabled")
 # =====================================================
 # SUMMON ATTACK - UNCHANGED
 # =====================================================
@@ -623,10 +776,18 @@ func _attack_summon() -> void:
 		await get_tree().create_timer(1.0).timeout
 	
 	_do_summon()
-	
+	consecutive_summons += 1
 	summon_timer.start(summon_cooldown)
 	
 	is_casting = false
+	print("MAGUS KING: Adding post-summon idle time of ", post_summon_idle_time, " seconds")
+	
+	if anim.has_animation("idle"):
+		anim.play("idle")
+	
+	await get_tree().create_timer(post_summon_idle_time).timeout
+	
+	
 	print("MAGUS KING: _attack_summon completed")
 
 func _do_summon() -> void:
@@ -761,7 +922,7 @@ func _chase_player() -> void:
 	var dx := player.global_position.x - global_position.x
 	var dist = abs(dx)
 	
-	if dist > melee_range:
+	if dist > chase_range:
 		var chase_dir = sign(dx) if dx != 0 else dir.x
 		dir.x = chase_dir
 		
@@ -803,24 +964,56 @@ func _on_hurtbox_body_entered(body: Node2D) -> void:
 # DEATH
 # =====================================================
 func _die() -> void:
+	print("MAGUS KING: _die() called - Starting death sequence")
+	
+	# Set death state immediately
 	dead = true
 	ai_active = false
 	velocity = Vector2.ZERO
 	
-	print("MAGUS KING: Died!")
+	# Stop all attacks and states
+	attack_running = false
+	is_casting = false
+	is_teleporting = false
+	taking_damage = false
+	was_taking_damage = false
 	
-	if attack_decision_timer:
-		attack_decision_timer.stop()
+	print("MAGUS KING: All states reset, health=", health)
 	
 	# Stop any active attacks
-	_stop_laser()
+	if laser_active:
+		_stop_laser()
+	
 	if melee_hitbox:
 		melee_hitbox.monitoring = false
 	
-	if anim.has_animation("die"):
-		anim.play("die")
-		await anim.animation_finished
+	# Stop all timers
+	if attack_decision_timer:
+		attack_decision_timer.stop()
+	if summon_timer:
+		summon_timer.stop()
+	if laser_timer:
+		laser_timer.stop()
+	if teleport_timer:
+		teleport_timer.stop()
+	if melee_timer:
+		melee_timer.stop()
 	
+	print("MAGUS KING: All timers stopped")
+	
+	# Play death animation if available
+	if anim.has_animation("die"):
+		print("MAGUS KING: Playing death animation")
+		anim.play("die")
+		# Use signal instead of await
+		await anim.animation_finished
+		print("MAGUS KING: Death animation finished")
+	else:
+		print("MAGUS KING: No death animation, waiting briefly")
+		await get_tree().create_timer(0.5).timeout
+	
+	# Emit signal and queue free
+	print("MAGUS KING: Emitting boss_died signal and queue_free")
 	emit_signal("boss_died")
 	queue_free()
 
@@ -864,46 +1057,98 @@ func _in_melee_range() -> bool:
 		print("MAGUS KING: _in_melee_range check - dist:", dist, " melee_range:", melee_range, " result:", in_range)
 	
 	return in_range
-	
-func _on_laser_start_frame() -> void:
-	print("MAGUS KING: Laser start frame triggered from animation")
-	#_start_laser()
-
-func _on_laser_end_frame() -> void:
-	print("MAGUS KING: Laser end frame triggered from animation")
-	#_stop_laser()
 
 func _start_laser() -> void:
-	print("MAGUS KING: Starting laser visuals and damage")
+	print("MAGUS KING: ===== STARTING LASER =====")
+	print("  Laser active before start:", laser_active)
 	
-	if laser_active:  # Don't start if already active
+	if laser_active:
+		print("MAGUS KING: Laser already active, skipping")
 		return
 	
 	laser_active = true
 	
-	# Show laser beam sprite
+	# Show laser sprites
+	if laser_sprite:
+		laser_sprite.visible = true
+		laser_sprite2.visible = true
+		laser_sprite3.visible = true
+		laser_sprite4.visible = true
+		laser_sprite5.visible = true
+		laser_sprite6.visible = true
+		laser_sprite7.visible = true
+		laser_sprite8.visible = true
+		laser_sprite9.visible = true
+		laser_sprite10.visible = true
+		print("MAGUS KING: Primary laser sprite visible")
+
+	
+	# Enable collision
+	if laser_shape:
+		laser_shape.disabled = false
+		print("MAGUS KING: Laser collision shape enabled")
+	
+	# Enable area monitoring
 	if laser_beam:
-		laser_beam.visible = true
-		# Adjust laser direction based on sprite flip
-		if sprite.flip_h:
-			laser_beam.scale.x = -abs(laser_beam.scale.x)
-		else:
-			laser_beam.scale.x = abs(laser_beam.scale.x)
-		print("MAGUS KING: Laser beam visible: ", laser_beam.visible)
-	
-	# Enable collisions
-	if laser_collision:
-		laser_collision.disabled = false
-		print("MAGUS KING: Laser collision enabled")
-	
-	# Legacy laser area support
-	if laser_area:
-		laser_area.monitoring = true
-		if laser_area.has_node("CollisionShape2D"):
-			laser_area.get_node("CollisionShape2D").disabled = false
-		print("MAGUS KING: Laser area monitoring enabled")
+		laser_beam.monitoring = true
+		print("MAGUS KING: Laser beam monitoring enabled")
 		
 func _on_laser_duration_timeout() -> void:
 	print("MAGUS KING: Laser duration ended")
 	_stop_laser()
 
+func _update_laser_direction() -> void:
+	if not player:
+		return
+
+	sprite.flip_h = player.global_position.x < global_position.x
+
+func _on_laser_body_entered(body: Node) -> void:
+	if dead:
+		return
+
+	if body.is_in_group("player"):
+		print("MAGUS KING: Laser hit player")
+		body.take_damage(laser_damage)
+
+func _configure_laser_shape():
+	var rect := RectangleShape2D.new()
+	rect.size = Vector2(platform_width, 80) # 500px wide, adjust height if needed
+	laser_shape.shape = rect
+	print("MAGUS KING: Laser shape configured to platform width: ", platform_width)
+	if laser_beam:
+		# Position it at the boss position initially
+		laser_beam.position = Vector2(0, 10)  # Relative to boss
+		print("MAGUS KING: Laser beam positioned relative to boss")
+		
+func _on_laser_hit(body):
+	if body.is_in_group("player"):
+		body.take_damage(laser_damage)
+
+
+func _select_sprite_by_route() -> void:
+	if not Global.alyra_dead:
+		sprite.texture = preload("res://assets_image/Characters/Zach/Zach-Sheet.png")
+	else:
+		sprite.texture = preload("res://assets_image/Characters/Varek/VarekBossKing-Sheet.png")
+
+func _on_animation_finished(anim_name: String) -> void:
+	print("MAGUS KING: Animation finished: ", anim_name)
+	
+	# If hurt animation finished and we're still alive
+	if anim_name == "hurt" and taking_damage and not dead:
+		print("MAGUS KING: Hurt animation naturally finished")
+		taking_damage = false
+		was_taking_damage = false
+		velocity = Vector2.ZERO
+		
+		# Resume attack decision timer
+		if attack_decision_timer and not dead and ai_active:
+			attack_decision_timer.start()
+			print("MAGUS KING: Attack decision timer RESTARTED after hurt animation")
+	
+	# If death animation finished, queue free
+	elif anim_name == "die" and dead:
+		print("MAGUS KING: Death animation finished, emitting signal")
+		emit_signal("boss_died")
+		queue_free()

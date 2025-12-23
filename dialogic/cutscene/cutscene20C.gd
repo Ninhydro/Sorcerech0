@@ -53,7 +53,8 @@ func _on_body_entered(body: Node) -> void:
 	player_in_range = body
 	if _can_start_cutscene():
 		_start_intro_cutscene()
-
+	
+	health_timer.start()
 # ---------------------------------------------------------
 func _can_start_cutscene() -> bool:
 	return (

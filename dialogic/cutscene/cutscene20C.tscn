@@ -135,7 +135,7 @@ zoom = Vector2(0.6, 0.6)
 [node name="npc2" type="Sprite2D" parent="."]
 
 [node name="HealthSpawnMarker" type="Marker2D" parent="."]
-position = Vector2(-15, -106)
+position = Vector2(-47, -106)
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
 position = Vector2(49, -2)
