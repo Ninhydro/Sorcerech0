@@ -20,8 +20,7 @@ func _ready():
 func _process(delta):
 	if is_moving:
 		move_door(delta)
-	if $AnimationPlayer:
-		$AnimationPlayer.speed_scale = Global.global_time_scale
+
 
 func open_door():
 	"""Called by button to open the door"""

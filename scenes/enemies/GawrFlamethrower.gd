@@ -13,8 +13,8 @@ class_name GawrFlamethrower
 @export var flip_h: bool = false              # Controls the direction the enemy faces
 
 # --- Attack timing settings ---
-@export var min_attack_interval: float = 5.0   # Minimum seconds between attacks
-@export var max_attack_interval: float = 30.0  # Maximum seconds between attacks
+@export var min_attack_interval: float = 1.0   # Minimum seconds between attacks
+@export var max_attack_interval: float = 5.0  # Maximum seconds between attacks
 @export var forced_idle_time: float = 10.0     # Minimum idle time after attacking
 
 # --- Collider grow / slide settings ---

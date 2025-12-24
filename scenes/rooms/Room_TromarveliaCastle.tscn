@@ -83,17 +83,8 @@ vframes = 3
 frame = 2
 metadata/_edit_lock_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Background"]
-visible = false
-position = Vector2(88, -240)
-scale = Vector2(1.1125, 1.18)
-texture = ExtResource("4_pgvmx")
-vframes = 4
-frame = 2
-metadata/_edit_lock_ = true
-
 [node name="GawrFlamethrower" parent="Background" instance=ExtResource("8_vl1ak")]
-position = Vector2(-564, -166)
+position = Vector2(-569, -166)
 scale = Vector2(0.6, 0.65)
 flip_h = true
 

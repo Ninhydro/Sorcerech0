@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://m8uimlsn78fh"]
+[gd_scene load_steps=7 format=3 uid="uid://cgpas5hbenrwf"]
 
-[ext_resource type="Script" path="res://scenes/enemies/Projectile.gd" id="1_ljsfk"]
-[ext_resource type="Texture2D" uid="uid://divyak7nalilb" path="res://assets_image/placeholder/Props Items and VFX/fireball/spritesheet.png" id="2_hca3g"]
+[ext_resource type="Script" path="res://scenes/enemies/LuxRocket.gd" id="1_v8myj"]
+[ext_resource type="Texture2D" uid="uid://bmocxh6l1yg8u" path="res://assets_image/Objects/bullet.png" id="2_7xlx6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ap75k"]
+radius = 16.0
 
 [sub_resource type="Animation" id="Animation_g72pb"]
 length = 0.001
@@ -45,13 +46,13 @@ _data = {
 
 [node name="Projectile" type="Area2D"]
 collision_layer = 12
-script = ExtResource("1_ljsfk")
+script = ExtResource("1_v8myj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ap75k")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_hca3g")
+texture = ExtResource("2_7xlx6")
 hframes = 5
 
 [node name="Timer" type="Timer" parent="."]

@@ -70,7 +70,7 @@ func _can_start_cutscene() -> bool:
 func _start_intro_cutscene() -> void:
 	if health_timer:
 		health_timer.start()
-		print("TIMERRRRRRRRRRRRR")
+		#print("TIMERRRRRRRRRRRRR")
 	battle_active = true
 	battle_cancelled_on_player_death = false
 	Global.is_cutscene_active = true

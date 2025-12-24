@@ -202,6 +202,7 @@ func _ready():
 	#Global.affinity -= 5
 	#Global.affinity += 10
 	#Global.reset_persistent()
+	Global.route_status = "True"
 	camera.zoom = Vector2(0.8,0.8)
 	camera.position = Vector2(0,-40)
 	jump_force = 250.0
@@ -315,8 +316,8 @@ func _physics_process(delta):
 	#print(Global.global_time_scale)
 	#Global.timeline = 11
 	#print(Global.timeline)
-	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
-		print("Player World Position: ", global_position)
+	
+		
 		#Global.killing =  !Global.killing
 		#print(Global.killing)
 	
@@ -368,7 +369,9 @@ func _physics_process(delta):
 				  telekinesis_enabled or is_grabbing_ledge or area_goal_locked or
 				  Global.attacking or Global.is_dialog_open or Global.teleporting)
 	
-
+	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
+		print("Player World Position: ", global_position)
+		print("busy: ", is_busy)
 
 
 	# --- Player Input and Movement (Only if NOT busy and NOT dead) ---

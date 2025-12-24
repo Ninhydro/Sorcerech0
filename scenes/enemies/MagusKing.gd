@@ -97,7 +97,14 @@ var  casting = false
 #var laser_duration_timer: Timer  # ADDED: For laser duration
 @export var platform_width := 2000.0  # Adjust based on your actual platform width
 @export var max_summons_in_field := 3 
+var idle_time := 0.0
 
+var consecutive_hits := 0
+var max_consecutive_hits_before_teleport := 2
+var is_evading := false
+var evade_idle_time := 5.0
+var last_hit_time := 0.0
+var hit_reset_time := 3.0  # Reset consecutive hits after 3 seconds
 
 # =====================================================
 # READY - UPDATED WITH MELEE SETUP
@@ -106,6 +113,11 @@ func _ready() -> void:
 	#Global.gawr_dead = true
 	#Global.alyra_dead = false
 	super._ready()
+	
+	if Global.alyra_dead == true:
+		melee_chance = 0.5
+	elif Global.alyra_dead == false:
+		melee_chance = 0.0
 	
 	add_to_group("boss")
 	_select_sprite_by_route() 
@@ -236,7 +248,18 @@ func _process(delta: float) -> void:
 	
 	if dead:
 		return
-		
+	
+	if not attack_running and not taking_damage and not is_casting and not is_teleporting:
+		# Check if we've been idle too long
+		if velocity.length() < 1.0 and anim.current_animation == "idle":
+			idle_time += delta
+			if idle_time > 3.0:  # 3 seconds of doing nothing
+				print("MAGUS KING: Stuck idle for too long, forcing action!")
+				_wake_up_from_idle()
+				idle_time = 0
+		else:
+			idle_time = 0
+			
 	debug_frame_count += 1
 	if debug_frame_count % 60 == 0:
 		print("MAGUS KING: Frame ", debug_frame_count, ", AI active=", ai_active, ", dead=", dead)
@@ -323,6 +346,24 @@ func take_damage(amount: int) -> void:
 		print("MAGUS KING: Already taking damage, ignoring additional damage")
 		return
 	
+	# Track consecutive hits
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if current_time - last_hit_time > hit_reset_time:
+		# Reset if too much time has passed between hits
+		consecutive_hits = 1
+	else:
+		consecutive_hits += 1
+	
+	last_hit_time = current_time
+	print("MAGUS KING: Consecutive hits: ", consecutive_hits)
+	
+	# Check if we should evade (teleport to random platform)
+	if consecutive_hits >= max_consecutive_hits_before_teleport and not is_evading:
+		print("MAGUS KING: 2 consecutive hits! Triggering evade teleport")
+		consecutive_hits = 0  # Reset counter
+		_evade_to_random_platform()
+		return  # Exit early - damage will be handled in the evade function
+		
 	# Stop any active attacks
 	if laser_active:
 		_stop_laser()
@@ -387,7 +428,7 @@ func _run_ai() -> void:
 			print("  is_casting: ", is_casting)
 			print("  is_teleporting: ", is_teleporting)
 		
-		if taking_damage or attack_running or is_casting or is_teleporting:
+		if taking_damage or attack_running or is_casting or is_teleporting or is_evading:
 			if debug_frame_count % 180 == 0:
 				print("MAGUS KING: AI Loop - Skipping due to active state")
 			continue
@@ -445,7 +486,7 @@ func _run_ai() -> void:
 func _on_attack_decision_timeout() -> void:
 	print("MAGUS KING: _on_attack_decision_timeout triggered")
 	
-	if dead or taking_damage or attack_running or is_casting or is_teleporting or not player:
+	if dead or taking_damage or attack_running or is_casting or is_teleporting or is_evading or not player:
 		return
 	
 	var dist_to_player = global_position.distance_to(player.global_position)
@@ -612,7 +653,7 @@ func _attack_laser() -> void:
 	
 	# --- PHASE 1: PREPARE (3 seconds) ---
 	print("MAGUS KING: Starting prepare phase (3 seconds)")
-	
+	invulnerable_during_attack = true
 	# Face player
 	if player:
 		var dx = player.global_position.x - global_position.x
@@ -668,7 +709,7 @@ func _attack_laser() -> void:
 	
 	print("MAGUS KING: Stopping laser")
 	_stop_laser()
-	
+	invulnerable_during_attack = false
 	# Stop laser animation
 	if anim_laser and anim_laser.is_playing():
 		anim_laser.stop()
@@ -869,6 +910,14 @@ func _should_teleport() -> bool:
 	if not current_platform or not target_platform or not player:
 		return false
 	
+	# Don't teleport while evading
+	if is_evading:
+		return false
+	
+	# Don't teleport while in middle of other actions
+	if attack_running or is_casting or taking_damage:
+		return false
+		
 	var player_on_different_platform = (target_platform != current_platform)
 	
 	if debug_frame_count % 120 == 0:
@@ -1338,3 +1387,109 @@ func _count_summons_in_field() -> int:
 				count += 1
 	
 	return count
+
+func _wake_up_from_idle() -> void:
+	print("MAGUS KING: Waking up from idle state!")
+	_reset_attack_states()
+	
+	# Force restart AI loop
+	if attack_decision_timer and not attack_decision_timer.is_stopped():
+		attack_decision_timer.stop()
+	
+	if not dead and ai_active:
+		attack_decision_timer.start()
+		print("MAGUS KING: AI restarted")
+		
+func _reset_attack_states() -> void:
+	attack_running = false
+	is_casting = false
+	is_teleporting = false
+	invulnerable_during_attack = false
+	# Ensure we're not stuck in any animation
+	if anim and anim.has_animation("idle") and not anim.is_playing():
+		anim.play("idle")
+		
+func _evade_to_random_platform() -> void:
+	print("MAGUS KING: _evade_to_random_platform() called")
+	
+	if dead or is_evading or not platforms_set:
+		print("MAGUS KING: Cannot evade - dead=", dead, " is_evading=", is_evading, " platforms_set=", platforms_set)
+		return
+	
+	is_evading = true
+	attack_running = true  # Prevent other attacks during evade
+	
+	# Stop any active attacks
+	if laser_active:
+		_stop_laser()
+	
+	# Stop timers
+	if attack_decision_timer:
+		attack_decision_timer.stop()
+	
+	print("MAGUS KING: Selecting random platform to evade to...")
+	
+	# Get all available platforms
+	var available_platforms = []
+	if platform_low:
+		available_platforms.append(platform_low)
+	if platform_mid:
+		available_platforms.append(platform_mid)
+	if platform_high:
+		available_platforms.append(platform_high)
+	
+	# Remove current platform from available options
+	available_platforms.erase(current_platform)
+	
+	if available_platforms.size() == 0:
+		print("MAGUS KING: No other platforms available to evade to!")
+		is_evading = false
+		attack_running = false
+		return
+	
+	# Select random platform
+	var random_index = randi() % available_platforms.size()
+	var target_platform_evade = available_platforms[random_index]
+	
+	print("MAGUS KING: Evading from ", current_platform.name, " to ", target_platform_evade.name)
+	
+	# Set as target platform for teleport function
+	target_platform = target_platform_evade
+	
+	# Force teleport (bypass cooldowns)
+	can_teleport = true
+	await _teleport_to_player_platform()  # This will use the target_platform we just set
+	
+	print("MAGUS KING: Evade teleport complete, starting idle period")
+	
+	# Play idle animation
+	if anim.has_animation("idle"):
+		anim.play("idle")
+	
+	# Stay idle for 5 seconds
+	await get_tree().create_timer(evade_idle_time / Global.global_time_scale).timeout
+	
+	if dead:
+		return
+	
+	print("MAGUS KING: Evade idle period ended, returning to normal behavior")
+	
+	# Reset states
+	is_evading = false
+	attack_running = false
+	
+	# Restart attack decision timer
+	if attack_decision_timer and not dead and ai_active:
+		attack_decision_timer.start()
+		print("MAGUS KING: Attack decision timer restarted after evade")
+	
+	# Reset consecutive hits
+	consecutive_hits = 0
+	print("MAGUS KING: Evade sequence completed, returning to normal AI")
+	
+func _reset_evade_state() -> void:
+		"""Call this if you need to manually reset the evade state"""
+		is_evading = false
+		consecutive_hits = 0
+		print("MAGUS KING: Evade state reset")
+	

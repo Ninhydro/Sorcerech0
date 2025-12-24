@@ -29,8 +29,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if is_moving:
 		_move_door(delta)
-	if $AnimationPlayer:
-		$AnimationPlayer.speed_scale = Global.global_time_scale
+
 
 # Called by buttons when they become pressed (first time)
 func register_button_pressed() -> void:

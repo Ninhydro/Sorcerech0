@@ -225,20 +225,20 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1jbmk"]
-size = Vector2(183.125, 110)
+size = Vector2(430, 190)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_q4qgy"]
-radius = 130.384
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mogvl"]
+size = Vector2(430, 140)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gi4j1"]
-size = Vector2(140, 80.0001)
+size = Vector2(230.001, 185)
 
 [node name="GawrFlamethrower" type="CharacterBody2D"]
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_gess4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-12, 37)
+position = Vector2(-70, 10)
 shape = SubResource("CircleShape2D_x4xjq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -253,8 +253,8 @@ libraries = {
 }
 
 [node name="FlameSprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(20, -30)
-scale = Vector2(1.5, 1.5)
+position = Vector2(-70, -20)
+scale = Vector2(1.79688, 1.5)
 sprite_frames = SubResource("SpriteFrames_gcusq")
 animation = &"cycle"
 centered = false
@@ -263,21 +263,22 @@ offset = Vector2(0, -12)
 [node name="FlameArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FlameArea"]
-position = Vector2(120, 50)
+position = Vector2(-15, 54.9999)
+scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_1jbmk")
 
 [node name="DetectionArea" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
-position = Vector2(-20, 60)
-shape = SubResource("CircleShape2D_q4qgy")
+position = Vector2(105, 60)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_mogvl")
 
 [node name="TrackingTimer" type="Timer" parent="."]
 
 [node name="FlameCollider" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FlameCollider"]
-position = Vector2(100, 50)
-scale = Vector2(0.999999, 0.999999)
+position = Vector2(-225, 39.9999)
+scale = Vector2(0.999998, 0.999998)
 shape = SubResource("RectangleShape2D_gi4j1")
