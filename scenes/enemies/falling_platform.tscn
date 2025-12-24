@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://fn7qpwx5p80l"]
+
+[ext_resource type="Script" path="res://scenes/enemies/falling_platform.gd" id="1_8r168"]
+[ext_resource type="Texture2D" uid="uid://xhuq8u782nf3" path="res://assets_image/Objects/object2.png" id="2_bfch3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6buaw"]
+size = Vector2(30, 4)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7n7rq"]
+radius = 12.0
+height = 36.0
+
+[node name="fallingplatform" type="CharacterBody2D"]
+z_index = 1
+scale = Vector2(2, 1)
+collision_layer = 3
+collision_mask = 7
+script = ExtResource("1_8r168")
+lifetime = 4.5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 0.588235, 1, 1)
+position = Vector2(0, 16)
+scale = Vector2(-0.6, -0.6)
+texture = ExtResource("2_bfch3")
+
+[node name="PlatformCollision" type="CollisionShape2D" parent="."]
+position = Vector2(1, -2)
+shape = SubResource("RectangleShape2D_6buaw")
+
+[node name="SpikeHitbox" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpikeHitbox"]
+position = Vector2(0, 17)
+shape = SubResource("CapsuleShape2D_7n7rq")
+
+[node name="ResetTimer" type="Timer" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="." groups=["lux_jump_marker"]]
+position = Vector2(4, -8)

@@ -41,6 +41,9 @@ var battle_active := false
 var battle_cancelled := false
 var has_been_triggered := false
 var current_health_pickup: Node2D = null
+
+var platform_spawner: FallingPlatformSpawner
+
 # ---------------------------------------------------------
 # READY
 # ---------------------------------------------------------
@@ -144,6 +147,8 @@ func _on_intro_finished(_name = ""):
 # BOSS SPAWN
 # ---------------------------------------------------------
 func _spawn_boss() -> void:
+	
+	
 	Global.is_cutscene_active = false
 
 	Global.health = Global.health_max
@@ -163,6 +168,30 @@ func _spawn_boss() -> void:
 		boss_instance.reset_for_battle()
 
 	health_timer.start()
+	
+	var all_spawners = get_tree().get_nodes_in_group("falling_platform_spawner")
+	print("=== BOSS: Found ", all_spawners.size(), " platform spawners ===")
+	
+	# Configure each spawner with different delays
+	var delay = 0.0
+	for i in range(all_spawners.size()):
+		var spawner = all_spawners[i]
+		spawner.spawner_id = "Spawner" + str(i+1)
+		spawner.start_delay = delay
+		delay += 1.0  # Stagger starts by 1 second each
+		
+		print("Starting ", spawner.spawner_id, " with delay: ", spawner.start_delay, "s")
+		spawner.start_spawning()
+	
+	print("=== BOSS: All spawners started ===")
+	
+	# Test timers after 10 seconds
+	await get_tree().create_timer(10.0).timeout
+	print("=== BOSS: Testing timers after 10 seconds ===")
+	for spawner in all_spawners:
+		spawner.test_timer()
+
+
 	
 # ---------------------------------------------------------
 # BOSS DEFEATED

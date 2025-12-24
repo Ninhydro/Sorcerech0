@@ -51,6 +51,9 @@ var teleport_cooldown := 0.0  # NEW: Cooldown between teleports
 @onready var rocket_spawn := $RocketSpawn if has_node("RocketSpawn") else $Sprite2D
 @onready var melee_hitbox: Area2D = $MeleeHitbox if has_node("MeleeHitbox") else null
 
+var marker_refresh_timer := 0.0
+@export var marker_refresh_interval := 1.0  # Refresh markers every 1 second
+
 # -------------------------------------------------
 # READY & INITIALIZATION
 # -------------------------------------------------
@@ -104,6 +107,21 @@ func _process(delta):
 	# Update teleport cooldown
 	if teleport_cooldown > 0:
 		teleport_cooldown -= delta * Global.global_time_scale
+		if Engine.get_process_frames() % 60 == 0:  # Print every second at 60 FPS
+			print("LuxBoss: Teleport cooldown: ", teleport_cooldown)
+	
+	# Periodically refresh jump markers
+	marker_refresh_timer -= delta
+	if marker_refresh_timer <= 0:
+		marker_refresh_timer = marker_refresh_interval
+		refresh_jump_markers()
+		
+	# SAFETY CHECK: Reset boss_attacking if animation is done but state is stuck
+	if boss_attacking and not animation_player.is_playing():
+		var current_anim = animation_player.current_animation
+		if current_anim not in ["melee", "rocket", "jump"]:
+			print("LuxBoss: Safety reset - boss_attacking stuck true but no attack animation playing")
+			boss_attacking = false
 	
 	# Handle shield activation delay
 	if has_taken_first_hit and not shield_active and shield_activation_timer > 0:
@@ -125,7 +143,7 @@ func _process(delta):
 			can_fire_rocket = true
 	
 	# Random rocket attack - MORE FREQUENT
-	if (can_fire_rocket and player and not dead and not taking_damage 
+	if (can_fire_rocket and player and is_instance_valid(player) and not dead and not taking_damage 
 		and not shield_active and not boss_attacking and not is_dealing_damage):
 		var distance = global_position.distance_to(player.global_position)
 		# Increased chance for rocket attack
@@ -269,7 +287,27 @@ func move(delta):
 	if player and not dead and not taking_damage:
 		var distance = global_position.distance_to(player.global_position)
 		
-		# If player is within chase range but outside melee range, chase them
+		# If player is outside chase range, use base enemy movement
+		if distance > chase_range:
+			super.move(delta)
+			return
+		
+		# If player is between min_chase_distance and melee_range, STAY IDLE
+		# This is the key fix - prevent glitching in the "medium range"
+		if distance > melee_range and distance <= min_chase_distance:
+			velocity.x = 0
+			is_roaming = false
+			
+			# Still face the player
+			var dx = player.global_position.x - global_position.x
+			dir.x = sign(dx)
+			
+			if Engine.get_process_frames() % 60 == 0:
+				print("LuxBoss: In medium range - staying idle | Distance: ", distance)
+			
+			return
+		
+		# If player is within chase range but outside min_chase_distance, chase them
 		if distance > min_chase_distance and distance <= chase_range:
 			# Face player
 			var dx = player.global_position.x - global_position.x
@@ -284,8 +322,8 @@ func move(delta):
 				print("LuxBoss: Chasing | Distance: ", distance, " | Velocity.x: ", velocity.x, " | Speed: ", base_speed)
 			
 			return
-		# If player is too close, back up a bit
-		elif distance < min_chase_distance:
+		# If player is too close (within melee range), back up a bit
+		elif distance <= melee_range:
 			var dx = player.global_position.x - global_position.x
 			dir.x = -sign(dx)  # Move away from player
 			velocity.x = dir.x * base_speed * 0.5  # Slower when backing up
@@ -296,7 +334,7 @@ func move(delta):
 			
 			return
 	
-	# If player is too far or not visible, use base enemy movement
+	# If no conditions met, use base enemy movement
 	super.move(delta)
 
 # -------------------------------------------------
@@ -360,11 +398,17 @@ func _do_melee_attack():
 	
 	# Finish attack
 	await animation_player.animation_finished
+	
+	# RESET STATES IMMEDIATELY
 	boss_attacking = false
 	is_dealing_damage = false
 	
+	# Force animation update
+	handle_animation()
+	
 	# Start cooldown
 	attack_cooldown_timer.start(attack_cooldown)
+
 
 func _start_rocket_attack():
 	if boss_attacking or not can_fire_rocket:
@@ -402,10 +446,15 @@ func _start_rocket_attack():
 	# Return to idle
 	animation_player.play("idle")
 	
-	# Cooldown
-	rocket_cooldown_timer = rocket_attack_cooldown
+	# RESET STATES IMMEDIATELY
 	boss_attacking = false
 	is_roaming = true
+	
+	# Force animation update
+	handle_animation()
+	
+	# Cooldown
+	rocket_cooldown_timer = rocket_attack_cooldown
 
 func _fire_single_rocket():
 	if rocket_scene and player:
@@ -444,24 +493,52 @@ func _fire_single_rocket():
 # TELEPORT JUMP SYSTEM
 # -------------------------------------------------
 func _should_jump() -> bool:
-	if jump_markers.is_empty() or not player or boss_attacking:
+	if not player or not is_instance_valid(player):
+		return false
+	
+	# Clean up invalid markers first
+	cleanup_jump_markers()
+	
+	if jump_markers.is_empty():
+		print("LuxBoss DEBUG: No jump markers available (empty array)")
+		return false
+	
+	if boss_attacking:
+		print("LuxBoss DEBUG: Can't jump - boss is attacking")
 		return false
 	
 	# Don't teleport if on cooldown
 	if teleport_cooldown > 0:
+		print("LuxBoss DEBUG: Can't jump - teleport cooldown: ", teleport_cooldown)
 		return false
 	
 	# Only jump when player is within trigger range AND boss is too far for melee
 	var distance_to_player = global_position.distance_to(player.global_position)
 	
+	print("LuxBoss DEBUG: Checking jump - distance to player: ", distance_to_player, 
+		  " | melee_range: ", melee_range, " | condition: distance > 200 (", distance_to_player > 200, 
+		  ") OR distance <= melee_range (", distance_to_player <= melee_range, ")")
+	
 	# Only teleport if player is far enough away (outside easy chase range)
 	if distance_to_player > 200 or distance_to_player <= melee_range:
+		print("LuxBoss DEBUG: Distance condition failed - won't teleport")
 		return false
 	
+	print("LuxBoss DEBUG: Distance OK, checking ", jump_markers.size(), " markers...")
+	
 	# Check if player is near any jump marker AND boss is not already near that marker
-	for marker in jump_markers:
+	for i in range(jump_markers.size()):
+		var marker = jump_markers[i]
+		# Check if marker is still valid
+		if not is_instance_valid(marker):
+			print("LuxBoss DEBUG: Marker ", i, " is invalid")
+			continue
+		
 		var distance_to_marker = marker.global_position.distance_to(player.global_position)
 		var boss_to_marker = marker.global_position.distance_to(global_position)
+		
+		print("LuxBoss DEBUG: Marker ", i, " - player distance: ", distance_to_marker, 
+			  " (needs < 120) | boss distance: ", boss_to_marker, " (needs > 50)")
 		
 		# Only teleport if:
 		# 1. Player is near marker (within 120 pixels)
@@ -470,8 +547,15 @@ func _should_jump() -> bool:
 		if (distance_to_marker < 120 and 
 			boss_to_marker > 50 and
 			boss_to_marker > distance_to_marker):
+			print("LuxBoss DEBUG: ✓ Found valid marker at index ", i)
 			return true
+		else:
+			print("LuxBoss DEBUG: ✗ Marker ", i, " failed: ", 
+				  "player_near=", distance_to_marker < 120,
+				  " boss_far=", boss_to_marker > 50,
+				  " gets_closer=", boss_to_marker > distance_to_marker)
 	
+	print("LuxBoss DEBUG: No valid markers found")
 	return false
 
 
@@ -487,7 +571,14 @@ func _jump_to_best_marker():
 	var best_marker: Marker2D = null
 	var best_score = -INF
 	
+	# Clean up invalid markers first
+	cleanup_jump_markers()
+	
 	for marker in jump_markers:
+		# Check if marker is still valid
+		if not is_instance_valid(marker):
+			continue
+		
 		var distance_to_player = marker.global_position.distance_to(player.global_position)
 		var distance_to_boss = marker.global_position.distance_to(global_position)
 		
@@ -544,14 +635,40 @@ func _jump_to_best_marker():
 	collision_layer = 3
 	collision_mask = 3
 	
-	# Finish animation
-	animation_player.play("idle")
+	# RESET STATES IMMEDIATELY
 	boss_attacking = false
 	is_roaming = true
+	
+	# Force animation update
+	handle_animation()
 	
 	# Debug: Log teleport completion
 	print("LuxBoss: Teleport complete! Cooldown: ", teleport_cooldown_time, " seconds")
 
+# Add this helper function to clean up invalid markers
+func cleanup_jump_markers():
+	var valid_markers: Array[Marker2D] = []
+	for marker in jump_markers:
+		if is_instance_valid(marker):
+			valid_markers.append(marker)
+	jump_markers = valid_markers
+	
+func refresh_jump_markers():
+	# Get all jump markers currently in the scene
+	var jump_marker_nodes = get_tree().get_nodes_in_group("lux_jump_marker")
+	var new_markers: Array[Marker2D] = []
+	
+	for node in jump_marker_nodes:
+		if node is Marker2D and is_instance_valid(node):
+			new_markers.append(node)
+	
+	jump_markers = new_markers
+	print("LuxBoss: Refreshed jump markers - found ", jump_markers.size(), " markers")
+	
+	# If we have no markers, print a warning
+	if jump_markers.is_empty():
+		print("LuxBoss WARNING: No jump markers found in scene! Make sure platforms have markers in 'lux_jump_marker' group.")
+		
 # -------------------------------------------------
 # ANIMATION HANDLING
 # -------------------------------------------------
@@ -566,13 +683,17 @@ func handle_animation():
 	elif shield_active:
 		new_animation = "shield"
 	elif boss_attacking or is_dealing_damage:
-		# Keep attack animations
+		# Keep attack animations ONLY if currently playing one
 		if animation_player.current_animation in ["melee", "rocket", "jump"]:
-			return
+			return  # Let attack animation continue
 		else:
-			new_animation = "idle"
+			# Attack state but no attack animation playing - check movement
+			if abs(velocity.x) > 0.1:
+				new_animation = "walk"
+			else:
+				new_animation = "idle"
 	else:
-		# SIMPLE MOVEMENT CHECK: Walk if moving, idle if not
+		# NORMAL STATE: Walk if moving, idle if not
 		if abs(velocity.x) > 0.1:  # Any movement at all
 			new_animation = "walk"
 		else:
@@ -602,6 +723,8 @@ func handle_animation():
 		if new_animation == "hurt":
 			await get_tree().create_timer(0.5).timeout
 			taking_damage = false
+			# Force animation update after hurt
+			handle_animation()
 		elif new_animation == "die":
 			await animation_player.animation_finished
 			handle_death()
@@ -653,3 +776,4 @@ func is_player_in_attack_range() -> bool:
 
 func player_can_be_targeted() -> bool:
 	return super.player_can_be_targeted()
+
