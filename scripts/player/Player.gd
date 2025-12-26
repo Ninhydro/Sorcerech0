@@ -199,11 +199,11 @@ func enable_input():
 
 
 func _ready():
-	Global.kills += 50
+	#Global.kills += 50
 	#Global.affinity -= 5
 	#Global.affinity += 10
 	#Global.reset_persistent()
-	Global.route_status = "True"
+	#Global.route_status = "True"
 	camera.zoom = Vector2(0.8,0.8)
 	camera.position = Vector2(0,-40)
 	jump_force = 250.0

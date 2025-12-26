@@ -1,113 +1,331 @@
 extends Area2D
 
-var _has_been_triggered: bool = false
+# ---------------------------------------------------------
+# CONFIG
+# ---------------------------------------------------------
+@export var intro_timeline := "timeline18G"
+@export var outro_timeline := "timeline19G"
+
+@export var maya_scene: PackedScene
+@export var nataly_scene: PackedScene
+@export var lux_scene: PackedScene
+
+@export var boss_spawn_markers: Array[NodePath] = [] # [Maya, Nataly, Lux]
+@export var boss_barriers: Array[NodePath] = []
+
+@export var health_pickup_scene: PackedScene
+@export var target_room := "Room_Restart"
+@export var target_spawn := "Spawn_FromReality"
+
+# ---------------------------------------------------------
+# NODES
+# ---------------------------------------------------------
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@export var play_only_once: bool = true
-
-
-
-var target_room = "Room_Restart"     # Name of the destination room (node or scene)
-var target_spawn = "Spawn_FromReality"    # Name of the spawn marker in the target room
-
-var player_in_range = null
-
+@onready var boss_camera: Camera2D = $BossCamera
+@onready var health_timer: Timer = $HealthTimer
 @onready var transition_manager = get_node("/root/TransitionManager")
 
-# Called when the node enters the scene tree for the first time.
+# ---------------------------------------------------------
+# STATE
+# ---------------------------------------------------------
+var player: Node
+var active_bosses: Array = []
+var previous_player_camera: Camera2D
+
+var battle_active := false
+var triggered := false
+var current_health_pickup: Node2D
+
+var phase := 1
+var dead_helpers := 0
+
+# Signals for phase completion
+signal phase_1_completed
+signal phase_2_completed  
+signal phase_3_completed
+
+# ---------------------------------------------------------
+# READY
+# ---------------------------------------------------------
 func _ready():
-	pass
+	_deactivate_barriers()
+	boss_camera.enabled = false
+	health_timer.timeout.connect(_on_health_timer_timeout)
 
+# ---------------------------------------------------------
+# CONDITIONS
+# ---------------------------------------------------------
+func _can_start() -> bool:
+	return not triggered and Global.timeline == 8 and Global.route_status == "Genocide"
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Global.timeline == 8 and Global.route_status == "Genocide":
-		collision_shape.disabled = false
-	else:
-		collision_shape.disabled = true
-
-
+# ---------------------------------------------------------
+# AREA ENTER
+# ---------------------------------------------------------
 func _on_body_entered(body):
-	#print("Player position: ",player_node_ref.global_position)
-	if (body.is_in_group("player") and not _has_been_triggered):  #and Global.cutscene_finished1 == false:
-		player_in_range = body
-		print("Player entered cutscene trigger area. Starting cutscene.")
+	if not body.is_in_group("player") or not _can_start():
+		return
 
-		if collision_shape:
-			collision_shape.set_deferred("disabled", true)
-		else:
-			printerr("Cutscene Area2D: WARNING: CollisionShape2D is null, cannot disable it. Using Area2D monitoring instead.")
-			set_deferred("monitorable", false)
-			set_deferred("monitoring", false)
+	triggered = true
+	battle_active = true
+	player = body
 
-		#start_cutscene(cutscene_animation_name_to_play, 0.0)
+	collision_shape.set_deferred("disabled", true)
+	await _start_intro()
+	await _start_battle()
 
-		if play_only_once:
-			_has_been_triggered = true
-			
+# ---------------------------------------------------------
+# INTRO
+# ---------------------------------------------------------
+func _start_intro() -> void:
+	Global.is_cutscene_active = true
+	_activate_barriers()
+	_switch_camera()
 
-		Global.is_cutscene_active = true
-		#Global.cutscene_name = cutscene_animation_name
-		#Global.cutscene_playback_position = start_position
-		#Dialogic.start("timeline1", false)
-		if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
-		Dialogic.timeline_ended.connect(_on_dialogic_finished)
-
-
-		#MIGHT NEED TO MAKE DIFFERENT ANIMATION CUTSCENE FOR DIFFERENT CHOICE OPTIONS
-		#Put different dialog timeline17 on animation also later
-		Dialogic.start("timeline18G", false)
-		#if Global.alyra_dead == false:
-		#	Dialogic.start("timeline13V2", false) #alive alive
-
-		#elif Global.alyra_dead == true:
-		#	Dialogic.start("timeline13", false) #alive dead
-
-
-
-func _on_dialogic_finished(_timeline_name = ""):
-	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
-	# Dialog is done. Now, fade out the black screen.
+	Dialogic.start(intro_timeline)
+	await Dialogic.timeline_ended
 
 	Global.is_cutscene_active = false
-	
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	
-	# Disconnect the signal to prevent unintended calls.
-	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 
+# ---------------------------------------------------------
+# BATTLE FLOW - SIMPLIFIED APPROACH
+# ---------------------------------------------------------
+func _start_battle() -> void:
+	#health_timer.start()
+	
+	print("=== BATTLE STARTED ===")
+	print("Initial phase: ", phase)
+	
+	# Phase 1: Maya + Nataly
+	print("Starting Phase 1: Maya and Nataly")
+	await _phase_1()
+	
+	# Wait for Phase 1 completion (when first helper dies)
+	print("Waiting for Phase 1 completion (first helper death)")
+	await phase_1_completed
+	print("Phase 1 completed! Current phase should be 2, actual: ", phase)
+	
+	# Phase 2: Lux invulnerable + remaining helper
+	print("Starting Phase 2: Lux invulnerable")
+	await _phase_2()
+	
+	# Wait for Phase 2 completion (when second helper dies)
+	print("Waiting for Phase 2 completion (second helper death)")
+	await phase_2_completed
+	print("Phase 2 completed! Current phase should be 3, actual: ", phase)
+	
+	# Phase 3: Lux alone and vulnerable
+	print("Starting Phase 3: Lux alone and vulnerable")
+	await _phase_3()
+	
+	# Wait for Phase 3 completion (when Lux dies)
+	print("Waiting for Phase 3 completion (Lux death)")
+	await phase_3_completed
+	print("Phase 3 completed! Battle should end now.")
+	
+	print("=== BATTLE COMPLETE ===")
+	
+	# Battle is complete
+	await _end_battle_success()
 
+# ---------------------------------------------------------
+# PHASE 1 – Maya + Nataly
+# ---------------------------------------------------------
+func _phase_1() -> void:
+	var maya = await _spawn_boss(maya_scene, boss_spawn_markers[0])
+	var nataly = await _spawn_boss(nataly_scene, boss_spawn_markers[1])
+	
+	if maya:
+		maya.set_meta("boss_id", "maya")
+	if nataly:
+		nataly.set_meta("boss_id", "nataly")
+	
+	print("Phase 1: Maya and Nataly spawned")
+
+# ---------------------------------------------------------
+# PHASE 2 – Lux invulnerable + one remaining helper
+# ---------------------------------------------------------
+func _phase_2() -> void:
+	# Spawn Lux as invulnerable
+	var lux = await _spawn_boss(lux_scene, boss_spawn_markers[2])
+	if lux:
+		lux.set_meta("boss_id", "lux")
+		lux.set_invulnerable()
+		print("Phase 2: Lux spawned and set to invulnerable")
+	
+	# Small delay before continuing
+	await get_tree().create_timer(0.5).timeout
+
+# ---------------------------------------------------------
+# PHASE 3 – Lux alone (vulnerable and enraged)
+# ---------------------------------------------------------
+func _phase_3() -> void:
+	# Find existing Lux
+	print("Starting Phase 3: Lux alone and vulnerable")
+	
+	# Find existing Lux
+	var lux = _get_active_boss("Lux")
+	if lux:
+		# Make sure Lux is vulnerable
+		if lux.has_method("set_invulnerable"):
+			lux.set_vulnerable()
+			print("Phase 3: Lux is now vulnerable")
+		else:
+			print("ERROR: Lux doesn't have set_invulnerable method!")
+		
+		# Add rage mode if you have that method
+		if lux.has_method("enter_rage_mode"):
+			lux.enter_rage_mode()
+			print("Phase 3: Lux entered rage mode")
+	else:
+		print("ERROR: Could not find Lux in Phase 3!")
+
+# ---------------------------------------------------------
+# SPAWNING (COROUTINE)
+# ---------------------------------------------------------
+func _spawn_boss(scene: PackedScene, marker_path: NodePath) -> Node:
+	if not scene or not has_node(marker_path):
+		return null
+		
+	var marker := get_node(marker_path)
+	var boss := scene.instantiate()
+
+	get_tree().current_scene.add_child.call_deferred(boss)
+	await boss.tree_entered
+
+	boss.global_position = marker.global_position
+	active_bosses.append(boss)
+
+	if boss.has_signal("boss_died"):
+		boss.boss_died.connect(_on_boss_died.bind(boss))
+	else:
+		boss.tree_exiting.connect(_on_boss_died.bind(boss))
+
+	return boss
+
+# ---------------------------------------------------------
+# HELPERS
+# ---------------------------------------------------------
+func _wait_until_bosses_dead(bosses: Array) -> void:
+	while true:
+		var alive := false
+		for b in bosses:
+			if is_instance_valid(b):
+				alive = true
+				break
+		if not alive:
+			return
+		await get_tree().process_frame
+
+func _get_active_boss(name: String) -> Node:
+	for b in active_bosses:
+		if is_instance_valid(b) and b.name.contains(name):
+			return b
+	return null
+
+func _on_boss_died(boss):
+	if not battle_active:
+		return
+
+	if boss in active_bosses:
+		active_bosses.erase(boss)
+
+	var id = boss.get_meta("boss_id", "")
+	print("Boss died: ", id, " | Current phase: ", phase, " | Dead helpers: ", dead_helpers)
+	
+	# Debug: print all active bosses
+	print("Active bosses count: ", active_bosses.size())
+	for b in active_bosses:
+		if is_instance_valid(b):
+			print("  - ", b.get_meta("boss_id", "unknown"))
+
+	if id in ["maya", "nataly"]:
+		dead_helpers += 1
+		print("Helper died: ", id, " Total dead helpers: ", dead_helpers)
+		
+		# Check for phase transitions based on helper deaths
+		if phase == 1 and dead_helpers == 1:
+			print("First helper died - Phase 1 complete")
+			phase = 2  # Update phase immediately
+			emit_signal("phase_1_completed")
+			
+		elif phase == 2 and dead_helpers == 2:
+			print("Second helper died - Phase 2 complete")
+			phase = 3  # Update phase immediately
+			emit_signal("phase_2_completed")
+			
+	elif id == "lux":
+		print("Lux died!")
+		if phase == 3:
+			print("Lux died in Phase 3 - Battle complete!")
+			emit_signal("phase_3_completed")
+		else:
+			print("ERROR: Lux died in phase ", phase, " but should only die in Phase 3!")
+# ---------------------------------------------------------
+# END
+# ---------------------------------------------------------
+func _end_battle_success() -> void:
+	print("Ending battle successfully")
+	Global.is_cutscene_active = true
+	Dialogic.start(outro_timeline)
+	await Dialogic.timeline_ended
+
+	_cleanup()
 
 	Global.timeline = 9
 	Global.ending_genocide = true
 	Global.persistent_ending_genocide = true
-	Global.check_100_percent_completion()
 	Global.save_persistent_data()
-	if player_in_range:
-			transition_manager.travel_to(player_in_range, target_room, target_spawn)
-	Global.remove_quest_marker("Destroy Everyone!")
-	
 
+	transition_manager.travel_to(player, target_room, target_spawn)
 
-	
-	#if player_in_range:
-	#		transition_manager.travel_to(player_in_range, target_room, target_spawn)
-	#End Demo/Part 1
-	
-	
-	#Global.magus_form = true
-	#player_in_range.unlock_state("Magus")
-	#player_in_range.switch_state("Magus")
-	#Global.selected_form_index = 1
-	#player_in_range.current_state_index = Global.selected_form_index
-	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
-	
-	#Global.set_player_form(get_current_form_id())
-	#Global.current_form = get_current_form_id()
-	#Global.first_tromarvelia = true
+# ---------------------------------------------------------
+# CLEANUP / CAMERA / BARRIERS / HEALTH
+# ---------------------------------------------------------
+func _cleanup():
+	print("Cleaning up battle")
+	battle_active = false
+	_deactivate_barriers()
+	_restore_camera()
+	#health_timer.stop()
 
+func _switch_camera():
+	var cam := player.get_node_or_null("CameraPivot/Camera2D")
+	if cam:
+		previous_player_camera = cam
+		cam.enabled = false
+	boss_camera.enabled = true
+	boss_camera.make_current()
 
+func _restore_camera():
+	boss_camera.enabled = false
+	if previous_player_camera:
+		previous_player_camera.enabled = true
+		previous_player_camera.make_current()
 
-func _on_body_exited(body):
-	pass # Replace with function body.
+func _activate_barriers():
+	for p in boss_barriers:
+		var b = get_node(p)
+		if b is CollisionObject2D:
+			b.set_deferred("collision_layer", 1)
+			b.set_deferred("collision_mask", 1)
+		if b is CanvasItem:
+			b.visible = true
+
+func _deactivate_barriers():
+	for p in boss_barriers:
+		var b = get_node(p)
+		if b is CollisionObject2D:
+			b.set_deferred("collision_layer", 0)
+			b.set_deferred("collision_mask", 0)
+		if b is CanvasItem:
+			b.visible = false
+
+func _on_health_timer_timeout():
+	if not battle_active or current_health_pickup:
+		return
+	current_health_pickup = health_pickup_scene.instantiate()
+	get_tree().current_scene.add_child(current_health_pickup)
+	current_health_pickup.global_position = player.global_position + Vector2(0, -24)
+	current_health_pickup.tree_exited.connect(func(): current_health_pickup = null)
+	
+	

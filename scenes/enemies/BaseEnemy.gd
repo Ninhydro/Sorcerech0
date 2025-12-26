@@ -247,7 +247,7 @@ func turn_around_at_edge():
 	# Small pause after turning
 	var previous_velocity = velocity
 	velocity = Vector2.ZERO
-	await get_tree().create_timer(0.3).timeout
+	await get_tree().create_timer(0.3/Global.global_time_scale).timeout
 	
 	# Restore velocity in new direction if not in special state
 	if not (dead or taking_damage or is_dealing_damage or is_preparing_attack):
@@ -386,7 +386,7 @@ func handle_animation():
 		
 		# Handle animation completion for specific cases
 		if new_animation == "hurt":
-			await get_tree().create_timer(0.5).timeout
+			await get_tree().create_timer(0.5/Global.global_time_scale).timeout
 			taking_damage = false
 		elif new_animation == "death":
 			await animation_player.animation_finished
@@ -399,6 +399,9 @@ func handle_death():
 	if can_drop_health and health_drop_scene:
 		try_drop_health()
 	
+	if get_meta("is_boss", false):
+		queue_free()
+		return
 	#queue_free()
 	Global.increment_kills()
 	visible = false
@@ -410,6 +413,7 @@ func handle_death():
 	# Wait then respawn
 	await get_tree().create_timer(respawn_time).timeout
 	respawn()
+	
 
 func respawn():
 	# Reset all state
@@ -538,7 +542,7 @@ func attack_coroutine():
 	var actual_windup_time = attack_windup_time / animation_player.speed_scale
 	
 	# Wait for the attack frame (respects both animation speed and global time scale)
-	await get_tree().create_timer(actual_windup_time).timeout
+	await get_tree().create_timer(actual_windup_time/Global.global_time_scale).timeout
 	
 	# Check if we're still attacking and animation is still playing
 	if is_dealing_damage and animation_player.current_animation == "attack":
@@ -548,7 +552,7 @@ func attack_coroutine():
 	# Wait for the remaining animation time
 	var remaining_animation_time = (animation_player.current_animation_length - attack_windup_time) / animation_player.speed_scale
 	if remaining_animation_time > 0:
-		await get_tree().create_timer(remaining_animation_time).timeout
+		await get_tree().create_timer(remaining_animation_time/Global.global_time_scale).timeout
 	
 	# Reset attack state
 	is_dealing_damage = false
