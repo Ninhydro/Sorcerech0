@@ -232,7 +232,7 @@ func _on_boss_died() -> void:
 func _handle_battle_success() -> void:
 	# Global changes for killing boss in time
 	Global.timeline = 5.2
-	Global.affinity += 1
+	#Global.affinity += 1
 	Global.increment_kills()
 	Global.first_boss_dead = true
 	_finish_battle_and_start_outro(true)
@@ -242,7 +242,7 @@ func _handle_battle_fail() -> void:
 	# Global changes for failing to kill boss in time
 	#BOSS_SCENE.queue_free()
 	Global.timeline = 5.2
-	Global.affinity -= 1
+	#Global.affinity -= 1
 	Global.first_boss_dead = false
 	_finish_battle_and_start_outro(false)
 

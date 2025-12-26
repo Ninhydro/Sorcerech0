@@ -1,7 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://dfpyxgqho5nqr"]
+[gd_scene load_steps=14 format=3 uid="uid://dfpyxgqho5nqr"]
 
-[ext_resource type="Script" path="res://scenes/enemies/RangedEnemy.gd" id="1_d71mc"]
-[ext_resource type="PackedScene" uid="uid://cevk7kxsj1nyx" path="res://scenes/enemies/magic_bullet.tscn" id="2_7dm56"]
+[ext_resource type="Script" path="res://scenes/enemies/MagusSoldierEnemySummon.gd" id="1_bdbeb"]
 [ext_resource type="Texture2D" uid="uid://c1qwfwmuqooib" path="res://assets_image/Characters/Enemies/Magus_soldier-Sheet.png" id="3_e51xh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
@@ -141,9 +140,7 @@ radius = 308.69
 scale = Vector2(0.7, 0.7)
 collision_layer = 4
 collision_mask = 14
-script = ExtResource("1_d71mc")
-enemy_damage = 8
-projectile_scene = ExtResource("2_7dm56")
+script = ExtResource("1_bdbeb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -12.1429)

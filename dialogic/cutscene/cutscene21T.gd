@@ -2,7 +2,7 @@ extends Area2D
 
 var _has_been_triggered: bool = false
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@export var play_only_once: bool = true
+@export var play_only_once: bool = false
 
 @onready var interaction_label = $Label 
 
@@ -85,19 +85,26 @@ func _on_dialogic_finished(_timeline_name = ""):
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 
 
-
+	
 	Global.timeline = 10
-	if Global.route_status == "True":
-		Global.ending_true = true
-		Global.persistent_ending_true = true
-		Global.check_100_percent_completion()
-		Global.save_persistent_data()
-	elif Global.route_status == "Pacifist":
-		Global.ending_pacifist = true
-		Global.persistent_ending_pacifist = true
-		Global.check_100_percent_completion()
-		Global.save_persistent_data()
-	Global.game_cleared = true
+	if Global.game_cleared == true:
+		var main_menu_scene_path = "res://scenes/ui/MainMenu.tscn"
+		var main_menu_packed_scene = load(main_menu_scene_path)
+		if Global.route_status == "True":
+			Global.ending_true = true
+			Global.persistent_ending_true = true
+			Global.check_100_percent_completion()
+			Global.save_persistent_data()
+			get_tree().change_scene_to_packed(main_menu_packed_scene)
+		elif Global.route_status == "Pacifist":
+			Global.ending_pacifist = true
+			Global.persistent_ending_pacifist = true
+			Global.check_100_percent_completion()
+			Global.save_persistent_data()
+			get_tree().change_scene_to_packed(main_menu_packed_scene)
+	elif Global.game_cleared == false:
+		pass
+
 	#player_status & kills need to be reset from NPC
 	#affinity need to be reset from NPC
 

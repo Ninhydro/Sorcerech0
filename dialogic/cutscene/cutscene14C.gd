@@ -276,7 +276,7 @@ func _handle_battle_success() -> void:
 		
 	Global.ult_cyber_form = true
 	Global.replica_fini_dead = true
-	Global.affinity -= 1
+	#Global.affinity -= 1
 	Global.increment_kills()
 	
 	# You can adjust timeline if needed, e.g. Global.timeline = 6.6
@@ -331,7 +331,7 @@ func _handle_battle_fail() -> void:
 		
 	Global.ult_cyber_form = false
 	Global.replica_fini_dead = false
-	Global.affinity += 1
+	#Global.affinity += 1
 	
 	# Optional: change timeline to reflect "Valentina route"
 	# Global.timeline = 6.6

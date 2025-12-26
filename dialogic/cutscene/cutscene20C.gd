@@ -135,7 +135,7 @@ func _finalize_success() -> void:
 	Global.check_100_percent_completion()
 	Global.save_persistent_data()
 	Global.remove_quest_marker("Fight for the Cyber")
-
+	
 	Global.is_cutscene_active = false
 	_cleanup_battle()
 

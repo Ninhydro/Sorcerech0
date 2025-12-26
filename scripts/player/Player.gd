@@ -199,6 +199,7 @@ func enable_input():
 
 
 func _ready():
+	Global.kills += 50
 	#Global.affinity -= 5
 	#Global.affinity += 10
 	#Global.reset_persistent()

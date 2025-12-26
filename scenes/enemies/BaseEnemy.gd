@@ -119,9 +119,13 @@ var is_preparing_attack := false
 @export var anim_not_moving_epsilon := 0.5 
 var last_anim_position: Vector2   
 
+@export var respawn_time := 60.0
+var original_position: Vector2
+
 
 func _ready():
 	# Initialize attack cooldown timer
+	original_position = global_position
 	attack_cooldown_timer = Timer.new()
 	attack_cooldown_timer.one_shot = true
 	add_child(attack_cooldown_timer)
@@ -395,8 +399,35 @@ func handle_death():
 	if can_drop_health and health_drop_scene:
 		try_drop_health()
 	
-	queue_free()
+	#queue_free()
+	Global.increment_kills()
+	visible = false
+	set_process(false)
+	set_physics_process(false)
+	collision_layer = 0
+	collision_mask = 0
+	
+	# Wait then respawn
+	await get_tree().create_timer(respawn_time).timeout
+	respawn()
 
+func respawn():
+	# Reset all state
+	global_position = original_position
+	health = health_max
+	dead = false
+	taking_damage = false
+	is_dealing_damage = false
+	is_preparing_attack = false
+	can_attack = true
+	visible = true
+	set_process(true)
+	set_physics_process(true)
+	collision_layer = 1  # Set to your appropriate layer
+	collision_mask = 1   # Set to your appropriate mask
+	
+	print(name, " respawned!")
+	
 func try_drop_health():
 	if randf() <= health_drop_chance:
 		drop_health()

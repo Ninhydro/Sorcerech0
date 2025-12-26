@@ -54,10 +54,13 @@ var teleport_cooldown := 0.0  # NEW: Cooldown between teleports
 var marker_refresh_timer := 0.0
 @export var marker_refresh_interval := 1.0  # Refresh markers every 1 second
 
+
+
 # -------------------------------------------------
 # READY & INITIALIZATION
 # -------------------------------------------------
 func _ready() -> void:
+
 	player = Global.playerBody
 	
 	# Get all jump markers in the scene
@@ -727,13 +730,13 @@ func handle_animation():
 			handle_animation()
 		elif new_animation == "die":
 			await animation_player.animation_finished
-			handle_death()
+			die()
 
 
 # -------------------------------------------------
 # DEATH
 # -------------------------------------------------
-func handle_death():
+func die():
 	if can_drop_health and health_drop_scene:
 		try_drop_health()
 	

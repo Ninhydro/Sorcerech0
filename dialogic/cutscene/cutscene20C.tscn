@@ -158,7 +158,7 @@ position = Vector2(273, -74)
 shape = SubResource("RectangleShape2D_554ym")
 
 [node name="Timer_HealthPickup" type="Timer" parent="."]
-wait_time = 30.0
+wait_time = 60.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

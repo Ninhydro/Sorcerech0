@@ -1,3 +1,7 @@
 join Player center
 Player (Normal): lux alive, return back to maya house (there a tree planted there) cutscene 59v2 (nataly, maya, lux)
-Player (Happy): True Ending Pacifist, credits,  can go back to epilogue mode
+- Continue to ending
+	Player (Happy): True Ending Pacifist, credits,  can go back to epilogue mode
+	set {Global.game_cleared} = true
+- I want to talk with people
+	set {Global.game_cleared} = false

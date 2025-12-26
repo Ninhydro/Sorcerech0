@@ -154,13 +154,17 @@ offset_bottom = 21.0
 text = "Time"
 metadata/_edit_use_anchors_ = true
 
-[node name="BarrierLeft" type="StaticBody2D" parent="."]
+[node name="BarrierLeft" type="StaticBody2D" parent="." groups=["barrier"]]
+collision_layer = 7
+collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
 position = Vector2(-231, -130)
 shape = SubResource("RectangleShape2D_a1io0")
 
-[node name="BarrierRight" type="StaticBody2D" parent="."]
+[node name="BarrierRight" type="StaticBody2D" parent="." groups=["barrier"]]
+collision_layer = 7
+collision_mask = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
 position = Vector2(249, -130)

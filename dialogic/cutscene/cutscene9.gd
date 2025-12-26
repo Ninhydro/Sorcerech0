@@ -200,7 +200,7 @@ func _on_boss2_died() -> void:
 func _handle_boss2_success() -> void:
 	# Player killed boss2 within time
 	Global.timeline = 5.3
-	Global.affinity -= 1
+	#Global.affinity -= 1
 	Global.increment_kills()
 	Global.alyra_dead = false
 	
@@ -210,7 +210,7 @@ func _handle_boss2_success() -> void:
 func _handle_boss2_fail() -> void:
 	# Player failed to kill boss2 in time
 	Global.timeline = 5.3
-	Global.affinity += 1
+	#Global.affinity += 1
 	Global.alyra_dead = true
 	
 	_finish_battle_and_start_outro()

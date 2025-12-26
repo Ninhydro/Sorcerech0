@@ -427,12 +427,12 @@ func _phase_backstep() -> void:
 	if dead:
 		return
 
-	# Decide how far to backstep:
-	# - normal backstep if melee started at a "nice" distance
-	# - longer backstep if she ended up too close to the player
+	# Store starting position
+	var start_position = global_position
+	
+	# Decide how far to backstep
 	var use_backstep_distance: float = backstep_distance
 	if last_melee_start_dist > 0.0 and last_melee_start_dist <= close_melee_threshold:
-		# She started melee very close to the player → retreat more before laser
 		use_backstep_distance = backstep_distance * extra_backstep_multiplier
 
 	# Move away from where the last melee went
@@ -441,31 +441,75 @@ func _phase_backstep() -> void:
 		step_dir = -1
 
 	var total_time = backstep_time
-	var moved = 0.0
+	var elapsed_time = 0.0
 	var speed = use_backstep_distance / max(total_time, 0.01)
 
-	# Face same way as melee (optional, feels consistent)
+	# Face same way as melee
 	dir.x = last_attack_dir
 	sprite.flip_h = (dir.x < 0.0)
 
 	if animation_player.has_animation("walk"):
 		current_animation = "walk"
 		animation_player.play("walk")
-
-	while moved < use_backstep_distance and not dead:
+	
+	var original_mask = collision_mask
+	collision_mask =  3# 16 is the bit value for Layer 5
+	
+	while elapsed_time < total_time and not dead:
 		if taking_damage:
 			await _wait_if_hurt()
 			return
 
 		var dt = get_process_delta_time()
-		var step = speed * dt
-		moved += step
-		velocity.x = step_dir * speed
+		elapsed_time += dt
+		
+		# Calculate current distance moved
+		var current_distance = abs(global_position.x - start_position.x)
+		
+		# Only move if we haven't reached the target distance
+		if current_distance < use_backstep_distance:
+			velocity.x = step_dir * speed
+		else:
+			velocity.x = 0.0
+			break  # We've moved enough, exit loop
+		
+		# Move and slide
+		move_and_slide()
+		
+		# Check for barrier collisions (ignore TileMap)
+		for i in get_slide_collision_count():
+			
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
+			print(collider)
+			# Ignore TileMap collisions (floor/walls)
+			if collider is TileMap:
+				continue
+			
+			# Check if it's a barrier (by name or group)
+			var is_barrier = false
+			
+			# Check by name
+			if "name" in collider:
+				var collider_name = str(collider.name).to_lower()
+				if "barrier" in collider_name:
+					is_barrier = true
+			
+			# Check by group
+			if "groups" in collider and collider.is_in_group("barrier"):
+				is_barrier = true
+			
+			# If it's a barrier, stop the backstep
+			if is_barrier:
+				velocity.x = 0.0
+				collision_mask = original_mask
+				return  # Immediately exit the function
+			
 		await get_tree().process_frame
-
+	
 	velocity.x = 0.0
-
-
+	collision_mask = original_mask
+	
 # ===================================================================
 #                     PHASE 5 – LASER ATTACK (BEAM)
 # ===================================================================

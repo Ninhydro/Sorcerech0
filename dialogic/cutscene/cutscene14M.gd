@@ -308,7 +308,7 @@ func _handle_battle_success() -> void:
 	Global.ult_magus_form = true
 	Global.gawr_dead = true
 	Global.after_battle_gawr = true
-	Global.affinity += 1
+	#Global.affinity += 1
 	Global.increment_kills()
 	Global.is_boss_battle = false
 
@@ -360,7 +360,7 @@ func _handle_battle_fail() -> void:
 	# Fail flags (pre-Nora)
 	Global.ult_magus_form = false
 	Global.gawr_dead = false
-	Global.affinity -= 1
+	#Global.affinity -= 1
 
 	if not battle_used_fail_route and Global.ult_magus_form == false and Global.gawr_dead == false:
 		battle_used_fail_route = true
