@@ -7,6 +7,7 @@ signal boss_died
 # CONFIG
 # =====================================================
 @export var move_speed := 85.0
+@export var melee_range_before := 100.0
 @export var melee_range := 60.0
 @export var slash_damage := 10
 @export var combo_damage := 15
@@ -65,7 +66,7 @@ func _ready() -> void:
 	can_jump_chase = false
 
 	attack_type = AttackType.MELEE
-	attack_range = melee_range
+	attack_range = melee_range_before
 	enemy_damage = slash_damage
 
 	_collect_jump_markers()
@@ -131,7 +132,7 @@ func take_damage(amount: int) -> void:
 		
 		# Wait for hurt animation
 		var hurt_duration = anim.current_animation_length if anim.current_animation else 0.3
-		await _safe_wait(hurt_duration / Global.global_time_scale)
+		await _safe_wait(hurt_duration*2 / Global.global_time_scale)
 		
 		taking_damage = false
 	else:
@@ -151,7 +152,7 @@ func _die() -> void:
 	if can_drop_health and health_drop_scene:
 		try_drop_health()
 		can_drop_health = false
-	emit_signal("boss_died")
+		emit_signal("boss_died")
 	queue_free()
 
 # =====================================================
@@ -245,7 +246,7 @@ func _run_ai() -> void:
 			await _safe_wait(0.15)
 			continue
 
-		if horizontal_dist <= melee_range:
+		if horizontal_dist <= melee_range_before:
 			print("Nataly: In melee range, starting attack")
 			await _start_attack_pattern()
 			await _safe_wait(0.1)
@@ -438,6 +439,11 @@ func _execute_combo_attack() -> void:
 			sprite.flip_h = dir.x < 0
 	
 	anim.play("combo")
+	if dir.x != 0:
+		velocity.x = dir.x * dash_force
+	
+	# Wait for dash
+	await _safe_wait(dash_duration / Global.global_time_scale)
 	
 	velocity.x = 0
 	

@@ -310,7 +310,6 @@ boss_rocket_scene = ExtResource("2_mmpft")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2.85714, -9.99998)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

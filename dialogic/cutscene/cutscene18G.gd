@@ -56,6 +56,8 @@ func _ready():
 # ---------------------------------------------------------
 # CONDITIONS
 # ---------------------------------------------------------
+
+		
 func _can_start() -> bool:
 	return not triggered and Global.timeline == 8 and Global.route_status == "Genocide"
 
@@ -167,8 +169,9 @@ func _phase_3() -> void:
 	print("Starting Phase 3: Lux alone and vulnerable")
 	
 	# Find existing Lux
-	var lux = _get_active_boss("Lux")
+	var lux = _get_active_boss("lux")
 	if lux:
+		print("lux found!!")
 		# Make sure Lux is vulnerable
 		lux.set_vulnerable()
 		print("Phase 3: Lux is now vulnerable")
@@ -221,8 +224,22 @@ func _wait_until_bosses_dead(bosses: Array) -> void:
 
 func _get_active_boss(name: String) -> Node:
 	for b in active_bosses:
-		if is_instance_valid(b) and b.name.contains(name):
+		if not is_instance_valid(b):
+			continue
+			
+		# Check multiple possible naming patterns
+		var boss_name = b.name.to_lower()  # Convert to lowercase for case-insensitive comparison
+		var search_name = name.to_lower()
+		
+		if boss_name.contains(search_name):
 			return b
+			
+		# Also check if the node has a "boss_name" property or custom identifier
+		if b.has_method("get_boss_name"):
+			var custom_name = b.get_boss_name().to_lower()
+			if custom_name.contains(search_name):
+				return b
+				
 	return null
 
 func _on_boss_died(boss):
