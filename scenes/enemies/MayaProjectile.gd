@@ -1,13 +1,14 @@
 extends Area2D
-class_name EnemyProjectile2
+class_name EnemyProjectile
 
 #@export var speed = 150.0
-@export var base_speed = 150
+@export var base_speed = 200
+
 var speed: float:
 	get:
 		return base_speed * Global.global_time_scale
 @export var damage = 5
-@export var lifetime = 2.0
+@export var lifetime = 20.0
 
 var direction = Vector2.RIGHT
 @onready var timer = $Timer

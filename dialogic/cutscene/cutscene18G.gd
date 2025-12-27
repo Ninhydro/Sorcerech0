@@ -24,6 +24,7 @@ extends Area2D
 @onready var boss_camera: Camera2D = $BossCamera
 @onready var health_timer: Timer = $HealthTimer
 @onready var transition_manager = get_node("/root/TransitionManager")
+@onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
 
 # ---------------------------------------------------------
 # STATE
@@ -51,7 +52,7 @@ func _ready():
 	_deactivate_barriers()
 	boss_camera.enabled = false
 	health_timer.timeout.connect(_on_health_timer_timeout)
-
+	health_timer.one_shot = false
 # ---------------------------------------------------------
 # CONDITIONS
 # ---------------------------------------------------------
@@ -77,6 +78,9 @@ func _on_body_entered(body):
 # INTRO
 # ---------------------------------------------------------
 func _start_intro() -> void:
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
+	
 	Global.is_cutscene_active = true
 	_activate_barriers()
 	_switch_camera()
@@ -90,42 +94,42 @@ func _start_intro() -> void:
 # BATTLE FLOW - SIMPLIFIED APPROACH
 # ---------------------------------------------------------
 func _start_battle() -> void:
-	#health_timer.start()
+	health_timer.start()
 	
 	print("=== BATTLE STARTED ===")
 	print("Initial phase: ", phase)
-	
+	#Global.health = Global.health_max
 	# Phase 1: Maya + Nataly
 	print("Starting Phase 1: Maya and Nataly")
 	await _phase_1()
 	
 	# Wait for Phase 1 completion (when first helper dies)
-	print("Waiting for Phase 1 completion (first helper death)")
-	await phase_1_completed
-	print("Phase 1 completed! Current phase should be 2, actual: ", phase)
+	#print("Waiting for Phase 1 completion (first helper death)")
+	#await phase_1_completed
+	#print("Phase 1 completed! Current phase should be 2, actual: ", phase)
 	
 	# Phase 2: Lux invulnerable + remaining helper
-	print("Starting Phase 2: Lux invulnerable")
-	await _phase_2()
+	#print("Starting Phase 2: Lux invulnerable")
+	#await _phase_2()
 	
 	# Wait for Phase 2 completion (when second helper dies)
-	print("Waiting for Phase 2 completion (second helper death)")
-	await phase_2_completed
-	print("Phase 2 completed! Current phase should be 3, actual: ", phase)
+	#print("Waiting for Phase 2 completion (second helper death)")
+	#await phase_2_completed
+	#print("Phase 2 completed! Current phase should be 3, actual: ", phase)
 	
 	# Phase 3: Lux alone and vulnerable
-	print("Starting Phase 3: Lux alone and vulnerable")
-	await _phase_3()
+	#print("Starting Phase 3: Lux alone and vulnerable")
+	#await _phase_3()
 	
 	# Wait for Phase 3 completion (when Lux dies)
-	print("Waiting for Phase 3 completion (Lux death)")
-	await phase_3_completed
-	print("Phase 3 completed! Battle should end now.")
+	#print("Waiting for Phase 3 completion (Lux death)")
+	#await phase_3_completed
+	#print("Phase 3 completed! Battle should end now.")
 	
-	print("=== BATTLE COMPLETE ===")
+	#print("=== BATTLE COMPLETE ===")
 	
 	# Battle is complete
-	await _end_battle_success()
+	#await _end_battle_success()
 
 # ---------------------------------------------------------
 # PHASE 1 – Maya + Nataly
@@ -166,11 +170,10 @@ func _phase_3() -> void:
 	var lux = _get_active_boss("Lux")
 	if lux:
 		# Make sure Lux is vulnerable
-		if lux.has_method("set_invulnerable"):
-			lux.set_vulnerable()
-			print("Phase 3: Lux is now vulnerable")
-		else:
-			print("ERROR: Lux doesn't have set_invulnerable method!")
+		lux.set_vulnerable()
+		print("Phase 3: Lux is now vulnerable")
+		#else:
+		#	print("ERROR: Lux doesn't have set_invulnerable method!")
 		
 		# Add rage mode if you have that method
 		if lux.has_method("enter_rage_mode"):
@@ -247,17 +250,23 @@ func _on_boss_died(boss):
 			print("First helper died - Phase 1 complete")
 			phase = 2  # Update phase immediately
 			emit_signal("phase_1_completed")
+			await get_tree().create_timer(0.1).timeout
+			_phase_2()
 			
 		elif phase == 2 and dead_helpers == 2:
 			print("Second helper died - Phase 2 complete")
 			phase = 3  # Update phase immediately
 			emit_signal("phase_2_completed")
+			await get_tree().create_timer(0.1).timeout
+			_phase_3()
 			
 	elif id == "lux":
 		print("Lux died!")
 		if phase == 3:
 			print("Lux died in Phase 3 - Battle complete!")
 			emit_signal("phase_3_completed")
+			await get_tree().create_timer(0.1).timeout
+			_end_battle_success()
 		else:
 			print("ERROR: Lux died in phase ", phase, " but should only die in Phase 3!")
 # ---------------------------------------------------------
@@ -286,8 +295,9 @@ func _cleanup():
 	battle_active = false
 	_deactivate_barriers()
 	_restore_camera()
-	#health_timer.stop()
-
+	health_timer.stop()
+	dead_helpers = 0
+	
 func _switch_camera():
 	var cam := player.get_node_or_null("CameraPivot/Camera2D")
 	if cam:
@@ -321,11 +331,36 @@ func _deactivate_barriers():
 			b.visible = false
 
 func _on_health_timer_timeout():
-	if not battle_active or current_health_pickup:
+	if not battle_active or not Global.playerAlive:
 		return
+
+	if current_health_pickup:
+		return
+
 	current_health_pickup = health_pickup_scene.instantiate()
 	get_tree().current_scene.add_child(current_health_pickup)
-	current_health_pickup.global_position = player.global_position + Vector2(0, -24)
-	current_health_pickup.tree_exited.connect(func(): current_health_pickup = null)
-	
-	
+	current_health_pickup.global_position = health_spawn_marker.global_position
+
+	current_health_pickup.tree_exited.connect(
+		func(): current_health_pickup = null
+	)
+		
+
+func cancel_boss_battle_on_player_death() -> void:
+	if not battle_active:
+		return
+
+	#battle_cancelled = true
+	battle_active = false
+	Global.is_cutscene_active = false
+
+	if health_timer:
+		health_timer.stop()
+
+	if current_health_pickup and is_instance_valid(current_health_pickup):
+		current_health_pickup.queue_free()
+
+	#if boss_instance and is_instance_valid(boss_instance):
+	#	boss_instance.queue_free()
+
+	_cleanup()

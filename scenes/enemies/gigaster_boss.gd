@@ -8,7 +8,7 @@ signal boss_died
 # ----------------------------
 #var movement_locked := false
 
-@export var max_health: int = 400
+@export var max_health: int = 300
 @export var walk_speed: float = 60.0 * Global.global_time_scale  
 
 @export var slam_damage: int = 12

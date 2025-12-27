@@ -8,8 +8,8 @@ signal boss_died
 # -------------------------------------------------
 @export var walk_speed := 50.0
 @export var melee_range := 60.0
-@export var melee_damage := 14
-@export var rocket_damage := 20
+@export var melee_damage := 10
+@export var rocket_damage := 15
 @export var chase_range := 400.0  # NEW: How far the boss will chase the player
 @export var min_chase_distance := 80.0  # NEW: Minimum distance before stopping chase
 
@@ -91,8 +91,8 @@ func _initialize_enemy():
 	base_speed = walk_speed
 	attack_range = melee_range
 	enemy_damage = melee_damage
-	health = 280
-	health_max = 280
+	health = 300
+	health_max = 300
 	use_edge_detection = true
 	can_drop_health = false
 	attack_type = AttackType.MELEE

@@ -8,8 +8,8 @@ signal boss_died
 # -------------------------------------------------
 @export var walk_speed := 50.0
 @export var melee_range := 60.0
-@export var melee_damage := 14
-@export var rocket_damage := 20
+@export var melee_damage := 10
+@export var rocket_damage := 15
 @export var chase_range := 400.0  # NEW: How far the boss will chase the player
 @export var min_chase_distance := 80.0  # NEW: Minimum distance before stopping chase
 
@@ -32,6 +32,7 @@ var last_hit_time := 0.0
 # -------------------------------------------------
 var boss_attacking := false  # Renamed to avoid conflict
 var can_fire_rocket := true
+var able_rocket := true
 var rocket_cooldown_timer := 0.0
 var rocket_attack_cooldown := 8.0
 var rocket_windup_time := 0.8
@@ -91,8 +92,8 @@ func _initialize_enemy():
 	base_speed = walk_speed
 	attack_range = melee_range
 	enemy_damage = melee_damage
-	health = 280
-	health_max = 280
+	health = 300
+	health_max = 3000
 	use_edge_detection = true
 	can_drop_health = false
 	attack_type = AttackType.MELEE
@@ -106,7 +107,8 @@ func _initialize_enemy():
 # -------------------------------------------------
 func _process(delta):
 	super._process(delta)
-	
+	#print("collision_layer: ",collision_layer)
+	#print("collision_mask: ",collision_mask)
 	# Update teleport cooldown
 	if teleport_cooldown > 0:
 		teleport_cooldown -= delta * Global.global_time_scale
@@ -147,7 +149,7 @@ func _process(delta):
 	
 	# Random rocket attack - MORE FREQUENT
 	if (can_fire_rocket and player and is_instance_valid(player) and not dead and not taking_damage 
-		and not shield_active and not boss_attacking and not is_dealing_damage):
+		and not shield_active and not boss_attacking and not is_dealing_damage) and able_rocket:
 		var distance = global_position.distance_to(player.global_position)
 		# Increased chance for rocket attack
 		if distance > melee_range and distance < chase_range and randf() < 0.02:
@@ -358,7 +360,7 @@ func start_attack():
 		if distance <= melee_range:
 			_do_melee_attack()
 		# Rocket attack when at medium range
-		elif distance <= chase_range and can_fire_rocket:
+		elif distance <= chase_range and can_fire_rocket and able_rocket:
 			# 30% chance for rocket when in range (reduced from 50%)
 			if randf() < 0.3:
 				_start_rocket_attack()
@@ -622,8 +624,8 @@ func _jump_to_best_marker():
 	animation_player.play("jump")
 	
 	# Disable collisions during teleport
-	collision_layer = 0
-	collision_mask = 0
+	#collision_layer = 0
+	#collision_mask = 0
 	
 	# Smooth teleport animation
 	var start = global_position
@@ -638,8 +640,8 @@ func _jump_to_best_marker():
 	global_position = end
 	
 	# Restore collision
-	collision_layer = 3
-	collision_mask = 3
+	#collision_layer = 3
+	#collision_mask = 3
 	
 	# RESET STATES IMMEDIATELY
 	boss_attacking = false
@@ -751,6 +753,9 @@ func set_invulnerable():
 	#can_take_damage = not value
 	#shield_active = value
 	shield_auto_disable_time = 1
+	able_rocket = false
+	melee_damage = 5
+	print("set_invulnerable")
 	#handle_animation()
 	#change something so it doesn't get damage, keep all behaviour the same, expect no hurt animation instead, ot woll do shield animation
 	
@@ -758,6 +763,9 @@ func set_vulnerable():
 	#can_take_damage = not value
 	#shield_active = value
 	shield_auto_disable_time = 10
+	able_rocket = true
+	melee_damage = 10
+	print("set_vulnerable")
 	
 # -------------------------------------------------
 # OVERRIDE BASE ENEMY METHODS - FIXED

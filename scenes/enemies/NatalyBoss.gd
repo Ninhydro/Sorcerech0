@@ -3,609 +3,710 @@ class_name NatalyBoss
 
 signal boss_died
 
-# -------------------------------------------------
-# BOSS CONFIG
-# -------------------------------------------------
-@export var walk_speed := 85.0  # Faster than normal enemies
+# =====================================================
+# CONFIG
+# =====================================================
+@export var move_speed := 85.0
 @export var melee_range := 60.0
 @export var slash_damage := 10
-@export var combo_damage := 25  # AoE combo damage
-@export var combo_radius := 120.0  # Radius for AoE combo
+@export var combo_damage := 15
+@export var combo_radius := 120.0
+@export var dash_force := 200.0
+@export var dash_duration := 0.2
 
-# Combo system
-var combo_count := 0
-var max_combo := 3
-var combo_window := 1.0  # Time between attacks to count as combo
-var combo_timer := 0.0
-var is_in_combo := false
-var final_combo_attack := false
+@export var jump_height_threshold := 64.0
+@export var max_reachable_height := 128.0  # Maximum height Nataly can reach from her current platform
 
-# -------------------------------------------------
-# PLATFORM JUMP/TELEPORT SYSTEM (Sterling-style)
-# -------------------------------------------------
-var jump_markers: Array[Marker2D] = []
-@export var teleport_cooldown_time := 3.0
-var teleport_cooldown := 0.0
-@export var platform_height_threshold := 48.0  # Min height difference to consider platform movement
-@export var max_jump_distance := 500.0  # Max distance for jump/teleport
-
-# Platform movement states
-var is_moving_to_platform := false
-var target_marker: Marker2D = null
-
-# -------------------------------------------------
-# COMBO ATTACK PATTERNS
-# -------------------------------------------------
+# Attack patterns
 @export var combo_patterns := [
-	["slash", "slash_2", "combo"],  # 2 slashes + AoE combo
-	["slash", "combo"],           # Slash + AoE combo
-	["slash", "slash_2", "slash"]   # 3 rapid slashes
+	["slash", "slash_2", "combo"],
+	["slash", "slash_2", "slash"]
 ]
-var current_pattern_index := 0
-var pattern_step := 0
 
-# -------------------------------------------------
+# =====================================================
 # NODES
-# -------------------------------------------------
+# =====================================================
+@onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var combo_hitbox := $ComboHitbox if has_node("ComboHitbox") else null
 @onready var melee_hitbox := $MeleeHitbox if has_node("MeleeHitbox") else null
-@onready var teleport_markers_group := "nataly_jump_marker"
 
-# -------------------------------------------------
-# READY & INITIALIZATION
-# -------------------------------------------------
+# =====================================================
+# STATE
+# =====================================================
+var attack_running := false
+var tired := false
+var jump_markers: Array[Marker2D] = []
+var is_moving_to_marker := false
+var last_platform_check_time := 0.0
+var platform_check_cooldown := 1.0  # Check every second if player is reachable
+
+var ai_active := true
+var is_invulnerable := false
+var last_damage_time := 0.0  # To prevent double damage
+
+# Combo system
+var current_pattern_index := 0
+var pattern_step := 0
+var combo_cooldown_active := false
+
+# =====================================================
+# READY
+# =====================================================
 func _ready() -> void:
-	player = Global.playerBody
-	set_meta("boss_id", "nataly")
-	
-	# Get all teleport markers
-	refresh_jump_markers()
-	
-	# Initialize as a melee boss
-	_initialize_enemy()
-	
-	# Start with idle animation
-	animation_player.play("idle")
-	
 	super._ready()
+	
+	player = Global.playerBody
+	health = 200
+	health_max = 200
+	# Disable BaseEnemy systems
+	is_enemy_chase = false
+	is_roaming = false
+	use_edge_detection = false
+	can_jump_chase = false
 
-func _initialize_enemy():
-	# Set up BaseEnemy properties
-	base_speed = walk_speed
+	attack_type = AttackType.MELEE
 	attack_range = melee_range
 	enemy_damage = slash_damage
-	health = 180
-	health_max = 180
-	use_edge_detection = true
-	can_drop_health = true
-	health_drop_chance = 1.0
-	attack_type = AttackType.MELEE
-	
-	# Disable hitboxes by default
-	if melee_hitbox:
-		melee_hitbox.monitoring = false
-	if combo_hitbox:
-		combo_hitbox.monitoring = false
 
-# -------------------------------------------------
+	_collect_jump_markers()
+	
+	call_deferred("_start_ai")
+
+# =====================================================
 # PROCESS
-# -------------------------------------------------
-func _process(delta):
-	super._process(delta)
-	
-	# Update teleport cooldown
-	if teleport_cooldown > 0:
-		teleport_cooldown -= delta * Global.global_time_scale
-	
-	# Update combo timer
-	if is_in_combo:
-		combo_timer -= delta * Global.global_time_scale
-		if combo_timer <= 0:
-			reset_combo()
-			print("Nataly: Combo window expired")
-	
-	# Check for platform movement (like Sterling)
-	if (player and not dead and not taking_damage and not is_dealing_damage 
-		and not is_moving_to_platform and teleport_cooldown <= 0 
-		and _should_move_to_different_platform()):
-		_handle_platform_movement()
+# =====================================================
+func _process(delta: float) -> void:
+	if not ai_active or dead:
+		return
+		
+	if anim:
+		anim.speed_scale = Global.global_time_scale
 
-# -------------------------------------------------
-# MOVEMENT OVERRIDE
-# -------------------------------------------------
-func move(delta):
-	if dead or taking_damage or is_dealing_damage or is_preparing_attack or is_moving_to_platform:
-		# Use base movement for these states
-		super.move(delta)
+	if not is_on_floor():
+		velocity.y += gravity * delta
+
+	if taking_damage:
+		velocity.x = 0.0
+		move_and_slide()
+		return
+
+	move_and_slide()
+	
+	# Update damage cooldown
+	if last_damage_time > 0:
+		last_damage_time -= delta
+	
+	# Update platform check cooldown
+	if last_platform_check_time > 0:
+		last_platform_check_time -= delta
+
+# =====================================================
+# TAKE DAMAGE - FIXED TO PREVENT DOUBLE DAMAGE
+# =====================================================
+func take_damage(amount: int) -> void:
+	if dead or is_invulnerable:
+		print("Nataly: Ignoring damage - dead:", dead, " invulnerable:", is_invulnerable)
 		return
 	
-	# Nataly is more aggressive - always chase when player is in range
-	if is_enemy_chase and player and not is_in_combo:
-		is_roaming = false
-		
-		var to_player = player.global_position - global_position
-		var distance = to_player.length()
-		
-		# Face player
-		dir.x = sign(to_player.x)
-		
-		# If too far for melee, move closer
-		if distance > melee_range:
-			velocity.x = dir.x * base_speed * Global.global_time_scale
-		else:
-			# Within melee range - stop moving and prepare attack
-			velocity.x = 0
-			if can_attack and not is_preparing_attack:
-				start_attack()
-	else:
-		# Use base movement when not chasing
-		super.move(delta)
-
-# -------------------------------------------------
-# PLATFORM MOVEMENT SYSTEM (Sterling-style)
-# -------------------------------------------------
-func refresh_jump_markers():
-	# Get all markers in the nataly_jump_marker group
-	var marker_nodes = get_tree().get_nodes_in_group(teleport_markers_group)
-	jump_markers = []
-	for node in marker_nodes:
-		if node is Marker2D and is_instance_valid(node):
-			jump_markers.append(node)
+	# Prevent taking damage too quickly (within 0.1 seconds)
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if last_damage_time > 0 and current_time < last_damage_time + 0.1:
+		print("Nataly: Double damage prevented")
+		return
 	
-	print("Nataly: Found ", jump_markers.size(), " jump markers")
+	health -= amount
+	last_damage_time = current_time
+	print("Nataly health: ", health)
+	
+	# Stop everything
+	velocity = Vector2.ZERO
+	attack_running = false
+	tired = false
+	is_moving_to_marker = false
+	
+	# Play hurt animation
+	if anim.has_animation("hurt"):
+		anim.play("hurt")
+		taking_damage = true
+		
+		# Wait for hurt animation
+		var hurt_duration = anim.current_animation_length if anim.current_animation else 0.3
+		await _safe_wait(hurt_duration / Global.global_time_scale)
+		
+		taking_damage = false
+	else:
+		await _safe_wait(0.3 / Global.global_time_scale)
+	
+	if health <= 0:
+		_die()
 
-func _should_move_to_different_platform() -> bool:
-	if not player or jump_markers.is_empty() or is_in_combo:
+func _die() -> void:
+	dead = true
+	ai_active = false
+	velocity = Vector2.ZERO
+	
+	if anim.has_animation("die"):
+		anim.play("die")
+		await anim.animation_finished
+	if can_drop_health and health_drop_scene:
+		try_drop_health()
+		can_drop_health = false
+	emit_signal("boss_died")
+	queue_free()
+
+# =====================================================
+# HELPER FUNCTIONS FOR SAFE AWAITS
+# =====================================================
+func _is_still_valid() -> bool:
+	return not dead and is_inside_tree() and ai_active
+
+func _safe_wait(time: float) -> void:
+	if not _is_still_valid():
+		return
+	
+	var timer = get_tree().create_timer(time)
+	await timer.timeout
+	
+func _safe_process_frame() -> void:
+	if not _is_still_valid():
+		return
+	await get_tree().process_frame
+
+# =====================================================
+# PLATFORM REACHABILITY CHECK
+# =====================================================
+func _is_player_reachable() -> bool:
+	if not player or not is_instance_valid(player):
 		return false
 	
-	# Check vertical distance to player
-	var height_difference = player.global_position.y - global_position.y
+	# Check vertical distance - if player is too high above, Nataly can't reach
+	var vertical_dist = player.global_position.y - global_position.y
 	
-	# Only consider platform movement if player is SIGNIFICANTLY above or below
-	if abs(height_difference) > platform_height_threshold:
-		print("Nataly: Player is ", 
-			  "BELOW" if height_difference > 0 else "ABOVE", 
-			  " by ", abs(height_difference), "px")
-		return true
+	# If player is too high (more than max_reachable_height above), Nataly can't reach
+	if vertical_dist < -max_reachable_height:  # Player is way above
+		print("Nataly: Player is too high to reach (", vertical_dist, " vs max ", max_reachable_height, ")")
+		return false
 	
-	return false
+	return true
 
-func _handle_platform_movement():
-	if is_dealing_damage or taking_damage or is_moving_to_platform:
+# =====================================================
+# MAIN AI LOOP
+# =====================================================
+func _start_ai() -> void:
+	if not is_inside_tree():
+		return
+		
+	ai_active = true
+	print("Nataly AI started")
+	_run_ai()
+
+func _run_ai() -> void:
+	print("Nataly: AI loop starting")
+	
+	while _is_still_valid() and ai_active:
+		await _safe_process_frame()
+			
+		if dead:
+			break
+
+		if taking_damage or attack_running or tired or is_moving_to_marker:
+			continue
+
+		# Get player reference
+		if not player or not is_instance_valid(player):
+			player = Global.playerBody
+			if not player:
+				await _safe_wait(0.1)
+				continue
+		
+		# Check if player is reachable
+		if not _is_player_reachable():
+			# Player is on unreachable platform, just stay idle
+			if anim.has_animation("idle"):
+				anim.play("idle")
+			velocity.x = 0
+			await _safe_wait(0.5)  # Wait half second before checking again
+			continue
+		
+		# Calculate distances
+		var horizontal_dist = abs(player.global_position.x - global_position.x)
+		var vertical_dist = player.global_position.y - global_position.y
+
+		# Check for platform movement
+		if not is_moving_to_marker and abs(vertical_dist) > jump_height_threshold:
+			print("Nataly: Need platform movement (height diff: ", vertical_dist, ")")
+			await _handle_platform_movement()
+			await _safe_wait(0.3)
+			continue
+
+		# Normal chasing/attacking
+		if horizontal_dist > melee_range * 1.5:
+			_chase_player()
+			await _safe_wait(0.15)
+			continue
+
+		if horizontal_dist <= melee_range:
+			print("Nataly: In melee range, starting attack")
+			await _start_attack_pattern()
+			await _safe_wait(0.1)
+		else:
+			_chase_player()
+			await _safe_wait(0.08)
+
+	print("Nataly AI stopped")
+
+# =====================================================
+# CHASE
+# =====================================================
+func _chase_player() -> void:
+	if not _is_still_valid() or not player or not is_instance_valid(player):
+		return
+
+	var dx := player.global_position.x - global_position.x
+	var chase_dir = sign(dx) if dx != 0 else dir.x
+	
+	dir.x = chase_dir
+	
+	if chase_dir != 0:
+		sprite.flip_h = chase_dir < 0
+		
+	velocity.x = dir.x * move_speed
+	
+	if abs(velocity.x) > 0:
+		if anim.has_animation("run"):
+			anim.play("run")
+		elif anim.has_animation("chase"):
+			anim.play("chase")
+	else:
+		if anim.has_animation("idle"):
+			anim.play("idle")
+
+# =====================================================
+# ATTACK PATTERNS
+# =====================================================
+func _start_attack_pattern() -> void:
+	if not _is_still_valid():
+		return
+		
+	attack_running = true
+	velocity = Vector2.ZERO
+	
+	current_pattern_index = randi() % combo_patterns.size()
+	pattern_step = 0
+	
+	print("Nataly: Starting attack pattern ", current_pattern_index)
+	
+	await _execute_next_attack_step()
+	
+	attack_running = false
+
+func _execute_next_attack_step() -> void:
+	if not _is_still_valid():
+		attack_running = false
+		return
+		
+	if pattern_step >= combo_patterns[current_pattern_index].size():
+		_finish_pattern()
 		return
 	
-	print("Nataly: Starting platform movement routine")
-	is_moving_to_platform = true
-	teleport_cooldown = teleport_cooldown_time
+	var attack_type = combo_patterns[current_pattern_index][pattern_step]
+	pattern_step += 1
 	
-	# Find the best marker for current situation
+	print("Nataly: Executing attack: ", attack_type)
+	
+	match attack_type:
+		"slash":
+			await _execute_slash_attack()
+		"slash_2":
+			await _execute_slash_2_attack()
+		"combo":
+			await _execute_combo_attack()
+	
+	# Check if there are more steps
+	if pattern_step < combo_patterns[current_pattern_index].size():
+		await _safe_wait(0.2 / Global.global_time_scale)
+		await _execute_next_attack_step()
+	else:
+		_finish_pattern()
+
+func _finish_pattern() -> void:
+	if not _is_still_valid():
+		return
+		
+	print("Nataly: Pattern finished")
+	
+	# Check if last attack was "combo"
+	var last_attack_was_combo = false
+	if current_pattern_index < combo_patterns.size() and combo_patterns[current_pattern_index].size() > 0:
+		last_attack_was_combo = (combo_patterns[current_pattern_index][-1] == "combo")
+	
+	if last_attack_was_combo:
+		# Combo cooldown
+		combo_cooldown_active = true
+		tired = true
+		print("Nataly: Combo finished, entering 5-second cooldown")
+		
+		velocity.x = 0
+		anim.play("idle")
+		await _safe_wait(5.0 / Global.global_time_scale)
+		
+		tired = false
+		combo_cooldown_active = false
+		print("Nataly: Cooldown finished")
+	else:
+		# Normal cooldown
+		tired = true
+		anim.play("idle")
+		await _safe_wait(3.0 / Global.global_time_scale)
+		tired = false
+
+# =====================================================
+# ATTACKS
+# =====================================================
+func _execute_slash_attack() -> void:
+	if not _is_still_valid():
+		return
+		
+	is_invulnerable = true
+	attack_running = true
+	
+	# Face player
+	if player and is_instance_valid(player):
+		var to_player = player.global_position.x - global_position.x
+		if abs(to_player) > 5.0:
+			dir.x = sign(to_player)
+			sprite.flip_h = dir.x < 0
+	
+	anim.play("slash")
+	
+	# Apply dash
+	if dir.x != 0:
+		velocity.x = dir.x * dash_force
+	
+	# Wait for dash
+	await _safe_wait(dash_duration / Global.global_time_scale)
+	
+	velocity.x = 0
+	
+	# Wait for animation
+	await anim.animation_finished
+	
+	is_invulnerable = false
+
+func _execute_slash_2_attack() -> void:
+	if not _is_still_valid():
+		return
+		
+	is_invulnerable = true
+	attack_running = true
+	
+	# Face player
+	if player and is_instance_valid(player):
+		var to_player = player.global_position.x - global_position.x
+		if abs(to_player) > 5.0:
+			dir.x = sign(to_player)
+			sprite.flip_h = dir.x < 0
+	
+	anim.play("slash_2")
+	
+	# Apply dash
+	if dir.x != 0:
+		velocity.x = dir.x * dash_force
+	
+	# Wait for dash
+	await _safe_wait(dash_duration / Global.global_time_scale)
+	
+	velocity.x = 0
+	
+	# Wait for animation
+	await anim.animation_finished
+	
+	is_invulnerable = false
+
+func _execute_combo_attack() -> void:
+	if not _is_still_valid():
+		return
+		
+	is_invulnerable = true
+	attack_running = true
+	
+	# Face player
+	if player and is_instance_valid(player):
+		var to_player = player.global_position.x - global_position.x
+		if abs(to_player) > 5.0:
+			dir.x = sign(to_player)
+			sprite.flip_h = dir.x < 0
+	
+	anim.play("combo")
+	
+	velocity.x = 0
+	
+	# Wait for animation
+	await anim.animation_finished
+	
+	is_invulnerable = false
+
+# =====================================================
+# DAMAGE APPLY FUNCTIONS - ADDED DOUBLE DAMAGE PREVENTION
+# =====================================================
+var last_hit_time := 0.0
+var hit_cooldown := 0.2  # Cooldown between hits
+
+func _apply_slash_damage() -> void:
+	if not _is_still_valid() or not player or not is_instance_valid(player):
+		return
+	
+	# Prevent multiple hits in quick succession
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if current_time < last_hit_time + hit_cooldown:
+		print("Nataly: Slash hit cooldown")
+		return
+	
+	var distance = global_position.distance_to(player.global_position)
+	if distance <= melee_range:
+		print("Nataly: Slash hit player!")
+		if player.has_method("take_damage"):
+			player.take_damage(slash_damage)
+			last_hit_time = current_time
+	else:
+		print("Nataly: Slash missed (distance: ", distance, ")")
+
+func _apply_slash_2_damage() -> void:
+	if not _is_still_valid() or not player or not is_instance_valid(player):
+		return
+	
+	# Prevent multiple hits in quick succession
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if current_time < last_hit_time + hit_cooldown:
+		print("Nataly: Slash 2 hit cooldown")
+		return
+	
+	var distance = global_position.distance_to(player.global_position)
+	if distance <= melee_range:
+		print("Nataly: Slash 2 hit player!")
+		if player.has_method("take_damage"):
+			player.take_damage(slash_damage)
+			last_hit_time = current_time
+	else:
+		print("Nataly: Slash 2 missed (distance: ", distance, ")")
+
+func _apply_combo_damage() -> void:
+	if not _is_still_valid() or not player or not is_instance_valid(player):
+		return
+	
+	# Prevent multiple hits in quick succession
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if current_time < last_hit_time + hit_cooldown:
+		print("Nataly: Combo hit cooldown")
+		return
+	
+	var distance = global_position.distance_to(player.global_position)
+	if distance <= combo_radius:
+		print("Nataly: Combo hit player!")
+		if player.has_method("take_damage"):
+			player.take_damage(combo_damage)
+			last_hit_time = current_time
+	else:
+		print("Nataly: Combo missed (distance: ", distance, ")")
+
+# =====================================================
+# PLATFORM MOVEMENT - WITH JUMP ANIMATION
+# =====================================================
+func _collect_jump_markers() -> void:
+	jump_markers.clear()
+	for m in get_tree().get_nodes_in_group("nataly_jump_marker"):
+		if m is Marker2D:
+			jump_markers.append(m)
+	print("Nataly: Collected ", jump_markers.size(), " jump markers")
+
+func _handle_platform_movement() -> void:
+	if not _is_still_valid() or not player or not is_instance_valid(player) or jump_markers.is_empty():
+		return
+	
 	var height_difference = player.global_position.y - global_position.y
-	var best_marker: Marker2D = null
-	var best_score = INF
+	
+	# First check if player is even reachable
+	if not _is_player_reachable():
+		print("Nataly: Player is on unreachable platform, staying idle")
+		velocity.x = 0
+		if anim.has_animation("idle"):
+			anim.play("idle")
+		return
+	
+	# Find the nearest marker
+	var nearest_marker: Marker2D = null
+	var nearest_distance = INF
 	
 	for marker in jump_markers:
 		if not is_instance_valid(marker):
 			continue
 		
-		var marker_height_diff = marker.global_position.y - global_position.y
-		var horizontal_dist_to_marker = abs(marker.global_position.x - global_position.x)
-		var vertical_dist_to_player = abs(marker.global_position.y - player.global_position.y)
-		var distance_to_marker = marker.global_position.distance_to(global_position)
-		
-		# Skip markers that are too far
-		if distance_to_marker > max_jump_distance:
-			continue
-		
-		var score: float
-		
-		if height_difference < 0:  # Player is ABOVE
-			# For upward movement, prioritize markers that are above and close to player
-			if marker_height_diff < 0:  # Marker is above current position
-				score = vertical_dist_to_player * 2.0 + horizontal_dist_to_marker * 1.0
-			else:
-				score = INF  # Skip markers below for upward movement
-		else:  # Player is BELOW
-			# For downward movement, prioritize markers that are below and close to player
-			if marker_height_diff > 0:  # Marker is below current position
-				score = vertical_dist_to_player * 2.0 + horizontal_dist_to_marker * 1.0
-			else:
-				score = INF  # Skip markers above for downward movement
-		
-		# Also check if marker is reachable (not blocked)
-		if score < best_score:
-			best_marker = marker
-			best_score = score
+		var distance = marker.global_position.distance_to(global_position)
+		if distance < nearest_distance and distance < 600:
+			nearest_marker = marker
+			nearest_distance = distance
 	
-	if best_marker:
-		print("Nataly: Moving to marker at ", best_marker.global_position, 
-			  " (player at ", player.global_position, ")")
-		target_marker = best_marker
-		await _smooth_move_to_marker(best_marker, height_difference < 0)
-	else:
-		print("Nataly: No suitable marker found for platform movement")
-	
-	is_moving_to_platform = false
-	target_marker = null
+	if nearest_marker:
+		print("Nataly: Moving to nearest marker at ", nearest_marker.global_position)
+		is_moving_to_marker = true
+		
+		# Determine if going up or down
+		var going_up = height_difference < 0
+		
+		if going_up:
+			await _move_up_to_marker(nearest_marker)
+		else:
+			await _move_down_to_marker(nearest_marker)
+		
+		is_moving_to_marker = false
 
-func _smooth_move_to_marker(marker: Marker2D, is_upward: bool) -> void:
-	print("Nataly: Smooth moving to marker at ", marker.global_position, " (upward: ", is_upward, ")")
+func _move_up_to_marker(marker: Marker2D) -> void:
+	print("Nataly: Moving UP to marker")
 	
-	# Phase 1: Chase horizontally to get under/over the marker
-	var horizontal_target = marker.global_position.x
-	var reached_horizontally = false
-	var horizontal_timeout = 3.0  # Max time to reach horizontally
-	var horizontal_start_time = Time.get_ticks_msec() / 1000.0
+	# Move horizontally to marker
+	var target_x = marker.global_position.x
+	var reached = false
+	var timeout = 2.0
+	var start_time = Time.get_ticks_msec() / 1000.0
 	
-	print("Nataly: Phase 1 - Moving horizontally to X: ", horizontal_target)
-	
-	# First, move to get aligned with the marker
-	while not reached_horizontally and not dead and not taking_damage:
+	while not reached and _is_still_valid() and not taking_damage:
 		var current_time = Time.get_ticks_msec() / 1000.0
-		if current_time - horizontal_start_time > horizontal_timeout:
-			print("Nataly: Horizontal movement timeout")
+		if current_time - start_time > timeout:
+			print("Nataly: Movement timeout")
 			break
 		
-		var dx = horizontal_target - global_position.x
-		var horizontal_dir = sign(dx) if dx != 0 else dir.x
+		var dx = target_x - global_position.x
+		var move_dir = sign(dx) if dx != 0 else dir.x
 		
-		# Update direction
-		if horizontal_dir != 0:
-			dir.x = horizontal_dir
-			sprite.flip_h = horizontal_dir < 0
+		if abs(dx) > 10.0:
+			dir.x = move_dir
+			sprite.flip_h = move_dir < 0
 		
-		# Move horizontally
-		velocity.x = horizontal_dir * base_speed * 0.8  * Global.global_time_scale# Slightly slower when positioning
+		velocity.x = move_dir * move_speed
 		
-		# Apply gravity if we're on ground
-		if not is_on_floor():
-			velocity.y += gravity * get_process_delta_time()
+		if abs(velocity.x) > 0:
+			if anim.has_animation("run"):
+				anim.play("run")
 		
-		# Play run animation
-		if abs(velocity.x) > 0.1:
-			current_animation = "run"
-			if animation_player.current_animation != current_animation:
-				animation_player.play(current_animation)
+		await _safe_process_frame()
 		
-		await get_tree().process_frame
-		
-		# Check if we've reached the horizontal position
-		if abs(dx) < 10.0:  # Increased tolerance for Nataly
-			reached_horizontally = true
+		if abs(dx) < 20.0:
+			reached = true
 			velocity.x = 0
-			print("Nataly: Reached horizontal position")
 	
-	# Stop movement before teleport
-	velocity = Vector2.ZERO
-	
-	# Phase 2: Teleport (with jump animation)
-	if is_upward:
-		print("Nataly: Phase 2 - Jumping/Teleporting upward")
-		
-		# Play jump animation
-		if animation_player.has_animation("jump"):
-			animation_player.play("jump")
-			is_dealing_damage = true
-			
-			# Wait for jump animation midpoint
-			await get_tree().create_timer(0.15/Global.global_time_scale).timeout
-			
-			# Teleport to marker position during jump
-			global_position = marker.global_position
-			
-			# Wait for jump animation to complete
-			await animation_player.animation_finished
-			
-			is_dealing_damage = false
-		else:
-			# No jump animation, just teleport
-			global_position = marker.global_position
-		
-		print("Nataly: Teleported to marker position")
-	else:
-		# For downward movement, we can walk off and teleport
-		print("Nataly: Phase 2 - Teleporting downward")
-		
-		# Play jump animation for downward teleport too
-		if animation_player.has_animation("jump"):
-			animation_player.play("jump")
-			is_dealing_damage = true
-			
-			# Wait briefly then teleport
-			await get_tree().create_timer(0.1/Global.global_time_scale).timeout
-			global_position = marker.global_position
-			
-			# Wait for animation to complete
-			await animation_player.animation_finished
-			
-			is_dealing_damage = false
-		else:
-			global_position = marker.global_position
-	
-	# Face player after teleport
-	if player:
-		dir.x = sign(player.global_position.x - global_position.x)
-		sprite.flip_h = dir.x < 0
-	
-	# Reset and idle
-	velocity = Vector2.ZERO
-	current_animation = "idle"
-	animation_player.play("idle")
-	
-	print("Nataly: Successfully reached marker at ", global_position)
-	
-	# Brief pause before continuing normal behavior
-	await get_tree().create_timer(0.3/Global.global_time_scale).timeout
-
-# -------------------------------------------------
-# ATTACK SYSTEM (unchanged except for animation updates)
-# -------------------------------------------------
-func start_attack():
-	# Don't start new attack during combo or special states
-	if is_in_combo or is_dealing_damage or is_preparing_attack or not can_attack or is_moving_to_platform:
+	if not _is_still_valid():
 		return
 	
-	super.start_attack()
-
-func _execute_attack_after_delay():
-	# Override to use Nataly's combo system
-	if is_in_combo:
-		_execute_next_combo_step()
-	else:
-		_start_new_combo()
-
-func _start_new_combo():
-	# Start a new combo pattern
-	is_in_combo = true
-	combo_count = 0
-	current_pattern_index = randi() % combo_patterns.size()
-	pattern_step = 0
-	combo_timer = combo_window
+	# Teleport up with jump animation
+	print("Nataly: Teleporting upward")
 	
-	print("Nataly: Starting new combo pattern ", current_pattern_index)
+	# Play jump animation if available
+	if anim.has_animation("jump"):
+		anim.play("jump")
+		await _safe_wait(0.1 / Global.global_time_scale)
 	
-	# Execute first step
-	_execute_next_combo_step()
-
-func _execute_next_combo_step():
-	if pattern_step >= combo_patterns[current_pattern_index].size():
-		# Combo finished
-		reset_combo()
+	if not _is_still_valid():
 		return
 	
-	var attack_type = combo_patterns[current_pattern_index][pattern_step]
-	pattern_step += 1
-	combo_count += 1
-	combo_timer = combo_window  # Reset timer for next attack
+	# Instant teleport to marker
+	global_position = marker.global_position
 	
-	# Check if this is the final attack in the combo
-	final_combo_attack = (pattern_step >= combo_patterns[current_pattern_index].size())
-	
-	match attack_type:
-		"slash":
-			_execute_slash_attack()
-		"slash_2":
-			_execute_slash_2_attack()
-		"combo":
-			_execute_combo_attack()
-		_:
-			_execute_slash_attack()
+	# Play landing animation or return to idle
+	if anim.has_animation("idle"):
+		anim.play("idle")
+	velocity = Vector2.ZERO
 
-func reset_combo():
-	is_in_combo = false
-	combo_count = 0
-	pattern_step = 0
-	final_combo_attack = false
-	can_attack = true
-	is_dealing_damage = false
+func _move_down_to_marker(marker: Marker2D) -> void:
+	print("Nataly: Moving DOWN past marker")
 	
-	# Start cooldown before next combo
-	attack_cooldown_timer.start(attack_cooldown * 0.5)  # Shorter cooldown between combos
+	# Move horizontally PAST the marker
+	var target_x = marker.global_position.x
+	var move_past_distance = 100.0  # How far past the marker to go
+	var final_target_x = target_x + (move_past_distance if dir.x > 0 else -move_past_distance)
 	
-	print("Nataly: Combo finished")
-
-func _execute_slash_attack():
-	is_dealing_damage = true
-	can_attack = false
+	var reached = false
+	var timeout = 3.0
+	var start_time = Time.get_ticks_msec() / 1000.0
 	
-	print("Nataly: Slash attack! (Combo: ", combo_count, ")")
+	# Play jump animation before falling
+	if anim.has_animation("jump") and _is_still_valid():
+		anim.play("jump")
+		await _safe_wait(0.2 / Global.global_time_scale)
 	
-	# Face player
-	if player:
-		dir.x = sign(player.global_position.x - global_position.x)
-		sprite.flip_h = dir.x < 0
-	
-	# Play slash animation
-	animation_player.play("slash")
-	
-	# Enable hitbox after delay
-	await get_tree().create_timer(0.15/Global.global_time_scale).timeout
-	if melee_hitbox:
-		melee_hitbox.monitoring = true
-	
-	# Deal damage
-	await get_tree().create_timer(0.1/Global.global_time_scale).timeout
-	if melee_hitbox and player and global_position.distance_to(player.global_position) <= melee_range:
-		var knockback_dir = (player.global_position - global_position).normalized()
-		Global.enemyAknockback = knockback_dir * knockback_force
-		player.take_damage(slash_damage)
-		print("Nataly dealt slash damage: ", slash_damage)
-	
-	# Disable hitbox
-	await get_tree().create_timer(0.15/Global.global_time_scale).timeout
-	if melee_hitbox:
-		melee_hitbox.monitoring = false
-	
-	# Wait for animation to complete
-	await animation_player.animation_finished
-	
-	# Reset state and prepare for next attack in combo
-	is_dealing_damage = false
-	_continue_combo_or_finish()
-
-func _execute_slash_2_attack():
-	is_dealing_damage = true
-	can_attack = false
-	
-	print("Nataly: Slash attack! (Combo: ", combo_count, ")")
-	
-	# Face player
-	if player:
-		dir.x = sign(player.global_position.x - global_position.x)
-		sprite.flip_h = dir.x < 0
-	
-	# Play slash animation
-	animation_player.play("slash_2")
-	
-	# Enable hitbox after delay
-	await get_tree().create_timer(0.15/Global.global_time_scale).timeout
-	if melee_hitbox:
-		melee_hitbox.monitoring = true
-	
-	# Deal damage
-	await get_tree().create_timer(0.1/Global.global_time_scale).timeout
-	if melee_hitbox and player and global_position.distance_to(player.global_position) <= melee_range:
-		var knockback_dir = (player.global_position - global_position).normalized()
-		Global.enemyAknockback = knockback_dir * knockback_force
-		player.take_damage(slash_damage)
-		print("Nataly dealt slash damage: ", slash_damage)
-	
-	# Disable hitbox
-	await get_tree().create_timer(0.15/Global.global_time_scale).timeout
-	if melee_hitbox:
-		melee_hitbox.monitoring = false
-	
-	# Wait for animation to complete
-	await animation_player.animation_finished
-	
-	# Reset state and prepare for next attack in combo
-	is_dealing_damage = false
-	_continue_combo_or_finish()
-	
-
-func _execute_combo_attack():
-	is_dealing_damage = true
-	can_attack = false
-	
-	print("Nataly: COMBO ATTACK! (Combo: ", combo_count, ")")
-	
-	# Face player
-	if player:
-		dir.x = sign(player.global_position.x - global_position.x)
-		sprite.flip_h = dir.x < 0
-	
-	# Play combo animation
-	animation_player.play("combo")
-	
-	# Enable AoE hitbox after delay
-	await get_tree().create_timer(0.3/Global.global_time_scale).timeout
-	if combo_hitbox:
-		combo_hitbox.monitoring = true
-	
-	# Deal AoE damage
-	await get_tree().create_timer(0.2/Global.global_time_scale).timeout
-	if combo_hitbox and player:
-		var distance = global_position.distance_to(player.global_position)
-		if distance <= combo_radius:
-			var knockback_dir = (player.global_position - global_position).normalized()
-			Global.enemyAknockback = knockback_dir * knockback_force * 1.5  # Stronger knockback
-			player.take_damage(combo_damage)
-			print("Nataly dealt COMBO damage: ", combo_damage)
-	
-	# Disable hitbox
-	await get_tree().create_timer(0.2/Global.global_time_scale).timeout
-	if combo_hitbox:
-		combo_hitbox.monitoring = false
-	
-	# Wait for animation to complete
-	await animation_player.animation_finished
-	
-	# Reset state
-	is_dealing_damage = false
-	_continue_combo_or_finish()
-
-func _continue_combo_or_finish():
-	if is_in_combo and combo_timer > 0:
-		# Continue with next step in combo
-		await get_tree().create_timer(0.2/Global.global_time_scale).timeout  # Brief pause between combo steps
-		_execute_next_combo_step()
-	else:
-		# Combo finished or window expired
-		reset_combo()
-		current_animation = "idle"
-		animation_player.play("idle")
-
-# -------------------------------------------------
-# ANIMATION HANDLING (updated to include is_moving_to_platform)
-# -------------------------------------------------
-func handle_animation():
-	var new_animation := ""
-	
-	# Priority list
-	if dead:
-		new_animation = "die"
-	elif taking_damage:
-		new_animation = "hurt"
-	elif is_dealing_damage:
-		# Keep current attack animation
-		if animation_player.current_animation in ["slash", "combo", "jump"]:
-			return
-		else:
-			new_animation = "idle"
-	elif is_moving_to_platform:
-		# Use run animation while moving to platform
-		if abs(velocity.x) > 0.1:
-			new_animation = "run"
-		else:
-			new_animation = "idle"
-	else:
-		# Normal movement animations
-		if abs(velocity.x) > 0.1:
-			new_animation = "run"
-		else:
-			new_animation = "idle"
-	
-	# Update facing direction
-	if not dead and not taking_damage:
-		if dir.x == -1:
-			sprite.flip_h = true
-		elif dir.x == 1:
-			sprite.flip_h = false
-	
-	# Play animation if changed
-	if new_animation != current_animation:
-		current_animation = new_animation
-		animation_player.play(new_animation)
+	while not reached and _is_still_valid() and not taking_damage:
+		var current_time = Time.get_ticks_msec() / 1000.0
+		if current_time - start_time > timeout:
+			print("Nataly: Movement timeout")
+			break
 		
-		# Handle special animation completions
-		if new_animation == "hurt":
-			await get_tree().create_timer(0.3/Global.global_time_scale).timeout
-			taking_damage = false
-		elif new_animation == "die":
-			await animation_player.animation_finished
-			die()
-
-# -------------------------------------------------
-# DEATH
-# -------------------------------------------------
-func die():
-	if can_drop_health:
-		try_drop_health()
+		var dx = final_target_x - global_position.x
+		var move_dir = sign(dx) if dx != 0 else dir.x
+		
+		# Keep moving in the current direction
+		velocity.x = move_dir * move_speed
+		
+		if abs(velocity.x) > 0:
+			if anim.has_animation("run"):
+				anim.play("run")
+		
+		# Let gravity pull down
+		if not is_on_floor():
+			velocity.y += gravity * get_process_delta_time() * 1.5
+		
+		await _safe_process_frame()
+		
+		# Check if we've passed the marker area
+		if move_dir > 0 and global_position.x > target_x + 50:
+			reached = true
+		elif move_dir < 0 and global_position.x < target_x - 50:
+			reached = true
 	
-	print("NatalyBoss: Died!")
-	emit_signal("boss_died")
-	queue_free()
+	if not _is_still_valid():
+		return
+	
+	# Keep falling until aligned with player
+	print("Nataly: Falling to align with player")
+	timeout = 2.0
+	start_time = Time.get_ticks_msec() / 1000.0
+	
+	while _is_still_valid() and not taking_damage:
+		var current_time = Time.get_ticks_msec() / 1000.0
+		if current_time - start_time > timeout:
+			print("Nataly: Falling timeout")
+			break
+		
+		# Apply gravity
+		velocity.y += gravity * get_process_delta_time() * 1.5
+		
+		# Check if aligned with player
+		if player and is_instance_valid(player):
+			var height_diff = player.global_position.y - global_position.y
+			if abs(height_diff) < 20:
+				print("Nataly: Aligned with player")
+				break
+		
+		await _safe_process_frame()
+	
+	if not _is_still_valid():
+		return
+	
+	# Play landing effect if available
+	if anim.has_animation("land"):
+		anim.play("land")
+		await anim.animation_finished
+	elif anim.has_animation("idle"):
+		anim.play("idle")
+	
+	velocity = Vector2.ZERO
 
-# -------------------------------------------------
+# =====================================================
 # OVERRIDE BASE METHODS
-# -------------------------------------------------
+# =====================================================
 func execute_attack():
-	# Not used - Nataly uses her own combo system
 	pass
 
 func execute_melee_attack():
-	# Not used - Nataly uses her own combo system
 	pass
 
 func execute_ranged_attack():
-	# Nataly doesn't use ranged attacks
 	pass

@@ -10,6 +10,7 @@ size = Vector2(8, 14)
 size = Vector2(21, 21)
 
 [node name="Health" type="RigidBody2D"]
+z_index = 1
 collision_layer = 32
 collision_mask = 3
 script = ExtResource("1_gkluw")

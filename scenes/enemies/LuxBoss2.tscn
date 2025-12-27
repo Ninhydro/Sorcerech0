@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="4_irlp1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
-size = Vector2(32, 36.6667)
+size = Vector2(28.5714, 40)
 
 [sub_resource type="Animation" id="Animation_8h6jy"]
 length = 0.001
@@ -309,7 +309,8 @@ script = ExtResource("1_ii523")
 boss_rocket_scene = ExtResource("2_mmpft")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8.33332)
+position = Vector2(2.85714, -9.99998)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_mo267")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
