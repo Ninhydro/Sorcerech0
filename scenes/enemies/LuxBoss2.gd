@@ -62,6 +62,15 @@ var rocket_cooldown_timer := 0.0
 var rocket_scene: PackedScene
 @export var boss_rocket_scene: PackedScene
 
+var last_fallback_time := 0.0
+@export var fallback_cooldown := 3.0 # seconds
+
+var last_platform_move_time := 0.0
+@export var platform_retry_cooldown := 1.2
+
+var last_used_marker: Marker2D = null
+@export var platform_height_tolerance := 20.0
+
 # =====================================================
 # READY
 # =====================================================
@@ -398,8 +407,14 @@ func _run_ai() -> void:
 		var vertical_dist = player.global_position.y - global_position.y
 
 		# Check for platform movement
-		if not is_moving_to_marker and abs(vertical_dist) > jump_height_threshold:
+		var now := Time.get_ticks_msec() / 1000.0
+
+		if not is_moving_to_marker \
+		and abs(vertical_dist) > jump_height_threshold \
+		and now - last_platform_move_time > platform_retry_cooldown:
+			
 			print("Lux: Need platform movement (height diff: ", vertical_dist, ")")
+			last_platform_move_time = now
 			await _handle_platform_movement()
 			await _safe_wait(0.3)
 			continue
@@ -433,9 +448,9 @@ func _chase_player() -> void:
 	dir.x = chase_dir
 	
 	if chase_dir != 0:
-		sprite.flip_h = chase_dir < 0
-		if shield_sprite:
-			shield_sprite.flip_h = sprite.flip_h
+		velocity.x = dir.x * move_speed
+		_update_facing_from_movement_or_target(player.global_position.x)
+
 		if rocket_spawn:
 			rocket_spawn.position.x = abs(rocket_spawn.position.x) * chase_dir
 		
@@ -463,17 +478,14 @@ func _start_attack() -> void:
 	# Decide which attack to use
 	var distance = global_position.distance_to(player.global_position)
 	
-	if distance <= melee_range:
-		# Melee attack
-		await _execute_melee_attack()
-	elif can_fire_rocket and able_rocket and distance <= rocket_radius and randf() < 0.3:
-		# Rocket attack
+	# 🔥 ROCKET FIRST (mid-range)
+	if can_fire_rocket and able_rocket and distance > melee_range and distance <= rocket_radius:
 		await _execute_rocket_attack()
-	else:
-		# Default to melee if in range
-		if distance <= melee_range_before:
-			await _execute_melee_attack()
-	
+
+	# 👊 MELEE ONLY WHEN CLOSE
+	elif distance <= melee_range:
+		await _execute_melee_attack()
+
 	attack_running = false
 
 func _execute_melee_attack() -> void:
@@ -489,7 +501,7 @@ func _execute_melee_attack() -> void:
 		var to_player = player.global_position.x - global_position.x
 		if abs(to_player) > 5.0:
 			dir.x = sign(to_player)
-			sprite.flip_h = dir.x < 0
+			_update_facing_from_movement_or_target(player.global_position.x)
 			if shield_sprite:
 				shield_sprite.flip_h = sprite.flip_h
 			if rocket_spawn:
@@ -540,7 +552,7 @@ func _execute_rocket_attack() -> void:
 		var to_player = player.global_position.x - global_position.x
 		if abs(to_player) > 5.0:
 			dir.x = sign(to_player)
-			sprite.flip_h = dir.x < 0
+			_update_facing_from_movement_or_target(player.global_position.x)
 			if shield_sprite:
 				shield_sprite.flip_h = sprite.flip_h
 			if rocket_spawn:
@@ -631,7 +643,11 @@ func _handle_platform_movement() -> void:
 			continue
 		
 		var distance = marker.global_position.distance_to(global_position)
-		if distance < nearest_distance and distance < 600:
+		var height_diff = abs(marker.global_position.y - global_position.y)
+
+		if distance < nearest_distance \
+		and distance < 600 \
+		and height_diff > platform_height_tolerance:
 			nearest_marker = marker
 			nearest_distance = distance
 	
@@ -676,7 +692,8 @@ func _move_up_to_marker(marker: Marker2D) -> void:
 				rocket_spawn.position.x = abs(rocket_spawn.position.x) * move_dir
 		
 		velocity.x = move_dir * move_speed
-		
+		_update_facing_from_movement_or_target(marker.global_position.x)
+
 		if abs(velocity.x) > 0:
 			if animation_player.has_animation("walk"):
 				animation_player.play("walk")
@@ -687,7 +704,9 @@ func _move_up_to_marker(marker: Marker2D) -> void:
 			reached = true
 			velocity.x = 0
 	
-	if not _is_still_valid():
+	if not _is_still_valid() or not reached:
+		print("Lux: Cannot reach upper marker → fallback")
+		await _fallback_when_cannot_jump()
 		return
 	
 	# Teleport up with jump animation
@@ -698,7 +717,9 @@ func _move_up_to_marker(marker: Marker2D) -> void:
 		animation_player.play("jump")
 		await _safe_wait(0.1 / Global.global_time_scale)
 	
-	if not _is_still_valid():
+	if not _is_still_valid() or not reached:
+		print("Lux: Cannot reach upper marker → fallback")
+		await _fallback_when_cannot_jump()
 		return
 	
 	# Instant teleport to marker
@@ -708,6 +729,9 @@ func _move_up_to_marker(marker: Marker2D) -> void:
 	if animation_player.has_animation("idle"):
 		animation_player.play("idle")
 	velocity = Vector2.ZERO
+	
+	last_used_marker = marker
+	last_platform_move_time = Time.get_ticks_msec() / 1000.0
 
 func _move_down_to_marker(marker: Marker2D) -> void:
 	print("Lux: Moving DOWN past marker")
@@ -737,7 +761,8 @@ func _move_down_to_marker(marker: Marker2D) -> void:
 		
 		# Keep moving in the current direction
 		velocity.x = move_dir * move_speed
-		
+		_update_facing_from_movement_or_target(marker.global_position.x)
+
 		if abs(velocity.x) > 0:
 			if animation_player.has_animation("walk"):
 				animation_player.play("walk")
@@ -820,3 +845,38 @@ func execute_melee_attack():
 
 func execute_ranged_attack():
 	pass
+
+func _update_facing_from_movement_or_target(target_x: float = 0.0):
+	# Priority 1: real movement (prevents moonwalk)
+	if abs(velocity.x) > 1.0:
+		sprite.flip_h = velocity.x < 0
+	else:
+		# Priority 2: target direction (player or marker)
+		var dx = target_x - global_position.x
+		if abs(dx) > 1.0:
+			sprite.flip_h = dx < 0
+
+	# Sync attachments
+	if shield_sprite:
+		shield_sprite.flip_h = sprite.flip_h
+	if rocket_spawn:
+		rocket_spawn.position.x = abs(rocket_spawn.position.x) * (-1 if sprite.flip_h else 1)
+
+func _fallback_when_cannot_jump() -> void:
+	if not _is_still_valid():
+		return
+
+	var now := Time.get_ticks_msec() / 1000.0
+	if now - last_fallback_time < fallback_cooldown:
+		return # too soon, do nothing
+
+	last_fallback_time = now
+
+	# Decide action
+	if able_rocket and randi() % 2 == 0:
+		print("Lux: Fallback → Rocket attack")
+		await _execute_rocket_attack()
+	else:
+		print("Lux: Fallback → Idle")
+		if animation_player.has_animation("idle"):
+			animation_player.play("idle")
