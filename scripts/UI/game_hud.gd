@@ -42,6 +42,8 @@ var _highlight_width: float = 1.0 # <-- Change this from 2.0 to 8.0 (or even 10.
 var _icon_modulate: Color = Color(1.0, 1.0, 1.0, 0.2)  # Default white (no change)
 var _outline_width: float = 0.2  # Changed from _highlight_width
 
+@onready var fps_label: Label = $FPSLabel
+var _fps_timer := 0.0
 
 func _ready():
 	# Defer initialization to ensure Player node is ready and in group
@@ -203,7 +205,7 @@ func initialize_hud():
 			printerr("GameHUD: Player node still not found after deferred initialization (via Global or group 'player')! UI will not function.")
 
 func _process(delta):
-	
+
 	if Global.is_dialog_open == true or Global.is_cutscene_active == true:
 		visible = false
 	elif Global.is_dialog_open == false or Global.is_cutscene_active == false:
@@ -215,7 +217,13 @@ func _process(delta):
 		if Global.selected_form_index != _last_selected_form_index:
 			update_form_selection_display()
 			_last_selected_form_index = Global.selected_form_index
-
+	
+	_fps_timer += delta
+	if _fps_timer >= 0.5: # update twice per second (lighter than every frame)
+		if is_instance_valid(fps_label):
+			fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
+		_fps_timer = 0.0
+		
 func _set_icon_highlight(icon_rect: TextureRect, highlight: bool):
 	if not is_instance_valid(icon_rect): return
 
