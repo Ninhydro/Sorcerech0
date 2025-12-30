@@ -11,6 +11,7 @@ signal boss_died
 @export var melee_range := 60.0
 @export var melee_damage := 10
 @export var rocket_damage := 15
+@export var slam_damage := 10
 @export var rocket_radius := 200.0
 
 @export var jump_height_threshold := 64.0
@@ -26,6 +27,17 @@ signal boss_died
 @export var rocket_attack_cooldown := 8.0
 @export var rocket_windup_time := 0.8
 
+# Slam attack config
+@export var slam_speed := 400.0
+@export var slam_cooldown := 5.0
+var can_slam := true
+var slam_cooldown_timer := 0.0
+@export var slam_windup_time := 0.5
+@export var slam_recovery_time := 1.5
+
+# Visual config for vulnerable state
+@export var vulnerable_modulate := Color(1.2, 0.6, 0.6, 1.0)  # Red tint
+
 # =====================================================
 # NODES
 # =====================================================
@@ -39,6 +51,7 @@ signal boss_died
 var attack_running := false
 var tired := false
 var jump_markers: Array[Marker2D] = []
+var slam_markers: Array[Marker2D] = []
 var is_moving_to_marker := false
 var last_platform_check_time := 0.0
 var platform_check_cooldown := 1.0  # Check every second if player is reachable
@@ -71,6 +84,9 @@ var last_platform_move_time := 0.0
 var last_used_marker: Marker2D = null
 @export var platform_height_tolerance := 20.0
 
+# Vulnerable state
+var is_vulnerable_state := false
+
 # =====================================================
 # READY
 # =====================================================
@@ -102,6 +118,7 @@ func _ready() -> void:
 	rocket_scene = boss_rocket_scene if boss_rocket_scene else preload("res://scenes/enemies/Projectile_enemy.tscn")
 
 	_collect_jump_markers()
+	_collect_slam_markers()
 	
 	call_deferred("_start_ai")
 
@@ -133,14 +150,14 @@ func _process(delta: float) -> void:
 	if last_platform_check_time > 0:
 		last_platform_check_time -= delta
 	
-	# Handle shield activation delay
-	if has_taken_first_hit and not shield_active and shield_activation_timer > 0:
+	# Handle shield activation delay (only in invulnerable state)
+	if not is_vulnerable_state and has_taken_first_hit and not shield_active and shield_activation_timer > 0:
 		shield_activation_timer -= delta * Global.global_time_scale
 		if shield_activation_timer <= 0:
 			activate_shield()
 	
-	# Handle shield auto-disable timer
-	if shield_active:
+	# Handle shield auto-disable timer (only in invulnerable state)
+	if not is_vulnerable_state and shield_active:
 		shield_idle_timer += delta * Global.global_time_scale
 		if shield_idle_timer >= shield_auto_disable_time:
 			reset_shield()
@@ -151,6 +168,12 @@ func _process(delta: float) -> void:
 		rocket_cooldown_timer -= delta * Global.global_time_scale
 		if rocket_cooldown_timer <= 0:
 			can_fire_rocket = true
+	
+	# Handle slam cooldown
+	if not can_slam:
+		slam_cooldown_timer -= delta * Global.global_time_scale
+		if slam_cooldown_timer <= 0:
+			can_slam = true
 
 # =====================================================
 # TAKE DAMAGE - FIXED TO PREVENT DOUBLE DAMAGE
@@ -163,6 +186,42 @@ func take_damage(amount: int) -> void:
 	# Update last hit time
 	last_hit_time = Time.get_ticks_msec() / 1000.0
 	
+	# In vulnerable state: direct damage, no shield
+	if is_vulnerable_state:
+		# Use Nataly's damage prevention logic
+		var current_time = Time.get_ticks_msec() / 1000.0
+		if last_damage_time > 0 and current_time < last_damage_time + 0.1:
+			print("Lux: Double damage prevented")
+			return
+		
+		health -= amount
+		last_damage_time = current_time
+		print("Lux health: ", health)
+		
+		# Stop everything
+		velocity = Vector2.ZERO
+		attack_running = false
+		tired = false
+		is_moving_to_marker = false
+		
+		# Play hurt animation
+		if animation_player.has_animation("hurt"):
+			animation_player.play("hurt")
+			taking_damage = true
+			
+			# Wait for hurt animation
+			var hurt_duration = animation_player.current_animation_length if animation_player.current_animation else 0.3
+			await _safe_wait(hurt_duration / Global.global_time_scale)
+			
+			taking_damage = false
+		else:
+			await _safe_wait(0.3 / Global.global_time_scale)
+		
+		if health <= 0:
+			_die()
+		return
+	
+	# In invulnerable state: use shield system
 	# Reset shield idle timer when taking damage
 	if shield_active:
 		shield_idle_timer = 0.0
@@ -282,6 +341,9 @@ func _safe_process_frame() -> void:
 # SHIELD SYSTEM
 # =====================================================
 func activate_shield():
+	if is_vulnerable_state:
+		return  # No shield in vulnerable state
+	
 	shield_active = true
 	shield_idle_timer = 0.0
 	print("Lux: Shield activated!")
@@ -297,6 +359,9 @@ func activate_shield():
 	attack_running = false
 
 func deactivate_shield():
+	if is_vulnerable_state:
+		return  # No shield in vulnerable state
+	
 	shield_active = false
 	print("Lux: Shield broken!")
 	
@@ -311,6 +376,9 @@ func deactivate_shield():
 	update_shield_visual()
 
 func reset_shield():
+	if is_vulnerable_state:
+		return  # No shield in vulnerable state
+	
 	shield_active = false
 	has_taken_first_hit = false
 	current_shield_health = shield_health
@@ -330,7 +398,7 @@ func reset_shield():
 
 func update_shield_visual():
 	if shield_sprite:
-		if shield_active:
+		if shield_active and not is_vulnerable_state:
 			shield_sprite.visible = true
 			# Visual feedback based on shield health
 			var shield_ratio = current_shield_health / shield_health
@@ -345,6 +413,23 @@ func update_shield_visual():
 				shield_sprite.modulate = Color(1.0, 0.3, 0.2, 0.5)
 		else:
 			shield_sprite.visible = false
+
+# =====================================================
+# COLLECT MARKERS
+# =====================================================
+func _collect_jump_markers() -> void:
+	jump_markers.clear()
+	for m in get_tree().get_nodes_in_group("lux_jump_marker"):
+		if m is Marker2D:
+			jump_markers.append(m)
+	print("Lux: Collected ", jump_markers.size(), " jump markers")
+
+func _collect_slam_markers() -> void:
+	slam_markers.clear()
+	for m in get_tree().get_nodes_in_group("lux_slam_point"):
+		if m is Marker2D:
+			slam_markers.append(m)
+	print("Lux: Collected ", slam_markers.size(), " slam markers")
 
 # =====================================================
 # PLATFORM REACHABILITY CHECK
@@ -364,7 +449,7 @@ func _is_player_reachable() -> bool:
 	return true
 
 # =====================================================
-# MAIN AI LOOP - IDENTICAL TO NATALY
+# MAIN AI LOOP - MODIFIED FOR VULNERABLE STATE
 # =====================================================
 func _start_ai() -> void:
 	if not is_inside_tree():
@@ -383,7 +468,7 @@ func _run_ai() -> void:
 		if dead:
 			break
 
-		if taking_damage or attack_running or tired or is_moving_to_marker or shield_active:
+		if taking_damage or attack_running or tired or is_moving_to_marker or (not is_vulnerable_state and shield_active):
 			continue
 
 		# Get player reference
@@ -430,8 +515,13 @@ func _run_ai() -> void:
 			await _start_attack()
 			await _safe_wait(0.1)
 		else:
-			_chase_player()
-			await _safe_wait(0.08)
+			# In vulnerable state, consider slam attack when far away
+			if is_vulnerable_state and can_slam and horizontal_dist > rocket_radius and randf() < 0.2:
+				await _execute_slam_attack()
+				await _safe_wait(0.1)
+			else:
+				_chase_player()
+				await _safe_wait(0.08)
 
 	print("Lux AI stopped")
 
@@ -466,7 +556,7 @@ func _chase_player() -> void:
 			animation_player.play("idle")
 
 # =====================================================
-# ATTACK SYSTEM - LUX'S VERSION
+# ATTACK SYSTEM - MODIFIED FOR VULNERABLE STATE
 # =====================================================
 func _start_attack() -> void:
 	if not _is_still_valid():
@@ -478,13 +568,16 @@ func _start_attack() -> void:
 	# Decide which attack to use
 	var distance = global_position.distance_to(player.global_position)
 	
-	# 🔥 ROCKET FIRST (mid-range)
-	if can_fire_rocket and able_rocket and distance > melee_range and distance <= rocket_radius:
-		await _execute_rocket_attack()
-
-	# 👊 MELEE ONLY WHEN CLOSE
-	elif distance <= melee_range:
-		await _execute_melee_attack()
+	# In vulnerable state: melee or rocket
+	if is_vulnerable_state:
+		if distance <= melee_range:
+			await _execute_melee_attack()
+		elif can_fire_rocket and able_rocket and distance > melee_range and distance <= rocket_radius:
+			await _execute_rocket_attack()
+	# In invulnerable state: only melee when close
+	else:
+		if distance <= melee_range:
+			await _execute_melee_attack()
 
 	attack_running = false
 
@@ -611,15 +704,144 @@ func _fire_single_rocket():
 			rocket.lifetime = 4.0
 
 # =====================================================
+# SLAM ATTACK - NEW FOR VULNERABLE STATE
+# =====================================================
+func _execute_slam_attack() -> void:
+	if not _is_still_valid() or not can_slam or slam_markers.is_empty():
+		return
+	
+	attack_running = true
+	can_slam = false
+	
+	print("Lux: Starting slam attack!")
+	
+	# Find a random slam marker
+	var valid_markers: Array[Marker2D] = []
+	for marker in slam_markers:
+		if is_instance_valid(marker) and marker != last_used_marker:
+			valid_markers.append(marker)
+	
+	if valid_markers.is_empty():
+		# No unique markers, use any marker
+		for marker in slam_markers:
+			if is_instance_valid(marker):
+				valid_markers.append(marker)
+	
+	if valid_markers.is_empty():
+		attack_running = false
+		return
+	
+	var slam_marker = valid_markers[randi() % valid_markers.size()]
+	last_used_marker = slam_marker
+	
+	# Phase 1: Jump to slam marker
+	print("Lux: Jumping to slam marker at ", slam_marker.global_position)
+	is_moving_to_marker = true
+	
+	# Face marker
+	var dx = slam_marker.global_position.x - global_position.x
+	dir.x = sign(dx)
+	_update_facing_from_movement_or_target(slam_marker.global_position.x)
+	
+	# Play jump animation
+	if animation_player.has_animation("jump"):
+		animation_player.play("jump")
+		await _safe_wait(0.2 / Global.global_time_scale)
+	
+	# Teleport to slam marker
+	global_position = slam_marker.global_position
+	is_moving_to_marker = false
+	
+	# Check if player is above (cancel attack if player is above)
+	if player and is_instance_valid(player):
+		var player_height_diff = player.global_position.y - global_position.y
+		if player_height_diff < -20:  # Player is above
+			print("Lux: Player is above, cancelling slam attack")
+			attack_running = false
+			can_slam = true  # Reset cooldown since attack was cancelled
+			return
+	
+	# Phase 2: Aim at player
+	print("Lux: Aiming at player")
+	if player and is_instance_valid(player):
+		# Calculate direction to player
+		var to_player = player.global_position - global_position
+		var target_rotation = atan2(to_player.y, to_player.x)
+		
+		# Rotate sprite to aim (simplified - just flip if needed)
+		if to_player.x < 0:
+			sprite.flip_h = true
+			if shield_sprite:
+				shield_sprite.flip_h = true
+		else:
+			sprite.flip_h = false
+			if shield_sprite:
+				shield_sprite.flip_h = false
+		
+		# Windup animation
+		if animation_player.has_animation("slam_windup"):
+			animation_player.play("slam_windup")
+		else:
+			animation_player.play("idle")
+		
+		await _safe_wait(slam_windup_time / Global.global_time_scale)
+		
+		# Phase 3: Slam toward player
+		print("Lux: Slamming toward player!")
+		if animation_player.has_animation("slam"):
+			animation_player.play("slam")
+		else:
+			animation_player.play("jump")  # Fallback animation
+		
+		# Calculate slam direction
+		var slam_direction = to_player.normalized()
+		var slam_distance = to_player.length()
+		var travel_time = slam_distance / slam_speed
+		
+		# Move toward player
+		var start_pos = global_position
+		var target_pos = player.global_position
+		var elapsed_time = 0.0
+		
+		while elapsed_time < travel_time and _is_still_valid() and not taking_damage:
+			var t = elapsed_time / travel_time
+			global_position = start_pos.lerp(target_pos, t)
+			
+			# Check for collision with player
+			if player and is_instance_valid(player):
+				var distance_to_player = global_position.distance_to(player.global_position)
+				if distance_to_player <= melee_range:
+					# Hit player
+					player.take_damage(slam_damage)
+					print("Lux slam hit player for ", slam_damage, " damage!")
+					break
+			
+			elapsed_time += get_process_delta_time()
+			await _safe_process_frame()
+		
+		# Check if we hit the ground instead
+		if is_on_floor() and player and is_instance_valid(player):
+			var distance_to_player = global_position.distance_to(player.global_position)
+			if distance_to_player > melee_range:
+				print("Lux: Slam hit the ground, missed player")
+		
+		# Phase 4: Recovery
+		print("Lux: Slam recovery")
+		velocity = Vector2.ZERO
+		
+		if animation_player.has_animation("slam_recovery"):
+			animation_player.play("slam_recovery")
+		else:
+			animation_player.play("idle")
+		
+		await _safe_wait(slam_recovery_time / Global.global_time_scale)
+	
+	attack_running = false
+	slam_cooldown_timer = slam_cooldown
+
+# =====================================================
 # PLATFORM MOVEMENT - IDENTICAL TO NATALY
 # =====================================================
-func _collect_jump_markers() -> void:
-	jump_markers.clear()
-	for m in get_tree().get_nodes_in_group("lux_jump_marker"):
-		if m is Marker2D:
-			jump_markers.append(m)
-	print("Lux: Collected ", jump_markers.size(), " jump markers")
-
 func _handle_platform_movement() -> void:
 	if not _is_still_valid() or not player or not is_instance_valid(player) or jump_markers.is_empty():
 		return
@@ -821,31 +1043,46 @@ func _move_down_to_marker(marker: Marker2D) -> void:
 # SPECIAL FUNCTIONS
 # =====================================================
 func set_invulnerable():
+	is_vulnerable_state = false
 	shield_auto_disable_time = 1
 	able_rocket = false
 	melee_damage = 5
 	no_damage = true
+	
+	# Reset visual to normal - SAFE CHECK
+	if sprite:
+		sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
+	
+	if shield_sprite:
+		shield_sprite.visible = true
+		update_shield_visual()
+	
 	print("set_invulnerable")
 	
 func set_vulnerable():
+	is_vulnerable_state = true
 	shield_auto_disable_time = 10
 	able_rocket = true
 	melee_damage = 10
 	no_damage = false
+	
+	# Apply red tint visual - SAFE CHECK
+	if sprite:
+		sprite.modulate = vulnerable_modulate
+	
+	if shield_sprite:
+		shield_sprite.visible = false  # No shield in vulnerable state
+	
+	# Reset shield system
+	shield_active = false
+	has_taken_first_hit = false
+	current_shield_health = shield_health
+	
 	print("set_vulnerable")
 
 # =====================================================
-# OVERRIDE BASE METHODS - IDENTICAL TO NATALY
+# HELPER FUNCTIONS
 # =====================================================
-func execute_attack():
-	pass
-
-func execute_melee_attack():
-	pass
-
-func execute_ranged_attack():
-	pass
-
 func _update_facing_from_movement_or_target(target_x: float = 0.0):
 	# Priority 1: real movement (prevents moonwalk)
 	if abs(velocity.x) > 1.0:
@@ -880,3 +1117,15 @@ func _fallback_when_cannot_jump() -> void:
 		print("Lux: Fallback → Idle")
 		if animation_player.has_animation("idle"):
 			animation_player.play("idle")
+
+# =====================================================
+# OVERRIDE BASE METHODS - IDENTICAL TO NATALY
+# =====================================================
+func execute_attack():
+	pass
+
+func execute_melee_attack():
+	pass
+
+func execute_ranged_attack():
+	pass

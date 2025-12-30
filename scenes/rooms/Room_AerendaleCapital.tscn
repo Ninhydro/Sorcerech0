@@ -433,11 +433,8 @@ position = Vector2(-1032, -8)
 [node name="lux_jump_marker" type="Marker2D" parent="."]
 position = Vector2(-896, -152)
 
-[node name="lux_jump_marker2" type="Marker2D" parent="."]
-position = Vector2(-1064, -72)
-
-[node name="lux_jump_marker3" type="Marker2D" parent="."]
-position = Vector2(-712, -72)
+[node name="lux_slam_point" type="Marker2D" parent="." groups=["lux_slam_point"]]
+position = Vector2(-928, -96)
 
 [connection signal="body_entered" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_entered"]
 [connection signal="body_exited" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_exited"]

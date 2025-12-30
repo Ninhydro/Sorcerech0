@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cnkwa1lnnfamm"]
+[gd_scene load_steps=28 format=3 uid="uid://cnkwa1lnnfamm"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_56olx"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_i5ly2"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://d1wg6u6j3a04o" path="res://assets_image/Objects/trees2.png" id="14_s7lf2"]
 [ext_resource type="PackedScene" uid="uid://bo5mt846nnc7v" path="res://dialogic/cutscene/cutscene17.tscn" id="15_1usq2"]
 [ext_resource type="PackedScene" uid="uid://yt042i0qxvs" path="res://dialogic/cutscene/cutscene21T.tscn" id="16_jysj8"]
+[ext_resource type="PackedScene" uid="uid://ca53ncao01ppo" path="res://scenes/enemies/Moving_platform1.tscn" id="22_gkcp0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvylh"]
 size = Vector2(70.5, 96)
@@ -399,6 +400,10 @@ metadata/_edit_lock_ = true
 [node name="cutscene21T" parent="." instance=ExtResource("16_jysj8")]
 position = Vector2(295.573, -39.6841)
 metadata/_edit_lock_ = true
+
+[node name="fallingplatform" parent="." instance=ExtResource("22_gkcp0")]
+z_index = 1
+position = Vector2(-295, 6)
 
 [connection signal="body_entered" from="Doors/Door_Maya" to="." method="_on_door_maya_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Maya" to="." method="_on_door_maya_body_exited"]
