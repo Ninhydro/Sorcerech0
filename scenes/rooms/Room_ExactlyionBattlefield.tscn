@@ -1,9 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://cnbcuo1v16c7"]
+[gd_scene load_steps=24 format=3 uid="uid://cnbcuo1v16c7"]
 
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_5carx"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_kfpxq"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_rcy5o"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_yvjis"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="2_dmphp"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="3_m28yc"]
 [ext_resource type="Texture2D" uid="uid://dtbxrn5eai3vr" path="res://assets_image/Background/Exactlyion_battlefield/Exactlyion-battlefield1-Sheet.png" id="5_5g8xd"]
 [ext_resource type="PackedScene" uid="uid://bs105i3gcljkr" path="res://scenes/world/SaveSpot.tscn" id="6_fnpdx"]
@@ -34,6 +35,24 @@ visible = false
 position = Vector2(560, -1008)
 scale = Vector2(2.61218, 2.61468)
 texture = ExtResource("1_5carx")
+
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="NPC1" type="Sprite2D" parent="NPC"]
+position = Vector2(32, -184)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_dmphp")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC2" type="Sprite2D" parent="NPC"]
+position = Vector2(1416, -680)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_dmphp")
+hframes = 5
+vframes = 23
+frame = 45
 
 [node name="Area2D" type="Area2D" parent="."]
 script = ExtResource("1_yvjis")
@@ -441,7 +460,7 @@ position = Vector2(1400, -200)
 position = Vector2(1088, -104)
 
 [node name="RobodogEnemy" parent="." instance=ExtResource("12_g87bb")]
-position = Vector2(1080, -720)
+position = Vector2(1064, -720)
 
 [node name="AndroidEnemy2" parent="." instance=ExtResource("10_85gkl")]
 position = Vector2(1768, -728)
@@ -453,7 +472,7 @@ position = Vector2(432, -592)
 position = Vector2(192, -584)
 
 [node name="CyberEnemy3" parent="." instance=ExtResource("11_gxyny")]
-position = Vector2(1240, -712)
+position = Vector2(1184, -720)
 
 [node name="HealthPickup" parent="." instance=ExtResource("13_ackiy")]
 position = Vector2(1288, -160)

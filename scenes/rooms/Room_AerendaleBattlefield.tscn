@@ -48,35 +48,34 @@ script = ExtResource("1_wgtaq")
 
 [node name="NPC" type="Node2D" parent="."]
 position = Vector2(1632, -745)
-scale = Vector2(2.61218, 2.61468)
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]
-position = Vector2(-300.132, 715.958)
-scale = Vector2(0.3, 0.3)
+position = Vector2(-2416, 1384)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_6apyl")
 hframes = 5
 vframes = 23
 frame = 45
 
 [node name="NPC2" type="Sprite2D" parent="NPC"]
-position = Vector2(-927.961, 526.259)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_6apyl")
-hframes = 5
-vframes = 23
-frame = 45
-
-[node name="NPC4" type="Sprite2D" parent="NPC"]
-position = Vector2(-189.88, 471.186)
-scale = Vector2(0.3, 0.3)
+position = Vector2(-712, 1176)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_6apyl")
 hframes = 5
 vframes = 23
 frame = 45
 
 [node name="NPC3" type="Sprite2D" parent="NPC"]
-position = Vector2(-471.637, 146.863)
-scale = Vector2(0.3, 0.3)
+position = Vector2(-1240, 392)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_6apyl")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC4" type="Sprite2D" parent="NPC"]
+position = Vector2(-776, 1880)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_6apyl")
 hframes = 5
 vframes = 23
@@ -1941,7 +1940,7 @@ position = Vector2(2512, 527)
 pickup_id = "MC_002"
 
 [node name="MicrochipPickup3" parent="." instance=ExtResource("19_o6ccp")]
-position = Vector2(896, 431)
+position = Vector2(864, 431)
 pickup_id = "MC_003"
 
 [node name="MicrochipPickup4" parent="." instance=ExtResource("19_o6ccp")]

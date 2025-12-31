@@ -1,9 +1,10 @@
-[gd_scene load_steps=24 format=3 uid="uid://dho52j1svafa7"]
+[gd_scene load_steps=25 format=3 uid="uid://dho52j1svafa7"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_Hub.gd" id="1_67lrk"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_sl44h"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_0vxfr"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="2_lvadt"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="3_tm034"]
 [ext_resource type="Texture2D" uid="uid://cs81f8ne403tw" path="res://assets_image/Background/Tileset/Tileset2.png" id="4_dslja"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="4_halrj"]
 [ext_resource type="Texture2D" uid="uid://b3051ea3aujj" path="res://assets_image/Background/Aerendale_Town/Aerendale_Town1-Sheet.png" id="6_x2cyw"]
@@ -655,6 +656,40 @@ visible = false
 position = Vector2(1168, -48)
 scale = Vector2(2.61218, 2.61468)
 texture = ExtResource("2_0vxfr")
+
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="NPC1" type="Sprite2D" parent="NPC"]
+position = Vector2(304, 40)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_tm034")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC2" type="Sprite2D" parent="NPC"]
+position = Vector2(152, 40)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_tm034")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC3" type="Sprite2D" parent="NPC"]
+position = Vector2(456, 40)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_tm034")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC4" type="Sprite2D" parent="NPC"]
+position = Vector2(776, 40)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_tm034")
+hframes = 5
+vframes = 23
+frame = 45
 
 [node name="Area2D" type="Area2D" parent="."]
 script = ExtResource("2_lvadt")

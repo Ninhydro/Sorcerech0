@@ -1,9 +1,10 @@
-[gd_scene load_steps=37 format=3 uid="uid://b3dq36l3txbp4"]
+[gd_scene load_steps=38 format=3 uid="uid://b3dq36l3txbp4"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_7rndt"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_her3h"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_hvidw"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_ol1a4"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="2_x3xao"]
 [ext_resource type="Texture2D" uid="uid://bkjde6nisre66" path="res://assets_image/Background/Aerendale_Capital/Aerendale_Capital_1-Sheet.png" id="3_5g8y2"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="3_tijgg"]
 [ext_resource type="Texture2D" uid="uid://pm0r8fvertbd" path="res://assets_image/Background/Tromarvelia_battlefield/Tromarvelia-battlefield1-Sheet.png" id="6_iyp6n"]
@@ -58,6 +59,32 @@ visible = false
 position = Vector2(744, 568)
 scale = Vector2(2.61218, 2.61468)
 texture = ExtResource("1_her3h")
+
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="NPC1" type="Sprite2D" parent="NPC"]
+position = Vector2(-920, 728)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_x3xao")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC2" type="Sprite2D" parent="NPC"]
+position = Vector2(-696, 1376)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_x3xao")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC3" type="Sprite2D" parent="NPC"]
+position = Vector2(1016, 872)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_x3xao")
+hframes = 5
+vframes = 23
+frame = 45
 
 [node name="Area2D2" type="Area2D" parent="."]
 script = ExtResource("1_hvidw")
@@ -676,7 +703,7 @@ position = Vector2(352, 752)
 position = Vector2(-2144, 1208)
 
 [node name="TrentEnemy3" parent="." instance=ExtResource("17_u4k6a")]
-position = Vector2(-192, 504)
+position = Vector2(-168, 496)
 
 [node name="HealthPickup" parent="." instance=ExtResource("18_h3pxg")]
 position = Vector2(-24, -128)

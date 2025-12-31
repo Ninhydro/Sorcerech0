@@ -1,9 +1,10 @@
-[gd_scene load_steps=27 format=3 uid="uid://cnkwa1lnnfamm"]
+[gd_scene load_steps=28 format=3 uid="uid://cnkwa1lnnfamm"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_56olx"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_i5ly2"]
 [ext_resource type="Script" path="res://scripts/rooms/Room_AerendaleJunkyard.gd" id="1_xsv6q"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="2_1v1kl"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="2_eqfwd"]
 [ext_resource type="Script" path="res://scripts/world/SortingMinigame.gd" id="2_lyj3j"]
 [ext_resource type="Script" path="res://scripts/world/Bin.gd" id="3_i8eyw"]
 [ext_resource type="Script" path="res://scripts/world/Door_press.gd" id="4_s7p8d"]
@@ -39,6 +40,32 @@ size = Vector2(355, 463)
 
 [node name="RoomAerendaleJunkyard" type="Node2D"]
 script = ExtResource("1_xsv6q")
+
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="NPC1" type="Sprite2D" parent="NPC"]
+position = Vector2(-72, 344)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_eqfwd")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC2" type="Sprite2D" parent="NPC"]
+position = Vector2(-240, 344)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_eqfwd")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC3" type="Sprite2D" parent="NPC"]
+position = Vector2(456, 40)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_eqfwd")
+hframes = 5
+vframes = 23
+frame = 45
 
 [node name="SortingMinigame" type="Node2D" parent="."]
 script = ExtResource("2_lyj3j")

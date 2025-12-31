@@ -1,10 +1,11 @@
-[gd_scene load_steps=35 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=36 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_jv7bv"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="2_ti10i"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="2_wuslc"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="3_11btk"]
 [ext_resource type="Texture2D" uid="uid://ch3fmbdvsgskw" path="res://assets_image/Background/Valentina/Valentina house-Sheet.png" id="4_6yk7h"]
 [ext_resource type="Script" path="res://scripts/world/Door_press.gd" id="4_fkgil"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="6_kgvqj"]
@@ -55,6 +56,88 @@ visible = false
 position = Vector2(-344, -480)
 scale = Vector2(2.61218, 2.61468)
 texture = ExtResource("2_jr5me")
+
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="NPC1" type="Sprite2D" parent="NPC"]
+position = Vector2(311, 41)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC2" type="Sprite2D" parent="NPC"]
+position = Vector2(1461, 60)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC3" type="Sprite2D" parent="NPC"]
+position = Vector2(1643, 58)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC4" type="Sprite2D" parent="NPC"]
+position = Vector2(2883, 55)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC5" type="Sprite2D" parent="NPC"]
+position = Vector2(2277, 57)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC6" type="Sprite2D" parent="NPC"]
+position = Vector2(734, 56)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC7" type="Sprite2D" parent="NPC"]
+position = Vector2(-78.9999, 44)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC8" type="Sprite2D" parent="NPC"]
+position = Vector2(2614, 1000)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC9" type="Sprite2D" parent="NPC"]
+position = Vector2(1914, 1000)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC10" type="Sprite2D" parent="NPC"]
+position = Vector2(3457, 41)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_11btk")
+hframes = 5
+vframes = 23
+frame = 45
 
 [node name="Area2D" type="Area2D" parent="."]
 script = ExtResource("2_wuslc")

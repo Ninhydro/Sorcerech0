@@ -1,10 +1,11 @@
-[gd_scene load_steps=31 format=3 uid="uid://d31x3lq4tpd8s"]
+[gd_scene load_steps=32 format=3 uid="uid://d31x3lq4tpd8s"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_MagusTown.gd" id="1_imj52"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_0kg3k"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="2_4r1s4"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="2_b8suv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_o5dx7"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="3_nl2s2"]
 [ext_resource type="Script" path="res://scripts/world/Door_press.gd" id="4_0oth5"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="5_jxvea"]
 [ext_resource type="Texture2D" uid="uid://nsdnm87a4hdk" path="res://assets_image/Background/Tromarvelia_Town/Tromarvelia Town3-Sheet.png" id="7_32rxi"]
@@ -54,6 +55,80 @@ visible = false
 position = Vector2(-1305, -1184)
 scale = Vector2(2.61218, 2.61468)
 texture = ExtResource("2_o5dx7")
+
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="NPC1" type="Sprite2D" parent="NPC"]
+position = Vector2(-55, 46)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC2" type="Sprite2D" parent="NPC"]
+position = Vector2(-396, 43)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC3" type="Sprite2D" parent="NPC"]
+position = Vector2(-1014, 93)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC4" type="Sprite2D" parent="NPC"]
+position = Vector2(-1309, 88)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC5" type="Sprite2D" parent="NPC"]
+position = Vector2(-1434, 90)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC6" type="Sprite2D" parent="NPC"]
+position = Vector2(-1248, -569)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC7" type="Sprite2D" parent="NPC"]
+position = Vector2(-1475, -551)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC8" type="Sprite2D" parent="NPC"]
+position = Vector2(-1782, -550)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
+
+[node name="NPC9" type="Sprite2D" parent="NPC"]
+position = Vector2(-1745, -920)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_nl2s2")
+hframes = 5
+vframes = 23
+frame = 45
 
 [node name="Area2D" type="Area2D" parent="."]
 script = ExtResource("2_4r1s4")
