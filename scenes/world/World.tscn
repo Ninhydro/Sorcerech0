@@ -698,7 +698,7 @@ position = Vector2(667, 1569)
 metadata/_edit_lock_ = true
 
 [node name="Room_AerendaleJunkyard" parent="." instance=ExtResource("5_d2ced")]
-position = Vector2(-1544, 2208)
+position = Vector2(-1537, 2208)
 
 [node name="Marker2D" type="Marker2D" parent="Room_AerendaleJunkyard"]
 position = Vector2(-472, -40)

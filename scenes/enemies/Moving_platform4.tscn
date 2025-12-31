@@ -1,13 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://ca53ncao01ppo"]
+[gd_scene load_steps=5 format=3 uid="uid://bxbftmmgeo5cx"]
 
-[ext_resource type="Script" path="res://scenes/enemies/Moving_platform1.gd" id="1_ge6da"]
-[ext_resource type="Texture2D" uid="uid://xhuq8u782nf3" path="res://assets_image/Objects/object2.png" id="2_av57g"]
+[ext_resource type="Script" path="res://scenes/enemies/Moving_platform1.gd" id="1_q5aby"]
+[ext_resource type="Texture2D" uid="uid://xhuq8u782nf3" path="res://assets_image/Objects/object2.png" id="2_cxd5e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6buaw"]
-size = Vector2(16, 24)
+size = Vector2(16, 8)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8v8xo"]
-size = Vector2(24, 32)
+size = Vector2(24, 31)
 
 [node name="SimpleMovingPlatform" type="CharacterBody2D"]
 z_index = -1
@@ -15,14 +15,13 @@ position = Vector2(0, -8)
 scale = Vector2(2, 1)
 collision_layer = 7
 collision_mask = 7
-script = ExtResource("1_ge6da")
-is_dangerous = true
+script = ExtResource("1_q5aby")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 16)
+position = Vector2(-0.512607, 15.3708)
 rotation = 3.14159
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("2_av57g")
+scale = Vector2(0.328735, 0.22976)
+texture = ExtResource("2_cxd5e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = -1
@@ -30,14 +29,14 @@ position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_6buaw")
 
 [node name="StartMarker" type="Marker2D" parent="."]
-position = Vector2(0, -8)
 
 [node name="EndMarker" type="Marker2D" parent="."]
-position = Vector2(0, 160)
+position = Vector2(0, 648)
 
 [node name="DamageArea" type="Area2D" parent="."]
-position = Vector2(0, -8)
+position = Vector2(24, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
-position = Vector2(0, 16)
+visible = false
+position = Vector2(-24, -8.5)
 shape = SubResource("RectangleShape2D_8v8xo")

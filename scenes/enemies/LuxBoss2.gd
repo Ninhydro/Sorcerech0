@@ -516,10 +516,6 @@ func _run_ai() -> void:
 			await _safe_wait(0.1)
 		else:
 			# In vulnerable state, consider slam attack when far away
-			if is_vulnerable_state and can_slam and horizontal_dist > rocket_radius and randf() < 0.2:
-				await _execute_slam_attack()
-				await _safe_wait(0.1)
-			else:
 				_chase_player()
 				await _safe_wait(0.08)
 
@@ -567,13 +563,20 @@ func _start_attack() -> void:
 	
 	# Decide which attack to use
 	var distance = global_position.distance_to(player.global_position)
-	
+	var horizontal_dist = abs(player.global_position.x - global_position.x)
 	# In vulnerable state: melee or rocket
 	if is_vulnerable_state:
 		if distance <= melee_range:
 			await _execute_melee_attack()
 		elif can_fire_rocket and able_rocket and distance > melee_range and distance <= rocket_radius:
-			await _execute_rocket_attack()
+			#if randf() < 0.1:
+				await _execute_rocket_attack()
+		#	else:
+		#elif can_slam and horizontal_dist > rocket_radius and randf() < 0.9:
+				#await _execute_slam_attack()
+				await _safe_wait(0.1)
+		else:
+			pass
 	# In invulnerable state: only melee when close
 	else:
 		if distance <= melee_range:
@@ -779,8 +782,8 @@ func _execute_slam_attack() -> void:
 				shield_sprite.flip_h = false
 		
 		# Windup animation
-		if animation_player.has_animation("slam_windup"):
-			animation_player.play("slam_windup")
+		if animation_player.has_animation("jump"):
+			animation_player.play("jump")
 		else:
 			animation_player.play("idle")
 		

@@ -1,0 +1,94 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7istis6vp3se"]
+
+[ext_resource type="Script" path="res://scenes/enemies/Moving_platform1.gd" id="1_u1c5p"]
+[ext_resource type="Texture2D" uid="uid://xhuq8u782nf3" path="res://assets_image/Objects/object2.png" id="2_fosgo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6buaw"]
+size = Vector2(16, 21)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8v8xo"]
+size = Vector2(30.5, 33)
+
+[node name="SimpleMovingPlatform" type="CharacterBody2D"]
+z_index = -1
+position = Vector2(0, -8)
+scale = Vector2(2, 1)
+collision_layer = 7
+collision_mask = 7
+script = ExtResource("1_u1c5p")
+is_dangerous = true
+
+[node name="Sprite2D5" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 1, 1, 1)
+position = Vector2(9.5, -2)
+rotation = 0.785398
+scale = Vector2(0.150632, 0.241347)
+texture = ExtResource("2_fosgo")
+
+[node name="Sprite2D6" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 1, 1, 1)
+position = Vector2(-10, 19)
+rotation = 0.785398
+scale = Vector2(0.150632, 0.241347)
+texture = ExtResource("2_fosgo")
+flip_v = true
+
+[node name="Sprite2D7" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 1, 1, 1)
+position = Vector2(-10, -2)
+rotation = 2.35619
+scale = Vector2(0.150632, 0.241347)
+texture = ExtResource("2_fosgo")
+flip_v = true
+
+[node name="Sprite2D8" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 1, 1, 1)
+position = Vector2(9, 18)
+rotation = 2.35619
+scale = Vector2(0.150632, 0.241347)
+texture = ExtResource("2_fosgo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 1, 1, 1)
+position = Vector2(5.97371, 9)
+rotation = 1.5708
+scale = Vector2(0.4, 0.196053)
+texture = ExtResource("2_fosgo")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 1, 1, 1)
+position = Vector2(-6.10699, 8)
+rotation = 4.71239
+scale = Vector2(0.4, 0.179893)
+texture = ExtResource("2_fosgo")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 1, 1, 1)
+position = Vector2(1.49012e-08, 0)
+scale = Vector2(0.150632, 0.241347)
+texture = ExtResource("2_fosgo")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+modulate = Color(0.392157, 1, 1, 1)
+position = Vector2(-0.5, 15)
+rotation = 3.14159
+scale = Vector2(0.150632, 0.241347)
+texture = ExtResource("2_fosgo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_index = -1
+position = Vector2(-0.5, 9.5)
+shape = SubResource("RectangleShape2D_6buaw")
+
+[node name="StartMarker" type="Marker2D" parent="."]
+position = Vector2(0, 72)
+
+[node name="EndMarker" type="Marker2D" parent="."]
+position = Vector2(-160, -248)
+
+[node name="DamageArea" type="Area2D" parent="."]
+position = Vector2(24, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+position = Vector2(-24.25, -7.5)
+shape = SubResource("RectangleShape2D_8v8xo")

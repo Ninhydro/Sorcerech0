@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ca53ncao01ppo"]
+[gd_scene load_steps=5 format=3 uid="uid://bvacwftw67o46"]
 
-[ext_resource type="Script" path="res://scenes/enemies/Moving_platform1.gd" id="1_ge6da"]
-[ext_resource type="Texture2D" uid="uid://xhuq8u782nf3" path="res://assets_image/Objects/object2.png" id="2_av57g"]
+[ext_resource type="Script" path="res://scenes/enemies/Moving_platform1.gd" id="1_efam3"]
+[ext_resource type="Texture2D" uid="uid://xhuq8u782nf3" path="res://assets_image/Objects/object2.png" id="2_ct4is"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6buaw"]
 size = Vector2(16, 24)
@@ -15,14 +15,13 @@ position = Vector2(0, -8)
 scale = Vector2(2, 1)
 collision_layer = 7
 collision_mask = 7
-script = ExtResource("1_ge6da")
+script = ExtResource("1_efam3")
 is_dangerous = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 16)
-rotation = 3.14159
+position = Vector2(0, 8)
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("2_av57g")
+texture = ExtResource("2_ct4is")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = -1
@@ -30,14 +29,14 @@ position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_6buaw")
 
 [node name="StartMarker" type="Marker2D" parent="."]
-position = Vector2(0, -8)
+position = Vector2(0, 24)
 
 [node name="EndMarker" type="Marker2D" parent="."]
-position = Vector2(0, 160)
+position = Vector2(0, -120)
 
 [node name="DamageArea" type="Area2D" parent="."]
-position = Vector2(0, -8)
+position = Vector2(24, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
-position = Vector2(0, 16)
+position = Vector2(-24, -8)
 shape = SubResource("RectangleShape2D_8v8xo")

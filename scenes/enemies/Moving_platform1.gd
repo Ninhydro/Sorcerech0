@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name SimpleMovingPlatform
 
-@export var move_speed: float = 200.0
+@export var move_speed: float = 200.0 
 @export var wait_time: float = 0.5
 @export var auto_start: bool = true
 @export var ping_pong: bool = true
@@ -71,7 +71,7 @@ func _physics_process(delta):
 	# Calculate movement direction and distance
 	var direction = (world_target - global_position).normalized()
 	var distance = global_position.distance_to(world_target)
-	var move_amount = move_speed * delta
+	var move_amount = move_speed * delta * Global.global_time_scale
 	
 	if move_amount >= distance:
 		# Reached target
@@ -85,7 +85,7 @@ func _physics_process(delta):
 		print("Platform reached target at: ", global_position)
 	else:
 		# Calculate movement for this frame
-		movement_velocity = direction * move_speed
+		movement_velocity = direction * move_speed * Global.global_time_scale
 		
 		# Apply movement WITHOUT move_and_slide
 		global_position += movement_velocity * delta
