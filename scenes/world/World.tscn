@@ -774,7 +774,7 @@ motion_offset = Vector2(0, 50)
 motion_mirroring = Vector2(640, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Aerendale_ruins"]
-position = Vector2(-2176, 8640)
+position = Vector2(-2170, 8595)
 texture = ExtResource("27_ksvch")
 vframes = 4
 

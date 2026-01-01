@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cnkwa1lnnfamm"]
+[gd_scene load_steps=29 format=3 uid="uid://cnkwa1lnnfamm"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_56olx"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_i5ly2"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://mpfaxjhioomh" path="res://dialogic/cutscene/cutscene1.tscn" id="10_ltn64"]
 [ext_resource type="PackedScene" uid="uid://bm2dpkajx7qeq" path="res://dialogic/cutscene/cutscene2.tscn" id="11_53y5o"]
 [ext_resource type="PackedScene" uid="uid://bso8cbum1b7gt" path="res://dialogic/cutscene/cutscene0_5.tscn" id="12_3u6ks"]
+[ext_resource type="Texture2D" uid="uid://cyoagc3bl4lx" path="res://assets_image/Objects/Trees.png" id="12_41hv1"]
 [ext_resource type="PackedScene" uid="uid://noms7cegc8b4" path="res://dialogic/cutscene/cutscene11.tscn" id="13_7roe7"]
 [ext_resource type="PackedScene" uid="uid://dq2br0aamhue3" path="res://dialogic/cutscene/cutscene12.tscn" id="14_djwtx"]
 [ext_resource type="Texture2D" uid="uid://d1wg6u6j3a04o" path="res://assets_image/Objects/trees2.png" id="14_s7lf2"]
@@ -255,7 +256,93 @@ position = Vector2(-746, 507)
 [node name="Background" type="Node2D" parent="."]
 z_index = -10
 position = Vector2(0, 1)
-metadata/_edit_lock_ = true
+
+[node name="Sprite2D19" type="Sprite2D" parent="Background"]
+position = Vector2(-296, -41)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+
+[node name="Sprite2D20" type="Sprite2D" parent="Background"]
+position = Vector2(-176, -17)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+
+[node name="Sprite2D21" type="Sprite2D" parent="Background"]
+position = Vector2(32, -1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+
+[node name="Sprite2D22" type="Sprite2D" parent="Background"]
+position = Vector2(-464, -121)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+
+[node name="Sprite2D25" type="Sprite2D" parent="Background"]
+position = Vector2(-72, 7)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
+
+[node name="Sprite2D26" type="Sprite2D" parent="Background"]
+position = Vector2(-240, -1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
+
+[node name="Sprite2D28" type="Sprite2D" parent="Background"]
+position = Vector2(-536, -97)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
+
+[node name="Sprite2D33" type="Sprite2D" parent="Background"]
+position = Vector2(-792, -41)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
+
+[node name="Sprite2D27" type="Sprite2D" parent="Background"]
+position = Vector2(-408, -81)
+scale = Vector2(-0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
+
+[node name="Sprite2D30" type="Sprite2D" parent="Background"]
+position = Vector2(-1456, -73)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
+
+[node name="Sprite2D31" type="Sprite2D" parent="Background"]
+position = Vector2(-1320, 15)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
+
+[node name="Sprite2D29" type="Sprite2D" parent="Background"]
+position = Vector2(-664, -57)
+scale = Vector2(-0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
+
+[node name="Sprite2D32" type="Sprite2D" parent="Background"]
+position = Vector2(-904, 15)
+scale = Vector2(-0.5, 0.5)
+texture = ExtResource("12_41hv1")
+vframes = 3
+frame = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
 position = Vector2(-1120, -96)
@@ -272,6 +359,7 @@ frame = 2
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D3" type="Sprite2D" parent="Background"]
+visible = false
 position = Vector2(-1120, -96)
 texture = ExtResource("7_w4a7t")
 vframes = 7
