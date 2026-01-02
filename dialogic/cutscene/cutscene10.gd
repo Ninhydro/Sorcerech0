@@ -136,7 +136,8 @@ func _on_dialogic_finished(_timeline_name: String = "") -> void:
 	Global.persistent_cleared_part_1 = true
 	Global.check_100_percent_completion()
 	Global.save_persistent_data()
-
+	Global.enable_health_regeneration() 
+	Global.health_regeneration_rate = 0.25
 	# Make absolutely sure this cutscene can NEVER trigger again
 	queue_free()
 

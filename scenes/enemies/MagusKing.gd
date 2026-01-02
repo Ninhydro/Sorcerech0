@@ -368,6 +368,7 @@ func take_damage(amount: int) -> void:
 	if laser_active:
 		_stop_laser()
 	
+	flash.play(Global.global_time_scale)
 	health -= amount
 	print("MAGUS KING: Health reduced to ", health)
 	

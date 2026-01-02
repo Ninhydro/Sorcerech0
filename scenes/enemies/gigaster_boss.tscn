@@ -4077,7 +4077,6 @@ collision_layer = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/RightArm/RightHand/RightSlamHitbox"]
 position = Vector2(84.8065, -46.3141)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_7kaaq")
 
 [node name="Marker2D" type="Marker2D" parent="BodyPivot/RightArm/RightHand/RightSlamHitbox"]
@@ -4132,7 +4131,6 @@ collision_layer = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/LeftArm/LeftHand/LeftSlamHitbox"]
 position = Vector2(-46.7431, -61.6305)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_aos2u")
 
 [node name="Marker2D" type="Marker2D" parent="BodyPivot/LeftArm/LeftHand/LeftSlamHitbox"]

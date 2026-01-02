@@ -333,8 +333,14 @@ func _on_dialogic_finished(_timeline_name = ""):
 	Global.timeline = 4
 	Global.magus_form = true
 	
+	
 	await get_tree().create_timer(0.1).timeout
 	player_in_range.unlock_and_force_form("Magus")
+	
+	Global.health_max += 10
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
+	
 	#player_in_range.unlock_state("Magus")
 	#player_in_range.switch_state("Magus")
 	#Global.selected_form_index = 1

@@ -304,6 +304,11 @@ func _on_replica2_dialog_finished(_timeline_name: String = "") -> void:
 	if Dialogic.timeline_ended.is_connected(_on_replica2_dialog_finished):
 		Dialogic.timeline_ended.disconnect(_on_replica2_dialog_finished)
 	player_in_range.unlock_and_force_form("UltimateCyber")
+	
+	Global.health_max += 10
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
+	
 		#player_in_range.unlock_state("UltimateCyber")
 		#player_in_range.switch_state("UltimateCyber")
 		#Global.selected_form_index = 4

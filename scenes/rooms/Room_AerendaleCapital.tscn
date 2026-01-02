@@ -355,7 +355,7 @@ zoom = Vector2(0.4, 0.4)
 [node name="SaveSpot" parent="." instance=ExtResource("16_ipody")]
 position = Vector2(-1328, 56)
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+[node name="StaticBody2D2" type="StaticBody2D" parent="." groups=["Platforms"]]
 position = Vector2(-1320, -128)
 collision_layer = 36
 
@@ -368,7 +368,7 @@ position = Vector2(399, 6)
 scale = Vector2(8.75, 0.914062)
 texture = ExtResource("17_fp5ec")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["Platforms"]]
 position = Vector2(-1240, 0)
 collision_layer = 36
 
@@ -381,7 +381,7 @@ position = Vector2(344, 6)
 scale = Vector2(5.25, 0.84375)
 texture = ExtResource("17_fp5ec")
 
-[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+[node name="StaticBody2D3" type="StaticBody2D" parent="." groups=["Platforms"]]
 position = Vector2(-1547, -63)
 collision_layer = 36
 
@@ -394,7 +394,7 @@ position = Vector2(461.5, 6)
 scale = Vector2(1.26563, 0.84375)
 texture = ExtResource("17_fp5ec")
 
-[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+[node name="StaticBody2D4" type="StaticBody2D" parent="." groups=["Platforms"]]
 position = Vector2(-1153, -62)
 collision_layer = 36
 

@@ -194,6 +194,7 @@ func take_damage(amount: int) -> void:
 			print("Lux: Double damage prevented")
 			return
 		
+		flash.play(Global.global_time_scale)
 		health -= amount
 		last_damage_time = current_time
 		print("Lux health: ", health)
@@ -245,7 +246,7 @@ func take_damage(amount: int) -> void:
 				if last_damage_time > 0 and current_time < last_damage_time + 0.1:
 					print("Lux: Double damage prevented")
 					return
-				
+				flash.play(Global.global_time_scale)
 				health -= amount
 				last_damage_time = current_time
 				print("Lux health: ", health)
@@ -279,6 +280,7 @@ func take_damage(amount: int) -> void:
 				print("Lux: Double damage prevented")
 				return
 			
+			flash.play(Global.global_time_scale)
 			health -= amount
 			last_damage_time = current_time
 			print("Lux health: ", health)

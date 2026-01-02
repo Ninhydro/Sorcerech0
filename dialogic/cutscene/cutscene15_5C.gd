@@ -157,6 +157,10 @@ func _on_valentina_save_finished(_timeline_name: String = "") -> void:
 
 	if player_in_range:
 		player_in_range.unlock_and_force_form("UltimateCyber")
+	Global.health_max += 10
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
+	
 
 	Global.remove_quest_marker("Meet the Cyber Queen")
 
@@ -202,7 +206,11 @@ func _on_valentina_dead_finished(_timeline_name: String = "") -> void:
 
 	if player_in_range:
 		player_in_range.unlock_and_force_form("UltimateCyber")
-
+	
+	Global.health_max += 10
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
+	
 	Global.remove_quest_marker("Meet the Cyber Queen")
 
 	# Hide timer UI

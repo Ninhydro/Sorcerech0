@@ -92,6 +92,11 @@ func _on_dialogic_finished(_timeline_name = ""):
 	#player_in_range.unlock_state("Cyber")
 	await get_tree().create_timer(0.1).timeout
 	player_in_range.unlock_and_force_form("Cyber")
+	
+	Global.health_max += 10
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
+	
 	#Global.selected_form_index = 3
 	#player_in_range.switch_state("Cyber")
 	#player_in_range.current_state_index = Global.selected_form_index

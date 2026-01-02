@@ -274,7 +274,11 @@ func _on_nora_save_finished(_timeline_name: String = "") -> void:
 
 	if player_in_range and is_instance_valid(player_in_range):
 		player_in_range.unlock_and_force_form("UltimateMagus")
-
+	
+	Global.health_max += 10
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
+	
 	# transfer player
 	if player_in_range and is_instance_valid(player_in_range):
 		transition_manager.travel_to(player_in_range, target_room, target_spawn)
@@ -294,6 +298,10 @@ func _on_nora_dead_finished(_timeline_name: String = "") -> void:
 
 	if player_in_range and is_instance_valid(player_in_range):
 		player_in_range.unlock_and_force_form("UltimateMagus")
+	
+	Global.health_max += 10
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
 
 	# transfer player
 	if player_in_range and is_instance_valid(player_in_range):

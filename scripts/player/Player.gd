@@ -165,6 +165,7 @@ var damage_cooldown := false
 var damage_cooldown_timer: Timer
 
 @export var use_health_as_mana: bool = false
+@onready var flash: FlashHurt = $"../FlashHurt"
 
 # Health costs per form (edit these numbers directly in the script)
 const ATTACK_HEALTH_COSTS := {
@@ -327,6 +328,12 @@ func _physics_process(delta):
 	Dialogic.VAR.set_variable("player_current_form", get_current_form_id())
 	Global.set_player_form(get_current_form_id())
 	Global.current_form = get_current_form_id()
+	
+	 # Check if player is moving based on velocity
+	var is_moving_now = (velocity.length() > 10.0)  # Adjust threshold as needed
+	
+	# Update global state
+	Global.set_player_moving(is_moving_now)
 	
 	if is_nan(velocity.x) or is_nan(velocity.y):
 		print("EMERGENCY: Velocity was NaN! Resetting to zero.")
@@ -894,6 +901,7 @@ func take_damage(damage):
 		apply_knockback(Global.enemyAknockback)
 		
 		if Global.health > 0:
+			flash.play(Global.global_time_scale)
 			Global.health -= damage
 			print("player health: " + str(Global.health))
 			
@@ -1184,68 +1192,58 @@ func _on_combo_timer_timeout():
 	attack_cooldown_timer.start(1.0)
 	print("combo,timer attack start")
 
+func _is_platform_ray(ray: RayCast2D) -> bool:
+	if not ray.is_colliding():
+		return false
+
+	var collider = ray.get_collider()
+	if collider == null:
+		return false
+
+	return collider.is_in_group("Platforms")
+	
 #var next_ledge_position
 func handle_ledge_grab():
-	# Only check for ledges when in the air and not currently grabbing one
 	var current_form = get_current_form_id()
-	
-	if LedgeLeftLower.is_colliding():
-		LedgeLeftON = true
-	else:
-		LedgeLeftON = false
-	if LedgeRightLower.is_colliding():
-		LedgeRightON = true
-	else:
-		LedgeRightON = false
-	
-	if LedgeLeftUpper2.is_colliding():
-		LedgeLeftON2 = true
-	else:
-		LedgeLeftON2 = false
-	if LedgeRightUpper2.is_colliding():
-		LedgeRightON2 = true
-	else:
-		LedgeRightON2 = false
-		
-	if not is_on_floor() and not is_grabbing_ledge and current_form != "Normal" and not is_grappling_active and not Global.dashing and not Global.teleporting and not is_launched:
-		# Check for a ledge on the right side
-		if LedgeRightLower.is_colliding() and not LedgeRightUpper.is_colliding():
+
+	if not is_on_floor() \
+	and not is_grabbing_ledge \
+	and current_form != "Normal" \
+	and not is_grappling_active \
+	and not Global.dashing \
+	and not Global.teleporting \
+	and not is_launched:
+
+		# RIGHT LEDGE
+		if _is_platform_ray(LedgeRightLower) and not _is_platform_ray(LedgeRightUpper):
 			is_grabbing_ledge = true
 			LedgeDirection = Vector2.RIGHT
-			# Calculate the grab position relative to the lower raycast's collision point
+
 			var collision_point = LedgeRightLower.get_collision_point()
-			# Snap the player's position to hang on the ledge
-			LedgePosition = Vector2(collision_point.x +6, collision_point.y - 14)
-			print("Player grabbed a ledge on the right!")
+			LedgePosition = Vector2(collision_point.x + 6, collision_point.y - 14)
+
+			print("Player grabbed PLATFORM ledge on the right")
 			return true
-			#NormalColl.disabled = true
-		# Check for a ledge on the left side
-		elif LedgeLeftLower.is_colliding() and not LedgeLeftUpper.is_colliding():
+
+		# LEFT LEDGE
+		elif _is_platform_ray(LedgeLeftLower) and not _is_platform_ray(LedgeLeftUpper):
 			is_grabbing_ledge = true
 			LedgeDirection = Vector2.LEFT
+
 			var collision_point = LedgeLeftLower.get_collision_point()
-			LedgePosition = Vector2(collision_point.x -6 , collision_point.y - 14)
-			print("Player grabbed a ledge on the left!")
-			#NormalColl.disabled = true
+			LedgePosition = Vector2(collision_point.x - 6, collision_point.y - 14)
+
+			print("Player grabbed PLATFORM ledge on the left")
 			return true
-		return false	
-	# If the player is grabbing a ledge, handle inputs for climbing or dropping
-	if is_grabbing_ledge and (current_form != "Normal"):
-		#velocity.x = 0# Stop all movement
-		#next_ledge_position = LedgePosition
-		#camera.position_smoothing_enabled = true
-		global_position = LedgePosition # Snap to the hanging position
-		#velocity = Vector2.ZERO
-		#NormalColl.disabled = true
-		#global_position = global_position.lerp(LedgePosition, 0.5) # Adjust the interpolation speed (0.2 is a good starting point)
 
-
-		
-		
-		# Return true to signal that no further movement logic should be processed
+	# HOLDING LEDGE
+	if is_grabbing_ledge and current_form != "Normal":
+		global_position = LedgePosition
+		velocity = Vector2.ZERO
 		return true
 
-	return false # Return false if not grabbing a ledge
+	return false
+
 	
 
 

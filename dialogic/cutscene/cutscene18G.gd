@@ -82,6 +82,7 @@ func _on_body_entered(body):
 func _start_intro() -> void:
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max)
+	Global.health_regeneration_rate = 1
 	
 	Global.is_cutscene_active = true
 	_activate_barriers()
@@ -96,7 +97,7 @@ func _start_intro() -> void:
 # BATTLE FLOW - SIMPLIFIED APPROACH
 # ---------------------------------------------------------
 func _start_battle() -> void:
-	health_timer.start()
+	#health_timer.start()
 	
 	print("=== BATTLE STARTED ===")
 	print("Initial phase: ", phase)

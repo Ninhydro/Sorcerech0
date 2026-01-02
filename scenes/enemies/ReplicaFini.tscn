@@ -1,10 +1,11 @@
-[gd_scene load_steps=23 format=3 uid="uid://0mr6cx007grj"]
+[gd_scene load_steps=24 format=3 uid="uid://0mr6cx007grj"]
 
 [ext_resource type="Script" path="res://scenes/enemies/ReplicaFini.gd" id="1_u68yd"]
 [ext_resource type="Texture2D" uid="uid://d21ogkbnx8dhe" path="res://assets_image/Characters/Replica_fini/Replica_phina-Sheet.png" id="2_bglj4"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="3_153x5"]
 [ext_resource type="Script" path="res://scenes/enemies/ReplicaFiniLaser.gd" id="4_ipnmt"]
 [ext_resource type="Texture2D" uid="uid://bdw68gybu2q3b" path="res://assets_image/Objects/laser5.png" id="5_vxe17"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="6_2ijat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 36.6667)
@@ -412,6 +413,10 @@ texture = ExtResource("5_vxe17")
 [node name="LaserOrigin" type="Marker2D" parent="."]
 visible = false
 position = Vector2(20, -34.2857)
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("6_2ijat")
+root_path = NodePath("../Sprite2D")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

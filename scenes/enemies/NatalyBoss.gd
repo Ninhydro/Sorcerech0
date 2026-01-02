@@ -115,6 +115,7 @@ func take_damage(amount: int) -> void:
 		print("Nataly: Double damage prevented")
 		return
 	
+	flash.play(Global.global_time_scale)
 	health -= amount
 	last_damage_time = current_time
 	print("Nataly health: ", health)

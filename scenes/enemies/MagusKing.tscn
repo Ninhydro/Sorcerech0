@@ -1,10 +1,11 @@
-[gd_scene load_steps=27 format=3 uid="uid://bh7vqlg3umd4"]
+[gd_scene load_steps=28 format=3 uid="uid://bh7vqlg3umd4"]
 
 [ext_resource type="Script" path="res://scenes/enemies/MagusKing.gd" id="1_jfxin"]
 [ext_resource type="Texture2D" uid="uid://c1qwfwmuqooib" path="res://assets_image/Characters/Enemies/Magus_soldier-Sheet.png" id="2_bp2yv"]
 [ext_resource type="PackedScene" uid="uid://dfpyxgqho5nqr" path="res://scenes/enemies/MagusSoldierEnemySummon.tscn" id="2_sng80"]
 [ext_resource type="Texture2D" uid="uid://c2um2hrfogp46" path="res://assets_image/Characters/Zach/Zach-Sheet.png" id="4_1v1jc"]
 [ext_resource type="Texture2D" uid="uid://cl7q6qj34r6si" path="res://assets_image/Objects/SpikeStrip2.png" id="5_8faf2"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="6_2d4om"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(22.8571, 44.2858)
@@ -878,6 +879,10 @@ texture = ExtResource("5_8faf2")
 libraries = {
 "": SubResource("AnimationLibrary_kx2sq")
 }
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("6_2d4om")
+root_path = NodePath("../Sprite2D")
 
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hitbox_area_entered"]

@@ -82,7 +82,7 @@ func _physics_process(delta):
 		is_moving = false
 		wait_timer = wait_time
 		
-		print("Platform reached target at: ", global_position)
+		#print("Platform reached target at: ", global_position)
 	else:
 		# Calculate movement for this frame
 		movement_velocity = direction * move_speed * Global.global_time_scale

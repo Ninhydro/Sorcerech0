@@ -167,7 +167,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Platforms" type="Node2D" parent="."]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Platforms"]
+[node name="StaticBody2D" type="StaticBody2D" parent="Platforms" groups=["Platforms"]]
 position = Vector2(1, 14)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StaticBody2D"]
@@ -178,7 +178,7 @@ shape = SubResource("RectangleShape2D_6fbaa")
 position = Vector2(105, 22)
 texture = ExtResource("2_dmtv0")
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="Platforms"]
+[node name="StaticBody2D2" type="StaticBody2D" parent="Platforms" groups=["Platforms"]]
 position = Vector2(-71, -34)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StaticBody2D2"]
@@ -189,7 +189,7 @@ shape = SubResource("RectangleShape2D_6fbaa")
 position = Vector2(104, 24)
 texture = ExtResource("2_dmtv0")
 
-[node name="StaticBody2D3" type="StaticBody2D" parent="Platforms"]
+[node name="StaticBody2D3" type="StaticBody2D" parent="Platforms" groups=["Platforms"]]
 position = Vector2(-143, -74)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StaticBody2D3"]

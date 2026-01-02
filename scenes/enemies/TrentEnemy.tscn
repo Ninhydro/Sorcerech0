@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://1rly63yl5k0j"]
+[gd_scene load_steps=17 format=3 uid="uid://1rly63yl5k0j"]
 
 [ext_resource type="Script" path="res://scenes/enemies/TrackingRangedEnemy.gd" id="1_fdwcx"]
 [ext_resource type="PackedScene" uid="uid://dy7vqofh5ej8n" path="res://scenes/enemies/spike.tscn" id="2_6b8jc"]
 [ext_resource type="Texture2D" uid="uid://dvha5j3j34j8a" path="res://assets_image/Characters/Enemies/dryad-Sheet.png" id="2_vm42a"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="4_erk07"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 44.2857)
@@ -210,6 +211,10 @@ position = Vector2(-16, 8)
 
 [node name="EdgeRayRight" type="RayCast2D" parent="."]
 position = Vector2(16, 8)
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("4_erk07")
+root_path = NodePath("../Sprite2D")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

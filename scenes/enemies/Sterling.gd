@@ -113,7 +113,8 @@ func take_damage(amount: int) -> void:
 	if dead or invulnerable_during_attack:
 		print("Sterling: Ignoring damage - dead:", dead, " invulnerable:", invulnerable_during_attack)
 		return
-	
+		
+	flash.play(Global.global_time_scale)
 	health -= amount
 	print("Sterling health: ", health)
 	# CRITICAL: Set taking_damage to true to trigger hurt animation

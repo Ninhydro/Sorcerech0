@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://di82tt5tgv3ib"]
+[gd_scene load_steps=16 format=3 uid="uid://di82tt5tgv3ib"]
 
 [ext_resource type="Script" path="res://scenes/enemies/RangedEnemy.gd" id="1_n8eo0"]
 [ext_resource type="PackedScene" uid="uid://cevk7kxsj1nyx" path="res://scenes/enemies/magic_bullet.tscn" id="2_kbfc2"]
 [ext_resource type="Texture2D" uid="uid://c1qwfwmuqooib" path="res://assets_image/Characters/Enemies/Magus_soldier-Sheet.png" id="2_qgl3p"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="4_uf1in"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 44.2857)
@@ -194,6 +195,10 @@ position = Vector2(16, 8)
 [node name="JumpRay" type="RayCast2D" parent="."]
 position = Vector2(0, -16)
 target_position = Vector2(32, -40)
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("4_uf1in")
+root_path = NodePath("../Sprite2D")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://duuqngmhvpksa"]
+[gd_scene load_steps=16 format=3 uid="uid://duuqngmhvpksa"]
 
 [ext_resource type="Script" path="res://scenes/enemies/ArachneEnemy.gd" id="1_816w7"]
 [ext_resource type="Texture2D" uid="uid://tnh7poh3clmp" path="res://assets_image/Characters/Enemies/arachne-Sheet.png" id="2_n6gi8"]
 [ext_resource type="PackedScene" uid="uid://b03navbrpl5bh" path="res://scenes/enemies/web.tscn" id="2_ncojk"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="4_mkokc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 21.4286)
@@ -12,7 +13,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("VisualRoot/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -28,7 +29,7 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("VisualRoot/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -58,7 +59,7 @@ length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("VisualRoot/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -74,7 +75,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("VisualRoot/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -91,7 +92,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("VisualRoot/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -108,7 +109,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("VisualRoot/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -146,18 +147,27 @@ enemy_damage = 8
 health = 50
 health_max = 50
 projectile_scene = ExtResource("2_ncojk")
+sprite_path = NodePath("VisualRoot/Sprite2D")
 edge_priority_over_chase = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -0.714286)
 shape = SubResource("RectangleShape2D_mo267")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="VisualRoot" type="Node2D" parent="."]
+z_index = 10
+
+[node name="Sprite2D" type="Sprite2D" parent="VisualRoot"]
+z_index = 10
+y_sort_enabled = true
 position = Vector2(-3, -53)
 texture = ExtResource("2_n6gi8")
 hframes = 8
 vframes = 5
 frame = 4
+
+[node name="ProjectileSpawn" type="Marker2D" parent="VisualRoot"]
+position = Vector2(-32, -24)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -185,9 +195,6 @@ shape = SubResource("RectangleShape2D_a7b8b")
 position = Vector2(0, -16)
 shape = SubResource("CircleShape2D_4pq4r")
 
-[node name="ProjectileSpawn" type="Marker2D" parent="."]
-position = Vector2(-32, -24)
-
 [node name="WallRay" type="RayCast2D" parent="."]
 position = Vector2(-15, 0)
 target_position = Vector2(-20, 0)
@@ -201,6 +208,10 @@ position = Vector2(-16, 8)
 
 [node name="EdgeRayRight" type="RayCast2D" parent="."]
 position = Vector2(16, 8)
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("4_mkokc")
+root_path = NodePath("../VisualRoot/Sprite2D")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

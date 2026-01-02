@@ -335,6 +335,10 @@ func _on_gawr_win_dialog_finished(_timeline_name := "") -> void:
 	# Give Ultimate Magus form and send to Tromarvelia Town
 	if player_in_range:
 		player_in_range.unlock_and_force_form("UltimateMagus")
+		
+	Global.health_max += 10
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
 
 	_restore_player_camera()
 

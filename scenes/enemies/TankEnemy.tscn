@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://djf8vabhjgbv5"]
+[gd_scene load_steps=17 format=3 uid="uid://djf8vabhjgbv5"]
 
 [ext_resource type="Script" path="res://scenes/enemies/ShieldRangedEnemy.gd" id="1_5vand"]
 [ext_resource type="PackedScene" uid="uid://duunjhlgoi1am" path="res://scenes/enemies/bullet.tscn" id="2_mf550"]
 [ext_resource type="Texture2D" uid="uid://dhe5l3jk6mtyk" path="res://assets_image/Characters/Enemies/Tank-Sheet.png" id="2_u4oo7"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="3_ibars"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="5_u7yse"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 26)
@@ -199,6 +200,10 @@ position = Vector2(-16, 8)
 
 [node name="EdgeRayRight" type="RayCast2D" parent="."]
 position = Vector2(16, 8)
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("5_u7yse")
+root_path = NodePath("../Sprite2D")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

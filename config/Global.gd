@@ -136,8 +136,8 @@ func get_player_form() -> String:
 	return current_form
 
 # Player Stats
-var health: int = 100
-var health_max: int = 100
+var health: int = 60
+var health_max: int = 60
 var health_min: int = 0
 var playerAlive: bool = true
 var playerDamageZone: Area2D
@@ -432,6 +432,69 @@ var map_visible := false
 func set_map_texture(texture: Texture2D):
 	if map_screen and map_screen.has_method("update_map_texture"):
 		map_screen.update_map_texture(texture)
+
+#var health: int = 100
+#var health_max: int = 100
+#var health_min: int = 0
+var health_regeneration_rate: float = 0.0  # Health per second (default: 0.5 = 1 health every 2 seconds)
+var health_regeneration_timer: float = 0.0
+var health_regeneration_active: bool = true  # Can be toggled on/off
+var player_is_moving: bool = false  # Add this line
+#var playerAlive: bool = true
+
+# Add these functions in the script (I suggest adding them after the health variables)
+
+# Health regeneration functions
+
+func set_player_moving(is_moving: bool) -> void:
+	"""Call this from Player script when player starts/stops moving"""
+	player_is_moving = is_moving
+	
+func is_player_moving() -> bool:
+	"""Check if player is currently moving"""
+	return player_is_moving
+	
+func enable_health_regeneration() -> void:
+	"""Enable health regeneration"""
+	health_regeneration_active = true
+	print("Health regeneration enabled")
+
+func disable_health_regeneration() -> void:
+	"""Disable health regeneration"""
+	health_regeneration_active = false
+	print("Health regeneration disabled")
+
+func reset_health_regeneration() -> void:
+	"""Reset health regeneration timer"""
+	health_regeneration_timer = 0.0
+
+func regenerate_health(delta: float) -> void:
+	"""Regenerate health based on time passed - ONLY when player is NOT moving"""
+	if not health_regeneration_active or not playerAlive:
+		return
+	
+	if health >= health_max:
+		return  # Already at max health
+	
+	# Only regenerate if player is NOT moving
+	if player_is_moving:
+		return  # Player is moving, don't regenerate
+	
+	health_regeneration_timer += delta
+	
+	# Calculate how much health to add
+	var health_to_add = health_regeneration_rate * health_regeneration_timer
+	
+	if health_to_add >= 1.0:  # Add at least 1 health point
+		var int_health_to_add = int(health_to_add)
+		health = min(health + int_health_to_add, health_max)
+		
+		# Keep the fractional part for next time
+		health_regeneration_timer -= int_health_to_add / health_regeneration_rate
+		
+		if player and player.has_signal("health_changed"):
+			player.health_changed.emit(health, health_max)
+		print("Regenerated health: ", health, "/", health_max)
 		
 func _init():
 	# Initialize essential settings only
@@ -448,7 +511,9 @@ func _process(delta):
 		print("nora_dead: ", Global.nora_dead)
 		print("replica_fini_dead: ", Global.replica_fini_dead)
 		print("valentina_dead: ", Global.valentina_dead)
-		
+	
+	regenerate_health(delta)
+	
 		
 
 		#Global.timeline = 8
@@ -513,6 +578,9 @@ func get_save_data() -> Dictionary:
 		"selected_form_index": selected_form_index,
 		"current_form": get_player_form(), # Use the getter for saving
 		"playerAlive": playerAlive,
+		"health_max": health_max,
+		"health_regeneration_rate": health_regeneration_rate,
+		"health_regeneration_active": health_regeneration_active,
 
 		"kills": kills, # Save kills
 		"affinity": affinity, # Save affinity
@@ -589,6 +657,9 @@ func apply_load_data(data: Dictionary):
 	selected_form_index = data.get("selected_form_index", 0)
 	set_player_form(data.get("current_form", "Normal"))
 	playerAlive = data.get("playerAlive", true)
+	health_max = data.get("health_max", 60)
+	health_regeneration_rate = data.get("health_regeneration_rate", 0.0)
+	health_regeneration_active = data.get("health_regeneration_active", true)
 
 	sub_quest = data.get("sub_quest", {})
 	active_quests = data.get("active_quests", [])
@@ -654,6 +725,9 @@ func reset_to_defaults():
 	play_intro_cutscene = false
 	selected_form_index = 0
 	playerAlive = true
+	health_max = 60
+	health_regeneration_rate = 0.0
+	health_regeneration_active = true
 	# Reset player abilities
 	telekinesis_mode = false
 	teleporting = false

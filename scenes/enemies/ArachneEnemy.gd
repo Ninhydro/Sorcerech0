@@ -15,9 +15,15 @@ extends BaseEnemy
 var is_on_wall := true
 var edge_cooldown := 0.0
 @export var vertical_deadzone := 10.0
+@onready var visual_root: Node2D = $VisualRoot
+
+@export var left_wall_visual_offset := Vector2(-10, 0)
+@export var right_wall_visual_offset := Vector2(10, 0)
+var vertical_dir := 1
 
 func _ready():
 	super._ready()
+	sprite = $VisualRoot/Sprite2D
 	print("Wall Spider ready - Side: ", "Left" if wall_side == 0 else "Right")
 	setup_wall_spider()
 
@@ -25,12 +31,18 @@ func setup_wall_spider():
 	# Force an immediate check for the wall
 	# 1. SET UP DIRECTIONS FIRST
 	if wall_side == 0:  # Left Wall
-		sprite.rotation_degrees = 90
-		sprite.position = Vector2(45, 0)
+		visual_root.rotation_degrees = 90
+		sprite.flip_h = false
+		$VisualRoot/ProjectileSpawn.position.x = 32
+		visual_root.position = left_wall_visual_offset
+		#visual_root.position = Vector2(45, 0)
 		wall_ray.target_position = Vector2(-50, 0) # Make it long enough to reach
 	else:  # Right Wall
-		sprite.rotation_degrees = -90
-		sprite.position = Vector2(-45, 0) # Flip this offset if it's inside the wall
+		visual_root.rotation_degrees = -90
+		sprite.flip_h = true
+		$VisualRoot/ProjectileSpawn.position.x = -32
+		visual_root.position = right_wall_visual_offset
+		#visual_root.position = Vector2(-45, 0) # Flip this offset if it's inside the wall
 		wall_ray.target_position = Vector2(50, 0)
 
 	# 2. NOW CHECK FOR COLLISION
@@ -102,20 +114,12 @@ func detect_edges():
 		# If chasing, we just stay at velocity 0, letting the deadzone/move logic hold us here
 
 func update_edge_detection_ray():
-	if wall_side == 0:  # Left Wall
-		if dir.x > 0:  # Moving "up"
-			edge_detection_ray.position = Vector2(-10, -15)
-			edge_detection_ray.target_position = Vector2(-25, 0)
-		else:  # Moving "down"
-			edge_detection_ray.position = Vector2(-10, 15)
-			edge_detection_ray.target_position = Vector2(-25, 0)
-	else:  # Right Wall
-		if dir.x > 0:  # Moving "down"
-			edge_detection_ray.position = Vector2(10, 15)
-			edge_detection_ray.target_position = Vector2(25, 0)
-		else:  # Moving "up"
-			edge_detection_ray.position = Vector2(10, -15)
-			edge_detection_ray.target_position = Vector2(25, 0)
+	if wall_side == 0: # LEFT WALL
+		edge_detection_ray.position = Vector2(-10, 0)
+		edge_detection_ray.target_position = Vector2(0, 20 * vertical_dir)
+	else: # RIGHT WALL
+		edge_detection_ray.position = Vector2(10, 0)
+		edge_detection_ray.target_position = Vector2(0, 20 * vertical_dir)
 
 func move(delta):
 	if dead:
@@ -126,7 +130,7 @@ func move(delta):
 		edge_cooldown -= delta
 	
 	if taking_damage:
-		velocity.y = -dir.x * abs(enemy_knockback_force)
+		velocity.y = -vertical_dir  * abs(enemy_knockback_force)
 		return
 	
 	if is_dealing_damage:
@@ -150,7 +154,7 @@ func move(delta):
 				var player_dir = sign(dist_y)
 				
 				# If we are at an edge and player is further in that direction, STOP.
-				if not edge_ok and player_dir == dir.x:
+				if not edge_ok and player_dir == vertical_dir:
 					velocity.y = 0
 				else:
 					move_toward_player()
@@ -164,7 +168,7 @@ func move(delta):
 
 func turn_around():
 	# Reverse direction
-	dir.x *= -1
+	vertical_dir  *= -1
 	velocity.y = 0
 	# Brief cooldown to prevent immediate re-turning
 	edge_cooldown = 0.5
@@ -174,15 +178,16 @@ func move_toward_player():
 	var dist_y = player.global_position.y - global_position.y
 	var direction = sign(dist_y)
 	
-	velocity.y = direction * speed
-	dir.x = direction # Using dir.x to track vertical direction for this spider
+	vertical_dir = sign(dist_y)
+	velocity.y = vertical_dir * speed
+	#vertical_dir = direction # Using dir.x to track vertical direction for this spider
 	update_spider_visuals(direction)
 
 func roam():
 	# Simple vertical roaming on wall
 	velocity.x = 0
-	velocity.y = dir.x * speed * 0.5
-	update_spider_visuals(dir.x)
+	velocity.y = vertical_dir  * speed * 0.5
+	update_spider_visuals(vertical_dir)
 
 func update_spider_visuals(direction: float):
 	# Update sprite flipping based on direction
@@ -190,15 +195,15 @@ func update_spider_visuals(direction: float):
 	
 	var spawn_node = $ProjectileSpawn
 	
-	if wall_side == 0:  # Left Wall
-		sprite.flip_h = (direction < 0)
+	#if wall_side == 0:  # Left Wall
+	#	sprite.flip_h = true
 		# Position the spawn point to the RIGHT of the spider (away from left wall)
 		# Adjust the X (offset from wall) and Y (height on spider)
-		spawn_node.position = Vector2(20, -20 * direction)
-	else:  # Right Wall
-		sprite.flip_h = (direction > 0)
+		#spawn_node.position = Vector2(20, -20 * direction)
+	#else:  # Right Wall
+	#	sprite.flip_h = true
 		# Position the spawn point to the LEFT of the spider (away from right wall)
-		spawn_node.position = Vector2(-20, 20 * direction)
+	#	spawn_node.position = Vector2(-20, 20 * direction)
 #func start_attack():
 #	if can_attack and player and not dead and not taking_damage and is_on_wall:
 #		attack_target = player
@@ -224,8 +229,8 @@ func shoot_projectile():
 		# Debug: Print the spawn position to ensure it's not inside the wall
 		# print("Spawning at: ", $ProjectileSpawn.global_position)
 		
-		projectile.global_position = $ProjectileSpawn.global_position
-		var shoot_direction = (player.global_position - $ProjectileSpawn.global_position).normalized()
+		projectile.global_position = $VisualRoot/ProjectileSpawn.global_position
+		var shoot_direction = (player.global_position - $VisualRoot/ProjectileSpawn.global_position).normalized()
 		
 		projectile.set_direction(shoot_direction)
 		projectile.speed = projectile_speed
@@ -243,7 +248,10 @@ func handle_animation():
 	elif is_dealing_damage:
 		new_animation = "attack"
 	elif is_on_wall:
-		new_animation = "run"
+		if abs(velocity.y) < 1:
+			new_animation = "idle"
+		else:
+			new_animation = "run"
 	elif is_preparing_attack:  
 		new_animation = "idle"
 		

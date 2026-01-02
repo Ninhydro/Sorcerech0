@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://5o1a38scymax"]
+[gd_scene load_steps=21 format=3 uid="uid://5o1a38scymax"]
 
 [ext_resource type="Script" path="res://scenes/enemies/NatalyBoss.gd" id="1_tavvb"]
 [ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="2_i4e0l"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="3_2j5sg"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="4_xjowq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 36.6667)
@@ -307,6 +308,10 @@ position = Vector2(16, 8)
 [node name="JumpRay" type="RayCast2D" parent="."]
 position = Vector2(0, -16)
 target_position = Vector2(32, -40)
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("4_xjowq")
+root_path = NodePath("../Sprite2D")
 
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
 [connection signal="area_entered" from="MeleeHitbox" to="." method="_on_hitbox_area_entered"]

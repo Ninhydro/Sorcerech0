@@ -27,7 +27,8 @@ enum AttackType { MELEE, RANGED }
 # Components
 @onready var animation_player := $AnimationPlayer
 @onready var direction_timer := $DirectionTimer
-@onready var sprite := $Sprite2D
+@export var sprite_path: NodePath = "Sprite2D"
+@onready var sprite: Sprite2D = get_node_or_null(sprite_path)
 @onready var projectile_spawn := $ProjectileSpawn if has_node("ProjectileSpawn") else null
 
 @export var can_drop_health := true
@@ -122,9 +123,17 @@ var last_anim_position: Vector2
 @export var respawn_time := 60.0
 var original_position: Vector2
 
+@onready var flash: FlashHurt = $FlashHurt
 
 func _ready():
+	
 	# Initialize attack cooldown timer
+	if sprite == null:
+		push_error(
+			"%s: Sprite not found at path %s" % [name, sprite_path]
+		)
+		return
+		
 	original_position = global_position
 	attack_cooldown_timer = Timer.new()
 	attack_cooldown_timer.one_shot = true
@@ -453,8 +462,12 @@ func drop_health():
 func take_damage(damage):
 	if taking_damage:  # Prevent multiple hits during stun
 		return
+	
+	flash.play(Global.global_time_scale)
+	
 	health -= damage
 	taking_damage = true
+	
 	
 	# Cancel attack preparation if hit during preparation
 	if is_preparing_attack:

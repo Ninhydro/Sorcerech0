@@ -1,10 +1,11 @@
-[gd_scene load_steps=265 format=3 uid="uid://cov3kryfnxah6"]
+[gd_scene load_steps=266 format=3 uid="uid://cov3kryfnxah6"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.gd" id="1_6nqbo"]
 [ext_resource type="Texture2D" uid="uid://sf7f3ilxiysq" path="res://assets_image/Characters/Phina/phina1-Sheet.png" id="2_2avrg"]
 [ext_resource type="Script" path="res://scripts/player/TelekinesisController.gd" id="3_epc14"]
 [ext_resource type="PackedScene" uid="uid://bktget78trv7d" path="res://scenes/ui/TelekinesisUI.tscn" id="4_nueqj"]
 [ext_resource type="Texture2D" uid="uid://cfx7o4ov6w8i0" path="res://assets_image/placeholder/Props Items and VFX/acorn/Sprites/acorn-2.png" id="5_1v6j2"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="6_562xh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tdn82"]
 size = Vector2(15, 36)
@@ -2270,6 +2271,10 @@ collision_mask = 5
 position = Vector2(0, -38)
 target_position = Vector2(-12, 0)
 collision_mask = 5
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("6_562xh")
+root_path = NodePath("../Player/Sprite2D")
 
 [connection signal="animation_finished" from="Player/AnimationPlayer" to="Player" method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="Player/AnimationTree" to="Player" method="_on_animation_tree_animation_finished"]

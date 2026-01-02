@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://qnxok2fklgci"]
+[gd_scene load_steps=15 format=3 uid="uid://qnxok2fklgci"]
 
 [ext_resource type="Script" path="res://scenes/enemies/FlyingMeleeEnemy.gd" id="1_leat8"]
 [ext_resource type="Texture2D" uid="uid://okfhwj26fws1" path="res://assets_image/Characters/Enemies/Drones-Sheet.png" id="2_cbvhv"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="3_uvs2y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(25, 16)
@@ -198,6 +199,10 @@ position = Vector2(-16, 8)
 
 [node name="EdgeRayRight" type="RayCast2D" parent="."]
 position = Vector2(16, 8)
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("3_uvs2y")
+root_path = NodePath("../Sprite2D")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

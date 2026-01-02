@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://bmv3vlwxy2vug"]
+[gd_scene load_steps=21 format=3 uid="uid://bmv3vlwxy2vug"]
 
 [ext_resource type="Script" path="res://scenes/enemies/Sterling.gd" id="1_2peb7"]
 [ext_resource type="Texture2D" uid="uid://d21ogkbnx8dhe" path="res://assets_image/Characters/Replica_fini/Replica_phina-Sheet.png" id="2_2in56"]
 [ext_resource type="Texture2D" uid="uid://bs5rm27gmxs8i" path="res://assets_image/Characters/Sterling/Sterling-Sheet.png" id="3_llnw3"]
 [ext_resource type="Script" path="res://scenes/enemies/ReplicaFiniLaser.gd" id="4_7th2i"]
 [ext_resource type="Texture2D" uid="uid://bdw68gybu2q3b" path="res://assets_image/Objects/laser5.png" id="5_oe8am"]
+[ext_resource type="Script" path="res://scripts/enemies/FlashHurt.gd" id="6_peonk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mo267"]
 size = Vector2(32, 36.6667)
@@ -397,6 +398,10 @@ texture = ExtResource("5_oe8am")
 [node name="LaserOrigin" type="Marker2D" parent="."]
 visible = false
 position = Vector2(20, -34.2857)
+
+[node name="FlashHurt" type="Node2D" parent="."]
+script = ExtResource("6_peonk")
+root_path = NodePath("../Sprite2D")
 
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
