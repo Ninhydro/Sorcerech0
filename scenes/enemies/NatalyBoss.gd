@@ -261,7 +261,7 @@ func _run_ai() -> void:
 # CHASE
 # =====================================================
 func _chase_player() -> void:
-	if not _is_still_valid() or not player or not is_instance_valid(player):
+	if not _is_still_valid() or not player or not is_instance_valid(player) or Global.camouflage:
 		return
 
 	var dx := player.global_position.x - global_position.x

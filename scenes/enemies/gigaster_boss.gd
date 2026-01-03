@@ -280,8 +280,8 @@ func _physics_process(delta: float) -> void:
 	#print(collision_layer)
 	player = _get_player()
 	
-	if Input.is_action_just_pressed("debug1"): 
-		_debug_movement_state()
+	#if Input.is_action_just_pressed("debug1"): 
+	#	_debug_movement_state()
 	# allow AI reposition movement even if we're "in an attack phase"
 	if dead or taking_damage or (_attack_running and not _move_active) or player == null or not chase_enabled:
 		velocity.x = 0
@@ -319,13 +319,18 @@ func _physics_process(delta: float) -> void:
 			_move_active = false
 			anim.play("idle")
 		else:
-			var dir = sign(dx_to_target)
-			if dir == 0:
-				dir = 1 if dx_to_target > 0.0 else -1
-			#print("moving ai")
-			velocity.x = dir * walk_speed * _ts()
-			if anim and anim.has_animation("walk"):
-				anim.play("walk")
+			if not Global.camouflage:
+				var dir = sign(dx_to_target)
+				if dir == 0:
+					dir = 1 if dx_to_target > 0.0 else -1
+				#print("moving ai")
+				velocity.x = dir * walk_speed * _ts()
+				if anim and anim.has_animation("walk"):
+					anim.play("walk")
+			else:
+				velocity.x = 0
+				_move_active = false
+				anim.play("idle")
 
 		move_and_slide()
 		return
@@ -336,7 +341,7 @@ func _physics_process(delta: float) -> void:
 
 	var min_chase_distance = 50.0  # Minimum distance to keep chasing
 	
-	if abs(dx) > min_chase_distance:
+	if abs(dx) > min_chase_distance and not Global.camouflage:
 		velocity.x = sign(dx) * walk_speed * _ts()
 		if anim and anim.has_animation("walk"):
 			anim.play("walk")

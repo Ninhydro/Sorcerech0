@@ -251,7 +251,7 @@ func _run_ai() -> void:
 # CHASE
 # =====================================================
 func _chase_player() -> void:
-	if not player or not is_instance_valid(player):
+	if not player or not is_instance_valid(player) or Global.camouflage:
 		print("Sterling: _chase_player - No valid player")
 		return
 
