@@ -257,29 +257,32 @@ position = Vector2(-746, 507)
 z_index = -10
 position = Vector2(0, 1)
 
+[node name="Sprite2D21" type="Sprite2D" parent="Background"]
+position = Vector2(-1119, -96)
+texture = ExtResource("7_w4a7t")
+vframes = 7
+frame = 3
+
 [node name="Sprite2D19" type="Sprite2D" parent="Background"]
 position = Vector2(-296, -41)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D20" type="Sprite2D" parent="Background"]
-position = Vector2(-176, -17)
+position = Vector2(-160, -9)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
-
-[node name="Sprite2D21" type="Sprite2D" parent="Background"]
-position = Vector2(32, -1)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("12_41hv1")
-vframes = 3
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D22" type="Sprite2D" parent="Background"]
 position = Vector2(-464, -121)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D25" type="Sprite2D" parent="Background"]
 position = Vector2(-72, 7)
@@ -287,6 +290,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D26" type="Sprite2D" parent="Background"]
 position = Vector2(-240, -1)
@@ -294,6 +298,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D28" type="Sprite2D" parent="Background"]
 position = Vector2(-536, -97)
@@ -301,6 +306,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D33" type="Sprite2D" parent="Background"]
 position = Vector2(-792, -41)
@@ -308,6 +314,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D27" type="Sprite2D" parent="Background"]
 position = Vector2(-408, -81)
@@ -315,6 +322,7 @@ scale = Vector2(-0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D30" type="Sprite2D" parent="Background"]
 position = Vector2(-1456, -73)
@@ -322,6 +330,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D31" type="Sprite2D" parent="Background"]
 position = Vector2(-1320, 15)
@@ -329,6 +338,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D29" type="Sprite2D" parent="Background"]
 position = Vector2(-664, -57)
@@ -336,6 +346,7 @@ scale = Vector2(-0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D32" type="Sprite2D" parent="Background"]
 position = Vector2(-904, 15)
@@ -343,6 +354,7 @@ scale = Vector2(-0.5, 0.5)
 texture = ExtResource("12_41hv1")
 vframes = 3
 frame = 2
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
 position = Vector2(-1120, -96)

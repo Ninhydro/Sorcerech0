@@ -658,6 +658,7 @@ scale = Vector2(2.61218, 2.61468)
 texture = ExtResource("2_0vxfr")
 
 [node name="NPC" type="Node2D" parent="."]
+visible = false
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]
 position = Vector2(304, 40)
@@ -713,7 +714,7 @@ position = Vector2(8, 8)
 position = Vector2(-118, 30)
 
 [node name="Spawn_FromABattlefield" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(1560, -136)
+position = Vector2(1552, -104)
 
 [node name="Spawn_FromCapital" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(-488, -456)
@@ -798,6 +799,15 @@ position = Vector2(-376, -216)
 texture = ExtResource("6_x2cyw")
 vframes = 7
 frame = 3
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D17" type="Sprite2D" parent="Background"]
+position = Vector2(-496, -33)
+rotation = 3.14159
+scale = Vector2(1, -1)
+texture = ExtResource("7_idvsl")
+vframes = 8
+frame = 2
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D2" type="Sprite2D" parent="Background"]
@@ -958,5 +968,4 @@ position = Vector2(1407.51, 69.3257)
 metadata/_edit_lock_ = true
 
 [node name="cutscene21_5B1" parent="." instance=ExtResource("18_f1bny")]
-position = Vector2(1656, -152)
-metadata/_edit_lock_ = true
+position = Vector2(1560, -152)

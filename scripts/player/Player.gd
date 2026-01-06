@@ -205,8 +205,8 @@ func _ready():
 	#Global.affinity += 10
 	#Global.reset_persistent()
 	#Global.route_status = "True"
-	camera.zoom = Vector2(0.8,0.8)
-	camera.position = Vector2(0,-40)
+	#camera.zoom = Vector2(0.8,0.8)
+	#camera.position = Vector2(0,-40)
 	jump_force = 250.0
 
 	normal_collision_mask = collision_mask & ~(1 << 1) # Remove layer 2 from mas

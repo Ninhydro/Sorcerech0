@@ -302,7 +302,7 @@ func _end_battle_success() -> void:
 	Global.ending_genocide = true
 	Global.persistent_ending_genocide = true
 	Global.save_persistent_data()
-
+	Global.health_regeneration_rate = 0.25
 	transition_manager.travel_to(player, target_room, target_spawn)
 
 # ---------------------------------------------------------

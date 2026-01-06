@@ -285,7 +285,7 @@ func _phase_idle_walk() -> void:
 					" player_y=", player.global_position.y,
 					" dy=", dy)
 
-		if player and is_instance_valid(player):
+		if player and is_instance_valid(player) and not Global.camouflage:
 			var dx = player.global_position.x - global_position.x
 			var dist_x = abs(dx)
 

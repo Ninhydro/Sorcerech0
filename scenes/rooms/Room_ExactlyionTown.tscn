@@ -58,6 +58,7 @@ scale = Vector2(2.61218, 2.61468)
 texture = ExtResource("2_jr5me")
 
 [node name="NPC" type="Node2D" parent="."]
+visible = false
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]
 position = Vector2(311, 41)
