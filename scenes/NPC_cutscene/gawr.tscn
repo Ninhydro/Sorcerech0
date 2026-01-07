@@ -1,11 +1,7 @@
-[gd_scene load_steps=48 format=3 uid="uid://dtq452st0b2yu"]
+[gd_scene load_steps=21 format=3 uid="uid://cj6dl4lm4bmq1"]
 
-[ext_resource type="Script" path="res://scenes/enemies/gawr_boss.gd" id="1_tlyjb"]
-[ext_resource type="Texture2D" uid="uid://cx6bmveui8ju6" path="res://assets_image/Characters/Gawr/Gawr-Sheet.png" id="2_fso2y"]
-[ext_resource type="Texture2D" uid="uid://dlr1lrcuebmqq" path="res://assets_image/Characters/Enemies/flame.png" id="3_o7b8m"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_13llt"]
-size = Vector2(156, 313.889)
+[ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_adpci"]
+[ext_resource type="Texture2D" uid="uid://cx6bmveui8ju6" path="res://assets_image/Characters/Gawr/Gawr-Sheet.png" id="2_6qfhu"]
 
 [sub_resource type="Animation" id="Animation_5s25o"]
 length = 0.001
@@ -2138,186 +2134,8 @@ _data = {
 "walk": SubResource("Animation_68yc4")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7kaaq"]
-size = Vector2(51.5, 112)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ijdn5"]
-size = Vector2(62, 150)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_idycm"]
-size = Vector2(109, 91.5)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8x0ak"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(0, 128, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gxcmo"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(128, 128, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wl45r"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(256, 128, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_olrbu"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(384, 128, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_58ggt"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(512, 128, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5rf4b"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(640, 128, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i3r31"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(0, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uyqoh"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(128, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xwdur"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(256, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_eec61"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(384, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bo7xt"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(512, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3athp"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(640, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qthtj"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(640, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8ej7f"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(512, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2o2tw"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(384, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1wwdl"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(256, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_sdymc"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(128, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pnil4"]
-atlas = ExtResource("3_o7b8m")
-region = Rect2(0, 0, 128, 128)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_bmmi2"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8x0ak")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gxcmo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wl45r")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_olrbu")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_58ggt")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5rf4b")
-}],
-"loop": true,
-"name": &"cycle",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": null
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_i3r31")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uyqoh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xwdur")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_eec61")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bo7xt")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3athp")
-}],
-"loop": false,
-"name": &"start",
-"speed": 20.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qthtj")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8ej7f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2o2tw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1wwdl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_sdymc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pnil4")
-}, {
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"stop",
-"speed": 5.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pd23g"]
-size = Vector2(62.0739, 30.7611)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_aos2u"]
-size = Vector2(48.5, 124.5)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_shgxy"]
-size = Vector2(56, 146)
-
-[node name="GawrBoss" type="CharacterBody2D" groups=["gawr_boss"]]
-z_index = -1
-scale = Vector2(0.9, 0.9)
-collision_layer = 8
-collision_mask = 2
-script = ExtResource("1_tlyjb")
-left_slam_marker = NodePath("BodyPivot/LeftArm/LeftHand/LeftSlamHitbox/Marker2D")
-right_slam_marker = NodePath("BodyPivot/RightArm/RightHand/RightSlamHitbox/Marker2D")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -148.056)
-shape = SubResource("RectangleShape2D_13llt")
+[node name="Gawr" type="Node2D"]
+script = ExtResource("1_adpci")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -2325,150 +2143,65 @@ libraries = {
 }
 
 [node name="BodyPivot" type="Node2D" parent="."]
-position = Vector2(0, 2.2392)
 
 [node name="RightArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(68, -144)
-rotation = -0.281073
+rotation = -0.296706
 
 [node name="ArmSpriteR" type="Sprite2D" parent="BodyPivot/RightArm"]
 position = Vector2(-57.1623, -97.1415)
-texture = ExtResource("2_fso2y")
+texture = ExtResource("2_6qfhu")
 hframes = 4
 vframes = 10
 frame = 8
 
 [node name="RightHand" type="Node2D" parent="BodyPivot/RightArm"]
 position = Vector2(40.5082, 65.9704)
-rotation = 0.0312652
 
 [node name="HandSpriteR" type="Sprite2D" parent="BodyPivot/RightArm/RightHand"]
 z_index = 1
 position = Vector2(-93.8292, -158.838)
-texture = ExtResource("2_fso2y")
+texture = ExtResource("2_6qfhu")
 hframes = 4
 vframes = 10
 frame = 33
 
-[node name="RightSlamHitbox" type="Area2D" parent="BodyPivot/RightArm/RightHand"]
-position = Vector2(-83.7506, 87.1649)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/RightArm/RightHand/RightSlamHitbox"]
-position = Vector2(95.5758, -30.3481)
-shape = SubResource("RectangleShape2D_7kaaq")
-
-[node name="Marker2D" type="Marker2D" parent="BodyPivot/RightArm/RightHand/RightSlamHitbox"]
-position = Vector2(74.7188, -2.22743)
-
-[node name="RightWeakspot" type="Area2D" parent="BodyPivot/RightArm/RightHand" groups=["Enemies", "EnemyWeakspot"]]
-position = Vector2(-102.938, 103.191)
-collision_layer = 264
-collision_mask = 385
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/RightArm/RightHand/RightWeakspot"]
-position = Vector2(113, -42)
-shape = SubResource("RectangleShape2D_ijdn5")
-
-[node name="RightGroundRay" type="RayCast2D" parent="BodyPivot/RightArm/RightHand"]
-position = Vector2(7.1708, 90.1621)
-
 [node name="BodySprite" type="Sprite2D" parent="BodyPivot"]
 position = Vector2(20, -244)
-texture = ExtResource("2_fso2y")
+texture = ExtResource("2_6qfhu")
 hframes = 4
 vframes = 10
 frame = 15
 
 [node name="HeadPivot" type="Node2D" parent="BodyPivot"]
-position = Vector2(34, -211.104)
+position = Vector2(34, -212)
 
 [node name="HeadSprite" type="Sprite2D" parent="BodyPivot/HeadPivot"]
 z_index = 1
 position = Vector2(-7, -37)
-texture = ExtResource("2_fso2y")
+texture = ExtResource("2_6qfhu")
 hframes = 4
 vframes = 10
 frame = 16
 
-[node name="HeadWeakspot" type="Area2D" parent="BodyPivot/HeadPivot" groups=["Enemies", "EnemyWeakspot"]]
-position = Vector2(-34, 204)
-collision_layer = 264
-collision_mask = 385
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/HeadPivot/HeadWeakspot"]
-position = Vector2(64, -221.75)
-shape = SubResource("RectangleShape2D_idycm")
-
-[node name="MouthMarker" type="Marker2D" parent="BodyPivot/HeadPivot"]
-position = Vector2(61, 1)
-
-[node name="FirePivot" type="Node2D" parent="BodyPivot/HeadPivot/MouthMarker"]
-position = Vector2(9, 0.729111)
-
-[node name="FlameSprite" type="AnimatedSprite2D" parent="BodyPivot/HeadPivot/MouthMarker/FirePivot"]
-visible = false
-z_index = 1
-position = Vector2(8, -85.7291)
-scale = Vector2(1.5, 1.5)
-sprite_frames = SubResource("SpriteFrames_bmmi2")
-animation = &"cycle"
-centered = false
-offset = Vector2(0, -12)
-flip_h = true
-
-[node name="FireHitbox" type="Area2D" parent="BodyPivot/HeadPivot/MouthMarker/FirePivot"]
-position = Vector2(50, 50)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/HeadPivot/MouthMarker/FirePivot/FireHitbox"]
-position = Vector2(-15.9631, -50.9034)
-shape = SubResource("RectangleShape2D_pd23g")
-
 [node name="LeftArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(-21, -143)
-rotation = 0.135451
+rotation = 0.174533
 
 [node name="ArmSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm"]
 position = Vector2(40, -101)
-texture = ExtResource("2_fso2y")
+texture = ExtResource("2_6qfhu")
 hframes = 4
 vframes = 10
 frame = 28
 
 [node name="LeftHand" type="Node2D" parent="BodyPivot/LeftArm"]
 position = Vector2(-42, 45)
-rotation = -0.0312652
 
 [node name="HandSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm/LeftHand"]
 z_index = 1
 position = Vector2(78.1035, -138.998)
-texture = ExtResource("2_fso2y")
+texture = ExtResource("2_6qfhu")
 hframes = 4
 vframes = 10
 frame = 37
-
-[node name="LeftSlamHitbox" type="Area2D" parent="BodyPivot/LeftArm/LeftHand"]
-position = Vector2(58.1036, 111.002)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/LeftArm/LeftHand/LeftSlamHitbox"]
-position = Vector2(-79.75, -52.25)
-shape = SubResource("RectangleShape2D_aos2u")
-
-[node name="Marker2D" type="Marker2D" parent="BodyPivot/LeftArm/LeftHand/LeftSlamHitbox"]
-position = Vector2(-57.3258, -21.8909)
-
-[node name="LeftWeakspot" type="Area2D" parent="BodyPivot/LeftArm/LeftHand" groups=["Enemies", "EnemyWeakspot"]]
-position = Vector2(59.1036, 116.002)
-collision_layer = 264
-collision_mask = 385
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyPivot/LeftArm/LeftHand/LeftWeakspot"]
-position = Vector2(-80, -57)
-shape = SubResource("RectangleShape2D_shgxy")
-
-[node name="LeftGroundRay" type="RayCast2D" parent="BodyPivot/LeftArm/LeftHand"]
-position = Vector2(-15.8964, 108.002)
-
-[node name="DirectionTimer" type="Timer" parent="."]
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false

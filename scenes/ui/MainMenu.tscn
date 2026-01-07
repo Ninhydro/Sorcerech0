@@ -1,27 +1,38 @@
-[gd_scene load_steps=2 format=3 uid="uid://d1jatthcofpju"]
+[gd_scene load_steps=4 format=3 uid="uid://d1jatthcofpju"]
 
 [ext_resource type="Script" path="res://scripts/UI/MainMenu.gd" id="1_iaon1"]
+[ext_resource type="Texture2D" uid="uid://bgwpisgvwhxib" path="res://assets_image/CG/CG0.png" id="2_883g8"]
+[ext_resource type="Texture2D" uid="uid://cc71o6vv4jtqa" path="res://assets_image/Main/Title1.png" id="3_a4f12"]
 
 [node name="MainMenu" type="CanvasLayer" groups=["UI"]]
 layer = 2
 script = ExtResource("1_iaon1")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(160, 90)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_883g8")
+
 [node name="UIContainer" type="MarginContainer" parent="." groups=["UI"]]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 36.0
+offset_bottom = 36.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="ButtonContainer" type="VBoxContainer" parent="UIContainer" groups=["UI"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Title" type="Label" parent="UIContainer/ButtonContainer" groups=["UI"]]
-layout_mode = 2
-text = "SORCERECH"
-horizontal_alignment = 1
+[node name="Sprite2D" type="Sprite2D" parent="UIContainer/ButtonContainer"]
+position = Vector2(19, 1.00001)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_a4f12")
 
 [node name="NewGameButton" type="Button" parent="UIContainer/ButtonContainer"]
 layout_mode = 2
