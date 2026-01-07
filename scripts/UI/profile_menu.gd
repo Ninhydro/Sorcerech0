@@ -31,11 +31,11 @@ const MAX_AFFINITY = 10
 # Use a placeholder SVG for all forms as requested.
 # MAKE SURE 'res://assets_image/placeholder/icon.svg' EXISTS or replace with a default Godot icon path.
 @export var form_full_sprites: Dictionary = {
-	"Normal": preload("res://assets_image/Characters/Phina/Normal/Normal_Normal.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/Normal/Normal_Normal.png") else null,
-	"Magus": preload("res://assets_image/Characters/Phina/Magus/Magus_Normal.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/Magus/Magus_Normal.png") else null,
-	"Cyber": preload("res://assets_image/Characters/Phina/Cyber/1Fini_transparent.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/Cyber/1Fini_transparent.png") else null,
-	"UltimateMagus": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Normal.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Normal.png") else null,
-	"UltimateCyber": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Normal.jpg") if ResourceLoader.exists("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Normal.jpg") else null,
+	"Normal": preload("res://assets_image/Characters/Phina/Normal/Normal_Happy.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/Normal/Normal_Happy.png") else null,
+	"Magus": preload("res://assets_image/Characters/Phina/Magus/Magus_Happy.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/Magus/Magus_Happy.png") else null,
+	"Cyber": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Happy.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/Cyber/Cyber_Happy.png") else null,
+	"UltimateMagus": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Happy.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Happy.png") else null,
+	"UltimateCyber": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Happy.png") if ResourceLoader.exists("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Happy.png") else null,
 }
 # --- End Exported dictionary ---
 

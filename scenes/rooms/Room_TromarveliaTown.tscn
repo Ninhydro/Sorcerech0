@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://d31x3lq4tpd8s"]
+[gd_scene load_steps=33 format=3 uid="uid://d31x3lq4tpd8s"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_MagusTown.gd" id="1_imj52"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_0kg3k"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://chgxaopecgvd7" path="res://assets_image/Objects/flags1.png" id="12_e044j"]
 [ext_resource type="PackedScene" uid="uid://ul2udlsga6b8" path="res://dialogic/cutscene/cutscene4_5.tscn" id="13_v0bov"]
 [ext_resource type="PackedScene" uid="uid://nquxmuq3we7x" path="res://dialogic/cutscene/cutscene7.tscn" id="14_gimmw"]
+[ext_resource type="Texture2D" uid="uid://hkvasgrhmd0c" path="res://assets_image/Objects/banner_flag3.png" id="14_o105p"]
 [ext_resource type="PackedScene" uid="uid://cfe3yc118ndke" path="res://dialogic/cutscene/cutscene13M.tscn" id="15_q52no"]
 [ext_resource type="PackedScene" uid="uid://8krsc7hlpjgk" path="res://dialogic/cutscene/cutscene16.tscn" id="16_agjfx"]
 [ext_resource type="PackedScene" uid="uid://ds2wiv5ixrc7e" path="res://dialogic/cutscene/cutscene17_5.tscn" id="17_qcqnt"]
@@ -519,6 +520,16 @@ metadata/_edit_lock_ = true
 modulate = Color(0.784314, 0.784314, 0.784314, 1)
 position = Vector2(-1377, 20)
 texture = ExtResource("12_e044j")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D28" type="Sprite2D" parent="Background"]
+position = Vector2(-1257, 56)
+texture = ExtResource("14_o105p")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D32" type="Sprite2D" parent="Background"]
+position = Vector2(-1489, 56)
+texture = ExtResource("14_o105p")
 metadata/_edit_lock_ = true
 
 [node name="SaveSpot" parent="." instance=ExtResource("11_f2ex8")]

@@ -25,11 +25,11 @@ extends Control
 
 # These should be pre-cropped/zoomed to just the face for each form.
 @export var character_face_portraits: Dictionary = {
-	"Normal": preload("res://assets_image/Characters/Phina/Normal/Normal_Normal.png"), # Example path
-	"Magus": preload("res://assets_image/Characters/Phina/Magus/Magus_Normal.png"),
-	"Cyber": preload("res://assets_image/Characters/Phina/Cyber/1Fini_transparent.png"),
-	"UltimateMagus": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Normal.png"),
-	"UltimateCyber": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Normal.jpg"),
+	"Normal": preload("res://assets_image/Characters/Phina/Normal/Normal_Happy.png"), # Example path
+	"Magus": preload("res://assets_image/Characters/Phina/Magus/Magus_Happy.png"),
+	"Cyber": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Happy.png"),
+	"UltimateMagus": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Happy.png"),
+	"UltimateCyber": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Happy.png"),
 }
 
 var player_node: Player = null 

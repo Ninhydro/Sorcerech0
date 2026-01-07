@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=37 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://ul2udlsga6b8" path="res://dialogic/cutscene/cutscene4_5.tscn" id="15_hq0yp"]
 [ext_resource type="Texture2D" uid="uid://3dxgkufg50nk" path="res://assets_image/Objects/flags2.png" id="15_sfoo7"]
 [ext_resource type="PackedScene" uid="uid://nquxmuq3we7x" path="res://dialogic/cutscene/cutscene7.tscn" id="16_2xf5r"]
+[ext_resource type="Texture2D" uid="uid://h34e8fb0c5ht" path="res://assets_image/Objects/banner_flag2.png" id="16_b0t60"]
 [ext_resource type="PackedScene" uid="uid://un1joupisgld" path="res://dialogic/cutscene/cutscene13C.tscn" id="17_odqvs"]
 [ext_resource type="PackedScene" uid="uid://c6na53py5hyof" path="res://dialogic/cutscene/cutscene15_5C.tscn" id="18_xw0yh"]
 [ext_resource type="PackedScene" uid="uid://8krsc7hlpjgk" path="res://dialogic/cutscene/cutscene16.tscn" id="19_fqxll"]
@@ -930,6 +931,16 @@ metadata/_edit_lock_ = true
 position = Vector2(1553, -26)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("15_sfoo7")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D40" type="Sprite2D" parent="Background"]
+position = Vector2(1688, 24)
+texture = ExtResource("16_b0t60")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D41" type="Sprite2D" parent="Background"]
+position = Vector2(1424, 24)
+texture = ExtResource("16_b0t60")
 metadata/_edit_lock_ = true
 
 [node name="SaveSpot" parent="." instance=ExtResource("13_wlpeo")]
