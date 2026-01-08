@@ -18,6 +18,8 @@ extends Node2D
 
 var actual_player_body: Player = null
 
+@onready var game_hud: CanvasLayer = $GameHUD
+
 func _unhandled_input(event: InputEvent):
 	if event.is_action_pressed("menu"):
 		if not get_tree().paused: # Only open if game is not already paused
@@ -33,6 +35,7 @@ func _unhandled_input(event: InputEvent):
 func _ready():
 	print("World: _ready() called. Global.play_intro_cutscene = ", Global.play_intro_cutscene)
 	
+	game_hud.visible = false
 	if Cartographer.has_method("rebuild_master_map_from_save"):
 		Cartographer.rebuild_master_map_from_save()
 		
@@ -127,6 +130,7 @@ func _ready():
 
 			# Start the cutscene using the CutsceneManager
 			cutscene_manager.start_cutscene()
+			Global.is_cutscene_active = true
 			print("World: CutsceneManager.start_cutscene() called.")
 
 	
@@ -146,8 +150,18 @@ func _ready():
 		print("World: Loaded game. Player.gd will apply loaded position.")
 		teleport_player_and_enable(false) # Player position will be handled by load data
 		print("✅ World: Player setup completed for loaded game.")
-
+		game_hud.visible = true 
+		call_deferred("_notify_world_ready")
 	print("Main Scene _ready() finished.")
+	#call_deferred("_notify_world_ready")
+
+func _notify_world_ready():
+	# Wait one frame so physics & shaders settle
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	LoadingScreen.hide_after_ready()
+
 
 func _process(delta):
 	if (Global.timeline >= 5 and Global.timeline < 6) or (Global.timeline >= 8 and Global.timeline < 9):
@@ -157,14 +171,29 @@ func _process(delta):
 	else:
 		war_effect.visible = false
 		war_effect.disable_war_effect()
-
+		
 func _on_cutscene_finished():
-	print("World: _on_cutscene_finished() called. Enabling player and switching camera.")
-
+	print("World: Cutscene finished → showing loading screen")
+	
+	# Prepare world while screen is black
+	game_hud.visible = true
 	Cartographer.reveal_chunk("Junkyard")
-	teleport_player_and_enable(true) # This will position player at junkyard, enable input, and switch to player camera
-	print("✅ World: Player enabled and camera switched after cutscene.")
-	#switch_to_player_camera()
+	teleport_player_and_enable(true)
+
+	# Give camera & shaders time to settle
+	await get_tree().process_frame
+	#await get_tree().process_frame
+	
+	# Now show loading screen with 5 second duration
+	#LoadingScreen.show_and_load("")
+	await get_tree().create_timer(4.0).timeout
+	LoadingScreen.hide_after_ready()
+	Global.is_cutscene_active = false
+	# Hide loading screen (fades out to reveal prepared world)
+	
+
+	print("✅ World: Gameplay ready after cutscene")
+
 
 func teleport_player_and_enable(position_player: bool = true):
 	print("World: teleport_player_and_enable() called with position_player_arg: " + str(position_player))
@@ -196,7 +225,8 @@ func teleport_player_and_enable(position_player: bool = true):
 
 	# Always switch to player camera when enabling player
 	Callable(self, "switch_to_player_camera").call_deferred()
-
+	
+	
 	print("✅ World: Player visibility, input, and camera setup completed.")
 
 
@@ -245,7 +275,8 @@ func switch_to_player_camera():
 
 	else:
 		printerr("World.gd: Failed to switch to player camera: player_camera is invalid.")
-
+	
+	#LoadingScreen.hide_after_ready()
 func _exit_tree():
 	# Force cleanup of all shader materials
 	Global.cleanup_all_materials()

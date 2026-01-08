@@ -127,8 +127,10 @@ func _on_save_slot_button_pressed(slot_name: String):
 			
 			# --- CRITICAL FIX START ---
 			# Defer the scene change to avoid trying to access parent after scene tree is gone.
-			get_tree().change_scene_to_file.call_deferred(saved_scene_path)
+			#get_tree().change_scene_to_file.call_deferred(saved_scene_path)
+			LoadingScreen.show_and_load(saved_scene_path)
 			
+			await get_tree().process_frame
 			# Queue free THIS menu instance immediately. It has done its job.
 			# DO NOT attempt to interact with any old scene nodes (like parent_node) after this point,
 			# as they will be freed when the new scene loads.

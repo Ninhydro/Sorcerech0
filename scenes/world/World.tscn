@@ -672,6 +672,7 @@ layer_0/tile_data = PackedInt32Array(6881195, 262145, 1)
 [node name="TransitionManager" parent="." instance=ExtResource("20_7o6hr")]
 
 [node name="GameHUD" parent="." instance=ExtResource("22_lv2sh")]
+visible = false
 
 [node name="ColorRect" type="ColorRect" parent="GameHUD"]
 visible = false
@@ -689,7 +690,6 @@ script = ExtResource("7_t1be6")
 position = Vector2(687, 1596)
 
 [node name="CutsceneIntro" parent="." instance=ExtResource("21_exdw8")]
-position = Vector2(503, 1484)
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(667, 1569)

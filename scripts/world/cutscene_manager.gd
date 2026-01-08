@@ -1,4 +1,4 @@
-extends Node
+extends CanvasLayer  
 
 @onready var black_overlay = $BlackOverlay
 @onready var timer = $Timer
@@ -9,8 +9,8 @@ signal cutscene_finished
 const INTRO_TIMELINE_PATH := "res://dialogic/timeline/timeline1.dtl"
 
 func _ready():
-	black_overlay.modulate.a = 0.0
-	black_overlay.visible = false
+	black_overlay.modulate.a = 1.0
+	black_overlay.visible = true
 
 
 func start_cutscene():
@@ -45,10 +45,14 @@ func start_cutscene():
 
 func _on_dialogic_finished(_timeline_name = ""):
 	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
+	#black_overlay.visible = false
+	#black_overlay.modulate.a = 1.0
+	LoadingScreen.show_and_load("")
+	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_QUAD)
-	tween.tween_property(black_overlay, "modulate:a", 0.0, 0.1)
+	#tween.tween_property(black_overlay, "modulate:a", 1.0, 0.1)
 	tween.tween_callback(Callable(self, "_on_cutscene_end"))
 
 	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
@@ -56,9 +60,25 @@ func _on_dialogic_finished(_timeline_name = ""):
 	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 
-
 func _on_cutscene_end():
-	print("CutsceneManager: All cutscene visuals finished. Emitting signal.")
+	print("CutsceneManager: Cutscene finished → starting loading transition")
+	#LoadingScreen.show_and_load("")
+	await get_tree().process_frame
+	# 🔥 KEEP SCREEN BLACK
+	await get_tree().create_timer(1.0).timeout
 	black_overlay.visible = false
+	black_overlay.modulate.a = 1.0
+	
+	# Force it to be on top of everything
+	#black_overlay.z_index = 9999  # Add this line
+	#black_overlay.mouse_filter = Control.MOUSE_FILTER_STOP  # Add this line
+	
+	#await get_tree().create_timer(5.0).timeout
+	#await get_tree().process_frame
+	#LoadingScreen.hide_after_ready()
+	
 	emit_signal("cutscene_finished")
 	Global.timeline = 1
+	
+	
+	

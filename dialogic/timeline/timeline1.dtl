@@ -1,3 +1,14 @@
-join Player (Angry) center
-Player (Happy): Prologue  from start to end (cgs, cutscene fini running)
-Player (Angry): Chapter 1 start, maya found Phina, cutscene 1,  go to tutorial movement
+[background arg="res://assets_image/CG/CG1.png" fade="2.0"]
+This is a world where electronic circuits hum beside dragons’ breath, Where spells are etched into the sky... and data flows like blood. 
+A world where magic and technology don’t just coexist — they define existence. 
+[background arg="res://assets_image/CG/CG2.png" fade="0.5"]
+The Magus, They command the elements, shape mana, and bond with ancient beast. 
+The Cyber, born without magic, but infused with something else. Nanomachines woven into their DNA... granting them minds that link with metal and code.
+[background arg="res://assets_image/CG/CG3_1.png" fade="0.5"]
+In the region known as New Aerandale, these two great races once lived in harmony. 
+Side by side, they built wonders, cities powered by magic and electricity, skies filled with both dragons and drones. 
+But harmony didn’t last long… Greed, fear, and power tore their unity apart.
+[background arg="res://assets_image/CG/CG3_2.png" fade="0.5"]
+Peace turned to protest. Protest turned to war.
+They only want one thing.
+The Sorcerech Core...

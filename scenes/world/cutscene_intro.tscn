@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/world/cutscene_manager.gd" id="1_131e1"]
 
-[node name="CutsceneIntro" type="Node2D"]
+[node name="CutsceneIntro" type="CanvasLayer"]
 script = ExtResource("1_131e1")
 
 [node name="BlackOverlay" type="ColorRect" parent="."]

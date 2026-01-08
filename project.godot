@@ -24,6 +24,7 @@ Global="*res://config/Global.gd"
 SaveLoadManager="*res://config/SaveLoadManager.gd"
 MemoryManager="*res://config/memory_manager.gd"
 Cartographer="*res://scripts/UI/Cartographer.gd"
+LoadingScreen="*res://scenes/ui/loadingscreen.tscn"
 
 [dialogic]
 

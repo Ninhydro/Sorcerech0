@@ -63,6 +63,7 @@ func _on_new_game_button_pressed():
 	Global.play_intro_cutscene = true
 	Global.timeline = 0
 	get_tree().change_scene_to_packed(main_game_scene)
+	#LoadingScreen.show_and_load(main_game_scene.resource_path)
 
 func _on_continue_button_pressed():
 	print("Opening Load Game Menu (as a pop-up).")

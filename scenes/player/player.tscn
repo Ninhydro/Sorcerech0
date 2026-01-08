@@ -2133,7 +2133,7 @@ transitions = ["Start", "idle_normal", SubResource("AnimationNodeStateMachineTra
 graph_offset = Vector2(288, 432.288)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ak7ds"]
-size = Vector2(13, 12)
+size = Vector2(13, 11.3333)
 
 [node name="Player" type="Node2D"]
 
@@ -2177,7 +2177,7 @@ tree_root = SubResource("AnimationNodeStateMachine_u4svu")
 anim_player = NodePath("../AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(1, -10)
+position = Vector2(1, -11)
 scale = Vector2(1, 3)
 shape = SubResource("RectangleShape2D_ak7ds")
 
