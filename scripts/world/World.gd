@@ -182,11 +182,11 @@ func _on_cutscene_finished():
 
 	# Give camera & shaders time to settle
 	await get_tree().process_frame
-	#await get_tree().process_frame
+	await get_tree().process_frame
 	
 	# Now show loading screen with 5 second duration
 	#LoadingScreen.show_and_load("")
-	await get_tree().create_timer(4.0).timeout
+	await get_tree().create_timer(2.0).timeout
 	LoadingScreen.hide_after_ready()
 	Global.is_cutscene_active = false
 	# Hide loading screen (fades out to reveal prepared world)

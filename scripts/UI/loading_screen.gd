@@ -5,7 +5,7 @@ extends CanvasLayer
 
 var _target_scene := ""
 var _is_loading := false
-const MIN_LOOP_TIME := 5.0
+const MIN_LOOP_TIME := 3.0
 
 func _ready():
 	visible = false

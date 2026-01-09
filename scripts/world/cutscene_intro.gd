@@ -1,4 +1,4 @@
-extends CanvasLayer  
+extends Node2D  
 
 @onready var black_overlay = $BlackOverlay
 @onready var timer = $Timer
@@ -10,7 +10,7 @@ const INTRO_TIMELINE_PATH := "res://dialogic/timeline/timeline1.dtl"
 
 func _ready():
 	black_overlay.modulate.a = 1.0
-	black_overlay.visible = true
+	black_overlay.visible = false
 
 
 func start_cutscene():

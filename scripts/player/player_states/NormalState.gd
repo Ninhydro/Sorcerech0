@@ -26,7 +26,7 @@ func physics_process(delta):
 	#print(player.health.current_hp)
 	
 	var collision = player.get_node_or_null("CollisionShape2D")
-	collision.position = Vector2(1,2)
+	collision.position = Vector2(1,1)
 	collision.scale = Vector2(1,1)
 	
 	

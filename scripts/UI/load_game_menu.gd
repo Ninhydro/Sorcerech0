@@ -134,6 +134,7 @@ func _on_save_slot_button_pressed(slot_name: String):
 			# Queue free THIS menu instance immediately. It has done its job.
 			# DO NOT attempt to interact with any old scene nodes (like parent_node) after this point,
 			# as they will be freed when the new scene loads.
+			#LoadingScreen.hide_after_ready()
 			queue_free()
 			print("LoadGameMenu: Self-freed after initiating deferred scene change.")
 			# --- CRITICAL FIX END ---

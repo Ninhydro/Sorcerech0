@@ -32,7 +32,7 @@ func enter():
 	
 	var collision = player.get_node_or_null("CollisionShape2D")
 	if collision:
-		collision.position = Vector2(1,-10)
+		collision.position = Vector2(1,-11)
 		collision.scale = Vector2(1,3)
 	
 	_sprite_node = player.get_node_or_null("Sprite2D")
