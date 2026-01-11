@@ -1,71 +1,123 @@
-extends Area2D
+extends MasterCutscene
 
-var _has_been_triggered: bool = false
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@export var play_only_once: bool = true
+var player_in_range = null
+@onready var transition_manager = get_node("/root/TransitionManager")
+var target_room1 = "Room_AerendaleJunkyard"
+var target_spawn1 = "Spawn_Minigame"
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Global.timeline == 1:
-		collision_shape.disabled = false
-
-	else:
-		collision_shape.disabled = true
-
+#func _ready():
+	# Don't call super._ready() - MasterCutscene already handles this
+#	pass
 
 func _on_body_entered(body):
-	#print("Player position: ",player_node_ref.global_position)
-	if (body.is_in_group("player") and not _has_been_triggered):  #and Global.cutscene_finished1 == false:
-		print("Player entered cutscene trigger area. Starting cutscene.")
-
-		if collision_shape:
-			collision_shape.set_deferred("disabled", true)
-		else:
-			printerr("Cutscene Area2D: WARNING: CollisionShape2D is null, cannot disable it. Using Area2D monitoring instead.")
-			set_deferred("monitorable", false)
-			set_deferred("monitoring", false)
-
-		#start_cutscene(cutscene_animation_name_to_play, 0.0)
-
-		if play_only_once:
-			_has_been_triggered = true
-			
-
-		Global.is_cutscene_active = true
-		#Global.cutscene_name = cutscene_animation_name
-		#Global.cutscene_playback_position = start_position
-		#Dialogic.start("timeline1", false)
-		if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
-		Dialogic.timeline_ended.connect(_on_dialogic_finished)
-
-
-		Dialogic.start("timeline2", false)
-
-
-func _on_dialogic_finished(_timeline_name = ""):
-	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
-	# Dialog is done. Now, fade out the black screen.
-
-	Global.is_cutscene_active = false
+	print("Cutscene1: Body entered - ", body.name if body else "null")
 	
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+	# Check if timeline condition is met
+	if Global.timeline == 1 and body.is_in_group("player"):
+		print("Cutscene1: Conditions met, calling parent method")
+		# Store player reference first
+		player_in_range = body
+		# Call parent's _on_body_entered
+		super._on_body_entered(body)
+	else:
+		print("Cutscene1: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
+
+func _setup_cutscene():
+	cutscene_name = "Cutscene1"
+	play_only_once = true
+	area_activation_flag = ""  # No flag required
+	global_flag_to_set = ""  # We'll handle this manually
 	
-	# Disconnect the signal to prevent unintended calls.
-	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
+	player_markers = {
+		# Example positions - adjust to match your scene
+		#"start": Vector2(100, 200),
+		#"center": Vector2(300, 200),
+		#"end": Vector2(500, 200)
+	}
+	
+	# Simple sequence: just play dialog
+	sequence = [
+		{"type": "dialog", "name": "timeline2", "wait": true},
+		#{"type": "fade_in"},
+		
+		#{"type": "fade_out"}
+	]
 
+func _on_cutscene_start():
+	print("Cutscene1: Starting")
+	# Player reference is already stored in _player_ref by parent class
+	if _player_ref:
+		player_in_range = _player_ref
+		print("Cutscene1: Player reference stored: ", player_in_range.name)
 
-
+func _on_cutscene_end():
+	print("Cutscene1: Finished")
+	
+	# Set timeline
 	Global.timeline = 2
+	print("Cutscene1: Set Global.timeline = ", Global.timeline)
 
+	# Travel to minigame room (optional - uncomment if needed)
+	#if player_in_range and transition_manager:
+	#	print("Cutscene1: Traveling to minigame room")
+	#	transition_manager.travel_to(player_in_range, target_room1, target_spawn1)
+	
+	# Start minigame (optional - uncomment if needed)
+	#var minigame = get_tree().get_first_node_in_group("sorting_minigame")
+	#if minigame:
+	#	print("Cutscene1: Starting minigame")
+	#	minigame.start_game()
 
-
-func _on_body_exited(body):
-	pass # Replace with function body.
+"""
+# Complete sequence example
+	sequence = [
+		# Start with fade in
+		{"type": "fade_in"},
+		
+		# Move player to start position while screen is black
+		{"type": "move_player", "name": "start_pos"},
+		
+		# Wait a moment
+		{"type": "wait", "duration": 0.5},
+		
+		# Fade out to show scene
+		{"type": "fade_out"},
+		
+		# Player looks around
+		{"type": "player_face", "direction": 1},
+		{"type": "wait", "duration": 0.5},
+		{"type": "player_face", "direction": -1},
+		{"type": "wait", "duration": 0.5},
+		
+		# Play cutscene animation
+		{"type": "animation", "name": "intro_anim", "wait": true},
+		
+		# First dialog
+		{"type": "dialog", "name": "greeting_timeline", "wait": true},
+		
+		# Player walks to middle while animation plays
+		{"type": "move_player", "name": "middle_pos"},
+		{"type": "player_animation", "name": "run"},
+		{"type": "wait", "duration": 1.0},
+		
+		# Second dialog
+		{"type": "dialog", "name": "conversation_timeline", "wait": true},
+		
+		# Play loop animation with dialog overlay
+		{"type": "animation", "name": "idle_loop", "wait": false, "loop": true},
+		{"type": "dialog", "name": "action_timeline", "wait": true},
+		
+		# Final animation
+		{"type": "animation", "name": "ending_anim", "wait": true},
+		
+		# Move to end position
+		{"type": "move_player", "name": "end_pos"},
+		
+		# Final dialog
+		{"type": "dialog", "name": "farewell_timeline", "wait": true},
+		
+		# Fade out and end
+		{"type": "fade_in"}
+	]
+"""

@@ -295,7 +295,7 @@ func end_cutscene(cutscene_name_finished: String):
 		print("Cutscene Area2D: Teleporting player to %s at %s" % [target_scene_path, target_position_in_scene])
 		Global.playerBody.global_position = target_position_in_scene
 	
-	Global.cutscene_finished1 = true
+	#Global.cutscene_finished1 = true
 
 func set_player_reference(player: Player):
 	if is_instance_valid(player):

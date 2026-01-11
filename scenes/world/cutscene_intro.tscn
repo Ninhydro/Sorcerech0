@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://bew4rnh5f46sy"]
+[gd_scene load_steps=51 format=3 uid="uid://bew4rnh5f46sy"]
 
 [ext_resource type="Script" path="res://scripts/world/cutscene_intro.gd" id="1_131e1"]
 [ext_resource type="Texture2D" uid="uid://sf7f3ilxiysq" path="res://assets_image/Characters/Phina/phina1-Sheet.png" id="2_chesi"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://bpidqrklxu7eb" path="res://assets_image/Background/Maya&Betael/Maya_house-Sheet.png" id="8_bai05"]
 [ext_resource type="Texture2D" uid="uid://d1wg6u6j3a04o" path="res://assets_image/Objects/trees2.png" id="9_k2e1x"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="10_g23tl"]
+[ext_resource type="Script" path="res://scripts/world/debug_sprite2d.gd" id="12_k10ev"]
 [ext_resource type="Texture2D" uid="uid://cc71o6vv4jtqa" path="res://assets_image/Main/Title1.png" id="14_fugtq"]
 [ext_resource type="Texture2D" uid="uid://cn0kt0ye2h57i" path="res://assets_image/Effects/electric_spark.png" id="15_ql2u3"]
 
@@ -54,7 +55,7 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(-0.00305025, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.70305, 1.80305, 1.90305, 2.00305, 2.10305, 2.20305, 2.30305, 2.4, 2.50496, 2.60496, 2.70496, 2.80496, 2.90496, 3.00496, 3.10496, 3.2, 3.30496, 3.40496, 3.50496, 3.60496, 3.70496, 3.80496, 3.90496, 4, 4.10496, 4.20496, 4.30496, 4.40496, 4.50496, 4.60496, 4.70496),
+"times": PackedFloat32Array(-0.00305025, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.70305, 1.80305, 1.90305, 2.00305, 2.10305, 2.20305, 2.30305, 2.4, 2.50496, 2.60496, 2.70496, 2.80496, 2.90496, 3.00496, 3.10496, 3.2, 3.30496, 3.40496, 3.50496, 3.60496, 3.70496, 3.80496, 3.90496, 4, 4.10496, 4.20496, 4.30496, 4.40496, 4.50496, 4.6, 4.70496),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [387, 388, 389, 390, 391, 392, 393, 394, 387, 388, 389, 390, 391, 392, 393, 394, 387, 388, 389, 390, 391, 392, 393, 394, 387, 388, 389, 390, 391, 392, 393, 394, 387, 388, 389, 390, 391, 392, 393, 394, 387, 388, 389, 390, 391, 392, 393, 394]
@@ -214,6 +215,18 @@ tracks/13/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("Label:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_hjvtw"]
@@ -439,7 +452,7 @@ tracks/1/path = NodePath("Maya kid:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 10.1),
+"times": PackedFloat32Array(0, 10.9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -499,7 +512,7 @@ tracks/6/path = NodePath("Uncle Betael:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 10.1),
+"times": PackedFloat32Array(0, 11),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -535,7 +548,7 @@ tracks/9/path = NodePath("Sprite2D:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
-"times": PackedFloat32Array(0, 9.7, 10),
+"times": PackedFloat32Array(0, 9.7, 11.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(0.419608, 0.419608, 0.419608, 1), Color(0.419608, 0.419608, 0.419608, 1), Color(1, 1, 1, 1)]
@@ -559,7 +572,7 @@ tracks/11/path = NodePath("BlackOverlay:visible")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0, 7.6, 11),
+"times": PackedFloat32Array(0, 7.6, 12.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, true, false]
@@ -571,7 +584,7 @@ tracks/12/path = NodePath("BlackOverlay:modulate")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
-"times": PackedFloat32Array(0, 8, 9.1, 10, 11),
+"times": PackedFloat32Array(0, 8, 9.1, 10.9, 11.9),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0.407843), Color(1, 1, 1, 0.392157), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
@@ -619,7 +632,7 @@ tracks/16/path = NodePath("Junkyard:modulate")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
-"times": PackedFloat32Array(0, 9.8, 10),
+"times": PackedFloat32Array(0, 9.8, 11),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(0.690196, 0.690196, 0.690196, 1), Color(0.690196, 0.690196, 0.690196, 1), Color(1, 1, 1, 1)]
@@ -655,7 +668,7 @@ tracks/19/path = NodePath("Maya kid:position")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
-"times": PackedFloat32Array(11, 13.1, 15.1),
+"times": PackedFloat32Array(12, 14, 16.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(40, -16), Vector2(40, -16), Vector2(8, -32)]
@@ -667,7 +680,7 @@ tracks/20/path = NodePath("Maya kid:flip_h")
 tracks/20/interp = 1
 tracks/20/loop_wrap = true
 tracks/20/keys = {
-"times": PackedFloat32Array(10.1),
+"times": PackedFloat32Array(10.9),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -679,7 +692,7 @@ tracks/21/path = NodePath("Uncle Betael:position")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/keys = {
-"times": PackedFloat32Array(10.9, 16.1),
+"times": PackedFloat32Array(11.8, 16.9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(225, 18), Vector2(108, 18)]
@@ -691,7 +704,7 @@ tracks/22/path = NodePath("Uncle Betael:flip_h")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/keys = {
-"times": PackedFloat32Array(10.8),
+"times": PackedFloat32Array(11),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -699,70 +712,94 @@ tracks/22/keys = {
 tracks/23/type = "animation"
 tracks/23/imported = false
 tracks/23/enabled = true
-tracks/23/path = NodePath("Maya kid/AnimationPlayer")
+tracks/23/path = NodePath("Uncle Betael/AnimationPlayer")
 tracks/23/interp = 1
 tracks/23/loop_wrap = true
 tracks/23/keys = {
-"clips": PackedStringArray("idle", "run1", "idle"),
-"times": PackedFloat32Array(9.9, 13.1, 15.1)
+"clips": PackedStringArray("walk", "idle"),
+"times": PackedFloat32Array(10.7, 17.1)
 }
-tracks/24/type = "animation"
+tracks/24/type = "value"
 tracks/24/imported = false
 tracks/24/enabled = true
-tracks/24/path = NodePath("Uncle Betael/AnimationPlayer")
+tracks/24/path = NodePath("Spark:frame")
 tracks/24/interp = 1
 tracks/24/loop_wrap = true
 tracks/24/keys = {
-"clips": PackedStringArray("walk", "idle"),
-"times": PackedFloat32Array(9.9, 16.1)
-}
-tracks/25/type = "value"
-tracks/25/imported = false
-tracks/25/enabled = true
-tracks/25/path = NodePath("Spark:frame")
-tracks/25/interp = 1
-tracks/25/loop_wrap = true
-tracks/25/keys = {
-"times": PackedFloat32Array(5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9),
+"times": PackedFloat32Array(6, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5, 6, 7, 8]
 }
-tracks/26/type = "value"
-tracks/26/imported = false
-tracks/26/enabled = true
-tracks/26/path = NodePath("Spark:visible")
-tracks/26/interp = 1
-tracks/26/loop_wrap = true
-tracks/26/keys = {
-"times": PackedFloat32Array(0, 5.1, 6),
+tracks/25/type = "value"
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/path = NodePath("Spark:visible")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = {
+"times": PackedFloat32Array(0, 6, 7),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
 }
-tracks/27/type = "value"
-tracks/27/imported = false
-tracks/27/enabled = true
-tracks/27/path = NodePath("Spark:position")
-tracks/27/interp = 1
-tracks/27/loop_wrap = true
-tracks/27/keys = {
-"times": PackedFloat32Array(5.1, 5.4, 5.5, 5.7, 5.8),
+tracks/26/type = "value"
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/path = NodePath("Spark:position")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = {
+"times": PackedFloat32Array(6, 6.3, 6.4, 6.6, 6.7),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(-13, -11), Vector2(-13, -11), Vector2(-4, -10), Vector2(-4, -10), Vector2(-14, -9)]
 }
-tracks/28/type = "value"
-tracks/28/imported = false
-tracks/28/enabled = true
-tracks/28/path = NodePath("Spark:rotation")
-tracks/28/interp = 1
-tracks/28/loop_wrap = true
-tracks/28/keys = {
-"times": PackedFloat32Array(5.1, 5.4, 5.5, 5.7, 5.8),
+tracks/27/type = "value"
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/path = NodePath("Spark:rotation")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = {
+"times": PackedFloat32Array(6, 6.3, 6.4, 6.6, 6.7),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [0.614356, 0.614356, -1.00705, -1.00705, 0.277507]
+}
+tracks/28/type = "value"
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/path = NodePath("Label:visible")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/keys = {
+"times": PackedFloat32Array(0, 9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/29/type = "value"
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/path = NodePath("Label:modulate")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/keys = {
+"times": PackedFloat32Array(9, 10.1, 12.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/30/type = "animation"
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/path = NodePath("Maya kid/AnimationPlayer")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/keys = {
+"clips": PackedStringArray("idle", "run1", "idle"),
+"times": PackedFloat32Array(10.9, 14, 16.1)
 }
 
 [sub_resource type="Animation" id="Animation_5oet7"]
@@ -1023,7 +1060,7 @@ tracks/20/keys = {
 tracks/21/type = "animation"
 tracks/21/imported = false
 tracks/21/enabled = true
-tracks/21/path = NodePath("Maya kid/AnimationPlayer")
+tracks/21/path = NodePath("Uncle Betael/AnimationPlayer")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/keys = {
@@ -1033,7 +1070,7 @@ tracks/21/keys = {
 tracks/22/type = "animation"
 tracks/22/imported = false
 tracks/22/enabled = true
-tracks/22/path = NodePath("Uncle Betael/AnimationPlayer")
+tracks/22/path = NodePath("Maya kid/AnimationPlayer")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/keys = {
@@ -1299,22 +1336,22 @@ tracks/20/keys = {
 tracks/21/type = "animation"
 tracks/21/imported = false
 tracks/21/enabled = true
-tracks/21/path = NodePath("Maya kid/AnimationPlayer")
+tracks/21/path = NodePath("Uncle Betael/AnimationPlayer")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/keys = {
-"clips": PackedStringArray("idle", "handsup", "idle"),
-"times": PackedFloat32Array(0, 0.7, 1.1)
+"clips": PackedStringArray("idle", "walk", "idle"),
+"times": PackedFloat32Array(0, 0.6, 1.4)
 }
 tracks/22/type = "animation"
 tracks/22/imported = false
 tracks/22/enabled = true
-tracks/22/path = NodePath("Uncle Betael/AnimationPlayer")
+tracks/22/path = NodePath("Maya kid/AnimationPlayer")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/keys = {
-"clips": PackedStringArray("idle", "walk", "idle"),
-"times": PackedFloat32Array(0, 0.6, 1.4)
+"clips": PackedStringArray("idle", "handsup", "idle"),
+"times": PackedFloat32Array(0, 0.7, 1)
 }
 
 [sub_resource type="Animation" id="Animation_tbveh"]
@@ -1576,7 +1613,7 @@ tracks/20/keys = {
 tracks/21/type = "animation"
 tracks/21/imported = false
 tracks/21/enabled = true
-tracks/21/path = NodePath("Maya kid/AnimationPlayer")
+tracks/21/path = NodePath("Uncle Betael/AnimationPlayer")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/keys = {
@@ -1586,7 +1623,7 @@ tracks/21/keys = {
 tracks/22/type = "animation"
 tracks/22/imported = false
 tracks/22/enabled = true
-tracks/22/path = NodePath("Uncle Betael/AnimationPlayer")
+tracks/22/path = NodePath("Maya kid/AnimationPlayer")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/keys = {
@@ -1852,46 +1889,46 @@ tracks/20/keys = {
 tracks/21/type = "animation"
 tracks/21/imported = false
 tracks/21/enabled = true
-tracks/21/path = NodePath("Maya kid/AnimationPlayer")
+tracks/21/path = NodePath("Uncle Betael/AnimationPlayer")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/keys = {
-"clips": PackedStringArray("handsup", "run2"),
-"times": PackedFloat32Array(0, 0.4)
-}
-tracks/22/type = "animation"
-tracks/22/imported = false
-tracks/22/enabled = true
-tracks/22/path = NodePath("Uncle Betael/AnimationPlayer")
-tracks/22/interp = 1
-tracks/22/loop_wrap = true
-tracks/22/keys = {
 "clips": PackedStringArray("walk"),
 "times": PackedFloat32Array(0)
 }
-tracks/23/type = "value"
-tracks/23/imported = false
-tracks/23/enabled = true
-tracks/23/path = NodePath("BlackOverlay:visible")
-tracks/23/interp = 1
-tracks/23/loop_wrap = true
-tracks/23/keys = {
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("BlackOverlay:visible")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
 "times": PackedFloat32Array(2),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
 }
-tracks/24/type = "value"
-tracks/24/imported = false
-tracks/24/enabled = true
-tracks/24/path = NodePath("BlackOverlay:modulate")
-tracks/24/interp = 1
-tracks/24/loop_wrap = true
-tracks/24/keys = {
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("BlackOverlay:modulate")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
 "times": PackedFloat32Array(2, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(0, 0, 0, 0), Color(1, 1, 1, 1)]
+}
+tracks/24/type = "animation"
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/path = NodePath("Maya kid/AnimationPlayer")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = {
+"clips": PackedStringArray("handsup", "run2"),
+"times": PackedFloat32Array(0, 0.4)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yvno0"]
@@ -2526,22 +2563,10 @@ texture = ExtResource("3_aew5s")
 physics_layer_0/collision_layer = 3
 sources/0 = SubResource("TileSetAtlasSource_52foy")
 
-[sub_resource type="Animation" id="Animation_cyrg1"]
+[sub_resource type="Animation" id="Animation_2unbp"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Maya kid:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [152]
-}
 
-[sub_resource type="Animation" id="Animation_flku2"]
+[sub_resource type="Animation" id="Animation_a3wvo"]
 resource_name = "handsup"
 length = 0.4
 tracks/0/type = "value"
@@ -2557,7 +2582,7 @@ tracks/0/keys = {
 "values": [112, 113, 114]
 }
 
-[sub_resource type="Animation" id="Animation_yuh2j"]
+[sub_resource type="Animation" id="Animation_6kv62"]
 resource_name = "idle"
 length = 0.4
 loop_mode = 1
@@ -2574,7 +2599,7 @@ tracks/0/keys = {
 "values": [144, 145, 146, 147]
 }
 
-[sub_resource type="Animation" id="Animation_re3fa"]
+[sub_resource type="Animation" id="Animation_gwhk7"]
 resource_name = "jump"
 length = 0.2
 tracks/0/type = "value"
@@ -2590,7 +2615,7 @@ tracks/0/keys = {
 "values": [120]
 }
 
-[sub_resource type="Animation" id="Animation_d4bqq"]
+[sub_resource type="Animation" id="Animation_jhd5p"]
 resource_name = "low_down"
 length = 0.7
 tracks/0/type = "value"
@@ -2606,7 +2631,7 @@ tracks/0/keys = {
 "values": [104, 105, 106, 107, 108, 109]
 }
 
-[sub_resource type="Animation" id="Animation_xn81u"]
+[sub_resource type="Animation" id="Animation_mxcrt"]
 resource_name = "run1"
 length = 0.8
 loop_mode = 1
@@ -2623,7 +2648,7 @@ tracks/0/keys = {
 "values": [136, 137, 138, 139, 140, 141, 142, 143]
 }
 
-[sub_resource type="Animation" id="Animation_oqr0m"]
+[sub_resource type="Animation" id="Animation_myyr1"]
 resource_name = "run2"
 length = 0.8
 loop_mode = 1
@@ -2640,15 +2665,15 @@ tracks/0/keys = {
 "values": [128, 129, 130, 131, 132, 133, 134, 135]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_dv64b"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l5bu0"]
 _data = {
-"RESET": SubResource("Animation_cyrg1"),
-"handsup": SubResource("Animation_flku2"),
-"idle": SubResource("Animation_yuh2j"),
-"jump": SubResource("Animation_re3fa"),
-"low_down": SubResource("Animation_d4bqq"),
-"run1": SubResource("Animation_xn81u"),
-"run2": SubResource("Animation_oqr0m")
+"RESET": SubResource("Animation_2unbp"),
+"handsup": SubResource("Animation_a3wvo"),
+"idle": SubResource("Animation_6kv62"),
+"jump": SubResource("Animation_gwhk7"),
+"low_down": SubResource("Animation_jhd5p"),
+"run1": SubResource("Animation_mxcrt"),
+"run2": SubResource("Animation_myyr1")
 }
 
 [sub_resource type="Animation" id="Animation_ryafy"]
@@ -2750,6 +2775,9 @@ scale_curve = SubResource("CurveXYZTexture_rrdkj")
 color_initial_ramp = SubResource("GradientTexture1D_adj8r")
 alpha_curve = SubResource("CurveTexture_uxo0n")
 
+[sub_resource type="LabelSettings" id="LabelSettings_kywnm"]
+font_size = 20
+
 [node name="CutsceneIntro" type="Node2D"]
 z_index = 10
 script = ExtResource("1_131e1")
@@ -2763,7 +2791,8 @@ libraries = {
 one_shot = true
 
 [node name="Intro" type="Node2D" parent="."]
-position = Vector2(-1000, -40)
+visible = false
+position = Vector2(840, -40)
 metadata/_edit_lock_ = true
 
 [node name="Background" type="Sprite2D" parent="Intro"]
@@ -2927,8 +2956,6 @@ frame = 6
 metadata/_edit_lock_ = true
 
 [node name="Junkyard" type="Node2D" parent="."]
-visible = false
-modulate = Color(0.690196, 0.690196, 0.690196, 1)
 z_index = -1
 position = Vector2(384, -8)
 metadata/_edit_lock_ = true
@@ -3184,39 +3211,38 @@ metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(0, 3)
+position = Vector2(-8, -38)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_chesi")
-flip_h = true
 hframes = 9
 vframes = 51
 frame = 396
+script = ExtResource("12_k10ev")
 
 [node name="Maya kid" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(40, -16)
+position = Vector2(13, -33)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_wht36")
 flip_h = true
 hframes = 8
 vframes = 19
-frame = 144
+frame = 129
+script = ExtResource("12_k10ev")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Maya kid"]
 root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_dv64b")
+"": SubResource("AnimationLibrary_l5bu0")
 }
 
 [node name="Uncle Betael" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(225, 18)
+position = Vector2(55, 19)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_mqssd")
-flip_h = true
 hframes = 8
 vframes = 2
 frame = 8
+script = ExtResource("12_k10ev")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Uncle Betael"]
 root_node = NodePath("../..")
@@ -3230,6 +3256,7 @@ modulate = Color(1, 1, 1, 0)
 position = Vector2(88, -32)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("14_fugtq")
+script = ExtResource("12_k10ev")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 position = Vector2(41, -208)
@@ -3241,9 +3268,10 @@ preprocess = 0.5
 visibility_rect = Rect2(-1000, -1000, 2000, 2000)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(48, -8)
 
 [node name="BlackOverlay" type="ColorRect" parent="."]
-modulate = Color(1, 1, 1, 0.407843)
+modulate = Color(0, 0, 0, 0)
 offset_left = -20783.0
 offset_top = -14168.0
 offset_right = 3993.0
@@ -3262,8 +3290,20 @@ color = Color(0, 0, 0, 1)
 visible = false
 modulate = Color(1, 1, 1, 0.412393)
 z_index = 2
-position = Vector2(-13, -11)
-rotation = 0.614356
+position = Vector2(-14, -9)
+rotation = 0.277507
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("15_ql2u3")
 hframes = 9
+script = ExtResource("12_k10ev")
+
+[node name="Label" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = -99.0
+offset_top = -90.0
+offset_right = 203.0
+offset_bottom = 75.0
+text = "Few Years Later"
+label_settings = SubResource("LabelSettings_kywnm")
+horizontal_alignment = 1
+vertical_alignment = 1

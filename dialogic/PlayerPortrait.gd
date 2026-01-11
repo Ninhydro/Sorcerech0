@@ -36,10 +36,10 @@ func _ready():
 func set_all_portraits():
 	# Normal Portraits
 	normal_portraits = {
-		"Angry": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Angry.png"),
-		"Happy": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Happy.png"),
-		"Normal": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Happy.png"),
-		"Sad": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Sad.png")
+		"Angry": preload("res://assets_image/Background/Transparant.png"),
+		"Happy": preload("res://assets_image/Background/Transparant.png"),
+		"Normal": preload("res://assets_image/Background/Transparant.png"),
+		"Sad": preload("res://assets_image/Background/Transparant.png")
 
 	}
 	# Cyber Portraits

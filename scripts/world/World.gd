@@ -130,7 +130,7 @@ func _ready():
 
 			# Start the cutscene using the CutsceneManager
 			cutscene_manager.start_cutscene()
-			#Global.is_cutscene_active = true
+			Global.is_cutscene_active = true
 			print("World: CutsceneManager.start_cutscene() called.")
 
 	
@@ -190,7 +190,9 @@ func _on_cutscene_finished():
 	#LoadingScreen.show_and_load("")
 	await get_tree().create_timer(2.0).timeout
 	LoadingScreen.hide_after_ready()
-	#Global.is_cutscene_active = false
+	Global.is_cutscene_active = false
+	Global.cutscene_finished1 = true
+	Global.timeline = 1
 	# Hide loading screen (fades out to reveal prepared world)
 	
 

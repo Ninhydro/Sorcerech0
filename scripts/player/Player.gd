@@ -740,6 +740,9 @@ func _physics_process(delta):
 	# This should be at the very end of _physics_process after all velocity calculations.
 	handle_ledge_grab()
 	move_and_slide()
+	
+	handle_falling_object_collisions()
+
 
 
 	if not Global.is_cutscene_active and not is_busy: # <-- IMPORTANT: Add is_busy check here
@@ -1473,6 +1476,7 @@ func enable_player_input_after_cutscene():
 	# Re-enable physics and process
 	set_physics_process(true)
 	set_process(true)
+	set_process_input(true)
 
 	# Ensure FSM goes back to idle state
 	if combat_fsm and is_instance_valid(combat_fsm):
@@ -1484,7 +1488,33 @@ func enable_player_input_after_cutscene():
 			animation_player.play("idle")
 	
 	# visible = true # Example: if player was hidden
+	# Add this function to your Player.gd script - it's already there but let's make sure:
+func change_player_form(form_name: String) -> void:
+	"""Change player form directly - used by cutscenes"""
+	print("Player: Changing form to ", form_name)
 	
+	# First, unlock the form if not already unlocked
+	if not unlocked_states.has(form_name):
+		unlock_state(form_name)
+	
+	# Find the index of the form
+	var form_index = unlocked_states.find(form_name)
+	if form_index == -1:
+		print("Player: ERROR - Form ", form_name, " not in unlocked_states!")
+		return
+	
+	# Update global variables
+	current_state_index = form_index
+	Global.selected_form_index = form_index
+	
+	# Switch to the new form
+	switch_state(form_name)
+	
+	# Update Global
+	Global.set_player_form(form_name)
+	Global.current_form = form_name
+	
+	print("Player: Form changed to ", form_name, " successfully")
 
 func emergency_cleanup_shaders():
 	"""Emergency cleanup called right before game exit"""
@@ -1708,3 +1738,27 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 		if damage > 0 and can_take_damage and not dead:
 			print("💥 Player hit by boss hitbox: ", area.name, " damage: ", damage)
 			take_damage(damage)
+
+func handle_falling_object_collisions():
+	# Check for collisions with falling objects
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
+		if collider and collider.is_in_group("FallingObjects"):
+			var collision_normal = collision.get_normal()
+			
+			# If object is on top of player (collision from above)
+			if collision_normal.dot(Vector2.UP) > 0.7:
+				# Push object away based on player's movement
+				var push_dir = Vector2(0, -1)
+				if abs(velocity.x) > 0:
+					push_dir.x = sign(velocity.x) * 0.3
+				
+				collider.push(push_dir, 150.0)
+			
+			# If player is under object and moving horizontally
+			elif velocity.x != 0 and abs(collision_normal.x) > 0.7:
+				# Push object in direction player is moving
+				collider.push(Vector2(sign(velocity.x), -0.2), 100.0)
+

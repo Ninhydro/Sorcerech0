@@ -1,5 +1,4 @@
 extends CanvasLayer
-# Assume this CanvasLayer has a ColorRect child named "FadeRect" covering the screen, initially invisible or alpha 0.
 
 @onready var fade_rect = $FadeRect
 
@@ -9,18 +8,23 @@ func _ready():
 	fade_rect.modulate.a = 0.0
 	fade_rect.visible = false
 	fade_rect.anchors_preset = Control.PRESET_FULL_RECT
-	#fade_rect.visible = true
-	#fade_rect.color = Color(0,0,0,1)
-
 
 func travel_to(player: Node2D, target_room_name: String, target_spawn_name: String) -> void:
-	# 1. Fade out
-	#print("traveling")
-	# 0. Force-cancel grappling / skills BEFORE we freeze physics and teleport
+	# 0. Check if we're in a cutscene - if so, wait for it to end
+	if Global.is_cutscene_active:
+		print("TransitionManager: Waiting for cutscene to end before traveling...")
+		await get_tree().create_timer(0.1).timeout  # Small delay
+		if Global.is_cutscene_active:  # Check again
+			print("TransitionManager: Cutscene still active, cannot travel")
+			return
+	
+	print("TransitionManager: Starting travel to ", target_room_name)
+	
+	# 1. Force-cancel grappling / skills
 	if player.has_method("force_release_grapple"):
 		player.force_release_grapple()
 	else:
-		# fallback just in case, so at least we don't keep sliding
+		# Fallback
 		if "is_grappling_active" in player:
 			player.is_grappling_active = false
 		if "still_animation" in player:
@@ -29,47 +33,50 @@ func travel_to(player: Node2D, target_room_name: String, target_spawn_name: Stri
 			var gl := player.get_node("GrappleLine")
 			if gl is Line2D:
 				gl.clear_points()
-
-	player.velocity = Vector2.ZERO
 	
+	# 2. Stop player physics and movement
+	player.velocity = Vector2.ZERO
 	player.set_physics_process(false)
+	
+	# 3. Fade out
 	fade_rect.visible = true
+	fade_rect.color = Color(0, 0, 0, 1)
+	
 	var tween_out = get_tree().create_tween()
-	tween_out.tween_property(fade_rect, "modulate:a", 1.0, 0.25).set_ease(Tween.EASE_OUT) # Faster fade
-	#tween_out.tween_property(fade_rect, "modulate:a", 1.0, 1)  # fade to black over 0.5s
-	# This is the corrected line: bind the arguments to the Callable object
-	fade_rect.color = Color(0,0,0,1)
-	var teleport_callable = Callable(self, "_teleport_and_fade_in").bind(player, target_room_name, target_spawn_name)
-	tween_out.tween_callback(teleport_callable)
-	
+	tween_out.tween_property(fade_rect, "modulate:a", 1.0, 0.25).set_ease(Tween.EASE_OUT)
 	await tween_out.finished
-	#fade_rect.color = Color(0,0,0,1)
+	await get_tree().create_timer(0.4).timeout
 	
-# This function is called by the tween when the screen is fully black
-func _teleport_and_fade_in(player: Node2D, target_room_name: String, target_spawn_name: String):
-	
-	# 2. Teleport the player
-	# The screen is now completely black, so this happens instantly and unseen.
+	# 4. Teleport the player (while screen is black)
 	var world = get_tree().get_current_scene()
-	var target_room = world.get_node(target_room_name)
-	var spawn_points = target_room.get_node("SpawnPoints")
-	var spawn_marker = spawn_points.get_node(target_spawn_name) as Marker2D
+	if world:
+		var target_room = world.get_node_or_null(target_room_name)
+		if target_room:
+			var spawn_points = target_room.get_node_or_null("SpawnPoints")
+			if spawn_points:
+				var spawn_marker = spawn_points.get_node_or_null(target_spawn_name) as Marker2D
+				if spawn_marker:
+					player.global_position = spawn_marker.global_position
+					print("TransitionManager: Teleported player to ", target_spawn_name)
+				else:
+					print("TransitionManager: Warning: Spawn marker not found: ", target_spawn_name)
+			else:
+				print("TransitionManager: Warning: SpawnPoints node not found in ", target_room_name)
+		else:
+			print("TransitionManager: Warning: Target room not found: ", target_room_name)
 	
-	player.global_position = spawn_marker.global_position
-	
-	# Optional: Reset player velocity to prevent momentum from old room
+	# Reset velocity after teleport
 	player.velocity = Vector2.ZERO
 	
-	# Unpause the player's physics process
-	player.set_physics_process(true)
-
-	# 3. Fade back in
+	# 5. Fade back in
+	await get_tree().create_timer(0.4).timeout
 	var tween_in = get_tree().create_tween()
 	tween_in.tween_property(fade_rect, "modulate:a", 0.0, 0.25).set_ease(Tween.EASE_IN)
 	await tween_in.finished
 	
-	# Hide the rect when the fade is complete
-	fade_rect.visible = false
 	
+	# 6. Hide rect and restore player physics
+	fade_rect.visible = false
 	player.set_physics_process(true)
-
+	
+	print("TransitionManager: Travel complete")

@@ -514,15 +514,25 @@ func _process(delta):
 	
 	# Only proceed if the "no" action is pressed AND a timeline is currently active
 
+
 	if Input.is_action_just_pressed("no") and Dialogic.current_timeline != null:
-		if Dialogic.Text.is_textbox_visible():
-			Dialogic.paused = true
-			Dialogic.Text.hide_textbox()
+		# Toggle the internal paused state FIRST
+		Dialogic.paused = !Dialogic.paused
+		
+		if Dialogic.paused:
+			# When pausing, find and hide all textbox visuals directly
+			for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+				if text_node.textbox_root.visible:
+					text_node.textbox_root.hide()
+			print("Timeline PAUSED and textbox hidden.")
 		else:
-			Dialogic.Text.show_textbox()
-			Dialogic.paused = false
-			# Wait a very short moment before allowing another input
-			await get_tree().create_timer(0.05).timeout
+			# When unpausing, show the visuals and ensure text is revealed
+			for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+				if not text_node.textbox_root.visible:
+					text_node.textbox_root.show()
+			# Force the current text to be re-rendered on the now-visible nodes
+			Dialogic.Text.update_dialog_text(Dialogic.current_state_info.get('text', ''), true)
+			print("Timeline UNPAUSED and textbox shown.")
 		
 		
 	regenerate_health(delta)
@@ -577,6 +587,7 @@ func get_save_data() -> Dictionary:
 		"is_cutscene_active": is_cutscene_active, 
 		"cutscene_name": cutscene_name,
 		"cutscene_playback_position": cutscene_playback_position,
+		
 		
 		"fullscreen_on": fullscreen_on,
 		"vsync_on": vsync_on,

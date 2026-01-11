@@ -206,7 +206,7 @@ func show_textbox(instant:=false) -> void:
 
 ## Instant skips the signal and thus possible animations
 func hide_textbox(instant:=false) -> void:
-	dialogic.current_state_info['text'] = ''
+	#dialogic.current_state_info['text'] = ''
 	var emitted := instant
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = ""
