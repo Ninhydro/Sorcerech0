@@ -336,7 +336,7 @@ func update_character_face_portrait(form_id: String):
 
 func update_health_bar_from_signal(current_health: int, max_health: int):
 	if is_instance_valid(health_bar):
-		health_bar.max_value = max_health
+		health_bar.max_value = 100
 		health_bar.value = current_health
 
 func update_minimap_camera_position():

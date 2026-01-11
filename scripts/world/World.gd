@@ -130,7 +130,7 @@ func _ready():
 
 			# Start the cutscene using the CutsceneManager
 			cutscene_manager.start_cutscene()
-			Global.is_cutscene_active = true
+			#Global.is_cutscene_active = true
 			print("World: CutsceneManager.start_cutscene() called.")
 
 	
@@ -180,19 +180,22 @@ func _on_cutscene_finished():
 	Cartographer.reveal_chunk("Junkyard")
 	teleport_player_and_enable(true)
 
+	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+	
 	# Give camera & shaders time to settle
 	await get_tree().process_frame
-	await get_tree().process_frame
-	
+	#await get_tree().process_frame
+	Global.health = Global.health_max
 	# Now show loading screen with 5 second duration
 	#LoadingScreen.show_and_load("")
 	await get_tree().create_timer(2.0).timeout
 	LoadingScreen.hide_after_ready()
-	Global.is_cutscene_active = false
+	#Global.is_cutscene_active = false
 	# Hide loading screen (fades out to reveal prepared world)
 	
 
 	print("✅ World: Gameplay ready after cutscene")
+
 
 
 func teleport_player_and_enable(position_player: bool = true):

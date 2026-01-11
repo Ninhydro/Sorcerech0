@@ -3,29 +3,12 @@
 [ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_nn33l"]
 [ext_resource type="Texture2D" uid="uid://8tn663eddv0i" path="res://assets_image/Characters/Betael/Betael-Sheet.png" id="2_12qwq"]
 
-[sub_resource type="Animation" id="Animation_t45hp"]
-resource_name = "idle"
-length = 0.5
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [8, 9, 10, 11, 12]
-}
-
 [sub_resource type="Animation" id="Animation_ryafy"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Uncle Betael:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -35,6 +18,23 @@ tracks/0/keys = {
 "values": [8]
 }
 
+[sub_resource type="Animation" id="Animation_t45hp"]
+resource_name = "idle"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Uncle Betael:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11, 12]
+}
+
 [sub_resource type="Animation" id="Animation_yiskw"]
 resource_name = "walk"
 length = 0.8
@@ -42,7 +42,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Uncle Betael:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -62,7 +62,7 @@ _data = {
 [node name="Uncle Betael" type="Node2D"]
 script = ExtResource("1_nn33l")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Uncle Betael" type="Sprite2D" parent="."]
 position = Vector2(0, -39)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_12qwq")
@@ -70,7 +70,8 @@ hframes = 8
 vframes = 2
 frame = 8
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Uncle Betael"]
+root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_ccsrt")
 }

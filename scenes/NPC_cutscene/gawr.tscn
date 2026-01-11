@@ -2137,11 +2137,6 @@ _data = {
 [node name="Gawr" type="Node2D"]
 script = ExtResource("1_adpci")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_smide")
-}
-
 [node name="BodyPivot" type="Node2D" parent="."]
 
 [node name="RightArm" type="Node2D" parent="BodyPivot"]
@@ -2205,3 +2200,9 @@ texture = ExtResource("2_6qfhu")
 hframes = 4
 vframes = 10
 frame = 37
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BodyPivot"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_smide")
+}

@@ -512,6 +512,19 @@ func _process(delta):
 		print("replica_fini_dead: ", Global.replica_fini_dead)
 		print("valentina_dead: ", Global.valentina_dead)
 	
+	# Only proceed if the "no" action is pressed AND a timeline is currently active
+
+	if Input.is_action_just_pressed("no") and Dialogic.current_timeline != null:
+		if Dialogic.Text.is_textbox_visible():
+			Dialogic.paused = true
+			Dialogic.Text.hide_textbox()
+		else:
+			Dialogic.Text.show_textbox()
+			Dialogic.paused = false
+			# Wait a very short moment before allowing another input
+			await get_tree().create_timer(0.05).timeout
+		
+		
 	regenerate_health(delta)
 	
 		

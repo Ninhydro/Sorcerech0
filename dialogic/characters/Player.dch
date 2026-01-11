@@ -13,7 +13,7 @@
 "display_name": "Phina",
 "mirror": false,
 "nicknames": [""],
-"offset": Vector2(0, 0),
+"offset": Vector2(0, -70),
 "portraits": {
 "Angry": {
 "export_overrides": {
@@ -24,7 +24,7 @@
 },
 "ignore_char_scale": false,
 "mirror": false,
-"offset": Vector2(0, -50),
+"offset": Vector2(0, 0),
 "scale": 1.0,
 "scene": "res://dialogic/PlayerPortrait.tscn"
 },
@@ -34,7 +34,7 @@
 },
 "ignore_char_scale": false,
 "mirror": false,
-"offset": Vector2(0, -50),
+"offset": Vector2(0, 0),
 "scale": 1.0,
 "scene": "res://dialogic/PlayerPortrait.tscn"
 },
@@ -43,7 +43,7 @@
 "image": ""
 },
 "mirror": false,
-"offset": Vector2(0, -50),
+"offset": Vector2(0, 0),
 "scale": 1.0,
 "scene": "res://dialogic/PlayerPortrait.tscn"
 },
@@ -54,10 +54,10 @@
 "normal_portraits": "{}"
 },
 "mirror": false,
-"offset": Vector2(0, -50),
+"offset": Vector2(0, 0),
 "scale": 1.0,
 "scene": "res://dialogic/PlayerPortrait.tscn"
 }
 },
-"scale": 1.0
+"scale": 0.9
 }

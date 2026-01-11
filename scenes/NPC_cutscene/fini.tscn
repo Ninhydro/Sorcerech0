@@ -3,29 +3,12 @@
 [ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_xp38w"]
 [ext_resource type="Texture2D" uid="uid://sf7f3ilxiysq" path="res://assets_image/Characters/Phina/phina1-Sheet.png" id="2_fx1yk"]
 
-[sub_resource type="Animation" id="Animation_cdtnr"]
-resource_name = "idle"
-length = 0.6
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [396, 397, 398, 399, 400, 401]
-}
-
 [sub_resource type="Animation" id="Animation_2sbih"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Fini:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -35,54 +18,20 @@ tracks/0/keys = {
 "values": [396]
 }
 
-[sub_resource type="Animation" id="Animation_r1psu"]
-resource_name = "run"
-length = 0.8
-loop_mode = 1
+[sub_resource type="Animation" id="Animation_fpi2f"]
+resource_name = "die"
+length = 0.9
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Fini:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [387, 388, 389, 390, 391, 392, 393, 394]
-}
-
-[sub_resource type="Animation" id="Animation_10lgp"]
-resource_name = "jump"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [378, 379]
-}
-
-[sub_resource type="Animation" id="Animation_2ge1e"]
-resource_name = "tired"
-length = 0.4
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [374, 375, 376, 377]
+"values": [360, 361, 362, 363, 364, 365, 366]
 }
 
 [sub_resource type="Animation" id="Animation_uf3py"]
@@ -91,7 +40,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Fini:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -101,20 +50,71 @@ tracks/0/keys = {
 "values": [369, 370, 371, 372]
 }
 
-[sub_resource type="Animation" id="Animation_fpi2f"]
-resource_name = "die"
-length = 0.9
+[sub_resource type="Animation" id="Animation_cdtnr"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/path = NodePath("Fini:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [360, 361, 362, 363, 364, 365, 366]
+"values": [396, 397, 398, 399, 400, 401]
+}
+
+[sub_resource type="Animation" id="Animation_10lgp"]
+resource_name = "jump"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fini:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [378, 379]
+}
+
+[sub_resource type="Animation" id="Animation_r1psu"]
+resource_name = "run"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fini:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [387, 388, 389, 390, 391, 392, 393, 394]
+}
+
+[sub_resource type="Animation" id="Animation_2ge1e"]
+resource_name = "tired"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fini:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [374, 375, 376, 377]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gmwqm"]
@@ -131,7 +131,7 @@ _data = {
 [node name="Fini" type="Node2D"]
 script = ExtResource("1_xp38w")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Fini" type="Sprite2D" parent="."]
 position = Vector2(0, -39)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_fx1yk")
@@ -139,7 +139,8 @@ hframes = 9
 vframes = 51
 frame = 396
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Fini"]
+root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_gmwqm")
 }

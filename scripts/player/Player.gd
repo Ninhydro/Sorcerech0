@@ -221,7 +221,7 @@ func _ready():
 	
 	base_launch_speed = launch_speed
 	
-	Global.health = 50
+	#Global.health = 50
 	Global.register_player(self)
 	effects.visible = false
 	enable_input()
@@ -380,6 +380,21 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
 		print("Player World Position: ", global_position)
 		print("busy: ", is_busy)
+		print("dead: ", dead)
+		print("Global.is_cutscene_active: ", Global.is_cutscene_active)
+		print("player_hit: ", player_hit)
+		print("knockback_timer: ", knockback_timer)
+		print("is_grappling_active: ", is_grappling_active)
+		print("Global.dashing: ", Global.dashing)
+		print("is_launched: ", is_launched)
+		print("canon_enabled: ", canon_enabled)
+		print("telekinesis_enabled: ", telekinesis_enabled)
+		print("is_grabbing_ledge: ", is_grabbing_ledge)
+		print("area_goal_locked: ", area_goal_locked)
+		print("Global.attacking: ",  Global.attacking)
+		print("Global.is_dialog_open: ",  Global.is_dialog_open)
+		print("Global.teleporting: ", Global.teleporting)
+
 
 
 	# --- Player Input and Movement (Only if NOT busy and NOT dead) ---
