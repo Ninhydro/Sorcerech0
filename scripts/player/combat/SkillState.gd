@@ -50,6 +50,8 @@ func enter():
 			#player.still_animation = true
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func physics_update(delta):
+	if Global.is_cutscene_active:
+		return
 	# The key here is that if player.still_animation is true (set by CyberState when grappling),
 	# this condition will evaluate to false, and the state will NOT change.
 	var form = player.get_current_form_id()

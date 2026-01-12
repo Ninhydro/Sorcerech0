@@ -33,8 +33,10 @@ func enter():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func physics_update(delta):
+	if Global.is_cutscene_active:
+		return
 	if player.player_hit == false:
-		if player.is_on_floor():
+		if player.is_on_floor() and not Global.is_cutscene_active:
 			if Input.is_action_pressed("move_left") or Input.is_action_pressed("move_right"):
 				#print("IdleState: Detected movement input → switching to RunState")
 				get_parent().change_state(RunState.new(player))

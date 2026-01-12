@@ -208,7 +208,7 @@ func _ready():
 	#camera.zoom = Vector2(0.8,0.8)
 	#camera.position = Vector2(0,-40)
 	jump_force = 250.0
-
+	#Global.is_cutscene_active = true
 	normal_collision_mask = collision_mask & ~(1 << 1) # Remove layer 2 from mas
 	cannon_collision_mask = collision_mask
 	collision_mask = normal_collision_mask
@@ -354,6 +354,8 @@ func _physics_process(delta):
 	# --- CUTSCENE OVERRIDE ---
 	if Global.is_cutscene_active:
 		velocity = Vector2.ZERO
+		move_and_slide()
+		return  # EXIT EARLY
 	# --- END CUTSCENE OVERRIDE ---
 
 
@@ -381,7 +383,6 @@ func _physics_process(delta):
 		print("Player World Position: ", global_position)
 		print("busy: ", is_busy)
 		print("dead: ", dead)
-		print("Global.is_cutscene_active: ", Global.is_cutscene_active)
 		print("player_hit: ", player_hit)
 		print("knockback_timer: ", knockback_timer)
 		print("is_grappling_active: ", is_grappling_active)
@@ -402,9 +403,9 @@ func _physics_process(delta):
 		var input_dir = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 
 		# Facing direction based on input
-		if Input.is_action_pressed("move_right") and not wall_jump_just_happened and not Global.is_dialog_open:
+		if Input.is_action_pressed("move_right") and not wall_jump_just_happened and not Global.is_dialog_open and not Global.is_cutscene_active:
 			facing_direction = 1
-		elif Input.is_action_pressed("move_left") and not wall_jump_just_happened and not Global.is_dialog_open:
+		elif Input.is_action_pressed("move_left") and not wall_jump_just_happened and not Global.is_dialog_open and not Global.is_cutscene_active:
 			facing_direction = -1
 
 		# Wall jump timer decrement
@@ -1415,40 +1416,130 @@ func set_player_cutscene_velocity(direction_vector: Vector2, speed_multiplier: f
 func play_player_visual_animation(anim_name: String):
 	if not is_instance_valid(self): return
 	
-	if combat_fsm and is_instance_valid(combat_fsm):
-
-
-		match anim_name:
-			"idle":
-				combat_fsm.change_state(IdleState.new(self))
-			"run":
-				combat_fsm.change_state(RunState.new(self))
-			"jump":
-				combat_fsm.change_state(JumpState.new(self))
-			"hurt":
-				combat_fsm.change_state(HurtState.new(self))
-			"die":
-				combat_fsm.change_state(DieState.new(self))
-			"attack":
-				combat_fsm.change_state(AttackState.new(self))
-			"skill":
-				combat_fsm.change_state(SkillState.new(self))
-			# ... add other cases as needed ...
-			_:
-				printerr("Player: FSM has no direct state for animation '", anim_name, "'. Playing directly.")
-				if animation_player and animation_player.has_animation(anim_name):
-					animation_player.play(anim_name)
-				else:
-					printerr("Player: Cannot play visual animation '", anim_name, "'. AnimationPlayer missing or animation not found.")
-	else:
-		# Fallback: if no FSM or FSM is invalid, play animation directly
+	if Global.is_cutscene_active:
+		# Try to play via AnimationPlayer
 		if animation_player and animation_player.has_animation(anim_name):
 			animation_player.play(anim_name)
-			print("Player: Playing visual animation: ", anim_name)
+			print("Player: Playing cutscene animation: ", anim_name)
 		else:
-			printerr("Player: Cannot play visual animation '", anim_name, "'. AnimationPlayer missing or animation not found.")
+			# Animation not found - fall back to FSM
+			print("Player: Animation '", anim_name, "' not found, using FSM state")
+			if combat_fsm and is_instance_valid(combat_fsm):
+				match anim_name:
+					"idle":
+						combat_fsm.change_state(IdleState.new(self))
+					"run":
+						combat_fsm.change_state(RunState.new(self))
+					"jump":
+						combat_fsm.change_state(JumpState.new(self))
+						#await animation_player.animation_finished
+					"hurt":
+						combat_fsm.change_state(HurtState.new(self))
+					"die":
+						combat_fsm.change_state(DieState.new(self))
+						#await animation_player.animation_finished
+					"attack":
+						combat_fsm.change_state(AttackState.new(self))
+					"skill":
+						combat_fsm.change_state(SkillState.new(self))
+					"save":
+						combat_fsm.change_state(SaveState.new(self))
+						#await animation_player.animation_finished
+					"load":
+						combat_fsm.change_state(LoadState.new(self))
+						#await animation_player.animation_finished
+					# ... add other cases as needed ...
+					_:
+						printerr("Player: FSM has no direct state for animation '", anim_name, "'. Playing directly.")
+						if animation_player and animation_player.has_animation(anim_name):
+							animation_player.play(anim_name)
+						else:
+							printerr("Player: Cannot play visual animation '", anim_name, "'. AnimationPlayer missing or animation not found.")
+	else:
+		# Fallback
+		if animation_player and animation_player.has_animation(anim_name):
+			animation_player.play(anim_name)
 
-
+func play_cutscene_animation(anim_name: String):
+	# Direct animation control for cutscenes
+	var form = get_current_form_id()
+	
+	match anim_name:
+		"idle":
+			match form:
+				"Magus": anim_state.travel("idle_magus")
+				"Cyber": anim_state.travel("idle_cyber")
+				"UltimateMagus": anim_state.travel("idle_ult_magus")
+				"UltimateCyber": anim_state.travel("idle_ult_cyber")
+				_: anim_state.travel("idle_normal")
+		"run":
+			match form:
+				"Magus": anim_state.travel("run_magus")
+				"Cyber": anim_state.travel("run_cyber")
+				"UltimateMagus": anim_state.travel("run_ult_magus")
+				"UltimateCyber": anim_state.travel("run_ult_cyber")
+				_: anim_state.travel("run_normal")
+		"jump":
+			match form:
+				"Magus": anim_state.travel("jump_magus")
+				"Cyber": anim_state.travel("jump_cyber")
+				"UltimateMagus": anim_state.travel("jump_ult_magus")
+				"UltimateCyber": anim_state.travel("jump_ult_cyber")
+				_: anim_state.travel("jump_normal")
+		"hurt":
+			match form:
+				"Magus": anim_state.travel("hurt_magus")
+				"Cyber": anim_state.travel("hurt_cyber")
+				"UltimateMagus": anim_state.travel("hurt_ult_magus")
+				"UltimateCyber": anim_state.travel("hurt_ult_cyber")
+				_: anim_state.travel("hurt_normal")
+		"die":
+			match form:
+				"Magus": anim_state.travel("die_magus")
+				"Cyber": anim_state.travel("die_cyber")
+				"UltimateMagus": anim_state.travel("die_ult_magus")
+				"UltimateCyber": anim_state.travel("die_ult_cyber")
+				_: anim_state.travel("die_normal")
+		"attack":
+			match form:
+				"Magus": anim_state.travel("attack_magus")
+				"Cyber": anim_state.travel("attack_cyber")
+				"UltimateMagus": anim_state.travel("attack_ult_magus")
+				"UltimateCyber": anim_state.travel("attack_ult_cyber")
+				_: anim_state.travel("attack_normal")
+		"skill":
+			match form:
+				"Magus": anim_state.travel("skill_magus")
+				"Cyber": anim_state.travel("skill_cyber")
+				"UltimateMagus": anim_state.travel("skill_ult_magus")
+				"UltimateCyber": anim_state.travel("skill_ult_cyber")
+				_: anim_state.travel("skill_normal")
+		"save":
+			match form:
+				"Magus": anim_state.travel("save_magus")
+				"Cyber": anim_state.travel("save_cyber")
+				"UltimateMagus": anim_state.travel("save_ult_magus")
+				"UltimateCyber": anim_state.travel("save_ult_cyber")
+				_: anim_state.travel("save_normal")
+		"load":
+			match form:
+				"Magus": anim_state.travel("load_magus")
+				"Cyber": anim_state.travel("load_cyber")
+				"UltimateMagus": anim_state.travel("load_ult_magus")
+				"UltimateCyber": anim_state.travel("load_ult_cyber")
+				_: anim_state.travel("load_normal")
+		# Add other animations as needed
+		_:
+			# Default to idle
+			match form:
+				"Magus": anim_state.travel("idle_magus")
+				"Cyber": anim_state.travel("idle_cyber")
+				"UltimateMagus": anim_state.travel("idle_ult_magus")
+				"UltimateCyber": anim_state.travel("idle_ult_cyber")
+				_: anim_state.travel("idle_normal")
+	
+	print("Player: Playing cutscene animation: ", anim_name, " for form: ", form)
+	
 func set_player_face_direction(direction: int): # 1 for right, -1 for left
 	if not is_instance_valid(self): return
 	facing_direction = direction
@@ -1465,6 +1556,7 @@ func disable_player_input_for_cutscene():
 	# Stop normal physics processing (movement, input handling)
 	set_physics_process(false)
 	set_process(false) 
+	set_process_input(false)
 	velocity = Vector2.ZERO # Stop any current player movement
 
 func enable_player_input_after_cutscene():

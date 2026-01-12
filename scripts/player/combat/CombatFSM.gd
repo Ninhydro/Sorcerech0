@@ -24,20 +24,26 @@ func _ready():
 func change_state(new_state: CombatState):
 	#print("CombatFSM: change_state start")
 	
-	
+	#if Global.is_cutscene_active:
+	#	print("CombatFSM: State change blocked - cutscene is active")
+	#	return
+		
 	if current_state:
 		current_state.exit()
 		if current_state.get_parent():
 			current_state.get_parent().remove_child(current_state)
 			current_state.queue_free()  
 
-	#print("CombatFSM: Switching to", new_state)
+	print("CombatFSM: Switching to", new_state)
 	current_state = new_state
 	add_child(current_state)
 	current_state.enter()
 	#print("CombatFSM: change_state end")
 
 func update_physics(delta):
+	if Global.is_cutscene_active:
+		return
+		
 	if current_state:
 		current_state.physics_update(delta)
 		

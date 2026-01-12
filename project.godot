@@ -147,6 +147,10 @@ directories/dtl_directory={
 "timeline28T": "res://dialogic/timeline/timeline28T.dtl",
 "timeline28TP": "res://dialogic/timeline/timeline28TP.dtl",
 "timeline29": "res://dialogic/timeline/timeline29.dtl",
+"timeline2_1": "res://dialogic/timeline/timeline2_1.dtl",
+"timeline2_2": "res://dialogic/timeline/timeline2_2.dtl",
+"timeline2_3": "res://dialogic/timeline/timeline2_3.dtl",
+"timeline2_4": "res://dialogic/timeline/timeline2_4.dtl",
 "timeline3": "res://dialogic/timeline/timeline3.dtl",
 "timeline30": "res://dialogic/timeline/timeline30.dtl",
 "timeline31": "res://dialogic/timeline/timeline31.dtl",
@@ -225,6 +229,7 @@ variables={
 "Global.valentina_dead": false,
 "player_current_form": ""
 }
+text/autoadvance_enabled=false
 
 [display]
 

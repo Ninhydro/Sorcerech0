@@ -158,6 +158,7 @@ _data = {
 script = ExtResource("1_xsv6q")
 
 [node name="NPC" type="Node2D" parent="."]
+visible = false
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]
 position = Vector2(-72, 344)
@@ -292,11 +293,12 @@ position = Vector2(152, 56)
 metadata/_edit_lock_ = true
 
 [node name="Spawn_ToMaya" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(-160, 359)
+position = Vector2(-208, 361)
 metadata/_edit_lock_ = true
 
 [node name="Spawn_Minigame" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(-1200, -64)
+metadata/_edit_lock_ = true
 
 [node name="Doors" type="Node2D" parent="."]
 position = Vector2(536, 24)
@@ -573,12 +575,11 @@ frame = 2
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D15" type="Sprite2D" parent="Background"]
-position = Vector2(-86.0006, 312)
+position = Vector2(-86.0006, 318)
 scale = Vector2(1.03333, 1.14)
 texture = ExtResource("9_y8mdw")
 vframes = 6
 frame = 3
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D16" type="Sprite2D" parent="Background"]
 position = Vector2(-86.0006, 312)
@@ -638,30 +639,36 @@ position = Vector2(-112, 26)
 position = Vector2(192, 26)
 
 [node name="cutscene1" parent="." instance=ExtResource("10_ltn64")]
-position = Vector2(-190, 359)
+position = Vector2(-192, 369)
 metadata/_edit_lock_ = true
 
 [node name="cutscene2" parent="." instance=ExtResource("11_53y5o")]
+visible = false
 position = Vector2(-729, 63)
 metadata/_edit_lock_ = true
 
 [node name="cutscene0_5" parent="." instance=ExtResource("12_3u6ks")]
+visible = false
 position = Vector2(361, 55)
 metadata/_edit_lock_ = true
 
 [node name="cutscene11" parent="." instance=ExtResource("13_7roe7")]
+visible = false
 position = Vector2(-121.912, 361.781)
 metadata/_edit_lock_ = true
 
 [node name="cutscene12" parent="." instance=ExtResource("14_djwtx")]
+visible = false
 position = Vector2(54.0882, 362.281)
 metadata/_edit_lock_ = true
 
 [node name="cutscene16_9" parent="." instance=ExtResource("15_1usq2")]
+visible = false
 position = Vector2(-179.525, 280.757)
 metadata/_edit_lock_ = true
 
 [node name="cutscene21T" parent="." instance=ExtResource("16_jysj8")]
+visible = false
 position = Vector2(295.573, -39.6841)
 metadata/_edit_lock_ = true
 

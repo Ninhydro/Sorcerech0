@@ -5,6 +5,10 @@ var player_in_range = null
 var target_room1 = "Room_AerendaleJunkyard"
 var target_spawn1 = "Spawn_Minigame"
 
+@onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
+#@onready var marker3: Marker2D = $EndMarker
+
 #func _ready():
 	# Don't call super._ready() - MasterCutscene already handles this
 #	pass
@@ -30,18 +34,52 @@ func _setup_cutscene():
 	
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 	player_markers = {
+		
 		# Example positions - adjust to match your scene
-		#"start": Vector2(100, 200),
-		#"center": Vector2(300, 200),
+		"marker1": marker1.global_position,
+		"marker2": marker2.global_position
 		#"end": Vector2(500, 200)
 	}
 	
 	# Simple sequence: just play dialog
 	sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "player_face", "direction": 1},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline2", "wait": true},
-		#{"type": "fade_in"},
-		
-		#{"type": "fade_out"}
+		{"type": "move_player", "name": "marker1", "duration": 3, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline2_1", "wait": true},
+		{"type": "move_player", "name": "marker2", "duration": 2, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim3", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle", "wait": false},
+		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline2_2", "wait": true},
+		#{"type": "animation", "name": "anim4", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "die",  "wait": false},
+		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline2_3", "wait": true},
+		{"type": "fade_in"},
+		{"type": "wait", "duration": 3},
+		{"type": "fade_out", "wait": false},
+		{"type": "animation", "name": "anim5", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim5_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "load", "wait": true  },
+		{"type": "player_animation", "name": "idle", "wait": false},
+		{"type": "dialog", "name": "timeline2_4", "wait": true},
+		{"type": "player_face", "direction": -1},
+		{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
+		{"type": "animation", "name": "anim6", "wait": false, "loop": false},
+		#{"type": "player_face", "direction": -1},
+		#{"type": "move_player", "name": "marker1",  "duration": 1, "animation": "run", "wait": false},
+		{"type": "fade_in", "wait": true},
+		{"type": "wait", "duration": 1},
+		#{"type": "fade_out", "wait": true},
 	]
 
 func _on_cutscene_start():
@@ -118,6 +156,6 @@ func _on_cutscene_end():
 		{"type": "dialog", "name": "farewell_timeline", "wait": true},
 		
 		# Fade out and end
-		{"type": "fade_in"}
+		{"type": "fade_out"}
 	]
 """

@@ -511,6 +511,7 @@ func _process(delta):
 		print("nora_dead: ", Global.nora_dead)
 		print("replica_fini_dead: ", Global.replica_fini_dead)
 		print("valentina_dead: ", Global.valentina_dead)
+		print("Global.is_cutscene_active: ", Global.is_cutscene_active)
 	
 	# Only proceed if the "no" action is pressed AND a timeline is currently active
 

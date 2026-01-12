@@ -100,7 +100,7 @@ func _begin_cutscene_flow():
 	await get_tree().create_timer(0.5).timeout
 	#await get_tree().create_timer(2).timeout
 	_switch_to_cutscene_camera()
-	await _fade_out()
+	#await _fade_out()
 	
 	# Execute sequence
 	_current_step = 0
@@ -121,11 +121,14 @@ func _execute_step(step_index: int):
 	var wait_for_completion = step.get("wait", true)
 	var loop_animation = step.get("loop", false)
 	
-	print(cutscene_name + ": Step " + str(step_index) + ": " + step_type + " - " + step_name)
+	print(cutscene_name + ": Step " + str(step_index) + ": " + step_type + " - " + step_name + " (wait: " + str(wait_for_completion) + ")")
 	
 	match step_type:
 		"animation":
-			await _play_animation(step_name, wait_for_completion, loop_animation)
+			if wait_for_completion:
+				await _play_animation(step_name, true, loop_animation)
+			else:
+				_play_animation(step_name, false, loop_animation)  # Start but don't wait
 		
 		"dialog":
 			await _play_dialog(step_name, wait_for_completion)
@@ -134,29 +137,52 @@ func _execute_step(step_index: int):
 			await _wait(step.get("duration", 1.0))
 		
 		"move_player":
-			_move_player_to_marker(step_name)
+			if wait_for_completion:
+				await _move_player_to_marker_with_animation(
+					step.get("name", ""),
+					step.get("duration", 1.0),
+					step.get("animation", "run"),
+					true  # Wait
+				)
+			else:
+				_move_player_to_marker_with_animation(
+					step.get("name", ""),
+					step.get("duration", 1.0),
+					step.get("animation", "run"),
+					false  # Don't wait
+				)
 		
 		"player_animation":
-			_play_player_animation(step_name)
+			_play_player_animation(step_name)  # This doesn't wait anyway
 		
 		"player_face":
 			_set_player_face_direction(step.get("direction", 1))
 		
-		"player_form":  # NEW: Change player form
+		"player_form":
 			await _change_player_form(step_name, step.get("unlock", false))
 		
-		"unlock_form":  # NEW: Just unlock a form without switching
+		"unlock_form":
 			_unlock_player_form(step_name)
 			
 		"fade_in":
-			await _fade_in()
-		
+			if wait_for_completion:
+				await _fade_in()
+			else:
+				# Start fade but don't wait
+				_fade_in()  # This will still wait, but we'll ignore it
+				# Create a small task that runs the fade
+				call_deferred("_fade_in")
+	
 		"fade_out":
-			await _fade_out()
-		
+			if wait_for_completion:
+				await _fade_out()
+			else:
+				# Start fade but don't wait
+				call_deferred("_fade_out")
+			
 		_:
 			print(cutscene_name + ": Unknown step type: " + step_type)
-
+			
 func _play_animation(anim_name: String, wait: bool, loop: bool):
 	if not anim_name or not animation_player:
 		return
@@ -201,13 +227,84 @@ func _wait(duration: float):
 	await get_tree().create_timer(duration).timeout
 
 func _move_player_to_marker(marker_name: String):
+	#if marker_name in player_markers and _player_ref:
+	#	_player_ref.global_position = player_markers[marker_name]
+	#	print(cutscene_name + ": Moved player to marker: " + marker_name)
 	if marker_name in player_markers and _player_ref:
-		_player_ref.global_position = player_markers[marker_name]
-		print(cutscene_name + ": Moved player to marker: " + marker_name)
+		var target_position = player_markers[marker_name]
+		
+		# Check if player has tween movement method
+		if _player_ref and _player_ref.has_method("move_player_to_position"):
+			# Use tween movement
+			print(cutscene_name + ": Moving player to marker: " + marker_name + " with tween")
+			_player_ref.move_player_to_position(target_position, 1.0)  # 1 second duration
+		else:
+			# Fallback: teleport instantly
+			_player_ref.global_position = target_position
+			print(cutscene_name + ": Teleported player to marker: " + marker_name)
 
+func _move_player_to_marker_tween(marker_name: String, duration: float = 1.0):
+	if marker_name in player_markers and _player_ref:
+		var target_position = player_markers[marker_name]
+		
+		print(cutscene_name + ": Moving player to marker: " + marker_name + " with " + str(duration) + "s tween")
+		
+		# Check if player has tween movement method
+		if _player_ref.has_method("move_player_to_position"):
+			# Call player's tween method
+			_player_ref.move_player_to_position(target_position, duration)
+			
+			# Wait for tween to complete
+			await get_tree().create_timer(duration).timeout
+		else:
+			# Fallback: instant movement
+			_player_ref.global_position = target_position
+		
+		print(cutscene_name + ": Player reached marker: " + marker_name)
+
+func _move_player_to_marker_with_animation(marker_name: String, duration: float = 1.0, animation_name: String = "run", wait: bool = true):
+	if marker_name in player_markers and _player_ref:
+		var target_position = player_markers[marker_name]
+		
+		print(cutscene_name + ": Moving player to marker: " + marker_name + 
+			  " with animation: " + animation_name + " for " + str(duration) + "s (wait: " + str(wait) + ")")
+		
+		# Start walking animation
+		if animation_name != "" and _player_ref.has_method("play_cutscene_animation"):
+			_player_ref.play_cutscene_animation(animation_name)
+		
+		# Calculate direction for facing
+		var direction = sign(target_position.x - _player_ref.global_position.x)
+		if direction != 0 and _player_ref.has_method("set_player_face_direction"):
+			_player_ref.set_player_face_direction(direction)
+		
+		# Move with tween
+		if _player_ref.has_method("move_player_to_position"):
+			_player_ref.move_player_to_position(target_position, duration)
+			if wait:
+				await get_tree().create_timer(duration).timeout
+			else:
+				# Start the timer but don't wait - create a task that runs in background
+				var timer_task = get_tree().create_timer(duration)
+				# We'll let it run in background
+		else:
+			# Instant movement
+			_player_ref.global_position = target_position
+			if wait:
+				await get_tree().create_timer(0.1).timeout  # Small delay for instant move
+		
+		# Return to idle animation if waiting (or if movement completed)
+		if wait and animation_name != "" and _player_ref.has_method("play_cutscene_animation"):
+			_player_ref.play_cutscene_animation("idle")
+		
+		print(cutscene_name + ": Player movement " + ("completed" if wait else "started") + " for marker: " + marker_name)
+		
 func _play_player_animation(anim_name: String):
 	if _player_ref and is_instance_valid(_player_ref):
-		if _player_ref.has_method("play_player_visual_animation"):
+		# Check if we should use AnimationTree or AnimationPlayer
+		if _player_ref.has_method("play_cutscene_animation"):
+			_player_ref.play_cutscene_animation(anim_name)
+		elif _player_ref.has_method("play_player_visual_animation"):
 			_player_ref.play_player_visual_animation(anim_name)
 		print(cutscene_name + ": Playing player animation: " + anim_name)
 
@@ -231,11 +328,14 @@ func _fade_out():
 		await tween.finished
 		black_overlay.visible = false
 
+
 func _disable_player_input():
+	Global.is_cutscene_active = true
 	if _player_ref and is_instance_valid(_player_ref):
 		_player_ref.disable_player_input_for_cutscene()
 
 func _enable_player_input():
+	Global.is_cutscene_active = false
 	if _player_ref and is_instance_valid(_player_ref):
 		_player_ref.enable_player_input_after_cutscene()
 
@@ -305,7 +405,7 @@ func end_cutscene():
 	_on_cutscene_end()
 	
 	# Switch back to player camera
-	await _fade_in()
+	#await _fade_in()
 	_switch_to_player_camera()
 	await get_tree().create_timer(0.5).timeout
 	#await get_tree().create_timer(1).timeout

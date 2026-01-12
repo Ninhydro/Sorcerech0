@@ -48,6 +48,8 @@ func enter():
 			player.anim_state.travel("load_normal")
 
 func physics_update(delta):
+	if Global.is_cutscene_active:
+		return
 	if player.still_animation == false:
 		Global.saving = false
 		Global.loading = false

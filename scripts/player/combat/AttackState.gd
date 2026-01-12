@@ -47,6 +47,8 @@ func enter():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func physics_update(delta):
+	if Global.is_cutscene_active:
+		return
 	if  player.get_current_form_id() == "UltimateMagus" and Input.is_action_just_pressed("yes"): 
 		get_parent().change_state(AttackState2.new(player))
 	

@@ -1,3 +1,2 @@
-join Player (Angry) center
-Player (Normal): forced/trigger cutscene 2 in maya house
-Player (Happy): teleport to junkyard cutscene 3, go to  minigame
+join Maya_kid (Happy) left
+Maya_kid (Happy): Okay! So this is the kitchen… not fancy, but it still makes great tea.

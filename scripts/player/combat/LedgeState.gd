@@ -42,6 +42,8 @@ func enter():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func physics_update(delta):
+	if Global.is_cutscene_active:
+		return
 	#print(player.still_animation)
 	if player.still_animation == false:
 				
