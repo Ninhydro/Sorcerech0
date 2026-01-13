@@ -71,6 +71,22 @@ tracks/0/keys = {
 "values": [104, 105, 106, 107, 108, 109]
 }
 
+[sub_resource type="Animation" id="Animation_lo21i"]
+resource_name = "low_up"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Maya kid:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [109, 108, 107, 106, 105, 104]
+}
+
 [sub_resource type="Animation" id="Animation_xn81u"]
 resource_name = "run1"
 length = 0.8
@@ -103,22 +119,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [128, 129, 130, 131, 132, 133, 134, 135]
-}
-
-[sub_resource type="Animation" id="Animation_lo21i"]
-resource_name = "low_up"
-length = 0.7
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Maya kid:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [109, 108, 107, 106, 105, 104]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_dv64b"]

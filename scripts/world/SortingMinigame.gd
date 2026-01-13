@@ -6,6 +6,7 @@ extends Node2D
 @export var total_objects: int = 20
 
 @onready var spawn_point: Marker2D = $SpawnPoint
+@onready var end_point: Marker2D =$"../SpawnPoints/Spawn_Minigame2"
 @onready var timer_label: Label = $UI/TimerLabel
 @onready var objects_label: Label = $UI/ObjectsSortedLabel
 @onready var ColorRect1: ColorRect = $UI/ColorRect
@@ -24,8 +25,11 @@ var max_objects_on_screen: int = 3
 var objects_to_spawn: int = 40  # Spawn 50 total
 var required_to_win: int = 20   # Only need 20 to win
 
-
+var player_in_range
 var win = false
+@onready var transition_manager = get_node("/root/TransitionManager")
+var target_room1 = "Room_AerendaleJunkyard"
+var target_spawn1 = "Spawn_Minigame2"
 
 func _ready():
 	#start_game()
@@ -253,6 +257,10 @@ func _on_dialogic_finished(_timeline_name = ""):
 
 	if win:
 		Global.timeline = 3
+		player_in_range = Global.player
+		#if player_in_range and transition_manager:
+	#	print("Cutscene1: Traveling to minigame room")
+		transition_manager.travel_to(player_in_range, target_room1, target_spawn1)
 		#result_label.text = "You Win! Sorted all objects in time!"
 	else:
 		await get_tree().create_timer(1.0).timeout

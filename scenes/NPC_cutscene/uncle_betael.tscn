@@ -1,7 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbct0mwdg7l3g"]
+[gd_scene load_steps=10 format=3 uid="uid://cbct0mwdg7l3g"]
 
-[ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_nn33l"]
+[ext_resource type="Script" path="res://scripts/NPC/Uncle_betael.gd" id="1_6vvu8"]
 [ext_resource type="Texture2D" uid="uid://8tn663eddv0i" path="res://assets_image/Characters/Betael/Betael-Sheet.png" id="2_12qwq"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_h2uyu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5vmv6"]
+size = Vector2(14, 31)
 
 [sub_resource type="Animation" id="Animation_ryafy"]
 length = 0.001
@@ -59,8 +63,18 @@ _data = {
 "walk": SubResource("Animation_yiskw")
 }
 
-[node name="Uncle Betael" type="Node2D"]
-script = ExtResource("1_nn33l")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3feim"]
+size = Vector2(32, 49)
+
+[node name="Uncle Betael" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_6vvu8")
+speech_bubble_scene = ExtResource("3_h2uyu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_5vmv6")
 
 [node name="Uncle Betael" type="Sprite2D" parent="."]
 position = Vector2(0, -39)
@@ -75,3 +89,15 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_ccsrt")
 }
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_3feim")
+
+[node name="BubbleTimer" type="Timer" parent="."]
+
+[node name="BubbleContainer" type="Node2D" parent="."]
+
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_h2uyu")]

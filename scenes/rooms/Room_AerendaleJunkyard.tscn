@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://cnkwa1lnnfamm"]
+[gd_scene load_steps=40 format=3 uid="uid://cnkwa1lnnfamm"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_56olx"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_i5ly2"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://yt042i0qxvs" path="res://dialogic/cutscene/cutscene21T.tscn" id="16_jysj8"]
 [ext_resource type="Script" path="res://scripts/world/First_Maya.gd" id="17_sg08t"]
 [ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="18_i3io5"]
+[ext_resource type="PackedScene" uid="uid://cbct0mwdg7l3g" path="res://scenes/NPC_cutscene/uncle_betael.tscn" id="26_gkrn8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvylh"]
 size = Vector2(70.5, 96)
@@ -158,9 +159,12 @@ _data = {
 script = ExtResource("1_xsv6q")
 
 [node name="NPC" type="Node2D" parent="."]
-visible = false
+
+[node name="Uncle Betael" parent="NPC" instance=ExtResource("26_gkrn8")]
+position = Vector2(-229, 369)
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]
+visible = false
 position = Vector2(-72, 344)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_eqfwd")
@@ -168,15 +172,8 @@ hframes = 5
 vframes = 23
 frame = 45
 
-[node name="NPC2" type="Sprite2D" parent="NPC"]
-position = Vector2(-240, 344)
-scale = Vector2(0.7, 0.7)
-texture = ExtResource("2_eqfwd")
-hframes = 5
-vframes = 23
-frame = 45
-
 [node name="NPC3" type="Sprite2D" parent="NPC"]
+visible = false
 position = Vector2(456, 40)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_eqfwd")
@@ -297,7 +294,11 @@ position = Vector2(-208, 361)
 metadata/_edit_lock_ = true
 
 [node name="Spawn_Minigame" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(-1200, -64)
+position = Vector2(-1056, -64)
+metadata/_edit_lock_ = true
+
+[node name="Spawn_Minigame2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-616, 48)
 metadata/_edit_lock_ = true
 
 [node name="Doors" type="Node2D" parent="."]
@@ -643,9 +644,7 @@ position = Vector2(-192, 369)
 metadata/_edit_lock_ = true
 
 [node name="cutscene2" parent="." instance=ExtResource("11_53y5o")]
-visible = false
-position = Vector2(-729, 63)
-metadata/_edit_lock_ = true
+position = Vector2(-640, 54)
 
 [node name="cutscene0_5" parent="." instance=ExtResource("12_3u6ks")]
 visible = false

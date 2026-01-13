@@ -7,6 +7,10 @@ var target_spawn1 = "Spawn_Minigame"
 
 @onready var marker1: Marker2D = $Marker2D
 @onready var marker2: Marker2D = $Marker2D2
+
+@onready var betael: Sprite2D = $"Uncle Betael"
+@onready var maya: Sprite2D =$"Maya kid"
+
 #@onready var marker3: Marker2D = $EndMarker
 
 #func _ready():
@@ -27,6 +31,8 @@ func _on_body_entered(body):
 		print("Cutscene1: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
 
 func _setup_cutscene():
+	betael.visible = false
+	maya.visible = false
 	cutscene_name = "Cutscene1"
 	play_only_once = true
 	area_activation_flag = ""  # No flag required

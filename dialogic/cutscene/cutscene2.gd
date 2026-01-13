@@ -7,8 +7,13 @@ extends MasterCutscene
 var target_room1 = "Room_AerendaleJunkyard"     # Name of the destination room (node or scene)
 var target_spawn1 = "Spawn_Minigame"    # Name of the spawn marker in the target room
 
+@onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
 
 var player_in_range = null
+
+@onready var betael: Sprite2D = $"Uncle Betael"
+@onready var maya: Sprite2D =$"Maya kid"
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 # Called when the node enters the scene tree for the first time.
@@ -24,6 +29,8 @@ func _on_body_entered(body):
 		# Store player reference first
 		player_in_range = body
 		# Call parent's _on_body_entered
+		#betael.visible = true
+		#maya.visible = false
 		super._on_body_entered(body)
 	else:
 		print("Cutscene1: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
@@ -39,6 +46,8 @@ func _on_body_entered(body):
 
 func _setup_cutscene():
 	cutscene_name = "Cutscene2"
+	betael.visible = false
+	maya.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -46,14 +55,24 @@ func _setup_cutscene():
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 	player_markers = {
 		# Example positions - adjust to match your scene
-		#"start": Vector2(100, 200),
-		#"center": Vector2(300, 200),
-		#"end": Vector2(500, 200)
+		"marker1": marker1.global_position,
+		"marker2": marker2.global_position
 	}
 	
 	# Simple sequence: just play dialog
 	sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		{"type": "player_face", "direction": -1},
+		{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline3", "wait": true},
+		{"type": "fade_in", "wait": true},
+		{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
+		{"type": "wait", "duration": 0.5},
+		
 		#{"type": "fade_in"},
 		
 		#{"type": "fade_out"}
