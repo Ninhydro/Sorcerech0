@@ -20,12 +20,14 @@ var area_activation_flag: String = ""  # Required global flag to activate (can b
 # Sequence Configuration (set in child scenes)
 var sequence: Array = []  # [{type: "animation/dialog", name: "name", loop: false, wait: true}]
 var player_markers: Dictionary = {}  # {marker_name: Vector2 position}
+var cutscene_markers: Dictionary = {}  # {marker_name: Vector2 position} for cutscene movement
 
 # Internal State
 var _has_been_triggered: bool = false
 var _current_step: int = -1
 var _is_cutscene_active: bool = false
 var _player_ref: CharacterBody2D = null
+var _original_position: Vector2 
 
 # Override Functions (for child scenes)
 func _setup_cutscene():
@@ -43,6 +45,8 @@ func _on_cutscene_end():
 # Core Functions
 func _ready():
 	# Disable camera initially
+	_original_position = global_position
+	
 	if cutscene_camera:
 		cutscene_camera.enabled = false
 	
@@ -152,6 +156,24 @@ func _execute_step(step_index: int):
 					false  # Don't wait
 				)
 		
+		"move_cutscene":
+			# Move entire cutscene to a marker
+			if wait_for_completion:
+				await _move_cutscene_to_marker(
+					step.get("name", ""),
+					step.get("duration", 1.0),
+					step.get("ease_type", Tween.EASE_IN_OUT),
+					step.get("transition_type", Tween.TRANS_LINEAR)
+				)
+			else:
+				_move_cutscene_to_marker(
+					step.get("name", ""),
+					step.get("duration", 1.0),
+					step.get("ease_type", Tween.EASE_IN_OUT),
+					step.get("transition_type", Tween.TRANS_LINEAR),
+					false
+				)
+				
 		"player_animation":
 			_play_player_animation(step_name)  # This doesn't wait anyway
 		
@@ -392,6 +414,78 @@ func _unlock_player_form(form_name: String):
 		print(cutscene_name + ": ERROR - No player reference for unlock form")
 		
 
+func _move_cutscene_to_marker(marker_name: String, duration: float = 1.0, 
+							 ease_type: int = Tween.EASE_IN_OUT, 
+							 transition_type: int = Tween.TRANS_LINEAR,
+							 wait: bool = true):
+	"""
+	Move the entire cutscene (including camera and any child nodes) to a marker position.
+	Similar to player movement but affects the entire cutscene node.
+	
+	Parameters:
+	- marker_name: String name of the marker in cutscene_markers dictionary
+	- duration: Float time in seconds for the movement
+	- ease_type: Tween easing type (default: EASE_IN_OUT)
+	- transition_type: Tween transition type (default: TRANS_LINEAR)
+	- wait: Boolean whether to wait for movement completion
+	"""
+	
+	if marker_name in cutscene_markers:
+		var target_position = cutscene_markers[marker_name]
+		
+		print(cutscene_name + ": Moving cutscene to marker: " + marker_name + 
+			  " over " + str(duration) + " seconds")
+		
+		# Create tween for smooth movement
+		var tween = create_tween()
+		tween.set_ease(ease_type)
+		tween.set_trans(transition_type)
+		
+		# Tween the entire cutscene node's position
+		tween.tween_property(self, "global_position", target_position, duration)
+		
+		if wait:
+			await tween.finished
+			print(cutscene_name + ": Cutscene movement completed to: " + marker_name)
+		else:
+			print(cutscene_name + ": Cutscene movement started to: " + marker_name)
+			
+	elif marker_name in player_markers:
+		# Fallback: use player marker if cutscene marker not found
+		var target_position = player_markers[marker_name]
+		
+		print(cutscene_name + ": Moving cutscene to player marker (fallback): " + marker_name + 
+			  " over " + str(duration) + " seconds")
+		
+		var tween = create_tween()
+		tween.set_ease(ease_type)
+		tween.set_trans(transition_type)
+		
+		tween.tween_property(self, "global_position", target_position, duration)
+		
+		if wait:
+			await tween.finished
+	else:
+		print(cutscene_name + ": ERROR - Marker not found in cutscene_markers or player_markers: " + marker_name)
+
+# Optional: Add a function to instantly jump to a marker (without tween)
+func _jump_cutscene_to_marker(marker_name: String):
+	"""Instantly move cutscene to marker position"""
+	if marker_name in cutscene_markers:
+		global_position = cutscene_markers[marker_name]
+		print(cutscene_name + ": Jumped cutscene to marker: " + marker_name)
+	elif marker_name in player_markers:
+		global_position = player_markers[marker_name]
+		print(cutscene_name + ": Jumped cutscene to player marker: " + marker_name)
+	else:
+		print(cutscene_name + ": ERROR - Marker not found: " + marker_name)
+
+# Optional: Reset cutscene to original position
+func _reset_cutscene_position():
+	"""Reset cutscene to its original position"""
+	global_position = _original_position
+	print(cutscene_name + ": Reset cutscene to original position")
+	
 func end_cutscene():
 	if not _is_cutscene_active:
 		return
