@@ -1,7 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://b2m2qi88or5r7"]
+[gd_scene load_steps=15 format=3 uid="uid://b2m2qi88or5r7"]
 
-[ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_u5q1w"]
+[ext_resource type="Script" path="res://scripts/NPC/maya_kid.gd" id="1_g1jwp"]
 [ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="2_187pk"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_nbatg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jyvmq"]
+size = Vector2(10, 20)
 
 [sub_resource type="Animation" id="Animation_cyrg1"]
 length = 0.001
@@ -133,8 +137,18 @@ _data = {
 "run2": SubResource("Animation_oqr0m")
 }
 
-[node name="Maya kid" type="Node2D"]
-script = ExtResource("1_u5q1w")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_svule"]
+size = Vector2(32, 49)
+
+[node name="Maya kid" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_g1jwp")
+speech_bubble_scene = ExtResource("3_nbatg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -9)
+shape = SubResource("RectangleShape2D_jyvmq")
 
 [node name="Maya kid" type="Sprite2D" parent="."]
 position = Vector2(1, -37)
@@ -142,10 +156,23 @@ scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_187pk")
 hframes = 8
 vframes = 19
-frame = 109
+frame = 147
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Maya kid"]
 root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_dv64b")
 }
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_svule")
+
+[node name="BubbleTimer" type="Timer" parent="."]
+
+[node name="BubbleContainer" type="Node2D" parent="."]
+
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_nbatg")]
+visible = false

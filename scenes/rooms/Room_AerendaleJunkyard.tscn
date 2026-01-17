@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cnkwa1lnnfamm"]
+[gd_scene load_steps=41 format=3 uid="uid://cnkwa1lnnfamm"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_56olx"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_i5ly2"]
@@ -26,6 +26,7 @@
 [ext_resource type="Script" path="res://scripts/world/First_Maya.gd" id="17_sg08t"]
 [ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="18_i3io5"]
 [ext_resource type="PackedScene" uid="uid://cbct0mwdg7l3g" path="res://scenes/NPC_cutscene/uncle_betael.tscn" id="26_gkrn8"]
+[ext_resource type="PackedScene" uid="uid://b2m2qi88or5r7" path="res://scenes/NPC_cutscene/maya_kid.tscn" id="27_nxexn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvylh"]
 size = Vector2(70.5, 96)
@@ -670,6 +671,9 @@ metadata/_edit_lock_ = true
 visible = false
 position = Vector2(295.573, -39.6841)
 metadata/_edit_lock_ = true
+
+[node name="Maya kid" parent="." instance=ExtResource("27_nxexn")]
+position = Vector2(-70, 367)
 
 [connection signal="body_entered" from="Doors/Door_Maya" to="." method="_on_door_maya_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Maya" to="." method="_on_door_maya_body_exited"]

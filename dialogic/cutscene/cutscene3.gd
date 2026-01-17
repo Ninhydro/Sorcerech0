@@ -9,6 +9,10 @@ var target_spawn1 = "Spawn_Minigame"    # Name of the spawn marker in the target
 
 @onready var marker1: Marker2D = $Marker2D
 @onready var marker2: Marker2D = $Marker2D2
+@onready var marker3: Marker2D = $Marker2D3
+@onready var marker4: Marker2D = $Marker2D4
+@onready var marker5: Marker2D = $Marker2D5
+@onready var marker6: Marker2D = $Marker2D6
 
 @onready var cutscene_marker1: Marker2D = $CutsceneMarker1
 @onready var cutscene_marker2: Marker2D = $CutsceneMarker2
@@ -62,7 +66,12 @@ func _setup_cutscene():
 	player_markers = {
 		# Example positions - adjust to match your scene
 		"marker1": marker1.global_position,
-		"marker2": marker2.global_position
+		"marker2": marker2.global_position,
+		"marker3": marker3.global_position,
+		"marker4": marker4.global_position,
+		"marker5": marker5.global_position,
+		"marker6": marker6.global_position
+		
 	}
 	
 	cutscene_markers = {
@@ -75,18 +84,40 @@ func _setup_cutscene():
 	sequence = [
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
-		#{"type": "player_face", "direction": -1},
-		#{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline4", "wait": true},
-		{"type": "move_cutscene", "name": "cutscene_marker1", "duration": 2.0, "wait": true},
-		#Move the whole cutscene  new marker2d (new function)
-		#{"type": "fade_in", "wait": true},
-		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
+		{"type": "move_cutscene", "name": "cutscene_marker1", "duration": 2.0, "wait": false},
+		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline4_0", "wait": true},
+		{"type": "move_player", "name": "marker3",  "duration": 2, "animation": "run", "wait": false},
+		{"type": "animation", "name": "anim3", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline4_1", "wait": true},
+		{"type": "move_player", "name": "marker2",  "duration": 1, "animation": "jump", "wait": false},
+		{"type": "animation", "name": "anim4", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim4_idle", "wait": false, "loop": true},
+		{"type": "move_player", "name": "marker5",  "duration": 0.5, "animation": "jump", "wait": true},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "dialog", "name": "timeline4_2", "wait": true},
+		{"type": "animation", "name": "anim5", "wait": false, "loop": false},
+		{"type": "fade_in",  "wait": true},
+		#{"type": "wait", "duration": 0.5},
+		{"type": "move_player", "name": "marker4",  "duration": 0.5, "animation": "run", "wait": false},
+		{"type": "move_cutscene", "name": "cutscene_marker2", "duration": 1.0, "wait": true},
+		{"type": "fade_out", "wait": false},
+		{"type": "move_player", "name": "marker6",  "duration": 3, "animation": "run", "wait": false},
+		{"type": "animation", "name": "anim6", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim6_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline4_3", "wait": true},
+		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
+		{"type": "animation", "name": "anim7", "wait": false, "loop": false},
 		
 
 	]
@@ -100,7 +131,9 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene1: Finished")
-	
+	alyra.visible = false
+	maya.visible = false
+	varek.visible = false
 	# Set timeline
 	Global.timeline = 3.5
 	Global.add_quest_marker("Explore Tromarvelia", Vector2(-3664,-48))
@@ -112,6 +145,7 @@ func _on_cutscene_end():
 	#	minigame.start_game()
 		
 	print("Cutscene1: Set Global.timeline = ", Global.timeline)
+	
 	
 #func _on_body_entered(body):
 	#print("Player position: ",player_node_ref.global_position)

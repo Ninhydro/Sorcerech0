@@ -419,8 +419,7 @@ func _move_cutscene_to_marker(marker_name: String, duration: float = 1.0,
 							 transition_type: int = Tween.TRANS_LINEAR,
 							 wait: bool = true):
 	"""
-	Move the entire cutscene (including camera and any child nodes) to a marker position.
-	Similar to player movement but affects the entire cutscene node.
+	Move only the cutscene camera to a marker position.
 	
 	Parameters:
 	- marker_name: String name of the marker in cutscene_markers dictionary
@@ -433,7 +432,7 @@ func _move_cutscene_to_marker(marker_name: String, duration: float = 1.0,
 	if marker_name in cutscene_markers:
 		var target_position = cutscene_markers[marker_name]
 		
-		print(cutscene_name + ": Moving cutscene to marker: " + marker_name + 
+		print(cutscene_name + ": Moving cutscene camera to marker: " + marker_name + 
 			  " over " + str(duration) + " seconds")
 		
 		# Create tween for smooth movement
@@ -441,50 +440,54 @@ func _move_cutscene_to_marker(marker_name: String, duration: float = 1.0,
 		tween.set_ease(ease_type)
 		tween.set_trans(transition_type)
 		
-		# Tween the entire cutscene node's position
-		tween.tween_property(self, "global_position", target_position, duration)
+		# Tween only the camera's position
+		if cutscene_camera:
+			tween.tween_property(cutscene_camera, "global_position", target_position, duration)
 		
 		if wait:
 			await tween.finished
-			print(cutscene_name + ": Cutscene movement completed to: " + marker_name)
+			print(cutscene_name + ": Cutscene camera movement completed to: " + marker_name)
 		else:
-			print(cutscene_name + ": Cutscene movement started to: " + marker_name)
+			print(cutscene_name + ": Cutscene camera movement started to: " + marker_name)
 			
 	elif marker_name in player_markers:
 		# Fallback: use player marker if cutscene marker not found
 		var target_position = player_markers[marker_name]
 		
-		print(cutscene_name + ": Moving cutscene to player marker (fallback): " + marker_name + 
+		print(cutscene_name + ": Moving cutscene camera to player marker (fallback): " + marker_name + 
 			  " over " + str(duration) + " seconds")
 		
 		var tween = create_tween()
 		tween.set_ease(ease_type)
 		tween.set_trans(transition_type)
 		
-		tween.tween_property(self, "global_position", target_position, duration)
+		# Tween only the camera's position
+		if cutscene_camera:
+			tween.tween_property(cutscene_camera, "global_position", target_position, duration)
 		
 		if wait:
 			await tween.finished
 	else:
 		print(cutscene_name + ": ERROR - Marker not found in cutscene_markers or player_markers: " + marker_name)
-
+		
 # Optional: Add a function to instantly jump to a marker (without tween)
 func _jump_cutscene_to_marker(marker_name: String):
-	"""Instantly move cutscene to marker position"""
-	if marker_name in cutscene_markers:
-		global_position = cutscene_markers[marker_name]
-		print(cutscene_name + ": Jumped cutscene to marker: " + marker_name)
-	elif marker_name in player_markers:
-		global_position = player_markers[marker_name]
-		print(cutscene_name + ": Jumped cutscene to player marker: " + marker_name)
+	"""Instantly move cutscene camera to marker position"""
+	if marker_name in cutscene_markers and cutscene_camera:
+		cutscene_camera.global_position = cutscene_markers[marker_name]
+		print(cutscene_name + ": Jumped cutscene camera to marker: " + marker_name)
+	elif marker_name in player_markers and cutscene_camera:
+		cutscene_camera.global_position = player_markers[marker_name]
+		print(cutscene_name + ": Jumped cutscene camera to player marker: " + marker_name)
 	else:
 		print(cutscene_name + ": ERROR - Marker not found: " + marker_name)
-
+		
 # Optional: Reset cutscene to original position
 func _reset_cutscene_position():
-	"""Reset cutscene to its original position"""
-	global_position = _original_position
-	print(cutscene_name + ": Reset cutscene to original position")
+	"""Reset cutscene camera to its original position"""
+	if cutscene_camera:
+		cutscene_camera.global_position = _original_position
+		print(cutscene_name + ": Reset cutscene camera to original position")
 	
 func end_cutscene():
 	if not _is_cutscene_active:
@@ -533,6 +536,7 @@ func end_cutscene():
 	cutscene_finished.emit()
 	
 	print(cutscene_name + ": Cutscene finished")
+	queue_free()
 
 func _exit_tree():
 	# Clean up

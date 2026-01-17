@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d38yjmvupqs8e"]
+[gd_scene load_steps=14 format=3 uid="uid://d38yjmvupqs8e"]
 
 [ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_qe7cx"]
 [ext_resource type="Texture2D" uid="uid://cet4egxc8qsop" path="res://assets_image/Characters/Varek/Varek-Sheet.png" id="2_22pcs"]
@@ -149,6 +149,22 @@ tracks/0/keys = {
 "values": [120, 121, 122, 123, 124, 125, 126, 127]
 }
 
+[sub_resource type="Animation" id="Animation_hvqw2"]
+resource_name = "hurt_return"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Varek_soldier:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [99, 98, 97, 96]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e2pdl"]
 _data = {
 "RESET": SubResource("Animation_ypay5"),
@@ -156,6 +172,7 @@ _data = {
 "defend": SubResource("Animation_ttwje"),
 "die": SubResource("Animation_3ppjt"),
 "hurt": SubResource("Animation_qehqp"),
+"hurt_return": SubResource("Animation_hvqw2"),
 "idle": SubResource("Animation_invc7"),
 "jump": SubResource("Animation_lq7pd"),
 "run": SubResource("Animation_g4xnv"),

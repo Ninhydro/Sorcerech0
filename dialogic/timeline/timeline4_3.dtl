@@ -1,0 +1,58 @@
+join Uncle_Betael (Angry) leftmost
+Uncle_Betael (Angry): You bringin’ rebel soldiers to my scrap lot now, Maya?
+join Maya_kid (Happy) center [mirrored="true"]
+Maya_kid (Happy): They’re not rebels. They’re… future heroes! Well maybe..
+Uncle_Betael (Angry): Hope they don’t blow the kettle up…
+leave Uncle_Betael
+update Maya_kid left [mirrored="false"]
+Maya_kid (Happy): What a day huh? You two almost blew up the market square
+Fini_ball: Why… fight?
+join Varek_soldier (Angry) rightmost [mirrored="true"]
+Varek_soldier (Angry): You kidding me? Look at what your kind did to Tromarvelia’s eastern district—children been enslaved and used as power source for your machine's battery
+join Alyra (Happy) right [mirrored="true"]
+Alyra (Angry): Oh, like how Magus "liberated" our outposts? Turned prisoners into batteries for your mana forges?
+Varek_soldier (Angry): Propaganda. Typical Cyber lies.
+Alyra (Angry): Propaganda… you should told that to my sister's wound.
+Varek_soldier (Angry): They told us you were machines. That you didn’t…
+Alyra (Happy): Feel pain? And your king told you that? Funny—mine said the same about Magus…
+Maya_kid (Sad): But… look at you now. You both could’ve killed each other today. But you didn’t.
+Fini_ball: You are not enemies... not now.
+Alyra (Sad): You're right, Not after what I’ve seen. Every town beyond Exactlyion I see broken homes, starving people...
+Alyra (Sad): People scraping tech parts for food or fighting over a piece of crystal and electronics parts. I went to be a merchant to help my sister, but now I'm not sure who should I help
+Varek_soldier (Sad): Yeah, even on our lands aren’t spared. The forest cities are dying. The mana is fading.
+Varek_soldier (Angry): All the leaders care about is who gets the throne next.
+Varek_soldier (Angry): ...While people in the streets eat bark and mud and pretend it tastes like bread.
+Fini_ball: ...Sad. Both sides... hurting.
+Maya_kid (Sad): Hmm… But why we fight so hard over New Aerandale? Don’t both races have their own lands?
+Varek_soldier (Angry): It’s because of the Sorcerech core
+Fini_ball: Sorcer?.. Ech?
+Alyra (Angry): A legendary core that can channel infinite mana and electricity. You can basically become a God, Whoever controls it becomes… unstoppable.
+Maya_kid (Sad): I thought that was just a myth.
+Varek_soldier (Angry): No, it’s real alright, Karol Queen of New Aerendale able to hold that and bring peace to Magus & Cyber once, that why New Aerendale allow both Magus and Cyber on their city.
+Varek_soldier (Angry): However rumors said, using the core weakens her everytime. Then few decades ago, a big rebel happened that cause the Queen being killed and the Sorcerech core lost forever…
+Alyra (Angry): And now everyone’s fighting to find it. For power. For pride.\
+For some stupid idea that magic or machines make one race better.
+Varek_soldier (Angry): It's not about what's better. It's about who gets to sit on top.\
+They don’t care who dies underneath. I buried more bodies than I ever saved.
+Maya_kid (Sad): That's why this matters. You're not generals. You're not politicians. You're just... people.
+Fini_ball: Maybe... peace not come from thrones. Maybe peace come from us.
+Alyra (Happy): You’re smarter than most world leaders, you know that?
+Varek_soldier (Angry): Then let’s stop waiting for the war to fix itself. Let’s go talk to the bastards responsible — the ones calling the shots.
+Alyra (Happy): The Magus and Cyber leaders.
+Fini_ball: Yes. We find them. We talk. We stop the hurting.
+Maya_kid (Sad): ...You’re really going to do this?
+Varek_soldier (Angry): We have to. Otherwise, more kids like you grow up thinking war is normal.
+Alyra (Happy): And more machines like Phina wake up to a world that’s already broken.
+Varek_soldier (Angry): About that, Phina... back in the market, you used magic. That’s not normal for a machine.
+Alyra (Happy): Do you think this is some kind of Sorcerech power?
+Varek_soldier (Angry): Nah, Unlikely. That Core’s on another level, Plus I don’t see any round things around you. But whatever Phina is… it might help us turn the tide.
+Alyra (Happy): So, what do you say, little guy? Want to come with us?
+Fini_ball: Phina want to join!
+Maya_kid (Sad): You… really want to go with them?
+Fini_ball: Maya not coming?
+Maya_kid (Sad): I’m… Sorry Phina I’m staying here… I’m not as strong and brave as you
+Fini_ball: Aa-…..
+Maya_kid (Happy): Don’t be sad! You’ll visit, right? Uncle Bettle and I will have your favorite\: yummy batteries!
+Fini_ball: Yay! Batteries! Yumm!
+Varek_soldier (Angry): Alright then, our next step, let’s see… How about we start preparing materials from the market
+Alyra (Happy): That’s a great start, I heard they sell good maps also there

@@ -937,7 +937,7 @@ shape = SubResource("RectangleShape2D_tjwcs")
 metadata/_edit_lock_ = true
 
 [node name="cutscene3" parent="." instance=ExtResource("11_02nf6")]
-position = Vector2(164, 64)
+position = Vector2(185, 51)
 metadata/_edit_lock_ = true
 
 [node name="cutscene3_5" parent="." instance=ExtResource("12_miuam")]

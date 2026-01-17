@@ -101,3 +101,4 @@ shape = SubResource("RectangleShape2D_3feim")
 [node name="BubbleContainer" type="Node2D" parent="."]
 
 [node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_h2uyu")]
+visible = false
