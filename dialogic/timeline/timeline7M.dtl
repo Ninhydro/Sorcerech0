@@ -1,3 +1,6 @@
-join Player center
-Player (Normal): after minigame, cutscene 10
-Player (Happy): cutscne 11 backstory and end chapter 3 magus
+join Nora (Happy) right [mirrored="true"]
+Nora (Happy): Woah she really did it
+Nora (Happy): She mix the golden orb
+join Player (Happy) left
+Player (Happy): I… did it
+Nora (Happy): I feel... Something… inside me.

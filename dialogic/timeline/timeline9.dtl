@@ -1,3 +1,10 @@
-join Player center
-Player (Normal): on new aerendale town, cutscne 17
-Player (Angry): cutscene 18, battle
+join Alyra (Angry) center [mirrored="true"]
+Alyra (Angry): No… no, no… That’s the town. It’s under attack!
+join Varek_soldier (Angry) right [mirrored="true"]
+Varek_soldier (Angry): The air smells like scorched mana. There’s already been a massacre.
+join Player (Sad) left [mirrored="true"]
+Player (Sad): Why… fighting again? This place… was home…
+. . . 
+Varek_soldier (Angry): We should step in.
+Alyra (Angry): But who should we help? We’re trying to stay neutral… remember?
+Player (Sad): So much hurt… Phina… wants to help… 

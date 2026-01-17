@@ -1,2 +1,13 @@
-join Player center
-Player (Normal): Killing soldier, Alyra alive cutscene 21v2, cg, end chapter 4 & end part 1
+"Cyber elite": Argh...
+join Player (Happy) center
+Player (Happy): We did it... we surviv...
+join Alyra (Sad) right [mirrored="true"]
+Alyra (Sad): Phina! 
+. . . 
+Alyra (Happy): Oh god she seems still alive
+join Varek_soldier (Happy) left
+Varek_soldier: The battle's ending, the soldier from cyber and magus army seems to be pulling back. 
+Varek_soldier: But this town... it's defenseless now. They'll be back.
+Alyra (Happy): Then we stay. We can't just leave these people.
+Alyra (Happy): We'll protect New Aerandale. 
+Varek_soldier: Together.

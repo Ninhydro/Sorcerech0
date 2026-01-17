@@ -9,7 +9,7 @@ Maya_kid (Happy): What a day huh? You two almost blew up the market square
 Fini_ball: Why… fight?
 join Varek_soldier (Angry) rightmost [mirrored="true"]
 Varek_soldier (Angry): You kidding me? Look at what your kind did to Tromarvelia’s eastern district—children been enslaved and used as power source for your machine's battery
-join Alyra (Happy) right [mirrored="true"]
+join Alyra (Angry) right [mirrored="true"]
 Alyra (Angry): Oh, like how Magus "liberated" our outposts? Turned prisoners into batteries for your mana forges?
 Varek_soldier (Angry): Propaganda. Typical Cyber lies.
 Alyra (Angry): Propaganda… you should told that to my sister's wound.
@@ -37,15 +37,15 @@ They don’t care who dies underneath. I buried more bodies than I ever saved.
 Maya_kid (Sad): That's why this matters. You're not generals. You're not politicians. You're just... people.
 Fini_ball: Maybe... peace not come from thrones. Maybe peace come from us.
 Alyra (Happy): You’re smarter than most world leaders, you know that?
-Varek_soldier (Angry): Then let’s stop waiting for the war to fix itself. Let’s go talk to the bastards responsible — the ones calling the shots.
+Varek_soldier (Happy): Then let’s stop waiting for the war to fix itself. Let’s go talk to the bastards responsible — the ones calling the shots.
 Alyra (Happy): The Magus and Cyber leaders.
 Fini_ball: Yes. We find them. We talk. We stop the hurting.
 Maya_kid (Sad): ...You’re really going to do this?
-Varek_soldier (Angry): We have to. Otherwise, more kids like you grow up thinking war is normal.
+Varek_soldier (Sad): We have to. Otherwise, more kids like you grow up thinking war is normal.
 Alyra (Happy): And more machines like Phina wake up to a world that’s already broken.
-Varek_soldier (Angry): About that, Phina... back in the market, you used magic. That’s not normal for a machine.
+Varek_soldier (Happy): About that, Phina... back in the market, you used magic. That’s not normal for a machine.
 Alyra (Happy): Do you think this is some kind of Sorcerech power?
-Varek_soldier (Angry): Nah, Unlikely. That Core’s on another level, Plus I don’t see any round things around you. But whatever Phina is… it might help us turn the tide.
+Varek_soldier (Happy): Nah, Unlikely. That Core’s on another level, Plus I don’t see any round things around you. But whatever Phina is… it might help us turn the tide.
 Alyra (Happy): So, what do you say, little guy? Want to come with us?
 Fini_ball: Phina want to join!
 Maya_kid (Sad): You… really want to go with them?
@@ -54,5 +54,5 @@ Maya_kid (Sad): I’m… Sorry Phina I’m staying here… I’m not as strong a
 Fini_ball: Aa-…..
 Maya_kid (Happy): Don’t be sad! You’ll visit, right? Uncle Bettle and I will have your favorite\: yummy batteries!
 Fini_ball: Yay! Batteries! Yumm!
-Varek_soldier (Angry): Alright then, our next step, let’s see… How about we start preparing materials from the market
+Varek_soldier (Happy): Alright then, our next step, let’s see… How about we start preparing materials from the market
 Alyra (Happy): That’s a great start, I heard they sell good maps also there

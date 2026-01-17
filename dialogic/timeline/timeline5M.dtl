@@ -1,2 +1,11 @@
-join Player center
-Player (Normal): on tromarvelia trigger cutscene 7 magus,
+join Varek_soldier (Happy) center [mirrored="true"]
+Varek_soldier (Happy): Still smells like wildflowers and arrogance around here.
+join Alyra (Happy) right [mirrored="true"]
+Alyra: What is this place?  The building looks old
+join Player rightmost [mirrored="true"]
+Player (Happy): So bright… so soft. Feels… warm.
+Varek_soldier (Happy): Is this your first time in Tromarvelia?
+Alyra (Happy): Wait this is Tromarvelia? The City of Magus?
+Varek_soldier (Happy): Yup, full of magic, beast, and ancient knowledge
+Varek_soldier (Happy): Now, If we’re going to learn anything about your form, we start with someone smart — and slightly insane.
+Varek_soldier (Happy): Let's just explore around

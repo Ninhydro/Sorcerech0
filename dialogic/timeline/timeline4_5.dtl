@@ -1,8 +1,13 @@
-join Player center
-Player (Normal): end chapter 2 & start chapter 3, choosing where to go tromarvelia or exactlyion since player still young
+join Varek_soldier (Happy) left
+join Alyra right [mirrored="true"]
+Varek_soldier (Happy): For now, you'll stay on my backpack while we travel to the open field
+Alyra (Happy): So where are our first stop?
+Varek_soldier (Happy): There's Tromarvelia, my homeland and where the Magus King rule over
+Alyra (Happy): Or Exactlyion, where place ruled by Cyber, Robots and the Sterling System
+Fini_ball: Hmm... Where to go?
 - Go to Tromarvelia
-	Player (Normal): Go to Tromarvelia 
+	Fini_ball: Let's go to Tromarvelia
 	set {Global.teleport_first} = 0
 - Go to Exactlyion
-	Player (Normal): Go to Exactlyion
+	Fini_ball: Let's go to Exactlyion
 	set {Global.teleport_first} = 1

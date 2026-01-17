@@ -1,0 +1,9 @@
+join Varek_soldier (Happy) rightmost [mirrored="true"]
+Varek_soldier (Happy): You're awake?
+join Alyra (Happy) right [mirrored="true"]
+Alyra (Happy): How are you feeling?
+join Player (Happy) left
+Player (Happy): I feel more mana flowing through me
+join Nora (Happy) leftmost
+Nora (Happy): Could it be... she's not just a hybrid. Did she have the Sorce- nevermind
+Nora (Happy): Becareful using mana, using magical ability is like using part of your life source

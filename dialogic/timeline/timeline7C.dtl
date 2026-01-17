@@ -1,3 +1,6 @@
-join Player center
-Player (Normal): After minigame, cutscene 14 cyber  backstory
-Player (Happy): cutscene 15 cyber end backstory & end chapter 3 cyber
+join Valentina (Happy) left
+Valentina (Happy): Oh you did it
+Valentina (Happy): Finally I can make new noodle maker machine
+join Player (Happy) right [mirrored="true"]
+Player (Happy): I feel dizzy...
+Player (Happy): I feel data... coming in...

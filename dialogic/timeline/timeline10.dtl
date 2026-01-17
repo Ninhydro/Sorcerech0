@@ -1,3 +1,7 @@
-join Player center
-Player (Normal): After battle, go to cutscene 19
-Player (Angry): cutscene 20, go to battle
+join Nataly (Angry) left [mirrored="true"]
+Nataly (Angry): Back off, creep!
+"Magus elite": Another Cyber mongrel joins the fray?
+Nataly (Angry): Say that again, I dare you. I’ll fry your teeth through your skull.
+join Alyra right [mirrored="true"]
+Alyra (Sad): Nataly?!
+Nataly (Angry): No time, sis. You’ll owe me a hug if we survive this!

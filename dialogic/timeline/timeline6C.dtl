@@ -1,2 +1,12 @@
-join Player center
-Player (Normal): On valentine house trigger cutscene 13, go to minigame
+join Valentina (Happy) right [mirrored="true"]
+Valentina (Happy): Alyra! You didn’t say you were bringing me this cute robot.
+join Alyra (Happy) left
+Alyra (Happy): Nice to see you too, Val. This is Phina. She's… special.
+Valentina (Happy): Synthetic... with magic, Core running both electricity and magical signal. Fascinating.
+join Varek_soldier (Happy) leftmost
+Varek_soldier: Yeah there’s a possibility she have some hidden power, can you check if you can unlock that power?
+Valentina (Happy): Hmmm… Sure! Only if she can beat my pinball machines that is!
+Valentina (Happy): Follow me Phina
+leave Alyra
+join Player (Happy) left
+Player (Happy): Ok

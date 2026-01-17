@@ -1,0 +1,7 @@
+join Player (Sad) left
+Player (Sad): Alyra…?!
+join Alyra (Sad) right [mirrored="true"]
+Alyra (Sad): Phina… Varek... run…
+leave Alyra
+join Varek_soldier (Angry) right [mirrored="true"]
+Varek_soldier (Angry): YOU BASTARD!!!!

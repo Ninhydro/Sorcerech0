@@ -1,3 +1,4 @@
-join Player center
-Player (Normal): killed, After battle, go to cutscene 19, dead
-Player (Angry): cutscene 20, go to battle
+join Alyra right [mirrored="true"]
+Alyra (Sad): Nataly?!
+join Nataly (Angry) left [mirrored="true"]
+Nataly (Angry): Sis Aly?!

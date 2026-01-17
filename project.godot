@@ -35,6 +35,7 @@ directories/dch_directory={
 "Arachne": "res://dialogic/characters/Arachne.dch",
 "Child": "res://dialogic/characters/Child.dch",
 "Cyber elite": "res://dialogic/characters/Cyber elite.dch",
+"Cyber rebel": "res://dialogic/characters/Cyber rebel.dch",
 "Cyber soldier": "res://dialogic/characters/Cyber soldier.dch",
 "Drone": "res://dialogic/characters/Drone.dch",
 "Dryad": "res://dialogic/characters/Dryad.dch",
@@ -79,9 +80,12 @@ directories/dtl_directory={
 "maya_kid1": "res://dialogic/timeline/maya_kid1.dtl",
 "timeline1": "res://dialogic/timeline/timeline1.dtl",
 "timeline10": "res://dialogic/timeline/timeline10.dtl",
+"timeline10_5": "res://dialogic/timeline/timeline10_5.dtl",
 "timeline10v2": "res://dialogic/timeline/timeline10v2.dtl",
 "timeline11": "res://dialogic/timeline/timeline11.dtl",
 "timeline11V2": "res://dialogic/timeline/timeline11V2.dtl",
+"timeline11_1": "res://dialogic/timeline/timeline11_1.dtl",
+"timeline11_2": "res://dialogic/timeline/timeline11_2.dtl",
 "timeline12": "res://dialogic/timeline/timeline12.dtl",
 "timeline12V2": "res://dialogic/timeline/timeline12V2.dtl",
 "timeline13": "res://dialogic/timeline/timeline13.dtl",
@@ -190,11 +194,18 @@ directories/dtl_directory={
 "timeline5C": "res://dialogic/timeline/timeline5C.dtl",
 "timeline5M": "res://dialogic/timeline/timeline5M.dtl",
 "timeline6C": "res://dialogic/timeline/timeline6C.dtl",
+"timeline6C_1": "res://dialogic/timeline/timeline6C_1.dtl",
 "timeline6M": "res://dialogic/timeline/timeline6M.dtl",
+"timeline6M_1": "res://dialogic/timeline/timeline6M_1.dtl",
 "timeline7C": "res://dialogic/timeline/timeline7C.dtl",
+"timeline7C_1": "res://dialogic/timeline/timeline7C_1.dtl",
+"timeline7C_2": "res://dialogic/timeline/timeline7C_2.dtl",
 "timeline7M": "res://dialogic/timeline/timeline7M.dtl",
+"timeline7M_1": "res://dialogic/timeline/timeline7M_1.dtl",
+"timeline7M_2": "res://dialogic/timeline/timeline7M_2.dtl",
 "timeline8": "res://dialogic/timeline/timeline8.dtl",
-"timeline9": "res://dialogic/timeline/timeline9.dtl"
+"timeline9": "res://dialogic/timeline/timeline9.dtl",
+"timeline9_1": "res://dialogic/timeline/timeline9_1.dtl"
 }
 extensions_folder="res://addons/dialogic_additions"
 text/letter_speed=0.01

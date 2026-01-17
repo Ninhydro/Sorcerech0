@@ -1,0 +1,16 @@
+join Varek_soldier (Happy) rightmost [mirrored="true"]
+Varek_soldier (Happy): You're awake?
+join Alyra (Happy) right [mirrored="true"]
+Alyra (Happy): How are you feeling?
+join Player (Happy) left
+Player (Happy): I remember now, my name was Fini
+Alyra (Happy): Was?
+Player (Happy): Yeah… Seems something happenened and I fused with this core
+Varek_soldier (Happy): What core? You mean the Sorcerech core??
+Player (Happy): Maybe, I don’t know, the transfer failed, but I feel like I'm a reborn version of Fini.
+join Valentina (Happy) leftmost
+Valentina (Happy): Could be the core was corrupted and lost inside you? Maybe it turn into an energy form??
+Alyra (Happy): But do you feel anything strange?
+Player (Happy): I do feel more… intelligent!
+Valentina (Happy): The more you’ll remember… and the more you’ll become.
+Player (Happy): (Sterling? Is she my little sister?...)
