@@ -163,14 +163,14 @@ region_rect = Rect2(0, 43.9474, 64, 20.0526)
 metadata/_edit_lock_ = true
 
 [node name="cutscene5M" parent="." instance=ExtResource("5_0sw4y")]
-position = Vector2(-72, 72)
+position = Vector2(-71, 70)
 
 [node name="cutscene6M" parent="." instance=ExtResource("6_21ckk")]
 visible = false
 position = Vector2(-2248, 72)
 
 [node name="Nora" parent="." instance=ExtResource("7_x12si")]
-position = Vector2(-64, 80)
+position = Vector2(153, 63)
 collision_mask = 16
 minigame_stations = Array[NodePath]([NodePath("../MinigameStation"), NodePath("../MinigameStation2"), NodePath("../MinigameStation3")])
 final_position_marker = NodePath("../NoraFinalPosition")
@@ -242,66 +242,66 @@ position = Vector2(-254, -150)
 position = Vector2(-222, -150)
 
 [node name="MinigameStation3" parent="." instance=ExtResource("8_cjuqd")]
-position = Vector2(-1216, 80)
+position = Vector2(-1150, 80)
 station_name = "Station3"
 
 [node name="ColorMixer" parent="MinigameStation3" instance=ExtResource("9_qvdx1")]
-position = Vector2(-224, -208)
+position = Vector2(-285, -214)
 
 [node name="ColorMixer2" parent="MinigameStation3" instance=ExtResource("9_qvdx1")]
-position = Vector2(-304, -96)
+position = Vector2(-365, -102)
 
 [node name="ColorObject4" parent="MinigameStation3" instance=ExtResource("10_qxrnp")]
-position = Vector2(-238, -134)
+position = Vector2(-299, -140)
 original_position = Vector2(-1808, -160)
 object_id = "10"
 
 [node name="ColorObject5" parent="MinigameStation3" instance=ExtResource("10_qxrnp")]
-position = Vector2(-206, -134)
+position = Vector2(-267, -140)
 color_type = 1
 original_position = Vector2(-1768, -160)
 object_id = "11"
 
 [node name="ColorObject6" parent="MinigameStation3" instance=ExtResource("10_qxrnp")]
-position = Vector2(-222, -134)
+position = Vector2(-283, -140)
 color_type = 2
 original_position = Vector2(-1728, -160)
 object_id = "12"
 
 [node name="ColorObject" parent="MinigameStation3" instance=ExtResource("10_qxrnp")]
-position = Vector2(-302, -214)
+position = Vector2(-363, -220)
 original_position = Vector2(-2128, -160)
 object_id = "7"
 
 [node name="ColorObject2" parent="MinigameStation3" instance=ExtResource("10_qxrnp")]
-position = Vector2(-278, -214)
+position = Vector2(-339, -220)
 color_type = 1
 original_position = Vector2(-2088, -160)
 object_id = "8"
 
 [node name="ColorObject3" parent="MinigameStation3" instance=ExtResource("10_qxrnp")]
-position = Vector2(-254, -214)
+position = Vector2(-315, -220)
 color_type = 2
 original_position = Vector2(-2048, -160)
 object_id = "9"
 
 [node name="Marker_ColorObject" type="Marker2D" parent="MinigameStation3"]
-position = Vector2(-302, -214)
+position = Vector2(-363, -220)
 
 [node name="Marker_ColorObject2" type="Marker2D" parent="MinigameStation3"]
-position = Vector2(-278, -214)
+position = Vector2(-339, -220)
 
 [node name="Marker_ColorObject3" type="Marker2D" parent="MinigameStation3"]
-position = Vector2(-254, -214)
+position = Vector2(-315, -220)
 
 [node name="Marker_ColorObject4" type="Marker2D" parent="MinigameStation3"]
-position = Vector2(-238, -134)
+position = Vector2(-299, -140)
 
 [node name="Marker_ColorObject5" type="Marker2D" parent="MinigameStation3"]
-position = Vector2(-206, -134)
+position = Vector2(-267, -140)
 
 [node name="Marker_ColorObject6" type="Marker2D" parent="MinigameStation3"]
-position = Vector2(-222, -134)
+position = Vector2(-283, -140)
 
 [node name="MagusSpot" parent="." instance=ExtResource("11_pqm3h")]
 z_index = -1
@@ -333,7 +333,6 @@ metadata/_edit_lock_ = true
 
 [node name="NoraFinalPosition" type="Marker2D" parent="."]
 position = Vector2(-96, 80)
-metadata/_edit_lock_ = true
 
 [node name="puzzledoor1" parent="." instance=ExtResource("14_a8pdl")]
 position = Vector2(-873, -107)

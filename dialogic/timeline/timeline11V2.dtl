@@ -2,12 +2,13 @@
 join Player (Happy) center
 Player (Happy): We did it... we surviv...
 join Alyra (Sad) right [mirrored="true"]
-Alyra (Sad): Phina! 
-. . . 
-Alyra (Happy): Oh god she seems still alive
+Alyra (Sad): Phina!
+. . .
 join Varek_soldier (Happy) left
-Varek_soldier: The battle's ending, the soldier from cyber and magus army seems to be pulling back. 
+Varek_soldier (Sad): Is she okay?
+Alyra (Happy): Yeah, she seems overheat herself, some rest should wake her up
+Varek_soldier: The battle's ending, the soldier from cyber and magus army seems to be pulling back.
 Varek_soldier: But this town... it's defenseless now. They'll be back.
 Alyra (Happy): Then we stay. We can't just leave these people.
-Alyra (Happy): We'll protect New Aerandale. 
+Alyra (Happy): We'll protect New Aerandale.
 Varek_soldier: Together.

@@ -7,8 +7,9 @@ Nora (Happy): A robot… with a magic signature? This is deliciously wrong.
 join Varek_soldier (Happy) rightmost
 Varek_soldier (Happy): Can you help her or not?
 Nora (Happy): Hush, war boy. I’m working.
-Nora (Happy): . . . 
+Nora (Happy): . . .
 Nora (Happy): Okay, follow me sparky
 leave Alyra
+leave Varek_soldier
 join Player (Happy) right [mirrored="true"]
 Player (Happy): ME?

@@ -114,6 +114,15 @@ region_enabled = true
 region_rect = Rect2(44.677, 1478.14, 413.227, 120.963)
 metadata/_edit_lock_ = true
 
+[node name="Sprite2D6" type="Sprite2D" parent="Background"]
+z_index = 1
+position = Vector2(1276, 8)
+scale = Vector2(1.00702, 0.92)
+texture = ExtResource("4_ghln2")
+region_enabled = true
+region_rect = Rect2(97.9606, 1511.12, 62.0921, 87.9872)
+metadata/_edit_lock_ = true
+
 [node name="Sprite2D4" type="Sprite2D" parent="Background"]
 position = Vector2(866, -36)
 scale = Vector2(-1, 1)
@@ -134,24 +143,29 @@ metadata/_edit_lock_ = true
 position = Vector2(64, 40)
 scale = Vector2(1.4375, 1.4375)
 texture = ExtResource("6_pyq1w")
+metadata/_edit_lock_ = true
 
 [node name="PuzzleObjects2" type="Sprite2D" parent="Background"]
 position = Vector2(253, -79)
 scale = Vector2(1.4375, 1.84375)
 texture = ExtResource("6_pyq1w")
+metadata/_edit_lock_ = true
 
 [node name="PuzzleObjects3" type="Sprite2D" parent="Background"]
 position = Vector2(829, -15)
 scale = Vector2(1.4375, 1.84375)
 texture = ExtResource("6_pyq1w")
+metadata/_edit_lock_ = true
 
 [node name="ValentinaMachine" type="Sprite2D" parent="Background"]
 position = Vector2(1167, -325)
 scale = Vector2(1.378, 1.502)
 texture = ExtResource("7_8achl")
+metadata/_edit_lock_ = true
 
 [node name="cutscene5C" parent="." instance=ExtResource("5_f8ebg")]
-position = Vector2(-424, 68)
+position = Vector2(-413, 54)
+metadata/_edit_lock_ = true
 
 [node name="cutscene6C" parent="." instance=ExtResource("6_s83h7")]
 visible = false
@@ -351,8 +365,7 @@ rotation = -1.5708
 bounce_angle_degrees = 90.0
 
 [node name="GoalCyber" parent="." instance=ExtResource("11_rqjc1")]
-position = Vector2(1167, -568)
-scale = Vector2(1.4, 1.4)
+position = Vector2(1168, -568)
 target_room = "Room_ExactlyionValentina"
 target_spawn = "Goal"
 
@@ -417,6 +430,6 @@ position = Vector2(958, -203)
 use_exactlyion_style = true
 
 [node name="valentina1" parent="." node_paths=PackedStringArray("marker_minigame", "marker_timeline_5") groups=["valentina"] instance=ExtResource("12_jikgo")]
-position = Vector2(1216, 48)
+position = Vector2(1232, 48)
 marker_minigame = NodePath("../SpawnPoints/Valentina1")
 marker_timeline_5 = NodePath("../SpawnPoints/Valentina2")

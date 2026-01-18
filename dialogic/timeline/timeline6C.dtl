@@ -1,12 +1,15 @@
-join Valentina (Happy) right [mirrored="true"]
-Valentina (Happy): Alyra! You didn’t say you were bringing me this cute robot.
 join Alyra (Happy) left
-Alyra (Happy): Nice to see you too, Val. This is Phina. She's… special.
+Alyra (Happy): Hey Va! You're here?
+join Valentina (Happy) right [mirrored="true"]
+Valentina (Happy): Alyra! Sorry, I'm pretty busy...
+Valentina (Happy): Oh, you didn’t say you were bringing me this cute robot.
+Alyra (Happy): This is Phina. She's… a bit special.
 Valentina (Happy): Synthetic... with magic, Core running both electricity and magical signal. Fascinating.
 join Varek_soldier (Happy) leftmost
 Varek_soldier: Yeah there’s a possibility she have some hidden power, can you check if you can unlock that power?
 Valentina (Happy): Hmmm… Sure! Only if she can beat my pinball machines that is!
-Valentina (Happy): Follow me Phina
+Valentina (Happy): Come here Phina
 leave Alyra
+leave Varek_soldier
 join Player (Happy) left
 Player (Happy): Ok

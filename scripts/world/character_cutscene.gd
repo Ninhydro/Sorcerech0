@@ -1,5 +1,5 @@
-extends Area2D
-class_name MasterCutscene
+extends CharacterBody2D
+class_name CharacterCutscene
 
 # Signals
 signal cutscene_started
@@ -29,6 +29,8 @@ var _is_cutscene_active: bool = false
 var _player_ref: CharacterBody2D = null
 var _original_position: Vector2 
 
+
+var current_sequence_index: int = 0
 # Override Functions (for child scenes)
 func _setup_cutscene():
 	"""Override this in child scenes to setup sequence and markers"""
@@ -326,8 +328,8 @@ func _play_player_animation(anim_name: String):
 		# Check if we should use AnimationTree or AnimationPlayer
 		if _player_ref.has_method("play_cutscene_animation"):
 			_player_ref.play_cutscene_animation(anim_name)
-		#if _player_ref.has_method("play_player_visual_animation"):
-		#	_player_ref.play_player_visual_animation(anim_name)
+		elif _player_ref.has_method("play_player_visual_animation"):
+			_player_ref.play_player_visual_animation(anim_name)
 		print(cutscene_name + ": Playing player animation: " + anim_name)
 
 func _set_player_face_direction(direction: int):
@@ -371,8 +373,7 @@ func _switch_to_player_camera():
 		cutscene_camera.enabled = false
 		
 func _change_player_form(form_name: String, unlock_first: bool = false):
-	#if _player_ref and is_instance_valid(_player_ref):
-		_player_ref = Global.player
+	if _player_ref and is_instance_valid(_player_ref):
 		print(cutscene_name + ": Changing player form to " + form_name)
 		Global.is_cutscene_active = false
 		_player_ref.unlock_and_force_form(form_name)
@@ -397,8 +398,8 @@ func _change_player_form(form_name: String, unlock_first: bool = false):
 		# Wait a moment for the form change to complete
 		await get_tree().create_timer(0.1).timeout
 		Global.is_cutscene_active = true
-	#else:
-	#	print(cutscene_name + ": ERROR - No player reference for form change")
+	else:
+		print(cutscene_name + ": ERROR - No player reference for form change")
 
 # NEW: Function to just unlock a form without switching
 func _unlock_player_form(form_name: String):
@@ -539,7 +540,7 @@ func end_cutscene():
 	cutscene_finished.emit()
 	
 	print(cutscene_name + ": Cutscene finished")
-	queue_free()
+	#queue_free()
 
 func _exit_tree():
 	# Clean up

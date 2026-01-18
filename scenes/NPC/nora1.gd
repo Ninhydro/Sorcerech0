@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends CharacterCutscene
 class_name NoraNPC
 
 @export var movement_speed: float = 50.0 * Global.global_time_scale
@@ -9,8 +9,15 @@ class_name NoraNPC
 @export var allow_reset: bool = true  # Can be turned off if needed
 
 @onready var sprite_2d = $Sprite2D
-@onready var animation_player = $AnimationPlayer
+#@onready var animation_player = $AnimationPlayer
 @onready var interaction_area = $InteractionArea
+
+@onready var nora: Sprite2D = $Nora
+@onready var alyra: Sprite2D = $Alyra
+@onready var varek: Sprite2D = $Varek_soldier
+@onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D
+@onready var cutscene_marker1: Marker2D = $CutsceneMarker1
 
 var current_station_index: int = 0
 var is_moving: bool = false
@@ -36,8 +43,27 @@ var stations_completed: Array[bool] = []  # Track which stations are completed l
 
 @export var final_position_marker: NodePath  # Path to a Marker2D for Nora's final po
 
+@export var speech_bubble_scene: PackedScene  # Drag your SpeechBubble.tscn here
+@export var bubble_y_offset: float = -80  # Adjust bubble position
+@export var bubble_x_offset: float = 0
+
+# Add these with other variables
+var current_bubble = null
+var bubble_timer: Timer
+var instruction_timer: Timer
+var final_position_bubble_texts: Array[String] = [
+	"Ah you're back",
+	"That Phina is really a special one", 
+	"Please be quiet I'm busy with my spells",
+	"The magic here is so vibrant today",
+	"I wonder what color I should create next..."
+]
+
 
 func _ready():
+	alyra.visible = false
+	nora.visible = false
+	varek.visible = false
 	interaction_area.body_entered.connect(_on_player_entered)
 	interaction_area.body_exited.connect(_on_player_exited)
 	
@@ -62,6 +88,7 @@ func _ready():
 		#	var final_station = get_node(minigame_stations[minigame_stations.size() - 1])
 		#	global_position = final_station.global_position
 		move_to_final_position()
+		start_final_position_bubbles()
 		print("Nora: Minigame already completed (from Global flag) - disabled")
 	else:
 		# Check individual station completions from global flags
@@ -81,6 +108,11 @@ func _ready():
 
 
 func _process(delta):
+	if Global.meet_nora_one == false or Global.is_cutscene_active == true:
+		sprite_2d.visible = false
+	else:
+		sprite_2d.visible = true
+		
 	if $AnimationPlayer:
 		$AnimationPlayer.speed_scale = Global.global_time_scale
 
@@ -142,6 +174,7 @@ func move_to_target(delta):
 func move_to_station(station_index: int):
 	if station_index >= minigame_stations.size():
 		return
+	stop_instruction_timer()
 	current_station_index = station_index
 	var station = get_node(minigame_stations[station_index])
 	target_position = station.global_position
@@ -161,8 +194,9 @@ func setup_current_station():
 	
 	if station_already_completed:
 		print("Nora: This station is already completed!")
-
+		stop_instruction_timer() 
 	else:
+		
 		setup_station_objects()
 	
 	# Only auto-start if minigame is enabled AND station not completed
@@ -179,6 +213,7 @@ func setup_current_station():
 	if station_already_completed:
 		print("Nora: Station %d completed! Great job!" % current_station_index)
 	else:
+		show_station_speech()
 		print("Nora: Please create %s for me!" % ColorObject.ColorType.keys()[current_goal])
 
 func setup_station_objects():
@@ -253,7 +288,8 @@ func start_minigame():
 	minigame_active = true
 	minigame_started.emit(current_goal, current_station_index)
 	print("Nora: Minigame STARTED! Create %s!" % ColorObject.ColorType.keys()[current_goal])
-
+	start_instruction_timer()
+	
 func _on_mixing_completed(result_color):
 	if not minigame_active or not minigame_enabled:
 		return
@@ -285,6 +321,9 @@ func complete_minigame(success: bool):
 		print("Nora: Wonderful! You made %s!" % ColorObject.ColorType.keys()[current_goal])
 		print("Nora: Station %d completed! Global flag set." % current_station_index)
 		
+		show_completion_speech() 
+		stop_instruction_timer()
+		
 		if goals_completed < minigame_stations.size():
 			await get_tree().create_timer(2.0).timeout
 			move_to_station(goals_completed)
@@ -293,12 +332,18 @@ func complete_minigame(success: bool):
 			Global.minigame_nora_completed = true
 			print("Nora: You completed all challenges! You're a color master!")
 			
-			Global.is_cutscene_active = true
-			if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-				Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
-			Dialogic.timeline_ended.connect(_on_dialogic_finished)
-			Dialogic.start("timeline7M", false)
-
+			#Global.is_cutscene_active = true
+			#if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
+			#	Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+			#Dialogic.timeline_ended.connect(_on_dialogic_finished)
+			#Dialogic.start("timeline7M", false)
+			_setup_cutscene()
+			
+			# Start the cutscene with the player
+			#if player_in_range:
+			player_in_range = Global.player
+			start_cutscene(player_in_range)
+				
 func set_station_global_flag(station_index: int, completed: bool):
 	match station_index:
 		0:  # Station 1 - Green
@@ -316,40 +361,7 @@ func set_station_global_flag(station_index: int, completed: bool):
 
 
 
-func _on_dialogic_finished(_timeline_name = ""):
-	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
-	# Dialog is done. Now, fade out the black screen.
 
-	Global.is_cutscene_active = false
-	
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	
-	# Disconnect the signal to prevent unintended calls.
-	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
-
-
-
-	Global.timeline = 4
-	Global.magus_form = true
-	
-	
-	await get_tree().create_timer(0.1).timeout
-	player_in_range.unlock_and_force_form("Magus")
-	
-	Global.health_max += 10
-	Global.health = Global.health_max
-	Global.player.health_changed.emit(Global.health, Global.health_max)
-	
-	#player_in_range.unlock_state("Magus")
-	#player_in_range.switch_state("Magus")
-	#Global.selected_form_index = 1
-	#player_in_range.current_state_index = Global.selected_form_index
-	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
-	print("Global.magus_form ",Global.magus_form )
-	Global.remove_quest_marker("Explore Tromarvelia")
-	
-	move_to_final_position_animated()
 	
 func reset_current_minigame():
 	if not allow_reset or not minigame_active:
@@ -422,6 +434,8 @@ func reset_current_minigame():
 	
 	# STEP 6: Force scene tree update
 	await get_tree().process_frame
+	await get_tree().process_frame
+	show_station_speech()
 	
 	print("Nora: RESET COMPLETE! Recreated ", reset_count, " objects")
 
@@ -562,7 +576,7 @@ func move_to_final_position():
 		minigame_enabled = false
 		minigame_active = false
 		allow_reset = false
-		
+		stop_instruction_timer() 
 		# Move to final position
 		global_position = final_marker.global_position
 		
@@ -570,11 +584,11 @@ func move_to_final_position():
 		if animation_player:
 			animation_player.play("idle")
 		
+		start_final_position_bubbles()
 		print("Nora: Moved to final position at ", global_position)
 	else:
 		print("Nora: Final position marker not found")
 
-# ADD THIS NEW FUNCTION
 func move_to_final_position_animated():
 	"""Move Nora to final position with animation"""
 	if final_position_marker.is_empty():
@@ -588,10 +602,327 @@ func move_to_final_position_animated():
 		minigame_active = false
 		allow_reset = false
 		
+		# Stop instruction timer
+		stop_instruction_timer()
+		
 		# Start moving to final position
 		target_position = final_marker.global_position
 		is_moving = true
-		print("Nora: Moving to final position...")
+		print("Nora: Moving to final position from ", global_position, " to ", target_position)
+		
+		# Wait for movement to complete using a better approach
+		await _wait_for_movement_completion()
+		
+		# Start bubbles after movement
+		print("Nora: Final position movement completed, starting bubbles")
+		start_final_position_bubbles()
 	else:
 		print("Nora: Final position marker not found")
 
+func _wait_for_movement_completion():
+	"""Wait for Nora to finish moving to target position"""
+	var max_wait_time = 5.0  # Maximum time to wait (5 seconds)
+	var wait_interval = 0.1  # Check every 0.1 seconds
+	var elapsed_time = 0.0
+	
+	while is_moving and elapsed_time < max_wait_time:
+		await get_tree().create_timer(wait_interval).timeout
+		elapsed_time += wait_interval
+		print("Nora: Waiting for movement... is_moving = ", is_moving)
+	
+	if not is_moving:
+		print("Nora: Movement completed successfully")
+	else:
+		print("Nora: Movement timeout - forcing idle state")
+		is_moving = false
+		if animation_player:
+			animation_player.play("idle")
+
+
+
+func _setup_cutscene():
+	"""Setup the cutscene sequence for when minigame is completed"""
+	print("Nora: Setting up cutscene sequence")
+	
+	# Configure cutscene properties
+	cutscene_name = "NoraMinigameCompletion"
+	play_only_once = true
+	global_flag_to_set = "minigame_nora_completed"
+	alyra.visible = false
+	nora.visible = false
+	varek.visible = false
+	# Setup markers if they exist
+	player_markers = {
+		# Example positions - adjust to match your scene
+		"marker1": marker1.global_position,
+		"marker2": marker2.global_position,
+		#"marker2": marker2.global_position,
+		#"marker3": marker3.global_position,
+		#"marker4": marker4.global_position,
+		#"marker5": marker5.global_position,
+		#"marker6": marker6.global_position
+		
+	}
+	
+	cutscene_markers = {
+		"cutscene_marker1": cutscene_marker1.global_position,
+		#"cutscene_marker2": cutscene_marker2.global_position
+	}
+	
+	# Define the sequence you want
+	sequence = [
+		{"type": "move_player", "name": "marker1", "duration": 0.5, "animation": "run", "wait": true},
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_animation", "name": "idle", "wait": false},
+		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline7M", "wait": true},
+		{"type": "move_player", "name": "marker2", "duration": 1, "animation": "shine", "wait": false},
+		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		#{"type": "fade_in"},
+		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline7M_1", "wait": true},
+		{"type": "move_player", "name": "marker1", "duration": 0.5, "animation": "jump", "wait": true},
+		{"type": "fade_out", "wait": false},
+		#{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+		{"type": "player_form", "name": "Magus", "wait": true},
+		{"type": "player_animation", "name": "save",  "wait": true},
+		#{"type": "wait", "duration": 0.5},
+		{"type": "player_animation", "name": "load",  "wait": true},
+		{"type": "wait", "duration": 0.5},
+		{"type": "player_animation", "name": "idle", "wait": false},
+		{"type": "dialog", "name": "timeline7M_2", "wait": true},
+		
+		#{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		#{"type": "move_player", "name": "marker1", "duration": 2, "animation": "run", "wait": true},
+		#{"type": "player_animation", "name": "idle", "wait": false},
+		#{"type": "dialog", "name": "timeline6M_1", "wait": true},
+		{"type": "fade_in"},
+		{"type": "animation", "name": "anim4", "wait": false, "loop": false},
+		
+	]
+
+func _on_cutscene_start():
+	"""Called when cutscene starts"""
+	print("Nora Cutscene: Starting")
+
+func _on_cutscene_end():
+	"""Called when cutscene ends"""
+	print("Nora Cutscene: Finished")
+	alyra.visible = false
+	nora.visible = false
+	varek.visible = false
+	# Set your global flags and rewards
+	Global.timeline = 4
+	Global.magus_form = true
+	
+	if player_in_range and player_in_range.has_method("unlock_and_force_form"):
+		player_in_range.unlock_and_force_form("Magus")
+	
+	Global.health_max += 10
+	Global.health = Global.health_max
+	if Global.player and Global.player.has_signal("health_changed"):
+		Global.player.health_changed.emit(Global.health, Global.health_max)
+	
+	Global.remove_quest_marker("Explore Tromarvelia")
+	
+	# Move Nora to final position
+	move_to_final_position_animated()
+
+# Add these functions anywhere in your class (after _ready is good)
+func create_speech_bubble(text: String, duration: float = 3.0):
+	"""Create a speech bubble with the given text"""
+	
+	# Remove any existing bubble first
+	remove_current_bubble()
+	
+	# Check if we have a speech bubble scene assigned
+	if not speech_bubble_scene:
+		print("ERROR: No speech_bubble_scene assigned!")
+		return
+	
+	# Create instance from the scene
+	var bubble = speech_bubble_scene.instantiate()
+	
+	# Add as child of Nora
+	add_child(bubble)
+	current_bubble = bubble
+	
+	# Wait a frame for the bubble to be ready
+	await get_tree().process_frame
+	
+	# Call set_text method on the bubble
+	if bubble.has_method("set_text"):
+		bubble.set_text(text, duration)
+		
+		# Adjust bubble position using our offset variables
+		bubble.position += Vector2(bubble_x_offset, bubble_y_offset)
+		
+		#print("Nora: Showing bubble: ", text)
+	else:
+		print("ERROR: Bubble scene doesn't have set_text method!")
+		bubble.queue_free()
+		current_bubble = null
+
+func remove_current_bubble():
+	"""Safely remove current bubble"""
+	if current_bubble and is_instance_valid(current_bubble):
+		current_bubble.queue_free()
+		current_bubble = null
+
+func show_station_speech():
+	"""Show speech bubble based on current station"""
+	if Global.meet_nora_one == true:
+		match current_station_index:
+			0:  # Station 1 - Green
+				create_speech_bubble("Mix the orbs to create GREEN orb!")
+			1:  # Station 2 - Purple
+				create_speech_bubble("Alright, next one I need to get PURPLE orb")
+			2:  # Station 3 - Gold
+				create_speech_bubble("This is the final one, I need GOLDEN orb. You need to mix TWO TIMES!")
+			_:
+				pass
+	else:
+		pass
+		
+	start_instruction_timer()
+
+func show_completion_speech():
+	"""Show speech when a station is completed"""
+	match current_station_index:
+		0, 1:  # Station 1 or 2 completed
+			create_speech_bubble("Great! Let's move on to the next mixer.")
+		2:  # Station 3 completed (handled by cutscene)
+			pass  # Cutscene will handle this
+		_:
+			pass
+
+func start_final_position_bubbles():
+	"""Start showing random bubbles when Nora is at final position"""
+	print("Nora: Starting final position bubble system...")
+	
+	# Remove existing timer if it exists
+	if bubble_timer and is_instance_valid(bubble_timer):
+		bubble_timer.queue_free()
+		bubble_timer = null
+	
+	# Create new timer
+	bubble_timer = Timer.new()
+	add_child(bubble_timer)
+	bubble_timer.timeout.connect(_show_random_final_bubble)
+	
+	# Set random interval (8-15 seconds)
+	var wait_time = randf_range(8.0, 15.0)
+	bubble_timer.wait_time = wait_time
+	bubble_timer.start()
+	
+	print("Nora: Started final position bubble timer (first bubble in ", wait_time, " seconds)")
+
+func _show_random_final_bubble():
+	"""Show a random bubble at final position"""
+	#print("Nora: _show_random_final_bubble called")
+	
+	# Check if we should show a bubble
+	if final_position_bubble_texts.size() > 0 and not is_moving and minigame_enabled == false:
+		var random_text = final_position_bubble_texts[randi() % final_position_bubble_texts.size()]
+		create_speech_bubble(random_text)
+		#print("Nora: Showing random final position bubble: ", random_text)
+	else:
+		print("Nora: Cannot show final bubble - is_moving: ", is_moving, ", minigame_enabled: ", minigame_enabled)
+	
+	# Reset timer for next bubble
+	if bubble_timer and is_instance_valid(bubble_timer) and not is_moving:
+		var wait_time = randf_range(8.0, 15.0)
+		bubble_timer.wait_time = wait_time
+		bubble_timer.start()
+		#print("Nora: Next final bubble in ", wait_time, " seconds")
+		
+
+func start_instruction_timer():
+	"""Start timer to repeat station instructions"""
+	# Remove existing timer if it exists
+	if instruction_timer and is_instance_valid(instruction_timer):
+		instruction_timer.queue_free()
+	
+	# Create new timer
+	instruction_timer = Timer.new()
+	add_child(instruction_timer)
+	instruction_timer.timeout.connect(_repeat_station_instruction)
+	
+	# Set random interval (15-20 seconds)
+	instruction_timer.wait_time = randf_range(15.0, 20.0)
+	instruction_timer.start()
+	print("Nora: Started instruction repeat timer for station ", current_station_index)
+
+func _repeat_station_instruction():
+	"""Repeat the current station instruction"""
+	# Only repeat if:
+	# 1. Station is not completed
+	# 2. Minigame is active (player is working on it)
+	# 3. Player is not currently moving to another station
+	if not is_moving and minigame_active and not Global.minigame_nora_completed:
+		# Check if current station is not completed
+		if current_station_index < stations_completed.size() and not stations_completed[current_station_index]:
+			print("Nora: Repeating instruction for station ", current_station_index)
+			
+			match current_station_index:
+				0:  # Station 1 - Green
+					create_speech_bubble("Remember: Create a GREEN orb!")
+				1:  # Station 2 - Purple
+					create_speech_bubble("Don't forget: I need a PURPLE orb!")
+				2:  # Station 3 - Gold
+					create_speech_bubble("Remember: GOLD requires TWO mixes!")
+				_:
+					pass
+	
+	# Reset timer for next repeat
+	if instruction_timer and is_instance_valid(instruction_timer):
+		instruction_timer.wait_time = randf_range(15.0, 20.0)  # Random interval
+		instruction_timer.start()
+
+func stop_instruction_timer():
+	"""Stop the instruction repeat timer"""
+	if instruction_timer and is_instance_valid(instruction_timer):
+		instruction_timer.stop()
+		instruction_timer.queue_free()
+		instruction_timer = null
+		print("Nora: Stopped instruction repeat timer")
+		
+
+
+#func _on_dialogic_finished(_timeline_name = ""):
+#	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
+	# Dialog is done. Now, fade out the black screen.
+
+#	Global.is_cutscene_active = false
+	
+#	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+	
+	# Disconnect the signal to prevent unintended calls.
+#	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
+#		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+
+
+
+#	Global.timeline = 4
+#	Global.magus_form = true
+	
+	
+#	await get_tree().create_timer(0.1).timeout
+#	player_in_range.unlock_and_force_form("Magus")
+	
+#	Global.health_max += 10
+#	Global.health = Global.health_max
+#	Global.player.health_changed.emit(Global.health, Global.health_max)
+	
+	#player_in_range.unlock_state("Magus")
+	#player_in_range.switch_state("Magus")
+	#Global.selected_form_index = 1
+	#player_in_range.current_state_index = Global.selected_form_index
+	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
+#	print("Global.magus_form ",Global.magus_form )
+#	Global.remove_quest_marker("Explore Tromarvelia")
+	
+#	move_to_final_position_animated()

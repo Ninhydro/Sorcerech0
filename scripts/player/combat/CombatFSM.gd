@@ -34,7 +34,7 @@ func change_state(new_state: CombatState):
 			current_state.get_parent().remove_child(current_state)
 			current_state.queue_free()  
 
-	print("CombatFSM: Switching to", new_state)
+	#print("CombatFSM: Switching to", new_state)
 	current_state = new_state
 	add_child(current_state)
 	current_state.enter()

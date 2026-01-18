@@ -311,7 +311,9 @@ func _ready():
 
 
 func _physics_process(delta):
-
+	#if animation_player:
+	#	print("Current animation: ", animation_player.current_animation, 
+	#		  " Playing: ", animation_player.is_playing())
 	#print(Global.timeline)
 	#Global.magus_form = true
 	#print(can_attack)
@@ -794,8 +796,8 @@ func switch_state(state_name: String) -> void:
 	current_state = states[state_name]
 	current_state.enter()
 	
-
 	
+
 	form_changed.emit(state_name) # Emit signal after form changes
 
 	Dialogic.VAR.set_variable("player_current_form", state_name)
@@ -1528,6 +1530,13 @@ func play_cutscene_animation(anim_name: String):
 				"UltimateMagus": anim_state.travel("load_ult_magus")
 				"UltimateCyber": anim_state.travel("load_ult_cyber")
 				_: anim_state.travel("load_normal")
+		"shine":
+			match form:
+				"Magus": anim_state.travel("shine_magus")
+				"Cyber": anim_state.travel("shine_cyber")
+				"UltimateMagus": anim_state.travel("shine_ult_magus")
+				"UltimateCyber": anim_state.travel("shine_ult_cyber")
+				_: anim_state.travel("die_normal")
 		# Add other animations as needed
 		_:
 			# Default to idle
@@ -1644,7 +1653,7 @@ func track_area_pass():
 	print("Area pass count: ", area_pass_count, "/", max_area_passes)
 	
 	show_area_pass_feedback()
-	
+	print(area_pass_count)
 	if area_pass_count >= max_area_passes:
 		complete_area_goal()
 
@@ -1782,7 +1791,7 @@ func _try_pay_health_for_skill() -> bool:
 func unlock_and_force_form(form_name: String) -> void:
 	# Make sure it's unlocked
 	unlock_state(form_name)
-
+	
 	# Find the correct index in unlocked_states
 	var idx := unlocked_states.find(form_name)
 	if idx == -1:
@@ -1795,8 +1804,8 @@ func unlock_and_force_form(form_name: String) -> void:
 
 	# Switch the actual FSM/state
 	switch_state(form_name)
-	if combat_fsm:
-		combat_fsm.change_state(IdleState.new(self))
+	#if combat_fsm:
+	#	combat_fsm.change_state(IdleState.new(self))
 
 	print("unlock_and_force_form: forced form to ", form_name, " at index ", idx)
 

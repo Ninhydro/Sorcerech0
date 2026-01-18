@@ -1,4 +1,4 @@
-join Varek_soldier (Happy) center [mirrored="true"]
+join Varek_soldier (Happy) left [mirrored="true"]
 Varek_soldier (Happy): Still smells like wildflowers and arrogance around here.
 join Alyra (Happy) right [mirrored="true"]
 Alyra: What is this place?  The building looks old

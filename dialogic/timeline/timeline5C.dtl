@@ -1,8 +1,8 @@
-join Alyra (Happy) center [mirrored="true"]
+join Alyra (Happy) right
 Alyra (Happy): I haven’t been here in years. Exactlyion… Still loud… still glowing.
-join Varek_soldier (Happy) right [mirrored="true"]
+join Varek_soldier (Happy) left
 Varek_soldier (Happy): It’s like walking into a lightning storm, it's so noisy here...
-join Player (Happy) rightmost [mirrored="true"]
+join Player (Happy) leftmost
 Player (Happy): Feels… fast. Noisy. But… alive.
 Alyra (Happy): Alright, lets keep this fast
 Alyra (Happy): I have a friend that can help us, let’s check her out
