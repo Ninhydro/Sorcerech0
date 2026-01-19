@@ -770,24 +770,31 @@ text = "Village & Boss Part 1"
 
 [node name="GrapplePoint" parent="." instance=ExtResource("4_halrj")]
 position = Vector2(-392, -24)
+metadata/_edit_lock_ = true
 
 [node name="GrapplePoint3" parent="." instance=ExtResource("4_halrj")]
 position = Vector2(-464, -168)
+metadata/_edit_lock_ = true
 
 [node name="GrapplePoint4" parent="." instance=ExtResource("4_halrj")]
 position = Vector2(-376, -248)
+metadata/_edit_lock_ = true
 
 [node name="GrapplePoint2" parent="." instance=ExtResource("4_halrj")]
 position = Vector2(-544, -96)
+metadata/_edit_lock_ = true
 
 [node name="GrapplePoint5" parent="." instance=ExtResource("4_halrj")]
-position = Vector2(1352, -48)
+position = Vector2(1240, -48)
+metadata/_edit_lock_ = true
 
 [node name="GrapplePoint6" parent="." instance=ExtResource("4_halrj")]
-position = Vector2(1168, -48)
+position = Vector2(1056, -48)
+metadata/_edit_lock_ = true
 
 [node name="GrapplePoint7" parent="." instance=ExtResource("4_halrj")]
-position = Vector2(1256, -56)
+position = Vector2(1144, -56)
+metadata/_edit_lock_ = true
 
 [node name="Background" type="Node2D" parent="."]
 z_index = -10
@@ -941,22 +948,22 @@ position = Vector2(185, 51)
 metadata/_edit_lock_ = true
 
 [node name="cutscene3_5" parent="." instance=ExtResource("12_miuam")]
-position = Vector2(1476, 60)
+position = Vector2(1411, 54)
 metadata/_edit_lock_ = true
 
 [node name="cutscene8" parent="." instance=ExtResource("13_dw6lc")]
-position = Vector2(1264, 8)
+position = Vector2(1155, 5)
 success_cutscene_path = NodePath("../cutscene9")
 fail_cutscene_path = NodePath("../cutscene9")
 metadata/_edit_lock_ = true
 
 [node name="cutscene9" parent="." instance=ExtResource("14_km1yy")]
-position = Vector2(1264, 8)
+position = Vector2(1155, 5)
 next_cutscene_path = NodePath("../cutscene10")
 metadata/_edit_lock_ = true
 
 [node name="cutscene10" parent="." instance=ExtResource("15_sje5x")]
-position = Vector2(1264, 8)
+position = Vector2(1155, 5)
 metadata/_edit_lock_ = true
 
 [node name="cutscene20T" parent="." instance=ExtResource("16_02tm2")]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dbo4t4k7ob3qg"]
+[gd_scene load_steps=33 format=3 uid="uid://dbo4t4k7ob3qg"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_2u37g"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_gdouu"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://ca53ncao01ppo" path="res://scenes/enemies/Moving_platform1.tscn" id="20_xyqpq"]
 [ext_resource type="PackedScene" uid="uid://duuqngmhvpksa" path="res://scenes/enemies/ArachneEnemy.tscn" id="23_4tyy6"]
 [ext_resource type="PackedScene" uid="uid://bvacwftw67o46" path="res://scenes/enemies/Moving_platform2.tscn" id="23_p3n5p"]
+[ext_resource type="PackedScene" uid="uid://nquxmuq3we7x" path="res://dialogic/cutscene/cutscene7.tscn" id="26_etqsb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t4ope"]
 size = Vector2(4395, 465)
@@ -148,7 +149,7 @@ position = Vector2(1664, -265)
 position = Vector2(1520, 312)
 
 [node name="Spawn_C7" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(-26, -303)
+position = Vector2(-112, -281)
 
 [node name="Doors" type="Node2D" parent="."]
 position = Vector2(56, -48)
@@ -2019,3 +2020,6 @@ position = Vector2(-728, -401)
 
 [node name="BeastEnemy9" parent="." instance=ExtResource("14_6yk5q")]
 position = Vector2(264, 751)
+
+[node name="cutscene7" parent="." instance=ExtResource("26_etqsb")]
+position = Vector2(-253.101, -278.397)

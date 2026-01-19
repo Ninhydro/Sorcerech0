@@ -17,7 +17,6 @@
 [ext_resource type="PackedScene" uid="uid://dilvvyq8hh7uy" path="res://dialogic/cutscene/Tromarvelia_door.tscn" id="12_41aih"]
 [ext_resource type="Texture2D" uid="uid://chgxaopecgvd7" path="res://assets_image/Objects/flags1.png" id="12_e044j"]
 [ext_resource type="PackedScene" uid="uid://ul2udlsga6b8" path="res://dialogic/cutscene/cutscene4_5.tscn" id="13_v0bov"]
-[ext_resource type="PackedScene" uid="uid://nquxmuq3we7x" path="res://dialogic/cutscene/cutscene7.tscn" id="14_gimmw"]
 [ext_resource type="Texture2D" uid="uid://hkvasgrhmd0c" path="res://assets_image/Objects/banner_flag3.png" id="14_o105p"]
 [ext_resource type="PackedScene" uid="uid://cfe3yc118ndke" path="res://dialogic/cutscene/cutscene13M.tscn" id="15_q52no"]
 [ext_resource type="PackedScene" uid="uid://8krsc7hlpjgk" path="res://dialogic/cutscene/cutscene16.tscn" id="16_agjfx"]
@@ -25,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="18_0n15f"]
 [ext_resource type="PackedScene" uid="uid://c3fg0v3ccw12x" path="res://scenes/objects/VideoTapePickup.tscn" id="24_gopsl"]
 [ext_resource type="Texture2D" uid="uid://d3kfgqo6x00hi" path="res://assets_image/Objects/collect_objects10.png" id="25_1lvi8"]
+[ext_resource type="PackedScene" uid="uid://v0h32bpwx4lr" path="res://dialogic/cutscene/cutscene07.tscn" id="25_u7h6x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wlrbn"]
 size = Vector2(3432, 638.5)
@@ -167,7 +167,7 @@ layer_0/tile_data = PackedInt32Array(327641, 262145, 3, 327642, 262145, 3, 32764
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="Spawn_FromABattlefield" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(575, -120)
+position = Vector2(335, 48)
 
 [node name="Spawn_FromTBattlefield" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(-1329, 104)
@@ -562,19 +562,11 @@ position = Vector2(-1335.26, 123.939)
 metadata/_edit_lock_ = true
 
 [node name="cutscene4M" parent="." instance=ExtResource("12_2serk")]
-position = Vector2(543.75, -88.75)
+position = Vector2(287, 56)
 metadata/_edit_lock_ = true
 
 [node name="cutscene4_5" parent="." instance=ExtResource("13_v0bov")]
 position = Vector2(680, -138)
-metadata/_edit_lock_ = true
-
-[node name="cutscene7" parent="." instance=ExtResource("14_gimmw")]
-position = Vector2(586, -105)
-metadata/_edit_lock_ = true
-
-[node name="cutscene7_2" parent="." instance=ExtResource("14_gimmw")]
-position = Vector2(-1378, 107)
 metadata/_edit_lock_ = true
 
 [node name="cutscene13M" parent="." instance=ExtResource("15_q52no")]
@@ -598,6 +590,9 @@ position = Vector2(-962, -947)
 tape_slot = "Tape3"
 inventory_id = "Tape_C"
 tape_texture = ExtResource("25_1lvi8")
+
+[node name="cutscene07" parent="." instance=ExtResource("25_u7h6x")]
+position = Vector2(637.302, -107.638)
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]

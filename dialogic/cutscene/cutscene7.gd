@@ -1,8 +1,8 @@
-extends Area2D
+extends MasterCutscene
 
-var _has_been_triggered: bool = false
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@export var play_only_once: bool = true
+#var _has_been_triggered: bool = false
+#@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+#@export var play_only_once: bool = true
 
 var target_room = "Room_AerendaleBattlefield"     # Name of the destination room (node or scene)
 var target_spawn = "Spawn_C7"    # Name of the spawn marker in the target room
@@ -11,69 +11,71 @@ var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
+@onready var alyra: Sprite2D = $Alyra
+@onready var varek: Sprite2D = $Varek_soldier
+
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Global.timeline == 4 and Global.magus_form == true and Global.cyber_form == true: 
-		collision_shape.disabled = false
-	else:
-		collision_shape.disabled = true
-
-
+#func _ready():
+#	pass
 func _on_body_entered(body):
-	#print("Player position: ",player_node_ref.global_position)
-	if (body.is_in_group("player") and not _has_been_triggered):  #and Global.cutscene_finished1 == false:
+	print("Cutscene1: Body entered - ", body.name if body else "null")
+	
+	# Check if timeline condition is met
+	if Global.timeline == 4 and Global.magus_form == true and Global.cyber_form == true and body.is_in_group("player"):
+		print("Cutscene1: Conditions met, calling parent method")
+		# Store player reference first
 		player_in_range = body
-		print("Player entered cutscene trigger area. Starting cutscene.")
+		#if player_in_range:
+		#	transition_manager.travel_to(player_in_range, target_room, target_spawn)
+		# Call parent's _on_body_entered
+		#betael.visible = true
+		#maya.visible = false
+		super._on_body_entered(body)
+	else:
+		print("Cutscene1: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
 		
-		
-
-		if collision_shape:
-			collision_shape.set_deferred("disabled", true)
-		else:
-			printerr("Cutscene Area2D: WARNING: CollisionShape2D is null, cannot disable it. Using Area2D monitoring instead.")
-			set_deferred("monitorable", false)
-			set_deferred("monitoring", false)
-
-		#start_cutscene(cutscene_animation_name_to_play, 0.0)
-
-		if play_only_once:
-			_has_been_triggered = true
-			
-		if player_in_range:
-			transition_manager.travel_to(player_in_range, target_room, target_spawn)
-		
-		
-		Global.is_cutscene_active = true
-		#Global.cutscene_name = cutscene_animation_name
-		#Global.cutscene_playback_position = start_position
-		#Dialogic.start("timeline1", false)
-		if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
-		Dialogic.timeline_ended.connect(_on_dialogic_finished)
-
-
-		Dialogic.start("timeline8", false)
-
-
-func _on_dialogic_finished(_timeline_name = ""):
-	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
-	# Dialog is done. Now, fade out the black screen.
-
-	Global.is_cutscene_active = false
+func _setup_cutscene():
+	cutscene_name = "Cutscene3"
+	alyra.visible = false
+	varek.visible = false
+	play_only_once = true
+	area_activation_flag = ""  # No flag required
+	global_flag_to_set = ""  # We'll handle this manually
 	
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
+
 	
-	# Disconnect the signal to prevent unintended calls.
-	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+	
+	# Simple sequence: just play dialog
+	sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline8", "wait": true},
+		
+		{"type": "wait", "duration": 0.5},		
+		{"type": "fade_in"},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		
 
+	]
 
+func _on_cutscene_start():
+	print("Cutscene1: Starting")
+	# Player reference is already stored in _player_ref by parent class
+	if _player_ref:
+		player_in_range = _player_ref
+		print("Cutscene1: Player reference stored: ", player_in_range.name)
 
+func _on_cutscene_end():
+	print("Cutscene1: Finished")
+	alyra.visible = false
+	varek.visible = false
+	# Set timeline
 	Global.timeline = 5
 	Global.add_quest_marker("Go back to New Aerendale!", Vector2(600,2256))
 	Global.current_scene_path = get_tree().current_scene.scene_file_path
@@ -86,19 +88,15 @@ func _on_dialogic_finished(_timeline_name = ""):
 	else:
 		printerr("Failed to save game at SaveSpot (SaveLoadManager returned false).") # Updated print statement
 			
-	
-	#Global.magus_form = true
-	#player_in_range.unlock_state("Magus")
-	#player_in_range.switch_state("Magus")
-	#Global.selected_form_index = 1
-	#player_in_range.current_state_index = Global.selected_form_index
-	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
-	
-	#Global.set_player_form(get_current_form_id())
-	#Global.current_form = get_current_form_id()
-	#Global.first_tromarvelia = true
+	#if player_in_range:
+	#		transition_manager.travel_to(player_in_range, target_room1, target_spawn1)
+	#var minigame = get_tree().get_first_node_in_group("sorting_minigame")
+	#if minigame:
+	#	minigame.start_game()
+		
+	print("Cutscene1: Set Global.timeline = ", Global.timeline)
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
 
 
 
-func _on_body_exited(body):
-	pass # Replace with function body.

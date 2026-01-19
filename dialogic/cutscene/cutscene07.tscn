@@ -1,8 +1,8 @@
-[gd_scene load_steps=35 format=3 uid="uid://t5sfr77m0a6y"]
+[gd_scene load_steps=34 format=3 uid="uid://v0h32bpwx4lr"]
 
-[ext_resource type="Script" path="res://dialogic/cutscene/cutscene4M.gd" id="1_dwgnn"]
-[ext_resource type="Texture2D" uid="uid://dibdc1w6uho4q" path="res://assets_image/Characters/Alyra/Alyra-Sheet.png" id="2_2ob5q"]
-[ext_resource type="Texture2D" uid="uid://cet4egxc8qsop" path="res://assets_image/Characters/Varek/Varek-Sheet.png" id="3_f4nik"]
+[ext_resource type="Script" path="res://dialogic/cutscene/cutscene07.gd" id="1_is4q2"]
+[ext_resource type="Texture2D" uid="uid://dibdc1w6uho4q" path="res://assets_image/Characters/Alyra/Alyra-Sheet.png" id="2_c5y4b"]
+[ext_resource type="Texture2D" uid="uid://cet4egxc8qsop" path="res://assets_image/Characters/Varek/Varek-Sheet.png" id="3_vkdf0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(131, 75)
@@ -62,299 +62,51 @@ tracks/2/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_made1"]
-resource_name = "anim1"
+[sub_resource type="Animation" id="Animation_4t64i"]
+resource_name = "cutscene1.1"
 length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Alyra:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Alyra:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Alyra:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(51.4, -27.6), Vector2(-20.6, -27.6)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Varek_soldier:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Varek_soldier:flip_h")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Varek_soldier:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(23.4, -27.6), Vector2(9.4, -27.6)]
-}
-tracks/6/type = "animation"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Alyra/AnimationPlayer")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"clips": PackedStringArray("walk"),
-"times": PackedFloat32Array(0)
-}
-tracks/7/type = "animation"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("Varek_soldier/AnimationPlayer")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"clips": PackedStringArray("walk"),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="Animation" id="Animation_63p8p"]
-resource_name = "anim1_idle"
 loop_mode = 1
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Alyra:visible")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Alyra:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Alyra:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-20.6, -27.6)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Varek_soldier:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Varek_soldier:flip_h")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Varek_soldier:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(9.4, -27.6)]
-}
-tracks/6/type = "animation"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Alyra/AnimationPlayer")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
-}
-tracks/7/type = "animation"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("Varek_soldier/AnimationPlayer")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"values": [{
+"args": ["idle"],
+"method": &"proxy_play_player_visual_animation"
+}]
 }
 
-[sub_resource type="Animation" id="Animation_s3m3e"]
-resource_name = "anim2"
-tracks/0/type = "value"
+[sub_resource type="Animation" id="Animation_x330y"]
+resource_name = "cutscene2"
+length = 5.0
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Alyra:visible")
+tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Alyra:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Alyra:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-20.6, -27.6)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Varek_soldier:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Varek_soldier:flip_h")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Varek_soldier:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(9.4, -27.6)]
-}
-tracks/6/type = "animation"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Alyra/AnimationPlayer")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
-}
-tracks/7/type = "animation"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("Varek_soldier/AnimationPlayer")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(0.2, 5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [-1],
+"method": &"proxy_set_player_face_direction"
+}, {
+"args": [],
+"method": &"proxy_enable_player_input_after_cutscene"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cywr2"]
 _data = {
-"anim1": SubResource("Animation_made1"),
-"anim1_idle": SubResource("Animation_63p8p"),
-"anim2": SubResource("Animation_s3m3e"),
-"cutscene1": SubResource("Animation_3uu3n")
+"cutscene1": SubResource("Animation_3uu3n"),
+"cutscene1.1": SubResource("Animation_4t64i"),
+"cutscene2": SubResource("Animation_x330y")
 }
 
 [sub_resource type="Animation" id="Animation_2qmwb"]
@@ -761,9 +513,9 @@ _data = {
 "walk": SubResource("Animation_5kr1m")
 }
 
-[node name="cutscene4M" type="Area2D"]
+[node name="cutscene07" type="Area2D"]
 position = Vector2(79, 74)
-script = ExtResource("1_dwgnn")
+script = ExtResource("1_is4q2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-4.5, -27.5)
@@ -775,15 +527,18 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 position = Vector2(-2, -27)
 zoom = Vector2(0.8, 0.8)
 
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Alyra" type="Sprite2D" parent="."]
-position = Vector2(-20.6, -27.6)
+visible = false
+position = Vector2(-1439, 278)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("2_2ob5q")
+texture = ExtResource("2_c5y4b")
+flip_h = true
 hframes = 9
 vframes = 9
 frame = 72
@@ -795,9 +550,10 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
-position = Vector2(9.4, -27.6)
+visible = false
+position = Vector2(-1467, 278)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("3_f4nik")
+texture = ExtResource("3_vkdf0")
 flip_h = true
 hframes = 8
 vframes = 18
