@@ -51,9 +51,9 @@ func _setup_cutscene():
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
-		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		{"type": "player_animation", "name": "idle",  "wait": false},
-		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline8", "wait": true},
 		
@@ -94,7 +94,7 @@ func _on_cutscene_end():
 	#if minigame:
 	#	minigame.start_game()
 		
-	print("Cutscene1: Set Global.timeline = ", Global.timeline)
+	#print("Cutscene1: Set Global.timeline = ", Global.timeline)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 

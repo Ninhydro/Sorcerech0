@@ -149,7 +149,7 @@ position = Vector2(1664, -265)
 position = Vector2(1520, 312)
 
 [node name="Spawn_C7" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(-112, -281)
+position = Vector2(-112, -273)
 
 [node name="Doors" type="Node2D" parent="."]
 position = Vector2(56, -48)
@@ -2022,4 +2022,4 @@ position = Vector2(-728, -401)
 position = Vector2(264, 751)
 
 [node name="cutscene7" parent="." instance=ExtResource("26_etqsb")]
-position = Vector2(-253.101, -278.397)
+position = Vector2(-248, -282)

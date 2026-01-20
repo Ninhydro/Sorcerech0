@@ -167,7 +167,7 @@ layer_0/tile_data = PackedInt32Array(327641, 262145, 3, 327642, 262145, 3, 32764
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="Spawn_FromABattlefield" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(335, 48)
+position = Vector2(335, 56)
 
 [node name="Spawn_FromTBattlefield" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(-1329, 104)

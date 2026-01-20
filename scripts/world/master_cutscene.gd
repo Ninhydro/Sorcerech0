@@ -539,7 +539,7 @@ func end_cutscene():
 	cutscene_finished.emit()
 	
 	print(cutscene_name + ": Cutscene finished")
-	queue_free()
+	#call_deferred("queue_free")
 
 func _exit_tree():
 	# Clean up

@@ -33,6 +33,11 @@ func enter():
 			player.anim_state.travel("run_normal")
 			
 func physics_update(delta):
+	
+	if not is_instance_valid(get_parent()):
+		return
+
+
 	if Global.is_cutscene_active:
 		return
 	if player.player_hit == false:
