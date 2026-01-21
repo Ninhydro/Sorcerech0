@@ -1967,18 +1967,23 @@ pickup_id = "MC_005"
 
 [node name="SimpleMovingPlatform" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(-1640, -409)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform4" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(1608, -345)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform5" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(1512, -337)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform7" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(1696, 759)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform8" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(1592, 791)
+wait_time = 3.0
 
 [node name="ArachneEnemy" parent="." instance=ExtResource("23_4tyy6")]
 position = Vector2(-1336, 375)
@@ -1990,33 +1995,43 @@ position = Vector2(-1312, 647)
 
 [node name="SimpleMovingPlatform11" parent="." instance=ExtResource("23_p3n5p")]
 position = Vector2(-1592, -249)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform2" parent="." instance=ExtResource("23_p3n5p")]
 position = Vector2(-1696, -249)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform3" parent="." instance=ExtResource("23_p3n5p")]
 position = Vector2(1560, -217)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform6" parent="." instance=ExtResource("23_p3n5p")]
 position = Vector2(1648, 919)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform9" parent="." instance=ExtResource("23_p3n5p")]
 position = Vector2(1544, 935)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform13" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(664, -561)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform14" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(720, -577)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform15" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(608, -577)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform16" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(-792, -401)
+wait_time = 3.0
 
 [node name="SimpleMovingPlatform17" parent="." instance=ExtResource("20_xyqpq")]
 position = Vector2(-728, -401)
+wait_time = 3.0
 
 [node name="BeastEnemy9" parent="." instance=ExtResource("14_6yk5q")]
 position = Vector2(264, 751)

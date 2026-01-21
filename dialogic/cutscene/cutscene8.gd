@@ -30,7 +30,9 @@ var battle_cancelled_on_player_death: bool = false
 
 @onready var alyra: Sprite2D = $Alyra
 @onready var varek: Sprite2D = $Varek_soldier
+@onready var magus: Sprite2D = $"Magus soldier"
 
+@onready var marker1: Marker2D = $Marker2D
 
 func _ready() -> void:
 	# Timer label hidden until battle starts
@@ -46,7 +48,7 @@ func _ready() -> void:
 	if boss_timer:
 		boss_timer.one_shot = true
 		boss_timer.wait_time = 60.0  # 2 minutes
-		boss_timer.timeout.connect(_on_boss_timer_timeout)
+		#boss_timer.timeout.connect(_on_boss_timer_timeout)
 	
 	_deactivate_barriers()
 	_reset_for_retry()
@@ -82,13 +84,13 @@ func _reset_for_retry() -> void:
 func _process(delta: float) -> void:
 	# Enable trigger only on specific timeline
 	if Global.timeline == 5:
-		if collision_shape.disabled:
-			print("Boss1: timeline=5 but collision_shape is disabled")
+		#if collision_shape.disabled:
+		#	print("Boss1: timeline=5 but collision_shape is disabled")
 		collision_shape.disabled = false
-	else:
-		if not collision_shape.disabled:
-			print("Boss1: timeline!=5 (", Global.timeline, "), disabling trigger")
-		collision_shape.disabled = true
+	#else:
+	#	if not collision_shape.disabled:
+	#		print("Boss1: timeline!=5 (", Global.timeline, "), disabling trigger")
+	#	collision_shape.disabled = true
 		
 	if Global.timeline == 6:
 		_deactivate_barriers()
@@ -108,15 +110,15 @@ func _on_body_entered(body: Node) -> void:
 		player_in_range = body
 		print("Player entered boss cutscene trigger area. Starting intro cutscene.")
 
-		if collision_shape:
-			collision_shape.set_deferred("disabled", true)
-		else:
-			printerr("Cutscene Area2D: CollisionShape2D is null, disabling monitoring instead.")
-			set_deferred("monitorable", false)
-			set_deferred("monitoring", false)
+		#if collision_shape:
+		#	collision_shape.set_deferred("disabled", true)
+		#else:
+		#	printerr("Cutscene Area2D: CollisionShape2D is null, disabling monitoring instead.")
+		#	set_deferred("monitorable", false)
+		#	set_deferred("monitoring", false)
 
-		if play_only_once:
-			_has_been_triggered = true
+		#if play_only_once:
+		#	_has_been_triggered = true
 
 		#start_intro_cutscene()
 		super._on_body_entered(body)
@@ -125,13 +127,23 @@ func _setup_cutscene():
 	cutscene_name = "magusbosspart1"
 	alyra.visible = false
 	varek.visible = false
+	magus.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
 	
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
-	
+	player_markers = {
+		# Example positions - adjust to match your scene
+		"marker1": marker1.global_position,
+		#"marker2": marker2.global_position,
+		#"marker3": marker3.global_position,
+		#"marker4": marker4.global_position,
+		#"marker5": marker5.global_position,
+		#"marker6": marker6.global_position
+		
+	}
 	
 	# Simple sequence: just play dialog
 	sequence = [
@@ -139,29 +151,34 @@ func _setup_cutscene():
 		{"type": "fade_out", "wait": false},
 		
 		{"type": "player_face", "direction": -1}, #1 is right, -1 is left
-		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
 		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline9", "wait": true},
+		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline9_1", "wait": true},
 		
-		{"type": "wait", "duration": 0.5},		
+		{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
-		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 		
 
 	]
 
 func _on_cutscene_start():
-	print("Cutscene1: Starting")
+	print("Cutscene1boss: Starting")
 	# Player reference is already stored in _player_ref by parent class
 	if _player_ref:
 		player_in_range = _player_ref
 		print("Cutscene1: Player reference stored: ", player_in_range.name)
 
 func _on_cutscene_end():
-	print("Cutscene1: Finished")
+	print("Cutscene1boss: Finished")
 	alyra.visible = false
 	varek.visible = false
+	magus.visible = false
 	# Set timeline
 	start_boss_battle()
 

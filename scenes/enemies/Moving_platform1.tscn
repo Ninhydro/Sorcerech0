@@ -4,10 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://xhuq8u782nf3" path="res://assets_image/Objects/object2.png" id="2_av57g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6buaw"]
-size = Vector2(16, 24)
+size = Vector2(8, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8v8xo"]
-size = Vector2(24, 32)
+size = Vector2(24, 96)
 
 [node name="SimpleMovingPlatform" type="CharacterBody2D"]
 z_index = -1
@@ -19,14 +19,14 @@ script = ExtResource("1_ge6da")
 is_dangerous = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 16)
+position = Vector2(-7.32265e-05, -12.8841)
 rotation = 3.14159
-scale = Vector2(0.4, 0.4)
+scale = Vector2(0.4, 1.30263)
 texture = ExtResource("2_av57g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 z_index = -1
-position = Vector2(0, 12)
+position = Vector2(0, -24)
 shape = SubResource("RectangleShape2D_6buaw")
 
 [node name="StartMarker" type="Marker2D" parent="."]
@@ -39,5 +39,6 @@ position = Vector2(0, 160)
 position = Vector2(0, -8)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
-position = Vector2(0, 16)
+visible = false
+position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_8v8xo")

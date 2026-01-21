@@ -33,6 +33,8 @@ func _unhandled_input(event: InputEvent):
 
 	
 func _ready():
+	war_effect.visible = false
+	#war_effect.enable_war_effect()
 	print("World: _ready() called. Global.play_intro_cutscene = ", Global.play_intro_cutscene)
 	
 	game_hud.visible = false
@@ -164,14 +166,16 @@ func _notify_world_ready():
 
 
 func _process(delta):
-	if (Global.timeline >= 5 and Global.timeline < 6) or (Global.timeline >= 8 and Global.timeline < 9):
+	var should_be_active = (Global.timeline >= 5 and Global.timeline < 6) or (Global.timeline >= 8 and Global.timeline < 9)
+	
+	if should_be_active:
 		war_effect.visible = true
-		war_effect.enable_war_effect()
+		# Just set the effect directly, no tween needed in process loop
 		war_effect.set_war_effect(1.0, 0.6)
 	else:
+		war_effect.set_war_effect(0.0, 0.6)
 		war_effect.visible = false
-		war_effect.disable_war_effect()
-		
+	
 func _on_cutscene_finished():
 	print("World: Cutscene finished → showing loading screen")
 	
