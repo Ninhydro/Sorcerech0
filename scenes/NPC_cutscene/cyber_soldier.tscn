@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_1prx1"]
 [ext_resource type="Texture2D" uid="uid://buobqvgq0dwoe" path="res://assets_image/Characters/Enemies/Cyber_soldier-Sheet.png" id="2_1xvbt"]
 
-[sub_resource type="Animation" id="Animation_voscn"]
+[sub_resource type="Animation" id="Animation_dxyn7"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -18,7 +18,7 @@ tracks/0/keys = {
 "values": [48]
 }
 
-[sub_resource type="Animation" id="Animation_q6psv"]
+[sub_resource type="Animation" id="Animation_t64bw"]
 resource_name = "attack"
 length = 0.6
 tracks/0/type = "value"
@@ -66,7 +66,7 @@ tracks/0/keys = {
 "values": [8, 9, 10, 11, 12, 13, 14, 15]
 }
 
-[sub_resource type="Animation" id="Animation_fg4fl"]
+[sub_resource type="Animation" id="Animation_fp58i"]
 resource_name = "hurt"
 length = 0.4
 tracks/0/type = "value"
@@ -82,7 +82,7 @@ tracks/0/keys = {
 "values": [32, 33, 34, 35]
 }
 
-[sub_resource type="Animation" id="Animation_ryw4g"]
+[sub_resource type="Animation" id="Animation_bdppk"]
 resource_name = "idle"
 length = 0.5
 loop_mode = 1
@@ -99,7 +99,7 @@ tracks/0/keys = {
 "values": [48, 49, 50, 51, 52]
 }
 
-[sub_resource type="Animation" id="Animation_qli6e"]
+[sub_resource type="Animation" id="Animation_ubxac"]
 resource_name = "walk"
 length = 0.8
 loop_mode = 1
@@ -116,15 +116,15 @@ tracks/0/keys = {
 "values": [40, 41, 42, 43, 44, 45, 46, 47]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_fg0y0"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n4btl"]
 _data = {
-"RESET": SubResource("Animation_voscn"),
-"attack": SubResource("Animation_q6psv"),
+"RESET": SubResource("Animation_dxyn7"),
+"attack": SubResource("Animation_t64bw"),
 "die": SubResource("Animation_bju6n"),
 "gun": SubResource("Animation_y07y1"),
-"hurt": SubResource("Animation_fg4fl"),
-"idle": SubResource("Animation_ryw4g"),
-"walk": SubResource("Animation_qli6e")
+"hurt": SubResource("Animation_fp58i"),
+"idle": SubResource("Animation_bdppk"),
+"walk": SubResource("Animation_ubxac")
 }
 
 [node name="Cyber soldier" type="Node2D"]
@@ -141,5 +141,5 @@ frame = 48
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Cyber soldier"]
 root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_fg0y0")
+"": SubResource("AnimationLibrary_n4btl")
 }

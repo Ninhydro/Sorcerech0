@@ -408,9 +408,21 @@ func handle_death():
 	if can_drop_health and health_drop_scene:
 		try_drop_health()
 	
-	if get_meta("is_boss", false):
+	var is_boss = get_meta("is_boss", false)
+	var boss_id = get_meta("boss_id", "")
+	var no_drop = get_meta("no_drop", false)
+	
+	if is_boss or boss_id != "":
+		print(name + " (BOSS) defeated!")
+		# Only queue_free for boss - no respawn
 		queue_free()
 		return
+
+		
+	if no_drop:
+		return 
+	elif can_drop_health and health_drop_scene :
+		try_drop_health()
 	#queue_free()
 	Global.increment_kills()
 	visible = false

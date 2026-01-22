@@ -173,8 +173,9 @@ func _process(delta):
 		# Just set the effect directly, no tween needed in process loop
 		war_effect.set_war_effect(1.0, 0.6)
 	else:
-		war_effect.set_war_effect(0.0, 0.6)
 		war_effect.visible = false
+		war_effect.set_war_effect(0.0, 0.6)
+		
 	
 func _on_cutscene_finished():
 	print("World: Cutscene finished → showing loading screen")

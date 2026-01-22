@@ -57,6 +57,7 @@ layer_0/tile_data = PackedInt32Array(6881195, 262145, 1)
 [node name="GameHUD" parent="." instance=ExtResource("22_lv2sh")]
 
 [node name="ColorRect" type="ColorRect" parent="GameHUD"]
+visible = false
 material = SubResource("ShaderMaterial_4w8it")
 offset_left = -8072.0
 offset_top = -4816.0

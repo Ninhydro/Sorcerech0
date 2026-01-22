@@ -29,6 +29,8 @@ var _is_cutscene_active: bool = false
 var _player_ref: CharacterBody2D = null
 var _original_position: Vector2 
 
+var battling_flag = false
+
 # Override Functions (for child scenes)
 func _setup_cutscene():
 	"""Override this in child scenes to setup sequence and markers"""
@@ -506,7 +508,10 @@ func end_cutscene():
 	
 	# Switch back to player camera
 	#await _fade_in()
-	_switch_to_player_camera()
+	if battling_flag == true:
+		_switch_to_cutscene_camera()
+	else:
+		_switch_to_player_camera()
 	await get_tree().create_timer(0.5).timeout
 	#await get_tree().create_timer(1).timeout
 	await _fade_out()

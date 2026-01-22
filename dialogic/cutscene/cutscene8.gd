@@ -20,7 +20,7 @@ var battle_active: bool = false
 
 # Boss scene to spawn
 const BOSS_SCENE: PackedScene = preload("res://scenes/enemies/MagusSoldierEnemy.tscn")
-
+#@export var next_cutscene_path: NodePath   # optional: cutscene after boss2
 # Optional: paths to next cutscene nodes (set in Inspector later)
 @export var success_cutscene_path: NodePath
 @export var fail_cutscene_path: NodePath
@@ -33,6 +33,7 @@ var battle_cancelled_on_player_death: bool = false
 @onready var magus: Sprite2D = $"Magus soldier"
 
 @onready var marker1: Marker2D = $Marker2D
+#var battling_flag = false
 
 func _ready() -> void:
 	# Timer label hidden until battle starts
@@ -222,6 +223,8 @@ func _on_cutscene_end():
 
 func start_boss_battle() -> void:
 	# Spawn boss at marker
+	#_switch_to_cutscene_camera()
+	battling_flag = true
 	battle_cancelled_on_player_death = false   # 🔹 reset
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max) 
@@ -233,6 +236,29 @@ func start_boss_battle() -> void:
 	if boss_instance == null:
 		printerr("Failed to instance boss scene.")
 		return
+	boss_instance.set_meta("is_boss", true)
+	boss_instance.set_meta("boss_id", "magus")
+	boss_instance.set_meta("no_drop", true)
+	
+	# Debug connection
+	print("Connecting to boss signals...")
+	print("Boss has boss_died signal: ", boss_instance.has_signal("boss_died"))
+	print("Boss has enemy_died signal: ", boss_instance.has_signal("enemy_died"))
+	print("Boss has tree_exited signal: ", boss_instance.has_signal("tree_exited"))
+	
+	# Connect to all possible signals
+	if boss_instance.has_signal("boss_died"):
+		boss_instance.boss_died.connect(_on_boss_died)
+		print("Connected to boss_died signal")
+	
+	if boss_instance.has_signal("enemy_died"):
+		boss_instance.enemy_died.connect(_on_boss_died)
+		print("Connected to enemy_died signal")
+	
+	# Always connect to tree_exited as backup
+	if not boss_instance.tree_exited.is_connected(_on_boss_died):
+		boss_instance.tree_exited.connect(_on_boss_died)
+		print("Connected to tree_exited signal")
 
 	var parent := get_parent()
 	if parent:
@@ -244,8 +270,8 @@ func start_boss_battle() -> void:
 		boss_instance.global_position = boss_spawn_marker.global_position
 	
 	# Connect to boss death (using tree_exited as generic hook)
-	if not boss_instance.tree_exited.is_connected(_on_boss_died):
-		boss_instance.tree_exited.connect(_on_boss_died)
+	#if not boss_instance.tree_exited.is_connected(_on_boss_died):
+	#	boss_instance.tree_exited.connect(_on_boss_died)
 
 	# Start timer + show label
 	battle_active = true
@@ -306,7 +332,7 @@ func _handle_battle_success() -> void:
 	# Global changes for killing boss in time
 	Global.timeline = 5.2
 	#Global.affinity += 1
-	Global.increment_kills()
+	#Global.increment_kills()
 	Global.first_boss_dead = true
 	_finish_battle_and_start_outro(true)
 
@@ -341,11 +367,13 @@ func _finish_battle_and_start_outro(success: bool) -> void:
 
 	# Choose node path based on success/fail
 	var node_path: NodePath = success_cutscene_path if success else fail_cutscene_path
-
+	print("finishing battle cutscene1")
 	if node_path != NodePath("") and has_node(node_path):
 		var cs_node: Node = get_node(node_path)
-		if cs_node.has_method("start_cutscene"):
-			cs_node.call("start_cutscene")
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
 		else:
 			if cs_node is CanvasItem:
 				cs_node.visible = true
