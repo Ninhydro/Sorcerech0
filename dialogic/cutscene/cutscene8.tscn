@@ -416,7 +416,7 @@ tracks/8/keys = {
 "times": PackedFloat32Array(0, 2, 3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-207, -2), Vector2(-79, -2), Vector2(-79, -2)]
+"values": [Vector2(-207, -8), Vector2(-79, -8), Vector2(-79, -8)]
 }
 tracks/9/type = "animation"
 tracks/9/imported = false
@@ -445,8 +445,8 @@ tracks/11/path = NodePath("Magus soldier/AnimationPlayer")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"clips": PackedStringArray("walk", "idle"),
-"times": PackedFloat32Array(0, 2)
+"clips": PackedStringArray("walk", "attack", "idle"),
+"times": PackedFloat32Array(0, 2, 2.6)
 }
 
 [sub_resource type="Animation" id="Animation_7ojre"]
@@ -558,7 +558,7 @@ tracks/8/keys = {
 "times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-79, -2), Vector2(-79, -2)]
+"values": [Vector2(-79, -8), Vector2(-79, -8)]
 }
 tracks/9/type = "animation"
 tracks/9/imported = false
@@ -1364,7 +1364,6 @@ shape = SubResource("RectangleShape2D_e4s5f")
 metadata/_edit_lock_ = true
 
 [node name="Alyra" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(50, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_hem0l")
@@ -1380,7 +1379,6 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-15, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_i3w5h")
@@ -1396,13 +1394,12 @@ libraries = {
 }
 
 [node name="Magus soldier" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-79, -2)
-scale = Vector2(0.6, 0.6)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_itqux")
 hframes = 8
 vframes = 5
-frame = 33
+frame = 35
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Magus soldier"]
 root_node = NodePath("../..")
