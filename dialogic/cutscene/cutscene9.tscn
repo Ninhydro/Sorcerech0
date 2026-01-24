@@ -3109,14 +3109,13 @@ libraries = {
 }
 
 [node name="Magus soldier" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-182, -8.00001)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_6mnfp")
 flip_h = true
 hframes = 8
 vframes = 5
-frame = 33
+frame = 26
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Magus soldier"]
 root_node = NodePath("../..")
@@ -3140,7 +3139,6 @@ libraries = {
 }
 
 [node name="Nataly" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-177, -7)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_wcphl")
