@@ -405,8 +405,8 @@ func handle_animation():
 	last_anim_position = global_position
 
 func handle_death():
-	if can_drop_health and health_drop_scene:
-		try_drop_health()
+	#if can_drop_health and health_drop_scene:
+	#	try_drop_health()
 	
 	var is_boss = get_meta("is_boss", false)
 	var boss_id = get_meta("boss_id", "")

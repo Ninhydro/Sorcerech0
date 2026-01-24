@@ -17,10 +17,12 @@ var player_in_range: Node = null
 
 @onready var alyra: Sprite2D = $Alyra
 @onready var varek: Sprite2D = $Varek_soldier
-@onready var magus: Sprite2D = $"Magus soldier"
+@onready var cyber: Sprite2D = $"Cyber soldier"
+@onready var nataly: Sprite2D = $Nataly
 
 
 @onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
 
 func _ready() -> void:
 	super._ready()
@@ -68,7 +70,8 @@ func _setup_cutscene():
 	cutscene_name = "cyberbosspart1"
 	alyra.visible = false
 	varek.visible = false
-	magus.visible = false
+	cyber.visible = false
+	nataly.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -78,7 +81,7 @@ func _setup_cutscene():
 	player_markers = {
 		# Example positions - adjust to match your scene
 		"marker1": marker1.global_position,
-		#"marker2": marker2.global_position,
+		"marker2": marker2.global_position,
 		#"marker3": marker3.global_position,
 		#"marker4": marker4.global_position,
 		#"marker5": marker5.global_position,
@@ -89,12 +92,15 @@ func _setup_cutscene():
 		sequence = [
 		{"type": "move_player", "name": "marker2",  "duration": 0.1, "animation": "run", "wait": false},
 		{"type": "wait", "duration": 0.5},
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "fade_out", "wait": false},
 		
-		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1v2", "wait": true, "loop": false},
+		{"type": "wait", "duration": 0.1},
 		{"type": "player_animation", "name": "die",  "wait": false},
 		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
-		{"type": "animation", "name": "anim1v2", "wait": true, "loop": false},
+		
 		#{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim1v2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline11V2", "wait": true},
@@ -115,6 +121,7 @@ func _setup_cutscene():
 	else: # boss not dead
 		sequence = [
 		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
@@ -158,7 +165,8 @@ func _on_cutscene_end():
 	print("Cutscene1boss: Finished")
 	alyra.visible = false
 	varek.visible = false
-	magus.visible = false
+	cyber.visible = false
+	nataly.visible = false
 	if Global.alyra_dead == false:
 		#Dialogic.start("timeline11V2", false)  # Alyra alive route
 		Global.persistent_saved_alyra = true

@@ -1316,7 +1316,7 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-2, -27)
+position = Vector2(-3, -12)
 
 [node name="npc1" type="Sprite2D" parent="."]
 

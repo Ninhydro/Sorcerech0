@@ -25,6 +25,8 @@ var battle_cancelled_on_player_death: bool = false
 @onready var alyra: Sprite2D = $Alyra
 @onready var varek: Sprite2D = $Varek_soldier
 @onready var magus: Sprite2D = $"Magus soldier"
+@onready var cyber: Sprite2D = $"Cyber soldier"
+@onready var nataly: Sprite2D = $Nataly
 
 @onready var marker1: Marker2D = $Marker2D
 
@@ -120,6 +122,8 @@ func _setup_cutscene():
 	alyra.visible = false
 	varek.visible = false
 	magus.visible = false
+	cyber.visible = false
+	nataly.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -201,6 +205,8 @@ func _on_cutscene_end():
 	alyra.visible = false
 	varek.visible = false
 	magus.visible = false
+	cyber.visible = false
+	nataly.visible = false
 	# Set timeline
 	start_boss2_battle()
 	
