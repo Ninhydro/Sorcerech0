@@ -74,6 +74,7 @@ directories/dch_directory={
 "Zach": "res://dialogic/characters/Zach.dch"
 }
 directories/dtl_directory={
+"Demo_end": "res://dialogic/timeline/Demo_end.dtl",
 "Exactlyion_tower_lock": "res://dialogic/timeline/Exactlyion_tower_lock.dtl",
 "Test": "res://dialogic/timeline/Test.dtl",
 "betael1": "res://dialogic/timeline/betael1.dtl",

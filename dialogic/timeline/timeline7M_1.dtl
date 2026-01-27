@@ -1,4 +1,4 @@
-[background arg="res://assets_image/Background/Black.png" fade="0.5"]
+[background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
 join Player (Happy) left
 Karol (Happy): You know, you are also worthy for the throne
 Anonymous: I never needed one. One crown was enough — for both of us.

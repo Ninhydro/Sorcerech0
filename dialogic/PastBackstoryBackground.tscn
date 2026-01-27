@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://i2t38e76505m"]
+
+[ext_resource type="Shader" path="res://shaders/PastBackstoryBackground.gdshader" id="1_rw36o"]
+[ext_resource type="Script" path="res://dialogic/PastBackstoryBackground.gd" id="2_68hb3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w2e5l"]
+shader = ExtResource("1_rw36o")
+shader_parameter/grain_amount = 0.05
+shader_parameter/flicker_speed = 1.5
+shader_parameter/flicker_amount = 0.05
+shader_parameter/tint_color = Color(0.8, 0.7, 0.6, 0.3)
+shader_parameter/base_color = Color(0.235, 0.157, 0.059, 1)
+
+[node name="PastBackstoryBackground" type="ColorRect"]
+material = SubResource("ShaderMaterial_w2e5l")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_68hb3")

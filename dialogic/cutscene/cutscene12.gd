@@ -53,12 +53,14 @@ func _on_body_entered(body):
 			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 		Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
+		if Global.demo == true:
+			Dialogic.start("Demo_end", false) #alive dead
+		else:
+			if Global.alyra_dead == false:
+				Dialogic.start("timeline13V2", false) #alive alive
 
-		if Global.alyra_dead == false:
-			Dialogic.start("timeline13V2", false) #alive alive
-
-		elif Global.alyra_dead == true:
-			Dialogic.start("timeline13", false) #alive dead
+			elif Global.alyra_dead == true:
+				Dialogic.start("timeline13", false) #alive dead
 
 
 
@@ -75,11 +77,14 @@ func _on_dialogic_finished(_timeline_name = ""):
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 
 
-
-	Global.timeline = 6.5
-	Global.remove_quest_marker("Talk back at Maya's House")
-	Global.add_quest_marker("Meet the Magus King", Vector2(-6320,4736))
-	Global.add_quest_marker("Meet the Cyber Queen", Vector2(7240,-1432))
+	if Global.demo == true:
+		pass
+	else:
+		
+		Global.timeline = 6.5
+		Global.remove_quest_marker("Look around & talk back at Maya's House")
+		Global.add_quest_marker("Meet the Magus King", Vector2(-6320,4736))
+		Global.add_quest_marker("Meet the Cyber Queen", Vector2(7240,-1432))
 	#if player_in_range:
 	#		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 	#End Demo/Part 1

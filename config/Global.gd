@@ -441,7 +441,7 @@ var health_regeneration_timer: float = 0.0
 var health_regeneration_active: bool = true  # Can be toggled on/off
 var player_is_moving: bool = false  # Add this line
 #var playerAlive: bool = true
-
+var demo = true
 # Add these functions in the script (I suggest adding them after the health variables)
 
 # Health regeneration functions
@@ -578,6 +578,7 @@ func set_current_game_scene_path(path: String):
 	current_scene_path = path
 	print("Global: Current game scene path set to: " + current_scene_path)
 
+
 func get_save_data() -> Dictionary:
 	
 	var data = {
@@ -653,6 +654,8 @@ func get_save_data() -> Dictionary:
 		"explode_door": explode_door,
 		"cannon_goal_door_destroyed": cannon_goal_door_destroyed,
 		"final_puzzle_door": final_puzzle_door,
+		
+		"demo": demo,
 		
 		
 	}
@@ -736,6 +739,8 @@ func apply_load_data(data: Dictionary):
 	explode_door = data.get("explode_door", false)
 	cannon_goal_door_destroyed = data.get("cannon_goal_door_destroyed", false)
 	final_puzzle_door = data.get("final_puzzle_door", false)
+	
+	demo = data.get("demo", true)
 
 	print("Global: Save data loaded successfully.")
 
@@ -829,6 +834,8 @@ func reset_to_defaults():
 	explode_door = false
 	cannon_goal_door_destroyed = false
 	final_puzzle_door = false
+	
+	demo = true
 	
 # Helper functions for quest marker serialization
 func _serialize_quest_markers() -> Dictionary:

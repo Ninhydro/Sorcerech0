@@ -53,7 +53,7 @@ func _on_body_entered(body):
 			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 		Dialogic.timeline_ended.connect(_on_dialogic_finished)
 
-
+		
 		if Global.alyra_dead == false:
 			Dialogic.start("timeline12V2", false) #alive alive
 
@@ -75,9 +75,13 @@ func _on_dialogic_finished(_timeline_name = ""):
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 
 
-
-	Global.timeline = 6.2
-	Global.add_quest_marker("Talk back at Maya's House", Vector2(-1352, 2264))
+	if Global.demo == true:
+		Global.timeline = 6.2
+		Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
+		Dialogic.start("Demo_end", false) #alive dead
+	else:
+		Global.timeline = 6.2
+		Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
 
 
 	#if player_in_range:

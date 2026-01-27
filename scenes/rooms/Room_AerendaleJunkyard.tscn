@@ -653,13 +653,11 @@ position = Vector2(361, 55)
 metadata/_edit_lock_ = true
 
 [node name="cutscene11" parent="." instance=ExtResource("13_7roe7")]
-visible = false
-position = Vector2(-121.912, 361.781)
+position = Vector2(-150, 358)
 metadata/_edit_lock_ = true
 
 [node name="cutscene12" parent="." instance=ExtResource("14_djwtx")]
-visible = false
-position = Vector2(54.0882, 362.281)
+position = Vector2(62, 358)
 metadata/_edit_lock_ = true
 
 [node name="cutscene16_9" parent="." instance=ExtResource("15_1usq2")]

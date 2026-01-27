@@ -1,4 +1,4 @@
-[background arg="res://assets_image/Background/Black.png" fade="0.5"]
+[background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
 Sterling (Sad): *Fini! The east wing is collapsing! Where are you?!*
 Fini (Happy): Sterling... evacuate yourself. Don’t wait for me."
 Sterling (Sad): *I won’t leave you! We promised—*
