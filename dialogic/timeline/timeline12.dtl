@@ -1,2 +1,2 @@
-join Player center
+[background arg="res://assets_image/CG/CG12.png" fade="0.0"]
 Player (Normal): start part 2, chapter 5, cutscene 22, end chapter 5, then can move around
