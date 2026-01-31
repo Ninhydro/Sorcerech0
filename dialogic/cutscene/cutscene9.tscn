@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://o0t6yxnqatmc"]
+[gd_scene load_steps=77 format=3 uid="uid://o0t6yxnqatmc"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene9.gd" id="1_d1t25"]
 [ext_resource type="Texture2D" uid="uid://dibdc1w6uho4q" path="res://assets_image/Characters/Alyra/Alyra-Sheet.png" id="2_faysa"]
@@ -1137,8 +1137,8 @@ tracks/15/path = NodePath("Alyra/AnimationPlayer")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
-"clips": PackedStringArray("idle", "walk", "idle"),
-"times": PackedFloat32Array(0, 1.6, 2.6)
+"clips": PackedStringArray("idle", "walk", "idle", "prepare"),
+"times": PackedFloat32Array(0, 1.6, 2.6, 3.3)
 }
 tracks/16/type = "animation"
 tracks/16/imported = false
@@ -1147,8 +1147,8 @@ tracks/16/path = NodePath("Varek_soldier/AnimationPlayer")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"clips": PackedStringArray("idle", "prepare"),
+"times": PackedFloat32Array(0, 3.3)
 }
 tracks/17/type = "animation"
 tracks/17/imported = false
@@ -1177,7 +1177,7 @@ tracks/19/path = NodePath("Cyber soldier/AnimationPlayer")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
-"clips": PackedStringArray("walk", "idle"),
+"clips": PackedStringArray("walk", "prepare"),
 "times": PackedFloat32Array(0, 3)
 }
 
@@ -1372,7 +1372,7 @@ tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.2)
 }
 tracks/16/type = "animation"
 tracks/16/imported = false
@@ -1382,7 +1382,7 @@ tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.2)
 }
 tracks/17/type = "animation"
 tracks/17/imported = false
@@ -1392,7 +1392,7 @@ tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.2)
 }
 tracks/18/type = "animation"
 tracks/18/imported = false
@@ -1402,7 +1402,7 @@ tracks/18/interp = 1
 tracks/18/loop_wrap = true
 tracks/18/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.2)
 }
 tracks/19/type = "animation"
 tracks/19/imported = false
@@ -1412,7 +1412,7 @@ tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.3)
 }
 
 [sub_resource type="Animation" id="Animation_upnk0"]
@@ -1449,7 +1449,7 @@ tracks/2/path = NodePath("Alyra:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 1.5, 2.5),
+"times": PackedFloat32Array(0, 1.5, 2.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(-31, -2), Vector2(-31, -2), Vector2(-60, -2)]
@@ -1557,7 +1557,7 @@ tracks/11/path = NodePath("Nataly:position")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0, 1.4, 2.5),
+"times": PackedFloat32Array(0, 1.4, 2.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(-70, -2), Vector2(-70, -2), Vector2(-177, -7)]
@@ -1593,7 +1593,7 @@ tracks/14/path = NodePath("Cyber soldier:position")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
-"times": PackedFloat32Array(0, 1.5, 2.5),
+"times": PackedFloat32Array(0, 1.5, 2.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(189, -21), Vector2(189, -21), Vector2(92, -21)]
@@ -1605,8 +1605,8 @@ tracks/15/path = NodePath("Alyra/AnimationPlayer")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
-"clips": PackedStringArray("idle", "run", "idle"),
-"times": PackedFloat32Array(0, 1.5, 2.5)
+"clips": PackedStringArray("idle", "run", "idle", "prepare"),
+"times": PackedFloat32Array(0, 1.5, 2.4, 2.7)
 }
 tracks/16/type = "animation"
 tracks/16/imported = false
@@ -1615,8 +1615,8 @@ tracks/16/path = NodePath("Varek_soldier/AnimationPlayer")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"clips": PackedStringArray("idle", "prepare"),
+"times": PackedFloat32Array(0, 2.8)
 }
 tracks/17/type = "animation"
 tracks/17/imported = false
@@ -1645,8 +1645,8 @@ tracks/19/path = NodePath("Cyber soldier/AnimationPlayer")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
-"clips": PackedStringArray("idle", "walk", "idle"),
-"times": PackedFloat32Array(0, 1.5, 2.5)
+"clips": PackedStringArray("idle", "walk", "prepare"),
+"times": PackedFloat32Array(0, 1.5, 2.4)
 }
 tracks/20/type = "value"
 tracks/20/imported = false
@@ -1876,7 +1876,7 @@ tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.1)
 }
 tracks/16/type = "animation"
 tracks/16/imported = false
@@ -1886,7 +1886,7 @@ tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.1)
 }
 tracks/17/type = "animation"
 tracks/17/imported = false
@@ -1896,7 +1896,7 @@ tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.1)
 }
 tracks/18/type = "animation"
 tracks/18/imported = false
@@ -1906,7 +1906,7 @@ tracks/18/interp = 1
 tracks/18/loop_wrap = true
 tracks/18/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.1)
 }
 tracks/19/type = "animation"
 tracks/19/imported = false
@@ -1916,7 +1916,7 @@ tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.1)
 }
 
 [sub_resource type="Animation" id="Animation_7rgyx"]
@@ -2334,6 +2334,22 @@ tracks/0/keys = {
 "values": [9]
 }
 
+[sub_resource type="Animation" id="Animation_1lsfm"]
+resource_name = "prepare"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Alyra:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
 [sub_resource type="Animation" id="Animation_863qq"]
 resource_name = "protect"
 length = 0.3
@@ -2442,6 +2458,7 @@ _data = {
 "hurt_return": SubResource("Animation_hpcl6"),
 "idle": SubResource("Animation_4qrn2"),
 "jump": SubResource("Animation_nea2d"),
+"prepare": SubResource("Animation_1lsfm"),
 "protect": SubResource("Animation_863qq"),
 "protect_2": SubResource("Animation_pr270"),
 "run": SubResource("Animation_efvy6"),
@@ -2467,7 +2484,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_cdmbj"]
 resource_name = "attack"
-length = 0.7
+length = 0.8
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -2578,6 +2595,22 @@ tracks/0/keys = {
 "values": [112]
 }
 
+[sub_resource type="Animation" id="Animation_rcyd7"]
+resource_name = "prepare"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Varek_soldier:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [82, 81, 80]
+}
+
 [sub_resource type="Animation" id="Animation_g4xnv"]
 resource_name = "run"
 length = 0.8
@@ -2622,6 +2655,7 @@ _data = {
 "hurt_return": SubResource("Animation_hvqw2"),
 "idle": SubResource("Animation_invc7"),
 "jump": SubResource("Animation_lq7pd"),
+"prepare": SubResource("Animation_rcyd7"),
 "run": SubResource("Animation_g4xnv"),
 "walk": SubResource("Animation_5kr1m")
 }
@@ -2817,6 +2851,22 @@ tracks/0/keys = {
 "values": [48, 49, 50, 51, 52]
 }
 
+[sub_resource type="Animation" id="Animation_4gx0s"]
+resource_name = "prepare"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cyber soldier:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+
 [sub_resource type="Animation" id="Animation_ubxac"]
 resource_name = "walk"
 length = 0.8
@@ -2842,6 +2892,7 @@ _data = {
 "gun": SubResource("Animation_y07y1"),
 "hurt": SubResource("Animation_fp58i"),
 "idle": SubResource("Animation_bdppk"),
+"prepare": SubResource("Animation_4gx0s"),
 "walk": SubResource("Animation_ubxac")
 }
 
@@ -3118,7 +3169,7 @@ text = "Time"
 metadata/_edit_use_anchors_ = true
 
 [node name="Alyra" type="Sprite2D" parent="."]
-position = Vector2(64, -2)
+position = Vector2(40, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_faysa")
 flip_h = true
@@ -3148,12 +3199,14 @@ libraries = {
 }
 
 [node name="Magus soldier" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(-93, -8.00001)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_6mnfp")
+flip_h = true
 hframes = 8
 vframes = 5
-frame = 36
+frame = 26
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Magus soldier"]
 root_node = NodePath("../..")
@@ -3165,6 +3218,7 @@ libraries = {
 position = Vector2(189, -21)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_8xth1")
+flip_h = true
 hframes = 8
 vframes = 8
 frame = 48
@@ -3176,7 +3230,7 @@ libraries = {
 }
 
 [node name="Nataly" type="Sprite2D" parent="."]
-position = Vector2(177, -50)
+position = Vector2(-47, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_wcphl")
 flip_h = true

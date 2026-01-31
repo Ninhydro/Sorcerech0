@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://3uhqc7k5hj8q"]
+[gd_scene load_steps=18 format=3 uid="uid://3uhqc7k5hj8q"]
 
 [ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_xbwod"]
 [ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="2_4p5e8"]
@@ -213,6 +213,22 @@ tracks/0/keys = {
 "values": [80, 81, 82, 83, 84, 85, 86, 87]
 }
 
+[sub_resource type="Animation" id="Animation_devve"]
+resource_name = "prepare"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [25, 24]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8u0e1"]
 _data = {
 "RESET": SubResource("Animation_mi3ym"),
@@ -226,6 +242,7 @@ _data = {
 "idle": SubResource("Animation_58k0k"),
 "jump": SubResource("Animation_qgi0q"),
 "laser": SubResource("Animation_ce8g2"),
+"prepare": SubResource("Animation_devve"),
 "run": SubResource("Animation_0a2o2"),
 "walk": SubResource("Animation_22h2v")
 }

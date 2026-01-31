@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dvcb7k8a4tqst"]
+[gd_scene load_steps=12 format=3 uid="uid://dvcb7k8a4tqst"]
 
 [ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_1prx1"]
 [ext_resource type="Texture2D" uid="uid://buobqvgq0dwoe" path="res://assets_image/Characters/Enemies/Cyber_soldier-Sheet.png" id="2_1xvbt"]
@@ -116,6 +116,22 @@ tracks/0/keys = {
 "values": [40, 41, 42, 43, 44, 45, 46, 47]
 }
 
+[sub_resource type="Animation" id="Animation_4i2ea"]
+resource_name = "prepare"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Cyber soldier:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [16]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n4btl"]
 _data = {
 "RESET": SubResource("Animation_dxyn7"),
@@ -124,6 +140,7 @@ _data = {
 "gun": SubResource("Animation_y07y1"),
 "hurt": SubResource("Animation_fp58i"),
 "idle": SubResource("Animation_bdppk"),
+"prepare": SubResource("Animation_4i2ea"),
 "walk": SubResource("Animation_ubxac")
 }
 

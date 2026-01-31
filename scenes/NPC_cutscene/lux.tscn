@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cqhytanji1adq"]
+[gd_scene load_steps=19 format=3 uid="uid://cqhytanji1adq"]
 
 [ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_orbf4"]
 [ext_resource type="Texture2D" uid="uid://ceb52tng3vx82" path="res://assets_image/Characters/Lux/Lux-Sheet.png" id="2_yni58"]
@@ -227,6 +227,22 @@ tracks/0/keys = {
 "values": [100, 101, 102, 103, 104, 105, 106, 107]
 }
 
+[sub_resource type="Animation" id="Animation_u8nkc"]
+resource_name = "prepare"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lux:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [20, 21]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_enmw4"]
 _data = {
 "RESET": SubResource("Animation_vwdxg"),
@@ -237,6 +253,7 @@ _data = {
 "idle": SubResource("Animation_1yewc"),
 "jump": SubResource("Animation_indkk"),
 "laser": SubResource("Animation_l3363"),
+"prepare": SubResource("Animation_u8nkc"),
 "run": SubResource("Animation_4m3ai"),
 "shield": SubResource("Animation_u5bmn"),
 "slam": SubResource("Animation_3x6ei"),

@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://cfhmj1vvcbg6r"]
+[gd_scene load_steps=49 format=3 uid="uid://cfhmj1vvcbg6r"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene8.gd" id="1_35yc7"]
 [ext_resource type="Texture2D" uid="uid://dibdc1w6uho4q" path="res://assets_image/Characters/Alyra/Alyra-Sheet.png" id="2_hem0l"]
@@ -425,8 +425,8 @@ tracks/9/path = NodePath("Alyra/AnimationPlayer")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"clips": PackedStringArray("idle", "prepare"),
+"times": PackedFloat32Array(0, 2.5)
 }
 tracks/10/type = "animation"
 tracks/10/imported = false
@@ -435,8 +435,8 @@ tracks/10/path = NodePath("Varek_soldier/AnimationPlayer")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"clips": PackedStringArray("idle", "prepare"),
+"times": PackedFloat32Array(0, 2.5)
 }
 tracks/11/type = "animation"
 tracks/11/imported = false
@@ -445,8 +445,8 @@ tracks/11/path = NodePath("Magus soldier/AnimationPlayer")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"clips": PackedStringArray("walk", "attack", "idle"),
-"times": PackedFloat32Array(0, 2, 2.6)
+"clips": PackedStringArray("walk", "attack"),
+"times": PackedFloat32Array(0, 2)
 }
 
 [sub_resource type="Animation" id="Animation_7ojre"]
@@ -568,7 +568,7 @@ tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.1)
 }
 tracks/10/type = "animation"
 tracks/10/imported = false
@@ -578,7 +578,7 @@ tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.2)
 }
 tracks/11/type = "animation"
 tracks/11/imported = false
@@ -588,7 +588,7 @@ tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"times": PackedFloat32Array(1.2)
 }
 
 [sub_resource type="Animation" id="Animation_tin8e"]
@@ -914,6 +914,22 @@ tracks/0/keys = {
 "values": [9]
 }
 
+[sub_resource type="Animation" id="Animation_uoaxe"]
+resource_name = "prepare"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Alyra:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
 [sub_resource type="Animation" id="Animation_863qq"]
 resource_name = "protect"
 length = 0.3
@@ -1022,6 +1038,7 @@ _data = {
 "hurt_return": SubResource("Animation_hpcl6"),
 "idle": SubResource("Animation_4qrn2"),
 "jump": SubResource("Animation_nea2d"),
+"prepare": SubResource("Animation_uoaxe"),
 "protect": SubResource("Animation_863qq"),
 "protect_2": SubResource("Animation_pr270"),
 "run": SubResource("Animation_efvy6"),
@@ -1158,6 +1175,22 @@ tracks/0/keys = {
 "values": [112]
 }
 
+[sub_resource type="Animation" id="Animation_8emtl"]
+resource_name = "prepare"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Varek_soldier:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [82, 81, 80]
+}
+
 [sub_resource type="Animation" id="Animation_g4xnv"]
 resource_name = "run"
 length = 0.8
@@ -1202,6 +1235,7 @@ _data = {
 "hurt_return": SubResource("Animation_hvqw2"),
 "idle": SubResource("Animation_invc7"),
 "jump": SubResource("Animation_lq7pd"),
+"prepare": SubResource("Animation_8emtl"),
 "run": SubResource("Animation_g4xnv"),
 "walk": SubResource("Animation_5kr1m")
 }
@@ -1364,6 +1398,7 @@ shape = SubResource("RectangleShape2D_e4s5f")
 metadata/_edit_lock_ = true
 
 [node name="Alyra" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(50, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_hem0l")
@@ -1379,6 +1414,7 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(-15, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_i3w5h")
@@ -1394,12 +1430,13 @@ libraries = {
 }
 
 [node name="Magus soldier" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(-79, -2)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_itqux")
 hframes = 8
 vframes = 5
-frame = 35
+frame = 32
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Magus soldier"]
 root_node = NodePath("../..")

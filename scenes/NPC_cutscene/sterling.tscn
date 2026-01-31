@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cd8brqhmhhuj8"]
+[gd_scene load_steps=16 format=3 uid="uid://cd8brqhmhhuj8"]
 
 [ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_uaqkx"]
 [ext_resource type="Texture2D" uid="uid://bs5rm27gmxs8i" path="res://assets_image/Characters/Sterling/Sterling-Sheet.png" id="2_ue12l"]
@@ -184,6 +184,22 @@ tracks/0/keys = {
 "values": [90, 91, 92, 93, 94, 95, 96, 97]
 }
 
+[sub_resource type="Animation" id="Animation_jf1qw"]
+resource_name = "prepare"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sterling:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [45, 46]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ftbew"]
 _data = {
 "RESET": SubResource("Animation_f7fxh"),
@@ -193,6 +209,7 @@ _data = {
 "idle": SubResource("Animation_gptp8"),
 "idle_2": SubResource("Animation_4nx1h"),
 "jump": SubResource("Animation_lsorl"),
+"prepare": SubResource("Animation_jf1qw"),
 "run": SubResource("Animation_3bvs4"),
 "run_2": SubResource("Animation_f51vg"),
 "tired": SubResource("Animation_fe62j"),
