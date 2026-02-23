@@ -1,2 +1,32 @@
+[background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
+Lux: Give it to me! I can handle it! Mother’s wrong—!
+Fini: Lux, *stop*. This isn’t strength— it’s suicide!
+Fini: Lux, *stop*. This isn’t strength— it’s suicide!
+Lux: Then why you?! A machine can’t even *feel* what it means to protect her
+Fini: … No Lux don’t go…
+[background arg="res://assets_image/Background/Black.png" fade="0.5"]
+Player: I didn’t want this… I just…
+Player: Alyra… Varek… don’t go…
 [background arg="res://assets_image/CG/CG12.png" fade="0.0"]
-Player (Normal): Alyra alive, start part 2, chapter 5, cutscene 22v2, end chapter 5, then can move around
+Player (Normal): ...warm...light...Alyra?...
+Maya_adult: ...Huh? Wait--- Phina?! She's awake! She's awake!
+"Varek and Alyra": What?!
+Nataly: No way--- Phina...? You're really back?
+Player (Normal): Alyra?... You're... alive? Varek?...
+Alyra: Thanks to you two. Ten years, Phina. You've been out for ten years.
+Player (Normal): TEN YEARS?!... Maya... you grown up!
+Maya_adult: Why of course I did! I've been training to keep you save here
+Varek_soldier: Yeah we held down here and kept New Aerandale safe from the worst of it. Mostly.
+Player (Normal): You... stayed together.
+Alyra: Someone had to. The real leaders were too busy posturing. Speaking of...
+Varek_soldier: King Zachariah. Brat got worse with age. Thinks sending troops to "patrol" our town is helping. It's just occupation.
+Nataly: It's a lot to catch you up on. The war didn't stop—it got colder. Sides are dug in deeper than ever.
+Maya_adult: And everyone knows about you now, Phina. The spies found data from the old war. They know you're Fini. They know about the Core.
+Alyra: You're not a person to them anymore. You're a strategic objective. A key. A threat.
+Varek_soldier: Which is why we've kept you hidden. But the whispers are everywhere. Tromarvelia and Exactlyion are gearing up. They think whoever controls you, controls everything.
+Player (Normal): I feel... stronger. But the world feels... colder.
+Maya_adult: That's why I've been training! Ten years of magic! I'm not a kid anymore. I can help!
+Nataly: We need to finish what we started. But we can't do it from here.
+Alyra: You have to go. Talk to the leaders. Show them the Core isn't a weapon.
+Varek_soldier: We'll keep things stable here. Or as stable as you can with Zach's goons breathing down your neck.
+Player (Normal): Then we continue. For everyone.

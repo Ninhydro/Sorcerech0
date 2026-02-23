@@ -3169,7 +3169,7 @@ text = "Time"
 metadata/_edit_use_anchors_ = true
 
 [node name="Alyra" type="Sprite2D" parent="."]
-position = Vector2(40, -2)
+position = Vector2(64, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_faysa")
 flip_h = true
@@ -3199,11 +3199,9 @@ libraries = {
 }
 
 [node name="Magus soldier" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-93, -8.00001)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_6mnfp")
-flip_h = true
 hframes = 8
 vframes = 5
 frame = 26
@@ -3218,7 +3216,6 @@ libraries = {
 position = Vector2(189, -21)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_8xth1")
-flip_h = true
 hframes = 8
 vframes = 8
 frame = 48
@@ -3230,7 +3227,7 @@ libraries = {
 }
 
 [node name="Nataly" type="Sprite2D" parent="."]
-position = Vector2(-47, -2)
+position = Vector2(177, -50)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_wcphl")
 flip_h = true

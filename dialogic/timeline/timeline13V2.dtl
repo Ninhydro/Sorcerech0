@@ -1,2 +1,20 @@
-join Player center
-Player (Normal): Alyra alive, Trigger again in junkyard, chapter 6, cutscene 23v2, then move around
+join Nataly leftmost
+Nataly: Are you sure you're ready for this?
+join Player right
+Player: We have to be. Alyra and Varek bought us time. We can't waste it.
+join Maya_adult left
+Maya_adult: So... we're really going to just walk up to the leaders of the two most powerful factions in the world and say 'please stop'?
+Nataly: Basically. But first, we need a plan. We can't just charge into Tromarvelia. Zachariah isn't reasonable.
+Player: Then we start with the one who might listen to logic. Sterling.
+leave Player
+join Alyra right
+Alyra: Sterling is calculating. She might see the value in a truce if it gives her an advantage. Zach... he only sees insults and challenges.
+leave Nataly
+join Varek_soldier leftmost
+Varek_soldier: He's a child on a throne. Throws tantrums with army. Be careful.
+Player: We will. Protect everyone here.
+Alyra: We will. You just bring us back a peace treaty.
+Nataly: Then it's decided. We go to Exactlyion first.
+Maya_adult: Nah I think we better visit that tyrant king at at Tromarvelia first
+Player: Alright, alright guys, we'll see on our way there
+Varek_soldier: Good luck out there. And Phina... thank you. For saving her.

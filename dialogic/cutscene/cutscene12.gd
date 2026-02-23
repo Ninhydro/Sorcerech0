@@ -77,7 +77,24 @@ func _setup_cutscene():
 	#	elif Global.alyra_dead == true:
 	#		Dialogic.start("timeline12", false) #alive dead
 	if Global.demo == true:
-			Dialogic.start("Demo_end", false) #alive dead
+			sequence = [
+				#{"type": "wait", "duration": 0.5},
+				#{"type": "fade_out", "wait": false},
+				#{"type": "player_face", "direction": -1},
+				#{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
+				#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+				#{"type": "player_animation", "name": "idle",  "wait": false},
+				#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+				{"type": "dialog", "name": "Demo_end", "wait": true},
+				#{"type": "fade_in", "wait": true},
+				#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
+				#{"type": "wait", "duration": 0.5},
+				
+				#{"type": "fade_in"},
+				
+				#{"type": "fade_out"}
+				]
+			#Dialogic.start("Demo_end", false) #alive dead
 	else:
 			if Global.alyra_dead == false:
 				sequence = [

@@ -1,2 +1,57 @@
+[background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
+Lux: Give it to me! I can handle it! Mother’s wrong—!
+Fini: Lux, *stop*. This isn’t strength— it’s suicide!
+Fini: Lux, *stop*. This isn’t strength— it’s suicide!
+Lux: Then why you?! A machine can’t even *feel* what it means to protect her
+Fini: … No Lux don’t go…
+[background arg="res://assets_image/Background/Black.png" fade="0.5"]
+Player: I didn’t want this… I just…
+Player: Alyra… Varek… don’t go…
 [background arg="res://assets_image/CG/CG12.png" fade="0.0"]
-Player (Normal): start part 2, chapter 5, cutscene 22, end chapter 5, then can move around
+Player (Normal): ...warm...light...
+Maya_adult: Phina?! Phina! Nataly! She’s awake!
+Nataly: No way—
+Nataly: Phina…? You’re really awake?
+Nataly: Ten years. We thought—
+Player (Normal): Ten… years? What… happened…? Where…?
+Maya_adult: You’re in the junkyard, in my room. You’ve been… sleeping.
+Maya_adult: Everyone thought you’d never come back, but I knew! I told them—your heart—\
+Your heart was still beating.
+Player (Normal): But… I don’t have a heart.
+Maya_adult: That never stopped you before.
+Nataly: It’s… a lot to catch you up on.
+Player (Normal): Alyra…? Varek…?
+. . . . .  
+Maya_adult: Alyra died... ten years ago. Protecting you.
+Nataly: Varek disappeared right after. Nobody’s seen him since the battle. We searched for years.
+Player (Normal): I remember… red skies… fire… then… darkness.
+Nataly: Yeah. That darkness? It never left. The war didn’t stop — it got worse.
+Nataly: Magus and Cyber leaders both blamed the other for the attack…
+Maya_adult: They burned towns. Starved people. Even New Aerandale got split up.
+Nataly: Then word started spreading…
+Player (Normal): About me…?
+Maya_adult: Some old spies found data during a battlefield sweep. From the war twenty years ago.\
+They decrypted fragments. Found the truth.
+Nataly: That you're Fini. That you carry the Sorcerech Core.
+Player (Normal): ...But it’s corrupted.
+Nataly: They don’t know that. Or they don’t care.
+Nataly: You’re not a person to them anymore. You’re a weapon. A key. A threat.
+Nataly: Not only that, At first only whispers. But after Exactlyion decrypted those battlefield scans... the whole world knew.
+Maya_adult: That’s why Uncle Bettle and I joined the Revolutionary front.
+Maya_adult: Not to start more war — but to protect New Aerandale. To protect you.
+Player (Normal): You… protected me… for ten years?
+Maya_adult: Every day. Repaired your systems. Kept you powered.\
+Talked to you. Even when you didn’t respond, I knew you heard me.
+Player (Normal): I heard… everything. Faint… but warm. Maya… thank you.
+Maya_adult: Don’t thank me yet. We need you more than ever.\
+People need something real to believe in again. And you're real.
+Player (Normal): I feel… stronger. But colder, too.
+Maya_adult: And me? I’ve been training. Ten years of magic. Ice and fire. I’m not just the kid from the junkyard anymore.
+Player (Normal): You’ve grown… strong.
+Maya_adult: Because I had to. For you.
+Nataly: Listen. Things are worse now.\
+The Magus and Cyber leaders won’t stop unless someone stands between them. Like Alyra & Varek tried to do
+Player (Normal): Then we continue their journey.
+Nataly: We will. But first… I need to tell you something.\
+About Alyra. About what we were trying to do before it all fell apart.
+Nataly: ...She always wanted peace. But we had different ways of chasing it.

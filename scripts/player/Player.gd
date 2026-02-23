@@ -1508,14 +1508,14 @@ func play_cutscene_animation(anim_name: String):
 				"Cyber": anim_state.travel("attack_cyber")
 				"UltimateMagus": anim_state.travel("attack_ult_magus")
 				"UltimateCyber": anim_state.travel("attack_ult_cyber")
-				_: anim_state.travel("attack_normal")
+				_: anim_state.travel("idle_normal")
 		"skill":
 			match form:
 				"Magus": anim_state.travel("skill_magus")
 				"Cyber": anim_state.travel("skill_cyber")
 				"UltimateMagus": anim_state.travel("skill_ult_magus")
 				"UltimateCyber": anim_state.travel("skill_ult_cyber")
-				_: anim_state.travel("skill_normal")
+				_: anim_state.travel("idle_normal")
 		"save":
 			match form:
 				"Magus": anim_state.travel("save_magus")
