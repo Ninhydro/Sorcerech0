@@ -39,6 +39,8 @@ func _on_body_entered(body):
 		# Call parent's _on_body_entered
 		#betael.visible = true
 		#maya.visible = false
+		
+		_setup_cutscene()
 		super._on_body_entered(body)
 	else:
 		print("Cutscene12: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
@@ -98,18 +100,22 @@ func _setup_cutscene():
 	else:
 			if Global.alyra_dead == false:
 				sequence = [
+				{"type": "wait", "duration": 0.5},
+				{"type": "fade_out", "wait": false},
 				#{"type": "wait", "duration": 0.5},
 				#{"type": "fade_out", "wait": false},
 				#{"type": "player_face", "direction": -1},
 				#{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
 				#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-				#{"type": "player_animation", "name": "idle",  "wait": false},
-				#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+				{"type": "player_animation", "name": "idle",  "wait": false},
+				{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 				{"type": "dialog", "name": "timeline13V2", "wait": true},
 				#{"type": "fade_in", "wait": true},
 				#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
 				#{"type": "wait", "duration": 0.5},
-				
+				{"type": "wait", "duration": 0.5},		
+				{"type": "fade_in"},
+				{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 				#{"type": "fade_in"},
 				
 				#{"type": "fade_out"}
@@ -119,18 +125,23 @@ func _setup_cutscene():
 			elif Global.alyra_dead == true:
 				#Dialogic.start("timeline13", false) #alive dead
 				sequence = [
+				{"type": "wait", "duration": 0.5},
+				{"type": "fade_out", "wait": false},
 				#{"type": "wait", "duration": 0.5},
 				#{"type": "fade_out", "wait": false},
 				#{"type": "player_face", "direction": -1},
 				#{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
 				#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-				#{"type": "player_animation", "name": "idle",  "wait": false},
-				#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+				{"type": "player_animation", "name": "idle",  "wait": false},
+				{"type": "animation", "name": "anim1v2_idle", "wait": false, "loop": true},
 				{"type": "dialog", "name": "timeline13", "wait": true},
 				#{"type": "fade_in", "wait": true},
 				#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
 				#{"type": "wait", "duration": 0.5},
 				
+				{"type": "wait", "duration": 0.5},		
+				{"type": "fade_in"},
+				{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 				#{"type": "fade_in"},
 				
 				#{"type": "fade_out"}

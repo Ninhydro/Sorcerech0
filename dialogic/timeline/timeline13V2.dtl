@@ -1,15 +1,13 @@
-join Nataly leftmost
+join Nataly right
 Nataly: Are you sure you're ready for this?
-join Player right
+join Player center
 Player: We have to be. Alyra and Varek bought us time. We can't waste it.
 join Maya_adult left
 Maya_adult: So... we're really going to just walk up to the leaders of the two most powerful factions in the world and say 'please stop'?
 Nataly: Basically. But first, we need a plan. We can't just charge into Tromarvelia. Zachariah isn't reasonable.
 Player: Then we start with the one who might listen to logic. Sterling.
-leave Player
-join Alyra right
+join Alyra rightmost
 Alyra: Sterling is calculating. She might see the value in a truce if it gives her an advantage. Zach... he only sees insults and challenges.
-leave Nataly
 join Varek_soldier leftmost
 Varek_soldier: He's a child on a throne. Throws tantrums with army. Be careful.
 Player: We will. Protect everyone here.

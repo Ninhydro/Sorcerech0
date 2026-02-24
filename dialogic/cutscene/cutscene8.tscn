@@ -1361,7 +1361,7 @@ position = Vector2(-79, 22)
 position = Vector2(9, 30)
 
 [node name="BossTimer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 30.0
 one_shot = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -1398,7 +1398,6 @@ shape = SubResource("RectangleShape2D_e4s5f")
 metadata/_edit_lock_ = true
 
 [node name="Alyra" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(50, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_hem0l")
@@ -1414,7 +1413,6 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-15, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_i3w5h")
@@ -1430,13 +1428,12 @@ libraries = {
 }
 
 [node name="Magus soldier" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-79, -2)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_itqux")
 hframes = 8
 vframes = 5
-frame = 32
+frame = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Magus soldier"]
 root_node = NodePath("../..")

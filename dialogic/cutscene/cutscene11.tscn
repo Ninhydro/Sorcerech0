@@ -1088,6 +1088,7 @@ position = Vector2(-7, 3)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Uncle Betael" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(-63, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_f2fo4")
@@ -1102,6 +1103,7 @@ libraries = {
 }
 
 [node name="Maya" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(-31, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_tjvle")
@@ -1116,6 +1118,7 @@ libraries = {
 }
 
 [node name="Nataly" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(17, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_3vm8h")
@@ -1130,6 +1133,7 @@ libraries = {
 }
 
 [node name="Alyra" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(39, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("5_cs2ei")
@@ -1144,6 +1148,7 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(76, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_6clhu")

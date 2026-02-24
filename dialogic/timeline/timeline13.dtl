@@ -1,11 +1,11 @@
-join Maya_adult left
-Maya_adult: Alyra was everything to me. Not just a sister — she was… better. Braver.
-Maya_adult: She saw the cracks in the world before I even knew what to look for.
-join Player right
+join Nataly right
+Nataly: Alyra was everything to me. Not just a sister — she was… better. Braver.
+Nataly: She saw the cracks in the world before I even knew what to look for.
+join Player left
 Player: You… both dreamed of peace.
-join Nataly leftmost
 Nataly: Since we were kids. We'd talk at night — about breaking the cycle,
 Nataly: About building world with no war. Even though we hate Magus, killing them is not the way
+join Maya_adult leftmost
 Maya_adult: What happened?
 Nataly: We chose different roads.
 Nataly: I joined the Cyber military. Thought if I rose high enough, I could change things from the inside.
@@ -17,7 +17,7 @@ Nataly: Yeah. They branded her a deserter. A liability.
 Nataly: But to me, she's still my sister. I went searching for her ever since she left.
 Nataly: The moment I first saw you guys, I know something is up.
 Player: You mean with me?
-Nataly: Not just you, she'll never fight with another Magus before 
+Nataly: Not just you, she'll never fight with another Magus before
 Nataly: She believed there was another way. That you were the key to that way.
 Nataly: And I… I let her go. I let her fight alone.
 Player: She didn’t blame you.
@@ -27,7 +27,7 @@ Maya_adult: She died protecting something bigger than any of us. She'd be proud 
 Nataly: I don’t want pride. I want a second chance…
 Player: All of this is because of this Core, it causes so much pain... why can’t we destroy it?
 Maya_adult: Phina… If we do that you’ll die
-Nataly: Not just that, the Core isn't like a normal artifact. It's fused with mana and electrical energy. Destroying it could cause a huge explosion 
+Nataly: Not just that, the Core isn't like a normal artifact. It's fused with mana and electrical energy. Destroying it could cause a huge explosion
 Player: So it’s not just dangerous to hold... it’s dangerous to break?
 Maya_adult: We’ll find a way Phina, let’s finish what we started, continue what Alyra left…
 Nataly: We’ll find the Magus and Cyber leaders.

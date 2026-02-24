@@ -48,7 +48,7 @@ func _ready() -> void:
 	
 	if boss_timer:
 		boss_timer.one_shot = true
-		boss_timer.wait_time = 60.0  # 2 minutes
+		boss_timer.wait_time = 30.0  # 2 minutes
 		#boss_timer.timeout.connect(_on_boss_timer_timeout)
 	
 	_deactivate_barriers()
@@ -154,10 +154,11 @@ func _setup_cutscene():
 		{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
 		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		{"type": "player_animation", "name": "attack",  "wait": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline9", "wait": true},
 		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "attack",  "wait": false},
 		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline9_1", "wait": true},
 		

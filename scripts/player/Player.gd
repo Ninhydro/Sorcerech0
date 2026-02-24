@@ -309,8 +309,9 @@ func _ready():
 	#switch_state("Normal")
 
 
-
+#var current_form2 = Dialogic.VAR.get_variable("player_current_form", "Normal")
 func _physics_process(delta):
+	#print(current_form2)
 	#if animation_player:
 	#	print("Current animation: ", animation_player.current_animation, 
 	#		  " Playing: ", animation_player.is_playing())
@@ -529,11 +530,11 @@ func _physics_process(delta):
 				var current_form = get_current_form_id()
 				var attack_started = false
 				if current_form == "Cyber":
-					attack_cooldown_timer.start(0.5)
+					attack_cooldown_timer.start(0.1)
 					attack_started = true
 					not_busy = false
 				elif current_form == "Magus":
-					attack_cooldown_timer.start(0.5)
+					attack_cooldown_timer.start(0.1)
 					attack_started = true
 					not_busy = false
 				elif current_form == "UltimateCyber":
@@ -800,7 +801,7 @@ func switch_state(state_name: String) -> void:
 
 	form_changed.emit(state_name) # Emit signal after form changes
 
-	Dialogic.VAR.set_variable("player_current_form", state_name)
+	#Dialogic.VAR.set_variable("player_current_form", state_name)
 	print("Player.gd: Switched to form: ", state_name, ". Dialogic variable updated.")
 
 

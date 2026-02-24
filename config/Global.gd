@@ -441,7 +441,7 @@ var health_regeneration_timer: float = 0.0
 var health_regeneration_active: bool = true  # Can be toggled on/off
 var player_is_moving: bool = false  # Add this line
 #var playerAlive: bool = true
-var demo = true
+var demo = false
 # Add these functions in the script (I suggest adding them after the health variables)
 
 # Health regeneration functions
@@ -504,6 +504,7 @@ func _init():
 func _process(delta):
 	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
 		print("timeline: ", Global.timeline)
+		print("form: ",Global.current_form)
 		print("route status: ", Global.route_status)
 		print("kills: ", Global.kills)
 		print("alyra_dead: ", Global.alyra_dead)
@@ -512,6 +513,7 @@ func _process(delta):
 		print("replica_fini_dead: ", Global.replica_fini_dead)
 		print("valentina_dead: ", Global.valentina_dead)
 		print("Global.is_cutscene_active: ", Global.is_cutscene_active)
+		print("demo: ", Global.demo)
 	
 	# Only proceed if the "no" action is pressed AND a timeline is currently active
 
@@ -740,7 +742,7 @@ func apply_load_data(data: Dictionary):
 	cannon_goal_door_destroyed = data.get("cannon_goal_door_destroyed", false)
 	final_puzzle_door = data.get("final_puzzle_door", false)
 	
-	demo = data.get("demo", true)
+	demo = data.get("demo", false)
 
 	print("Global: Save data loaded successfully.")
 
@@ -835,7 +837,7 @@ func reset_to_defaults():
 	cannon_goal_door_destroyed = false
 	final_puzzle_door = false
 	
-	demo = true
+	demo = false
 	
 # Helper functions for quest marker serialization
 func _serialize_quest_markers() -> Dictionary:

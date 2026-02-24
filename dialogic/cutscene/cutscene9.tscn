@@ -3148,7 +3148,7 @@ position = Vector2(9, 30)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Boss2Timer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 30.0
 one_shot = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

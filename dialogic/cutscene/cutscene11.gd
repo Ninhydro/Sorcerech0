@@ -73,16 +73,36 @@ func _setup_cutscene():
 
 	#	elif Global.alyra_dead == true:
 	#		Dialogic.start("timeline12", false) #alive dead
-	if Global.alyra_dead == false: # boss dead
-		sequence = [
-		#{"type": "wait", "duration": 0.5},
+	if Global.demo == true:
+			sequence = [
+				#{"type": "wait", "duration": 0.5},
+				#{"type": "fade_out", "wait": false},
+				#{"type": "player_face", "direction": -1},
+				#{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
+				#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+				#{"type": "player_animation", "name": "idle",  "wait": false},
+				#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+				{"type": "dialog", "name": "Demo_end", "wait": true},
+				#{"type": "fade_in", "wait": true},
+				#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
+				#{"type": "wait", "duration": 0.5},
+				
+				#{"type": "fade_in"},
+				
+				#{"type": "fade_out"}
+				]
+	else:
+		pass
+	#if Global.alyra_dead == false: # boss dead
+	#	sequence = [
+	#	#{"type": "wait", "duration": 0.5},
 		#{"type": "fade_out", "wait": false},
 		#{"type": "player_face", "direction": -1},
 		#{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
 		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		#{"type": "player_animation", "name": "idle",  "wait": false},
 		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline12V2", "wait": true},
+	#	{"type": "dialog", "name": "timeline12V2", "wait": true},
 		#{"type": "fade_in", "wait": true},
 		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
 		#{"type": "wait", "duration": 0.5},
@@ -90,9 +110,9 @@ func _setup_cutscene():
 		#{"type": "fade_in"},
 		
 		#{"type": "fade_out"}
-		]
-	else: # boss alive
-		sequence = [
+	#	]
+	#else: # boss alive
+	#	sequence = [
 		#{"type": "wait", "duration": 0.5},
 		#{"type": "fade_out", "wait": false},
 		#{"type": "player_face", "direction": -1},
@@ -100,7 +120,7 @@ func _setup_cutscene():
 		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		#{"type": "player_animation", "name": "idle",  "wait": false},
 		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline12", "wait": true},
+	#	{"type": "dialog", "name": "timeline12", "wait": true},
 		#{"type": "fade_in", "wait": true},
 		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
 		#{"type": "wait", "duration": 0.5},
@@ -108,7 +128,7 @@ func _setup_cutscene():
 		#{"type": "fade_in"},
 		
 		#{"type": "fade_out"}
-		]
+	#	]
 
 func _on_cutscene_start():
 	print("Cutscene11: Starting")
@@ -120,14 +140,15 @@ func _on_cutscene_start():
 func _on_cutscene_end():
 	print("Cutscene11: Finished")
 	
+	Global.timeline = 6.2
 	# Set timeline
-	if Global.demo == true:
-		Global.timeline = 6.2
-		Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
-		Dialogic.start("Demo_end", false) #alive dead
-	else:
-		Global.timeline = 6.2
-		Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
+	#if Global.demo == true:
+	#	Global.timeline = 6.2
+	#	Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
+	#	Dialogic.start("Demo_end", false) #alive dead
+	#else:
+	#	Global.timeline = 6.2
+	#	Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
 	#var minigame = get_tree().get_first_node_in_group("sorting_minigame")
 	#if minigame:
 	#	minigame.start_game()

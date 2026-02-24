@@ -112,6 +112,15 @@ func _setup_cutscene():
 		{"type": "fade_in"},
 		{"type": "animation", "name": "anim4", "wait": false, "loop": false},
 		
+		{"type": "wait", "duration": 2},		
+		#{"type": "fade_out", "wait": false},
+		{"type": "dialog", "name": "timeline12V2", "wait": true},
+		#{"type": "fade_in"},
+		
+		
+		
+		#{"type": "animation", "name": "anim4", "wait": false, "loop": false},
+		
 
 		]
 		#Dialogic.start("timeline11V2", false)  # Alyra alive route
@@ -138,10 +147,14 @@ func _setup_cutscene():
 		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline11_2", "wait": true},
 		
-		{"type": "wait", "duration": 0.1},		
+		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
 		{"type": "animation", "name": "anim4", "wait": false, "loop": false},
 		
+		{"type": "wait", "duration": 2},		
+		#{"type": "fade_out", "wait": false},
+		{"type": "dialog", "name": "timeline12", "wait": true},
+		#{"type": "fade_in"},
 
 		]
 		#Dialogic.start("timeline11", false)    # Alyra dead route
@@ -167,6 +180,7 @@ func _on_cutscene_end():
 	varek.visible = false
 	cyber.visible = false
 	nataly.visible = false
+	
 	if Global.alyra_dead == false:
 		#Dialogic.start("timeline11V2", false)  # Alyra alive route
 		Global.persistent_saved_alyra = true
@@ -178,7 +192,7 @@ func _on_cutscene_end():
 		Global.check_100_percent_completion()
 		Global.save_persistent_data()
 	
-	Global.timeline = 6
+	#Global.timeline = 6.2
 
 	if player_in_range:
 		transition_manager.travel_to(player_in_range, target_room, target_spawn)
@@ -189,6 +203,23 @@ func _on_cutscene_end():
 	Global.save_persistent_data()
 	Global.enable_health_regeneration() 
 	Global.health_regeneration_rate = 0.25
+	
+	Global.demo = false
+	
+	if Global.demo == true:
+		Global.timeline = 6
+		Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
+		#Global.is_cutscene_active = true
+		#if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
+	#		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+		#Dialogic.timeline_ended.connect(_on_dialogic_finished)
+		#Dialogic.start("Demo_end", false) #alive dead
+	else:
+		Global.timeline = 6.2
+		Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
+
+
+
 	
 	# Set timeline
 	#start_boss2_battle()

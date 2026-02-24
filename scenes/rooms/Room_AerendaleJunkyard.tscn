@@ -291,8 +291,7 @@ position = Vector2(152, 56)
 metadata/_edit_lock_ = true
 
 [node name="Spawn_ToMaya" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(-208, 361)
-metadata/_edit_lock_ = true
+position = Vector2(-191, 362)
 
 [node name="Spawn_Minigame" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(-1056, -64)
@@ -648,25 +647,20 @@ metadata/_edit_lock_ = true
 position = Vector2(-640, 54)
 
 [node name="cutscene0_5" parent="." instance=ExtResource("12_3u6ks")]
-visible = false
 position = Vector2(361, 55)
 metadata/_edit_lock_ = true
 
 [node name="cutscene11" parent="." instance=ExtResource("13_7roe7")]
-position = Vector2(-150, 358)
-metadata/_edit_lock_ = true
+position = Vector2(-140, 368)
 
 [node name="cutscene12" parent="." instance=ExtResource("14_djwtx")]
-position = Vector2(62, 358)
-metadata/_edit_lock_ = true
+position = Vector2(27, 359)
 
 [node name="cutscene16_9" parent="." instance=ExtResource("15_1usq2")]
-visible = false
 position = Vector2(-179.525, 280.757)
 metadata/_edit_lock_ = true
 
 [node name="cutscene21T" parent="." instance=ExtResource("16_jysj8")]
-visible = false
 position = Vector2(295.573, -39.6841)
 metadata/_edit_lock_ = true
 

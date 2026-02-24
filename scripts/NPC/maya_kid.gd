@@ -31,7 +31,7 @@ func _ready():
 	print("NPC _ready called")
 	# Initially hide the NPC
 	visible = false
-	
+	animation_player.play("idle")
 	# Start bubble timer
 	_reset_bubble_timer()
 	
@@ -42,13 +42,15 @@ func _ready():
 
 func _process(delta):
 	# Only process if timeline condition is met
-	if not (Global.timeline >= 3.5 and Global.timeline <= 6):
+	
+	if not (Global.timeline >= 3.5 and Global.timeline <= 5):
+		visible = false
 		return
 	
 	# Make visible when condition is met
-	if not visible:
-		visible = true
-		animation_player.play("idle")
+	#if not visible:
+	#	visible = true
+	#	animation_player.play("idle")
 	
 	# Flip sprite based on player position
 	if Global.player:

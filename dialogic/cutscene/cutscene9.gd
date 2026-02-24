@@ -40,7 +40,7 @@ func _ready() -> void:
 	
 	if boss2_timer:
 		boss2_timer.one_shot = true
-		boss2_timer.wait_time = 60.0   # 2 minutes (change if you want 60s)
+		boss2_timer.wait_time = 30.0   # 2 minutes (change if you want 60s)
 		
 		# 🔹 Make sure timeout is connected
 		if not boss2_timer.timeout.is_connected(_on_boss2_timer_timeout):

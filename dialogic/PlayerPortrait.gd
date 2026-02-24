@@ -100,7 +100,8 @@ func _update_portrait(_character: DialogicCharacter, portrait_name_with_parens: 
 	print("UltimateCyber: ", ultimatecyber_portraits.keys())
 	print("---------------------------")
 	
-	var current_form = Dialogic.VAR.get_variable("player_current_form", "Normal")
+	#var current_form = Dialogic.VAR.get_variable("player_current_form", "Normal")
+	var current_form = Global.current_form
 	print("PlayerPortrait: Attempting to update portrait.")
 	print("  - Requested Portrait: '", cleaned_portrait_name, "'")
 	print("  - Current Form: '", current_form, "'")

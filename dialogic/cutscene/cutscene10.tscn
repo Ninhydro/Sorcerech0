@@ -1327,7 +1327,7 @@ tracks/15/keys = {
 
 [sub_resource type="Animation" id="Animation_v8cof"]
 resource_name = "anim3"
-length = 3.0
+length = 4.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1467,10 +1467,10 @@ tracks/11/path = NodePath("Nataly:position")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-184, -2)]
+"values": [Vector2(-184, -2), Vector2(-184, -2), Vector2(23, -2)]
 }
 tracks/12/type = "animation"
 tracks/12/imported = false
@@ -1480,7 +1480,7 @@ tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "clips": PackedStringArray("die"),
-"times": PackedFloat32Array(3.2)
+"times": PackedFloat32Array(4.1)
 }
 tracks/13/type = "animation"
 tracks/13/imported = false
@@ -1509,8 +1509,8 @@ tracks/15/path = NodePath("Nataly/AnimationPlayer")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
-"clips": PackedStringArray("idle"),
-"times": PackedFloat32Array(0)
+"clips": PackedStringArray("idle", "run", "idle"),
+"times": PackedFloat32Array(0, 3, 4)
 }
 
 [sub_resource type="Animation" id="Animation_5knyr"]
@@ -1658,7 +1658,7 @@ tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-184, -2)]
+"values": [Vector2(23, -2)]
 }
 tracks/12/type = "animation"
 tracks/12/imported = false
@@ -2742,7 +2742,7 @@ position = Vector2(73, 30)
 position = Vector2(17, 30)
 
 [node name="Alyra" type="Sprite2D" parent="."]
-position = Vector2(-24, -2)
+position = Vector2(33, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_3tug4")
 hframes = 9
@@ -2756,7 +2756,7 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
-position = Vector2(-83, -2)
+position = Vector2(79, -1)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_xcas0")
 hframes = 8
@@ -2770,7 +2770,7 @@ libraries = {
 }
 
 [node name="Cyber soldier" type="Sprite2D" parent="."]
-position = Vector2(97, -21)
+position = Vector2(94, -21)
 scale = Vector2(0.9, 0.9)
 texture = ExtResource("5_gw76q")
 flip_h = true
@@ -2785,7 +2785,7 @@ libraries = {
 }
 
 [node name="Nataly" type="Sprite2D" parent="."]
-position = Vector2(-184, -2)
+position = Vector2(23, -2)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_neeyw")
 hframes = 8
