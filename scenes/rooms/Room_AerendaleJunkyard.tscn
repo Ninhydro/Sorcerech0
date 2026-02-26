@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://cnkwa1lnnfamm"]
+[gd_scene load_steps=40 format=3 uid="uid://cnkwa1lnnfamm"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_56olx"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_i5ly2"]
@@ -18,7 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://bm2dpkajx7qeq" path="res://dialogic/cutscene/cutscene2.tscn" id="11_53y5o"]
 [ext_resource type="PackedScene" uid="uid://bso8cbum1b7gt" path="res://dialogic/cutscene/cutscene0_5.tscn" id="12_3u6ks"]
 [ext_resource type="Texture2D" uid="uid://cyoagc3bl4lx" path="res://assets_image/Objects/Trees.png" id="12_41hv1"]
-[ext_resource type="PackedScene" uid="uid://noms7cegc8b4" path="res://dialogic/cutscene/cutscene11.tscn" id="13_7roe7"]
 [ext_resource type="PackedScene" uid="uid://dq2br0aamhue3" path="res://dialogic/cutscene/cutscene12.tscn" id="14_djwtx"]
 [ext_resource type="Texture2D" uid="uid://d1wg6u6j3a04o" path="res://assets_image/Objects/trees2.png" id="14_s7lf2"]
 [ext_resource type="PackedScene" uid="uid://bo5mt846nnc7v" path="res://dialogic/cutscene/cutscene17.tscn" id="15_1usq2"]
@@ -649,9 +648,6 @@ position = Vector2(-640, 54)
 [node name="cutscene0_5" parent="." instance=ExtResource("12_3u6ks")]
 position = Vector2(361, 55)
 metadata/_edit_lock_ = true
-
-[node name="cutscene11" parent="." instance=ExtResource("13_7roe7")]
-position = Vector2(-140, 368)
 
 [node name="cutscene12" parent="." instance=ExtResource("14_djwtx")]
 position = Vector2(27, 359)

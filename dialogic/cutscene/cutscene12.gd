@@ -55,7 +55,7 @@ func _on_body_entered(body):
 
 
 func _setup_cutscene():
-	cutscene_name = "Cutscene11"
+	cutscene_name = "Cutscene12"
 	alyra.visible = false
 	varek.visible = false
 	betael.visible = false

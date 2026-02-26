@@ -29,6 +29,7 @@ LoadingScreen="*res://scenes/ui/loadingscreen.tscn"
 [dialogic]
 
 directories/dch_directory={
+"Advisor": "res://dialogic/characters/Advisor.dch",
 "Alyra": "res://dialogic/characters/Alyra.dch",
 "Android": "res://dialogic/characters/Android.dch",
 "Anonymous": "res://dialogic/characters/Anonymous.dch",
@@ -95,6 +96,11 @@ directories/dtl_directory={
 "timeline14C": "res://dialogic/timeline/timeline14C.dtl",
 "timeline14M": "res://dialogic/timeline/timeline14M.dtl",
 "timeline14MV2": "res://dialogic/timeline/timeline14MV2.dtl",
+"timeline14_2M": "res://dialogic/timeline/timeline14_2M.dtl",
+"timeline14_2MV2": "res://dialogic/timeline/timeline14_2MV2.dtl",
+"timeline14_3M": "res://dialogic/timeline/timeline14_3M.dtl",
+"timeline14_3MV2": "res://dialogic/timeline/timeline14_3MV2.dtl",
+"timeline14_4M": "res://dialogic/timeline/timeline14_4M.dtl",
 "timeline15C": "res://dialogic/timeline/timeline15C.dtl",
 "timeline15M": "res://dialogic/timeline/timeline15M.dtl",
 "timeline16C": "res://dialogic/timeline/timeline16C.dtl",

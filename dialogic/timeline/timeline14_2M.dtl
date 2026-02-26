@@ -1,0 +1,20 @@
+join Maya_adult right
+Maya_adult (Sad): ...Varek?
+join Nataly rightmost
+Nataly: He’s the new King…?
+join Player center
+Player (Normal): You’re alive…
+join Varek_king left
+Varek_king (Sad): I heard you were coming. I hoped the rumors were wrong.
+Player (Normal): Varek, this is good! You’re in charge now. We can change this—together!
+Varek_king (Sad): No. We’re past 'change'. There’s no peace to build when the other side is poison.
+Nataly: Poison? You’re blaming the entire Cyber faction for what happened?
+Varek_king (Sad): No, I'm blaming their leader just like our corrupted and greedy King. That’s why I kill Zachariah and take over the throne.
+Maya_adult (Sad): You kill the king!?
+Varek_king (Sad): Same thing with her, they killed Alyra! They engineered that ambush! And now Sterling flaunts her machines like peace offerings?
+Maya_adult (Sad): That’s not what she—
+Varek_king (Sad): No. I won't sit at a table with cowards and tyrants. I will burn Exactlyion to its frame for what it did.
+Player (Normal): Alyra wouldn’t want this…
+Varek_king (Sad): She’s not here to want anything anymore.
+. . . 
+Varek_king (Sad): Leave. I won’t kill you. You're still my friends… but this path is mine alone.

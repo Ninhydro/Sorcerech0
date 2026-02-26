@@ -1,8 +1,8 @@
-extends Area2D
+extends MasterCutscene
 
-var _has_been_triggered: bool = false
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@export var play_only_once: bool = true
+#var _has_been_triggered: bool = false
+#@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+#@export var play_only_once: bool = true
 
 
 
@@ -13,76 +13,170 @@ var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
+@onready var zach: Sprite2D = $Zach
+@onready var maya: Sprite2D = $Maya
+@onready var lux: Sprite2D = $Lux
+@onready var varek: Sprite2D = $Varek_king
+@onready var nataly: Sprite2D = $Nataly
+
+
+@onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
+
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
+func _on_body_entered(body):
+	print("Cutscene13m: Body entered - ", body.name if body else "null")
+	
+	# Check if timeline condition is met
+	if Global.timeline == 6.5 and Global.tromarvelia_two == false and body.is_in_group("player"):
+		print("Cutscene13m: Conditions met, calling parent method")
+		# Store player reference first
+		player_in_range = body
+		# Call parent's _on_body_entered
+		#betael.visible = true
+		#maya.visible = false
+		
+		_setup_cutscene()
+		super._on_body_entered(body)
+	else:
+		print("Cutscene13m: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Global.timeline == 6.5 and Global.tromarvelia_two == false: 
-		collision_shape.disabled = false
-	else:
-		collision_shape.disabled = true
+#func _process(delta):
+#	if Global.timeline == 2:
+#		collision_shape.disabled = false
+#	else:
+#		collision_shape.disabled = true
 
 
-func _on_body_entered(body):
-	#print("Player position: ",player_node_ref.global_position)
-	if (body.is_in_group("player") and not _has_been_triggered):  #and Global.cutscene_finished1 == false:
-		player_in_range = body
-		print("Player entered cutscene trigger area. Starting cutscene.")
-
-		if collision_shape:
-			collision_shape.set_deferred("disabled", true)
-		else:
-			printerr("Cutscene Area2D: WARNING: CollisionShape2D is null, cannot disable it. Using Area2D monitoring instead.")
-			set_deferred("monitorable", false)
-			set_deferred("monitoring", false)
-
-		#start_cutscene(cutscene_animation_name_to_play, 0.0)
-
-		if play_only_once:
-			_has_been_triggered = true
-			
-
-		Global.is_cutscene_active = true
-		#Global.cutscene_name = cutscene_animation_name
-		#Global.cutscene_playback_position = start_position
-		#Dialogic.start("timeline1", false)
-		if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-			Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
-		Dialogic.timeline_ended.connect(_on_dialogic_finished)
-
-
-		if Global.alyra_dead == true:
-			Dialogic.start("timeline14M", false)
-		elif Global.alyra_dead == false:
-			Dialogic.start("timeline14MV2", false)
-		#if Global.alyra_dead == false:
-		#	Dialogic.start("timeline13V2", false) #alive alive
-
-		#elif Global.alyra_dead == true:
-		#	Dialogic.start("timeline13", false) #alive dead
-
-
-
-func _on_dialogic_finished(_timeline_name = ""):
-	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
-	# Dialog is done. Now, fade out the black screen.
-
-	Global.is_cutscene_active = false
+func _setup_cutscene():
+	cutscene_name = "Cutscene13m"
+	maya.visible = false
+	nataly.visible = false
+	zach.visible = false
+	lux.visible = false
+	varek.visible = false
+	play_only_once = true
+	area_activation_flag = ""  # No flag required
+	global_flag_to_set = ""  # We'll handle this manually
 	
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
+	player_markers = {
+		# Example positions - adjust to match your scene
+		"marker1": marker1.global_position,
+		"marker2": marker2.global_position
+	}
 	
-	# Disconnect the signal to prevent unintended calls.
-	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
-		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+	# Simple sequence: just play dialog
+	#if Global.alyra_dead == false:
+	#		Dialogic.start("timeline12V2", false) #alive alive
 
+	#	elif Global.alyra_dead == true:
+	#		Dialogic.start("timeline12", false) #alive dead
+	#if Global.demo == true:
+	if Global.alyra_dead == true:
+		sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		#{"type": "player_face", "direction": -1},
+		#{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline14M", "wait": true},
+		
+		{"type": "player_face", "direction": -1},
+		{"type": "move_player", "name": "marker1", "duration": 3, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline14_2M", "wait": true},
+		
+		{"type": "fade_in"},
+		{"type": "wait", "duration": 0.5},	
+		{"type": "fade_out", "wait": false},
+		{"type": "player_face", "direction": -1},
+		{"type": "move_player", "name": "marker2", "duration": 0.5, "animation": "run",  "wait": true},
+		#{"type": "animation", "name": "anim3", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline14_3M", "wait": true},
+		
+		{"type": "player_face", "direction": 1},
+		{"type": "animation", "name": "anim4", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim4_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline14_4M", "wait": true},
+		
+		{"type": "move_player", "name": "marker3", "duration": 0.5, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim5", "wait": false, "loop": true},
+		#{"type": "fade_in", "wait": true},
+		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
+		{"type": "wait", "duration": 0.5},	
+		{"type": "fade_in"},
+		
+		#{"type": "fade_out"}
+		]
+		#Dialogic.start("timeline14M", false)
+	elif Global.alyra_dead == false:
+		sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		#{"type": "player_face", "direction": -1},
+		#{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline14MV2", "wait": true},
+		
+		{"type": "player_face", "direction": -1},
+		{"type": "move_player", "name": "marker1", "duration": 3, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim2v2", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim2v2_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline14_2MV2", "wait": true},
+		
+		{"type": "player_face", "direction": -1},
+		{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "ani4v2", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim4v2_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline14M_3V2", "wait": true},
+		#{"type": "fade_in", "wait": true},
+		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
+		{"type": "move_player", "name": "marker3", "duration": 0.5, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim5v2", "wait": false, "loop": true},
+		{"type": "wait", "duration": 0.5},	
+		{"type": "fade_in"},
+		
+		#{"type": "fade_out"}
+		]
+		#Dialogic.start("timeline14MV2", false)
 
+			#Dialogic.start("Demo_end", false) #alive dead
 
+				
+
+func _on_cutscene_start():
+	print("Cutscene13m: Starting")
+	# Player reference is already stored in _player_ref by parent class
+	if _player_ref:
+		player_in_range = _player_ref
+		print("Cutscene13m: Player reference stored: ", player_in_range.name)
+
+func _on_cutscene_end():
+	print("Cutscene13m: Finished")
 	Global.timeline = 6.5
 	Global.tromarvelia_two = true
-	#if player_in_range:
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+
+
+
+
+
 	#		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 	#End Demo/Part 1
 	
