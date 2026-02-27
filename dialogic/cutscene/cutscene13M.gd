@@ -22,6 +22,10 @@ var player_in_range = null
 
 @onready var marker1: Marker2D = $Marker2D
 @onready var marker2: Marker2D = $Marker2D2
+@onready var marker3: Marker2D = $Marker2D3
+
+@onready var cutscene_marker1: Marker2D = $CutsceneMarker1
+@onready var cutscene_marker2: Marker2D = $CutsceneMarker1
 
 # Called when the node enters the scene tree for the first time.
 func _on_body_entered(body):
@@ -68,6 +72,11 @@ func _setup_cutscene():
 		"marker2": marker2.global_position
 	}
 	
+	cutscene_markers = {
+		"cutscene_marker1": cutscene_marker1.global_position,
+		"cutscene_marker2": cutscene_marker2.global_position,
+		#"cutscene_marker2": cutscene_marker2.global_position
+	}
 	# Simple sequence: just play dialog
 	#if Global.alyra_dead == false:
 	#		Dialogic.start("timeline12V2", false) #alive alive
@@ -85,37 +94,45 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline14M", "wait": true},
+		{"type": "animation", "name": "anim1_2", "wait": false, "loop": false},
 		
+		{"type": "fade_in"},
+		{"type": "move_cutscene", "name": "cutscene_marker1", "duration": 0.2, "wait": false},
+		{"type": "wait", "duration": 0.5},	
+		{"type": "fade_out", "wait": false},
 		{"type": "player_face", "direction": -1},
 		{"type": "move_player", "name": "marker1", "duration": 3, "animation": "run",  "wait": false},
 		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline14_2M", "wait": true},
+		{"type": "animation", "name": "anim2_2", "wait": false, "loop": false},
 		
 		{"type": "fade_in"},
+		{"type": "move_cutscene", "name": "cutscene_marker2", "duration": 0.2, "wait": false},
 		{"type": "wait", "duration": 0.5},	
 		{"type": "fade_out", "wait": false},
-		{"type": "player_face", "direction": -1},
+		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+		{"type": "player_face", "direction": 1},
 		{"type": "move_player", "name": "marker2", "duration": 0.5, "animation": "run",  "wait": true},
 		#{"type": "animation", "name": "anim3", "wait": true, "loop": false},
 		{"type": "player_animation", "name": "idle",  "wait": false},
-		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+		{"type": "player_face", "direction": -1},
 		{"type": "dialog", "name": "timeline14_3M", "wait": true},
 		
-		{"type": "player_face", "direction": 1},
+		
 		{"type": "animation", "name": "anim4", "wait": true, "loop": false},
-		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "player_face", "direction": 1},
 		{"type": "animation", "name": "anim4_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline14_4M", "wait": true},
 		
-		{"type": "move_player", "name": "marker3", "duration": 0.5, "animation": "run",  "wait": false},
-		{"type": "animation", "name": "anim5", "wait": false, "loop": true},
+		{"type": "move_player", "name": "marker1", "duration": 0.5, "animation": "run",  "wait": false},
+		{"type": "animation", "name": "anim5", "wait": false, "loop": false},
 		#{"type": "fade_in", "wait": true},
 		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
-		{"type": "wait", "duration": 0.5},	
+
 		{"type": "fade_in"},
-		
+		#{"type": "wait", "duration": 0.5},			
 		#{"type": "fade_out"}
 		]
 		#Dialogic.start("timeline14M", false)
@@ -129,7 +146,12 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline14MV2", "wait": true},
+		{"type": "animation", "name": "anim1_2", "wait": false, "loop": false},
 		
+		{"type": "fade_in"},
+		{"type": "move_cutscene", "name": "cutscene_marker1", "duration": 0.2, "wait": false},
+		{"type": "wait", "duration": 0.5},	
+		{"type": "fade_out", "wait": false},
 		{"type": "player_face", "direction": -1},
 		{"type": "move_player", "name": "marker1", "duration": 3, "animation": "run",  "wait": false},
 		{"type": "animation", "name": "anim2v2", "wait": true, "loop": false},
@@ -137,17 +159,16 @@ func _setup_cutscene():
 		{"type": "animation", "name": "anim2v2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline14_2MV2", "wait": true},
 		
-		{"type": "player_face", "direction": -1},
-		{"type": "move_player", "name": "marker2", "duration": 3, "animation": "run",  "wait": false},
 		{"type": "animation", "name": "ani4v2", "wait": true, "loop": false},
+		{"type": "player_face", "direction": 1},
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim4v2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline14M_3V2", "wait": true},
 		#{"type": "fade_in", "wait": true},
 		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
-		{"type": "move_player", "name": "marker3", "duration": 0.5, "animation": "run",  "wait": false},
+		{"type": "move_player", "name": "marker2", "duration": 0.5, "animation": "run",  "wait": false},
 		{"type": "animation", "name": "anim5v2", "wait": false, "loop": true},
-		{"type": "wait", "duration": 0.5},	
+		#{"type": "wait", "duration": 0.5},	
 		{"type": "fade_in"},
 		
 		#{"type": "fade_out"}

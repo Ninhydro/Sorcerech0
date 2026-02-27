@@ -570,7 +570,7 @@ position = Vector2(680, -138)
 metadata/_edit_lock_ = true
 
 [node name="cutscene13M" parent="." instance=ExtResource("15_q52no")]
-position = Vector2(-1245.52, -26.2851)
+position = Vector2(-1065, -26)
 metadata/_edit_lock_ = true
 
 [node name="cutscene16" parent="." instance=ExtResource("16_agjfx")]
