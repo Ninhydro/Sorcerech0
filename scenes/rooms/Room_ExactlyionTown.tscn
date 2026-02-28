@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=38 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://ds2wiv5ixrc7e" path="res://dialogic/cutscene/cutscene17_5.tscn" id="20_sltx3"]
 [ext_resource type="PackedScene" uid="uid://bt7wt4w51javq" path="res://dialogic/cutscene/Exactlyion_tower_lock.tscn" id="21_l7fc3"]
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="22_rw64g"]
+[ext_resource type="PackedScene" uid="uid://bh3hh77bq7rhi" path="res://dialogic/cutscene/cutscene15_6C.tscn" id="23_4r7og"]
 [ext_resource type="PackedScene" uid="uid://wug72wsr2c4e" path="res://dialogic/cutscene/cutscene21_5B3.tscn" id="23_m2s6c"]
 [ext_resource type="PackedScene" uid="uid://c3fg0v3ccw12x" path="res://scenes/objects/VideoTapePickup.tscn" id="27_wiylq"]
 [ext_resource type="PackedScene" uid="uid://btsntrt88p7xj" path="res://scenes/objects/TObject2.tscn" id="28_cvf4j"]
@@ -991,7 +992,11 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene15_5C" parent="." instance=ExtResource("18_xw0yh")]
 position = Vector2(2811, -684)
+new_cutscene_path = NodePath("../cutscene15_6C")
 metadata/_edit_lock_ = true
+
+[node name="cutscene15_6C" parent="." instance=ExtResource("23_4r7og")]
+position = Vector2(2632, -640)
 
 [node name="cutscene16" parent="." instance=ExtResource("19_fqxll")]
 position = Vector2(1034.38, -16.845)

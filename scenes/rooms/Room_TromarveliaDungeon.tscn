@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cr00h80xpx5tm"]
+[gd_scene load_steps=12 format=3 uid="uid://cr00h80xpx5tm"]
 
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="1_1lq1o"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_4drjy"]
@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://od12xal8gb30" path="res://assets_image/Background/Tromarvelia_Dungeon/Tromarvelia Dungeon-Sheet.png" id="4_qjsbw"]
 [ext_resource type="PackedScene" uid="uid://bg247tjmx5fln" path="res://dialogic/cutscene/cutscene14M.tscn" id="5_jldd3"]
 [ext_resource type="PackedScene" uid="uid://0gdwofoh8pbg" path="res://dialogic/cutscene/cutscene15_5M.tscn" id="7_cfnwo"]
+[ext_resource type="PackedScene" uid="uid://bhmnk8cpcd2jo" path="res://dialogic/cutscene/cutscene14_5M.tscn" id="7_x5ruv"]
+[ext_resource type="PackedScene" uid="uid://3dn66u5meydh" path="res://dialogic/cutscene/cutscene15_6M.tscn" id="9_fecao"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gmfn0"]
 size = Vector2(1464, 592)
@@ -117,8 +119,16 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene14M" parent="." instance=ExtResource("5_jldd3")]
 position = Vector2(-176, -32)
+new_cutscene_path = NodePath("../cutscene14_5M")
 metadata/_edit_lock_ = true
+
+[node name="cutscene14_5M" parent="." instance=ExtResource("7_x5ruv")]
+position = Vector2(-184, -24)
 
 [node name="cutscene15_5M" parent="." instance=ExtResource("7_cfnwo")]
 position = Vector2(-152, -72)
+new_cutscene_path = NodePath("../cutscene15_6M")
 metadata/_edit_lock_ = true
+
+[node name="cutscene15_6M" parent="." instance=ExtResource("9_fecao")]
+position = Vector2(-88, -40)

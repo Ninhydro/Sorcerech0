@@ -1,5 +1,5 @@
 extends Area2D
-
+#NOT USE??
 var _has_been_triggered: bool = false
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @export var play_only_once: bool = true

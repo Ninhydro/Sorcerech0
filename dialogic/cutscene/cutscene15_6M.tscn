@@ -1,14 +1,13 @@
-[gd_scene load_steps=78 format=3 uid="uid://bg247tjmx5fln"]
+[gd_scene load_steps=76 format=3 uid="uid://3dn66u5meydh"]
 
-[ext_resource type="Script" path="res://dialogic/cutscene/cutscene14M.gd" id="1_2r6pg"]
-[ext_resource type="PackedScene" uid="uid://dtq452st0b2yu" path="res://scenes/enemies/gawr_boss.tscn" id="2_7foni"]
-[ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="3_0fgsc"]
-[ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="4_gbrla"]
-[ext_resource type="Texture2D" uid="uid://ceb52tng3vx82" path="res://assets_image/Characters/Lux/Lux-Sheet.png" id="5_q1x0p"]
-[ext_resource type="Texture2D" uid="uid://cx6bmveui8ju6" path="res://assets_image/Characters/Gawr/Gawr-Sheet.png" id="6_1gw1y"]
+[ext_resource type="Script" path="res://dialogic/cutscene/cutscene15_6M.gd" id="1_h1cgq"]
+[ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="2_w6hli"]
+[ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="3_lf13i"]
+[ext_resource type="Texture2D" uid="uid://ceb52tng3vx82" path="res://assets_image/Characters/Lux/Lux-Sheet.png" id="4_0o5hn"]
+[ext_resource type="Texture2D" uid="uid://cx6bmveui8ju6" path="res://assets_image/Characters/Gawr/Gawr-Sheet.png" id="5_tf0bp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
-size = Vector2(309, 195)
+size = Vector2(652, 399)
 
 [sub_resource type="Animation" id="Animation_3uu3n"]
 resource_name = "cutscene1"
@@ -111,9 +110,6 @@ _data = {
 "cutscene1.1": SubResource("Animation_4t64i"),
 "cutscene2": SubResource("Animation_x330y")
 }
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2t62y"]
-size = Vector2(20, 417.25)
 
 [sub_resource type="Animation" id="Animation_mi3ym"]
 length = 0.001
@@ -3012,15 +3008,14 @@ _data = {
 "walk": SubResource("Animation_68yc4")
 }
 
-[node name="cutscene14M" type="Area2D" groups=["gawr_boss_cutscene"]]
+[node name="cutscene15_6M" type="Area2D"]
 position = Vector2(79, 74)
-script = ExtResource("1_2r6pg")
-boss_scene = ExtResource("2_7foni")
-boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])
+script = ExtResource("1_h1cgq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-71, -10)
+position = Vector2(-73, -74.5)
 shape = SubResource("RectangleShape2D_xwwtj")
+metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -3028,62 +3023,19 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 position = Vector2(1, -26)
-zoom = Vector2(0.7, 0.7)
+zoom = Vector2(0.8, 0.8)
 
 [node name="npc1" type="Sprite2D" parent="."]
-
-[node name="BossSpawnMarker" type="Marker2D" parent="."]
-position = Vector2(-7, 78)
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(115, 154)
 
-[node name="BossTimer" type="Timer" parent="."]
-wait_time = 120.0
-one_shot = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" groups=["boss1_cutscene"]]
-visible = false
-modulate = Color(0.380392, 0.380392, 0.380392, 0.784314)
-offset_left = 256.0
-offset_right = 320.0
-offset_bottom = 32.0
-
-[node name="TimerLabel" type="Label" parent="CanvasLayer"]
-offset_left = 280.0
-offset_top = 8.0
-offset_right = 320.0
-offset_bottom = 21.0
-text = "Time"
-metadata/_edit_use_anchors_ = true
-
-[node name="BarrierLeft" type="StaticBody2D" parent="."]
-collision_layer = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
-position = Vector2(-239, -106)
-shape = SubResource("RectangleShape2D_2t62y")
-
-[node name="BarrierRight" type="StaticBody2D" parent="."]
-collision_layer = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
-position = Vector2(233, -106)
-shape = SubResource("RectangleShape2D_2t62y")
-
-[node name="HealthSpawnMarker" type="Marker2D" parent="."]
-position = Vector2(-7, -202)
-
-[node name="HealthTimer" type="Timer" parent="."]
-wait_time = 60.0
-
 [node name="Nataly" type="Sprite2D" parent="."]
 position = Vector2(1, -39)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("3_0fgsc")
+texture = ExtResource("2_w6hli")
 hframes = 8
 vframes = 13
 frame = 96
@@ -3097,7 +3049,7 @@ libraries = {
 [node name="Maya" type="Sprite2D" parent="."]
 position = Vector2(1, -37)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("4_gbrla")
+texture = ExtResource("3_lf13i")
 hframes = 8
 vframes = 19
 frame = 96
@@ -3111,7 +3063,7 @@ libraries = {
 [node name="Lux" type="Sprite2D" parent="."]
 position = Vector2(0, -39)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("5_q1x0p")
+texture = ExtResource("4_0o5hn")
 hframes = 10
 vframes = 14
 frame = 110
@@ -3131,7 +3083,7 @@ rotation = -0.278565
 
 [node name="ArmSpriteR" type="Sprite2D" parent="BodyPivot/RightArm"]
 position = Vector2(-57.1623, -97.1415)
-texture = ExtResource("6_1gw1y")
+texture = ExtResource("5_tf0bp")
 hframes = 4
 vframes = 10
 frame = 8
@@ -3143,14 +3095,14 @@ rotation = 0.0362823
 [node name="HandSpriteR" type="Sprite2D" parent="BodyPivot/RightArm/RightHand"]
 z_index = 1
 position = Vector2(-93.8292, -158.838)
-texture = ExtResource("6_1gw1y")
+texture = ExtResource("5_tf0bp")
 hframes = 4
 vframes = 10
 frame = 33
 
 [node name="BodySprite" type="Sprite2D" parent="BodyPivot"]
 position = Vector2(20, -244)
-texture = ExtResource("6_1gw1y")
+texture = ExtResource("5_tf0bp")
 hframes = 4
 vframes = 10
 frame = 15
@@ -3161,7 +3113,7 @@ position = Vector2(34, -210.961)
 [node name="HeadSprite" type="Sprite2D" parent="BodyPivot/HeadPivot"]
 z_index = 1
 position = Vector2(-7, -37)
-texture = ExtResource("6_1gw1y")
+texture = ExtResource("5_tf0bp")
 hframes = 4
 vframes = 10
 frame = 16
@@ -3172,7 +3124,7 @@ rotation = 0.12918
 
 [node name="ArmSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm"]
 position = Vector2(40, -101)
-texture = ExtResource("6_1gw1y")
+texture = ExtResource("5_tf0bp")
 hframes = 4
 vframes = 10
 frame = 28
@@ -3184,7 +3136,7 @@ rotation = -0.0362823
 [node name="HandSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm/LeftHand"]
 z_index = 1
 position = Vector2(78.1035, -138.998)
-texture = ExtResource("6_1gw1y")
+texture = ExtResource("5_tf0bp")
 hframes = 4
 vframes = 10
 frame = 37

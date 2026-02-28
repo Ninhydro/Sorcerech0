@@ -22,6 +22,8 @@ var player_in_range: Node = null
 var rocket_reached: bool = false
 var outcome_resolved: bool = false
 
+@export var new_cutscene_path: NodePath
+
 
 func _ready() -> void:
 	add_to_group("valentina_minigame_controller")
@@ -139,32 +141,6 @@ func on_rocket_hit_by_player() -> void:
 	Global.persistent_saved_valentina = true
 	Global.check_100_percent_completion()
 	Global.save_persistent_data()
-
-	if Dialogic.timeline_ended.is_connected(_on_valentina_save_finished):
-		Dialogic.timeline_ended.disconnect(_on_valentina_save_finished)
-	Dialogic.timeline_ended.connect(_on_valentina_save_finished)
-
-	Dialogic.start("timeline16_5C", false)
-
-
-func _on_valentina_save_finished(_timeline_name: String = "") -> void:
-	print("ValentinaRocket: valentina_save_cutscene3 finished.")
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_valentina_save_finished):
-		Dialogic.timeline_ended.disconnect(_on_valentina_save_finished)
-
-	Global.ult_cyber_form = true
-
-	if player_in_range:
-		player_in_range.unlock_and_force_form("UltimateCyber")
-	Global.health_max += 10
-	Global.health = Global.health_max
-	Global.player.health_changed.emit(Global.health, Global.health_max)
-	
-
-	Global.remove_quest_marker("Meet the Cyber Queen")
-
-	# Hide timer UI
 	if timer_label:
 		timer_label.visible = false
 	if timer_color:
@@ -173,9 +149,25 @@ func _on_valentina_save_finished(_timeline_name: String = "") -> void:
 	# Optional: hide rocket
 	if goal_area:
 		goal_area.visible = false
+		
+	#if Dialogic.timeline_ended.is_connected(_on_valentina_save_finished):
+	#	Dialogic.timeline_ended.disconnect(_on_valentina_save_finished)
+	#Dialogic.timeline_ended.connect(_on_valentina_save_finished)
 
-	if player_in_range:
-		transition_manager.travel_to(player_in_range, target_room, target_spawn)
+	#Dialogic.start("timeline16_5C", false)
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+				
+
 
 
 func _on_fail_timer_timeout() -> void:
@@ -188,32 +180,7 @@ func _on_fail_timer_timeout() -> void:
 
 	Global.ult_cyber_form = true
 	Global.valentina_dead = true
-
-	if Dialogic.timeline_ended.is_connected(_on_valentina_dead_finished):
-		Dialogic.timeline_ended.disconnect(_on_valentina_dead_finished)
-	Dialogic.timeline_ended.connect(_on_valentina_dead_finished)
-
-	Dialogic.start("timeline16_5CV2", false)
-
-
-func _on_valentina_dead_finished(_timeline_name: String = "") -> void:
-	print("ValentinaRocket: valentina_dead_cutscene3 finished.")
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_valentina_dead_finished):
-		Dialogic.timeline_ended.disconnect(_on_valentina_dead_finished)
-
-	Global.ult_cyber_form = true
-
-	if player_in_range:
-		player_in_range.unlock_and_force_form("UltimateCyber")
 	
-	Global.health_max += 10
-	Global.health = Global.health_max
-	Global.player.health_changed.emit(Global.health, Global.health_max)
-	
-	Global.remove_quest_marker("Meet the Cyber Queen")
-
-	# Hide timer UI
 	if timer_label:
 		timer_label.visible = false
 	if timer_color:
@@ -223,8 +190,23 @@ func _on_valentina_dead_finished(_timeline_name: String = "") -> void:
 	if goal_area:
 		goal_area.visible = false
 
-	if player_in_range:
-		transition_manager.travel_to(player_in_range, target_room, target_spawn)
+	#if Dialogic.timeline_ended.is_connected(_on_valentina_dead_finished):
+	#	Dialogic.timeline_ended.disconnect(_on_valentina_dead_finished)
+	#Dialogic.timeline_ended.connect(_on_valentina_dead_finished)
+
+	#Dialogic.start("timeline16_5CV2", false)
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+				
 
 
 func _on_body_exited(body: Node) -> void:

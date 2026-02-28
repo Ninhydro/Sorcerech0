@@ -125,10 +125,10 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="BossCamera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
 visible = false
 position = Vector2(1, -26)
-zoom = Vector2(0.7, 0.7)
+zoom = Vector2(0.8, 0.8)
 
 [node name="npc1" type="Sprite2D" parent="."]
 

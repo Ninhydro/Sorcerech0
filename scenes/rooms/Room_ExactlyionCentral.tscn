@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://2dwtol1f3sey"]
+[gd_scene load_steps=12 format=3 uid="uid://2dwtol1f3sey"]
 
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_5efam"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_bfrxd"]
@@ -6,6 +6,7 @@
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_up4da"]
 [ext_resource type="Texture2D" uid="uid://b8owh3b71jqfo" path="res://assets_image/Background/Exactlyion_Center/Exactlyion Center-Sheet.png" id="4_o0ofr"]
 [ext_resource type="PackedScene" uid="uid://bronoe2p580sf" path="res://dialogic/cutscene/cutscene14C.tscn" id="5_jn263"]
+[ext_resource type="PackedScene" uid="uid://cv63tmvs1x1y" path="res://dialogic/cutscene/cutscene14_5C.tscn" id="7_3omri"]
 [ext_resource type="PackedScene" uid="uid://btsntrt88p7xj" path="res://scenes/objects/TObject2.tscn" id="8_4pe7p"]
 [ext_resource type="PackedScene" uid="uid://cfecqsjeojxxt" path="res://scenes/objects/GrapplePoint.tscn" id="8_lmqlp"]
 
@@ -103,6 +104,10 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene14C" parent="." instance=ExtResource("5_jn263")]
 position = Vector2(-175, -3)
+new_cutscene_path = NodePath("../cutscene14_5C")
+
+[node name="cutscene14_5C" parent="." instance=ExtResource("7_3omri")]
+position = Vector2(-181.751, 31.6884)
 
 [node name="GrapplePoint10" parent="." instance=ExtResource("8_lmqlp")]
 position = Vector2(-88, -168)

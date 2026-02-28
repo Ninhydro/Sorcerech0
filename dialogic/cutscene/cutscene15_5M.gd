@@ -9,7 +9,7 @@ var target_room := "Room_TromarveliaTown"
 var target_spawn := "Spawn_FromTBattlefield"
 
 var player_in_range: Node = null
-var outcome_resolved := false   # prevents double-resolve
+var outcome_resolved := false   # prevents double-resolves
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
@@ -33,6 +33,8 @@ var boss_camera: Camera2D = null
 var player_camera: Camera2D = null
 
 var minigame_started := false
+
+@export var new_cutscene_path: NodePath
 
 func _show_ui(show: bool) -> void:
 	#if timer_label: timer_label.visible = show
@@ -211,15 +213,29 @@ func _success_nora() -> void:
 	Global.remove_quest_marker("Meet the Magus King")
 
 	# start Dialogic and wait for finish
-	if Dialogic.timeline_ended.is_connected(_on_nora_save_finished):
-		Dialogic.timeline_ended.disconnect(_on_nora_save_finished)
-	Dialogic.timeline_ended.connect(_on_nora_save_finished)
+	#if Dialogic.timeline_ended.is_connected(_on_nora_save_finished):
+	#	Dialogic.timeline_ended.disconnect(_on_nora_save_finished)
+	#Dialogic.timeline_ended.connect(_on_nora_save_finished)
 
-	Dialogic.start("timeline16_5M", false)
+	#Dialogic.start("timeline16_5M", false)
 	_show_ui(false)
 	if player_in_range:
 		player_in_range.set_physics_process(true)
 		player_in_range.velocity = Vector2.ZERO
+		
+	boss.queue_free()
+	
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
 
 func _fail_nora() -> void:
 	outcome_resolved = true
@@ -233,16 +249,31 @@ func _fail_nora() -> void:
 	Global.ult_magus_form = true
 	Global.remove_quest_marker("Meet the Magus King")
 
-	if Dialogic.timeline_ended.is_connected(_on_nora_dead_finished):
-		Dialogic.timeline_ended.disconnect(_on_nora_dead_finished)
-	Dialogic.timeline_ended.connect(_on_nora_dead_finished)
+	#if Dialogic.timeline_ended.is_connected(_on_nora_dead_finished):
+	#	Dialogic.timeline_ended.disconnect(_on_nora_dead_finished)
+	#Dialogic.timeline_ended.connect(_on_nora_dead_finished)
 
-	Dialogic.start("timeline16_5MV2", false)
+	#Dialogic.start("timeline16_5MV2", false)
+	
 	_show_ui(false)
 	if player_in_range:
 		player_in_range.set_physics_process(true)
 		player_in_range.velocity = Vector2.ZERO
-
+	
+	boss.queue_free()
+	
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+				
 func _stop_all_timers() -> void:
 	if success_timer: success_timer.stop()
 	if charge_timer: charge_timer.stop()
@@ -260,52 +291,8 @@ func _end_minigame_mode_on_boss() -> void:
 # ----------------------------
 # DIALOGIC FINISHED HANDLERS (LIKE YOUR VALENTINA EXAMPLE)
 # ----------------------------
-func _on_nora_save_finished(_timeline_name: String = "") -> void:
-	print("NoraMinigame: timeline16_5M finished.")
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_nora_save_finished):
-		Dialogic.timeline_ended.disconnect(_on_nora_save_finished)
-	
-	_restore_player_camera()
-	boss.queue_free()
-	Global.is_cutscene_active = false
-	Global.timeline = 6.5
-	Global.ult_magus_form = true
-
-	if player_in_range and is_instance_valid(player_in_range):
-		player_in_range.unlock_and_force_form("UltimateMagus")
-	
-	Global.health_max += 10
-	Global.health = Global.health_max
-	Global.player.health_changed.emit(Global.health, Global.health_max)
-	
-	# transfer player
-	if player_in_range and is_instance_valid(player_in_range):
-		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 
 
-func _on_nora_dead_finished(_timeline_name: String = "") -> void:
-	print("NoraMinigame: timeline16_5MV2 finished.")
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_nora_dead_finished):
-		Dialogic.timeline_ended.disconnect(_on_nora_dead_finished)
-	
-	_restore_player_camera()
-	boss.queue_free()
-	Global.is_cutscene_active = false
-	Global.timeline = 6.5
-	Global.ult_magus_form = true
-
-	if player_in_range and is_instance_valid(player_in_range):
-		player_in_range.unlock_and_force_form("UltimateMagus")
-	
-	Global.health_max += 10
-	Global.health = Global.health_max
-	Global.player.health_changed.emit(Global.health, Global.health_max)
-
-	# transfer player
-	if player_in_range and is_instance_valid(player_in_range):
-		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 
 func _restore_player_camera() -> void:
 	if boss_camera:

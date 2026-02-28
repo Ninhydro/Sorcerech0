@@ -1,8 +1,8 @@
-extends Area2D
+extends MasterCutscene
 
-var _has_been_triggered: bool = false
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@export var play_only_once: bool = true
+#var _has_been_triggered: bool = false
+#@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+#@export var play_only_once: bool = true
 
 
 
@@ -14,7 +14,7 @@ var player_in_range = null
 
 # --- Optional camera/timer UI ---
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
-@onready var boss_camera: Camera2D = $BossCamera2D
+@onready var boss_camera: Camera2D = $Camera2D
 @onready var boss_spawn_marker: Marker2D = $BossSpawnMarker
 @onready var boss_timer: Timer = $BossTimer
 @onready var timer_label: Label = $CanvasLayer/TimerLabel
@@ -49,23 +49,73 @@ var target_spawn2 = "Spawn_FromExactlyionValentina"    # Name of the spawn marke
 
 var current_health_pickup: Node2D = null
 
+@export var new_cutscene_path: NodePath
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
 
+@onready var nataly: Sprite2D = $Nataly
+@onready var maya: Sprite2D = $Maya
+@onready var fini: Sprite2D = $"Replica Fini"
+
+@onready var marker1: Marker2D = $Marker2D
+
+func _ready() -> void:
+	# Timer label hidden until battle starts
+	cutscene_name = "BossCyber1Cutscene"
+	play_only_once = true
 	_reset_visuals()
+	# Setup battle specific components
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
 	
 	if boss_timer:
 		boss_timer.one_shot = true
-		#boss_timer.wait_time = 60.0  # e.g. 60s or 120s
 		if not boss_timer.timeout.is_connected(_on_boss_timer_timeout):
 			boss_timer.timeout.connect(_on_boss_timer_timeout)
-
+		#boss_timer.wait_time = 30.0  # 2 minutes
+		#boss_timer.timeout.connect(_on_boss_timer_timeout)
+	
 	if health_timer:
 		health_timer.one_shot = false
 		#health_timer.wait_time = 30.0  # drop every 30 seconds
 		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
 			health_timer.timeout.connect(_on_health_timer_timeout)
+			
+	#_deactivate_barriers()
+	_reset_for_retry()
+	
+	# Call parent ready
+	super._ready()
+# Called when the node enters the scene tree for the first time.
+
+func _reset_for_retry() -> void:
+	# Only reset if the boss is NOT permanently finished
+	# (adjust this condition if you have a different “boss cleared” flag)
+	if Global.meet_replica and Global.timeline > 6.5:
+		# Boss already truly done → you may even want to queue_free() this trigger
+		print("Boss1: already cleared, leaving trigger disabled.")
+		collision_shape.disabled = true
+		return
+
+	print("Boss1: resetting state for retry")
+	_has_been_triggered = false
+	battle_active = false
+	battle_cancelled_on_player_death = false
+	boss_instance = null
+	
+	if boss_timer:
+		boss_timer.stop()
+	if health_timer:
+		health_timer.stop()
+	
+	_deactivate_barriers()
+	
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
+		
 			
 func _reset_visuals() -> void:
 	_deactivate_barriers()
@@ -96,45 +146,108 @@ func _on_body_entered(body):
 		player_in_range = body
 		print("Player entered cutscene trigger area. Starting cutscene.")
 
-		if collision_shape:
-			collision_shape.set_deferred("disabled", true)
-		else:
-			printerr("Cutscene Area2D: WARNING: CollisionShape2D is null, cannot disable it. Using Area2D monitoring instead.")
-			set_deferred("monitorable", false)
-			set_deferred("monitoring", false)
+		#if collision_shape:
+		#	collision_shape.set_deferred("disabled", true)
+		#else:
+		#	printerr("Cutscene Area2D: WARNING: CollisionShape2D is null, cannot disable it. Using Area2D monitoring instead.")
+		#	set_deferred("monitorable", false)
+		#	set_deferred("monitoring", false)
 
 		#start_cutscene(cutscene_animation_name_to_play, 0.0)
 
-		if play_only_once:
-			_has_been_triggered = true
+		#if play_only_once:
+		#	_has_been_triggered = true
 		
-		_start_intro_cutscene()
+		#_start_intro_cutscene()
+		super._on_body_entered(body)
 
-func _start_intro_cutscene() -> void:
+func _setup_cutscene():
+	cutscene_name = "finiboss"
+	nataly.visible = false
+	maya.visible = false
+	fini.visible = false
+	play_only_once = true
+	area_activation_flag = ""  # No flag required
+	global_flag_to_set = ""  # We'll handle this manually
+	
+	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
+
+	player_markers = {
+		# Example positions - adjust to match your scene
+		"marker1": marker1.global_position,
+		#"marker2": marker2.global_position,
+		#"marker3": marker3.global_position,
+		#"marker4": marker4.global_position,
+		#"marker5": marker5.global_position,
+		#"marker6": marker6.global_position
+		
+	}
+	
+	# Simple sequence: just play dialog
+	sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		
+		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
+		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		#{"type": "player_animation", "name": "idle",  "wait": false},
+		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		#{"type": "dialog", "name": "timeline9", "wait": true},
+		#{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		#{"type": "player_animation", "name": "attack",  "wait": false},
+		#{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline15C", "wait": true},
+		
+		{"type": "wait", "duration": 0.1},		
+		{"type": "fade_in"},
+		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+		
+
+	]
+
+func _on_cutscene_start():
+	print("Cutscenefiniboss: Starting")
+	# Player reference is already stored in _player_ref by parent class
+	if _player_ref:
+		player_in_range = _player_ref
+		print("Cutscenefiniboss: Player reference stored: ", player_in_range.name)
+
+func _on_cutscene_end():
+	print("Cutscenefiniboss: Finished")
+	nataly.visible = false
+	maya.visible = false
+	fini.visible = false
+	# Set timeline
+	_start_boss_battle()
+
 
 	
-		Global.is_cutscene_active = true
-		if player_in_range:
-			var player_cam: Camera2D = player_in_range.get_node_or_null("Camera2D")
-			if player_cam:
-				previous_player_camera = player_cam
+#func _start_intro_cutscene() -> void:
+
+	
+#		Global.is_cutscene_active = true
+#		if player_in_range:
+#			var player_cam: Camera2D = player_in_range.get_node_or_null("Camera2D")
+#			if player_cam:
+#				previous_player_camera = player_cam
 		
 		# Switch to boss camera
-		if boss_camera:
-			boss_camera.make_current()
+#		if boss_camera:
+#			boss_camera.make_current()
 		
 		# Optional intro anim
-		if anim_player and anim_player.has_animation("intro"):
-			anim_player.play("intro")
+#		if anim_player and anim_player.has_animation("intro"):
+#			anim_player.play("intro")
 		#Global.cutscene_name = cutscene_animation_name
 		#Global.cutscene_playback_position = start_position
 		#Dialogic.start("timeline1", false)
-		if Dialogic.timeline_ended.is_connected(_on_intro_dialog_finished):
-			Dialogic.timeline_ended.disconnect(_on_intro_dialog_finished)
-		Dialogic.timeline_ended.connect(_on_intro_dialog_finished)
+#		if Dialogic.timeline_ended.is_connected(_on_intro_dialog_finished):
+#			Dialogic.timeline_ended.disconnect(_on_intro_dialog_finished)
+#		Dialogic.timeline_ended.connect(_on_intro_dialog_finished)
 
 
-		Dialogic.start("timeline15C", false)
+#		Dialogic.start("timeline15C", false)
 		#if Global.alyra_dead == false:
 		#	Dialogic.start("timeline13V2", false) #alive alive
 
@@ -143,19 +256,19 @@ func _start_intro_cutscene() -> void:
 
 
 
-func _on_intro_dialog_finished(_timeline_name = ""):
-	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
+#func _on_intro_dialog_finished(_timeline_name = ""):
+#	print("CutsceneManager: Dialogic timeline finished. Initiating fade out.")
 	# Dialog is done. Now, fade out the black screen.
 
-	Global.is_cutscene_active = false
+#	Global.is_cutscene_active = false
 	
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+#	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
 	
 	# Disconnect the signal to prevent unintended calls.
-	if Dialogic.timeline_ended.is_connected(_on_intro_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_intro_dialog_finished)
+#	if Dialogic.timeline_ended.is_connected(_on_intro_dialog_finished):
+#		Dialogic.timeline_ended.disconnect(_on_intro_dialog_finished)
 
-	_start_boss_battle()
+#	_start_boss_battle()
 
 func _start_boss_battle() -> void:
 	_activate_barriers()
@@ -279,6 +392,18 @@ func _handle_battle_success() -> void:
 	#Global.affinity -= 1
 	Global.increment_kills()
 	
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+				
 	# You can adjust timeline if needed, e.g. Global.timeline = 6.6
 	# Global.timeline = 6.6
 	
@@ -291,34 +416,12 @@ func _handle_battle_success() -> void:
 	#		player_cam.make_current()
 	
 	# Play next dialog: "replica_boss_cutscene2"
-	if Dialogic.timeline_ended.is_connected(_on_replica2_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_replica2_dialog_finished)
-	Dialogic.timeline_ended.connect(_on_replica2_dialog_finished)
+	#if Dialogic.timeline_ended.is_connected(_on_replica2_dialog_finished):
+	#	Dialogic.timeline_ended.disconnect(_on_replica2_dialog_finished)
+	#Dialogic.timeline_ended.connect(_on_replica2_dialog_finished)
 	
-	Dialogic.start("timeline16C", false)
+	#Dialogic.start("timeline16C", false)
 
-
-func _on_replica2_dialog_finished(_timeline_name: String = "") -> void:
-	print("ReplicaBoss: replica_boss_cutscene2 finished.")
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_replica2_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_replica2_dialog_finished)
-	player_in_range.unlock_and_force_form("UltimateCyber")
-	
-	Global.health_max += 10
-	Global.health = Global.health_max
-	Global.player.health_changed.emit(Global.health, Global.health_max)
-	
-		#player_in_range.unlock_state("UltimateCyber")
-		#player_in_range.switch_state("UltimateCyber")
-		#Global.selected_form_index = 4
-		#player_in_range.current_state_index = Global.selected_form_index
-		#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
-	
-	_restore_player_camera()
-	if player_in_range:
-		transition_manager.travel_to(player_in_range, target_room2, target_spawn2)
-	Global.remove_quest_marker("Meet the Cyber Queen")
 		
 	# After this you can move timeline forward or leave it as is.
 	# Global.timeline = 6.7  # example
@@ -336,6 +439,21 @@ func _handle_battle_fail() -> void:
 		
 	Global.ult_cyber_form = false
 	Global.replica_fini_dead = false
+	
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+	#else:
+	#	var branch_text := "SUCCESS" if success else "FAIL"
+	#	print("No next cutscene node assigned for ", branch_text, " branch yet.")
 	#Global.affinity += 1
 	
 	# Optional: change timeline to reflect "Valentina route"
@@ -350,31 +468,7 @@ func _handle_battle_fail() -> void:
 	#		player_cam.make_current()
 	
 	# Now play "valentina_cutscene2", and AFTER it ends we travel to rocket minigame
-	if Dialogic.timeline_ended.is_connected(_on_valentina2_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_valentina2_dialog_finished)
-	Dialogic.timeline_ended.connect(_on_valentina2_dialog_finished)
-	
-	Dialogic.start("timeline16CV2", false)
 
-
-func _on_valentina2_dialog_finished(_timeline_name: String = "") -> void:
-	print("ReplicaBoss: valentina_cutscene2 finished, travelling to rocket room.")
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_valentina2_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_valentina2_dialog_finished)
-	
-	# Travel to rocket minigame scene
-	#if target_room2 != "" and target_spawn2 != "" and player_in_range:
-	#	if Engine.has_singleton("transition_manager"):
-	#		var tm = Engine.get_singleton("transition_manager")
-	#		tm.travel_to(player_in_range, target_room2, target_spawn2)
-	#	elif "transition_manager" in ProjectSettings.get_setting("autoload"):
-	#		transition_manager.travel_to(player_in_range, target_room2, target_spawn2)
-	#	else:
-	#		printerr("ReplicaBoss: transition_manager not found, cannot travel.")
-	_restore_player_camera()
-	if player_in_range:
-			transition_manager.travel_to(player_in_range, target_room, target_spawn)
 			
 
 			

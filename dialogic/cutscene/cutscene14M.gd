@@ -1,8 +1,8 @@
-extends Area2D
+extends MasterCutscene
 
-var _has_been_triggered: bool = false
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@export var play_only_once: bool = true
+#var _has_been_triggered: bool = false
+#@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+#@export var play_only_once: bool = true
 
 var player_in_range: Node = null
 var previous_player_camera: Camera2D = null
@@ -39,23 +39,72 @@ var battle_cancelled_on_player_death: bool = false
 # Story / route control
 var battle_used_fail_route: bool = false
 
+@export var new_cutscene_path: NodePath
+
+@onready var nataly: Sprite2D = $Nataly
+@onready var maya: Sprite2D = $Maya
+@onready var lux: Sprite2D = $"Replica Fini"
+@onready var gawr: Node2D = $BodyPivot
+
+@onready var marker1: Marker2D = $Marker2D
 
 func _ready() -> void:
+	# Timer label hidden until battle starts
+	cutscene_name = "BossMagus1Cutscene"
+	play_only_once = true
 	_reset_visuals()
-
+	# Setup battle specific components
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
+	
 	if boss_timer:
 		boss_timer.one_shot = true
 		if not boss_timer.timeout.is_connected(_on_boss_timer_timeout):
 			boss_timer.timeout.connect(_on_boss_timer_timeout)
-
+		#boss_timer.wait_time = 30.0  # 2 minutes
+		#boss_timer.timeout.connect(_on_boss_timer_timeout)
+	
 	if health_timer:
 		health_timer.one_shot = false
-		health_timer.wait_time = 60.0  # health drop every 30 seconds
+		#health_timer.wait_time = 30.0  # drop every 30 seconds
 		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
 			health_timer.timeout.connect(_on_health_timer_timeout)
+			
+	#_deactivate_barriers()
+	_reset_for_retry()
 	
-	if boss_camera:
-		boss_camera.add_to_group("gawr_boss_camera")
+	# Call parent ready
+	super._ready()
+
+func _reset_for_retry() -> void:
+	# Only reset if the boss is NOT permanently finished
+	# (adjust this condition if you have a different “boss cleared” flag)
+	if Global.meet_replica and Global.timeline > 6.5:
+		# Boss already truly done → you may even want to queue_free() this trigger
+		print("Boss1: already cleared, leaving trigger disabled.")
+		collision_shape.disabled = true
+		return
+
+	print("Boss1: resetting state for retry")
+	_has_been_triggered = false
+	battle_active = false
+	battle_cancelled_on_player_death = false
+	boss_instance = null
+	
+	if boss_timer:
+		boss_timer.stop()
+	if health_timer:
+		health_timer.stop()
+	
+	_deactivate_barriers()
+	
+	if timer_label:
+		timer_label.visible = false
+	if timer_color:
+		timer_color.visible = false
+		
 
 func _reset_visuals() -> void:
 	_deactivate_barriers()
@@ -81,63 +130,89 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node) -> void:
-	if not body.is_in_group("player"):
-		return
-	if play_only_once and _has_been_triggered:
-		return
+	if (body.is_in_group("player") and not _has_been_triggered):  #and Global.cutscene_finished1 == false:
+		player_in_range = body
+		print("Player entered cutscene trigger area. Starting cutscene.")
 
-	player_in_range = body
-	print("GawrCutscene: Player entered Gawr intro trigger.")
+		#if collision_shape:
+		#	collision_shape.set_deferred("disabled", true)
+		#else:
+		#	printerr("Cutscene Area2D: WARNING: CollisionShape2D is null, cannot disable it. Using Area2D monitoring instead.")
+		#	set_deferred("monitorable", false)
+		#	set_deferred("monitoring", false)
 
-	if collision_shape:
-		collision_shape.set_deferred("disabled", true)
-	else:
-		printerr("GawrCutscene: CollisionShape2D is null, disabling Area2D instead.")
-		set_deferred("monitorable", false)
-		set_deferred("monitoring", false)
+		#start_cutscene(cutscene_animation_name_to_play, 0.0)
 
-	if play_only_once:
-		_has_been_triggered = true
-
-	_start_intro_cutscene()
-
-
-func _start_intro_cutscene() -> void:
-	Global.is_cutscene_active = true
-
-	# Store and disable player camera
-	if player_in_range:
-		var player_cam: Camera2D = player_in_range.get_node_or_null("CameraPivot/Camera2D")
-		if player_cam:
-			previous_player_camera = player_cam
-			player_cam.enabled = false
-
-	# Switch to boss camera
-	if boss_camera:
-		boss_camera.enabled = true
-		boss_camera.make_current()
-
-	# Optional intro anim
-	if anim_player and anim_player.has_animation("intro"):
-		anim_player.play("intro")
-
-	# Start Gawr intro dialog
-	if Dialogic.timeline_ended.is_connected(_on_intro_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_intro_dialog_finished)
-	Dialogic.timeline_ended.connect(_on_intro_dialog_finished)
-
-	Dialogic.start("timeline15M", false)  # Gawr intro timeline
+		#if play_only_once:
+		#	_has_been_triggered = true
+		
+		#_start_intro_cutscene()
+		super._on_body_entered(body)
 
 
-func _on_intro_dialog_finished(_timeline_name := "") -> void:
-	print("GawrCutscene: Intro dialog finished.")
-	Global.is_cutscene_active = false
 
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_intro_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_intro_dialog_finished)
+func _setup_cutscene():
+	cutscene_name = "finiboss"
+	nataly.visible = false
+	maya.visible = false
+	lux.visible = false
+	gawr.visible = false
+	play_only_once = true
+	area_activation_flag = ""  # No flag required
+	global_flag_to_set = ""  # We'll handle this manually
+	
+	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
+	player_markers = {
+		# Example positions - adjust to match your scene
+		"marker1": marker1.global_position,
+		#"marker2": marker2.global_position,
+		#"marker3": marker3.global_position,
+		#"marker4": marker4.global_position,
+		#"marker5": marker5.global_position,
+		#"marker6": marker6.global_position
+		
+	}
+	
+	# Simple sequence: just play dialog
+	sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		
+		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
+		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		#{"type": "player_animation", "name": "idle",  "wait": false},
+		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		#{"type": "dialog", "name": "timeline9", "wait": true},
+		#{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		#{"type": "player_animation", "name": "attack",  "wait": false},
+		#{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline15M", "wait": true},
+		
+		{"type": "wait", "duration": 0.1},		
+		{"type": "fade_in"},
+		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+		
+
+	]
+
+func _on_cutscene_start():
+	print("Cutscenefiniboss: Starting")
+	# Player reference is already stored in _player_ref by parent class
+	if _player_ref:
+		player_in_range = _player_ref
+		print("Cutscenefiniboss: Player reference stored: ", player_in_range.name)
+
+func _on_cutscene_end():
+	print("Cutscenefiniboss: Finished")
+	nataly.visible = false
+	maya.visible = false
+	lux.visible = false
+	gawr.visible = false
+	# Set timeline
 	_start_boss_battle()
+	
 
 
 func _start_boss_battle() -> void:
@@ -311,43 +386,24 @@ func _handle_battle_success() -> void:
 	#Global.affinity += 1
 	Global.increment_kills()
 	Global.is_boss_battle = false
-
-	# Gawr win branch dialog
-	if Dialogic.timeline_ended.is_connected(_on_gawr_win_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_gawr_win_dialog_finished)
-	Dialogic.timeline_ended.connect(_on_gawr_win_dialog_finished)
-
-	Dialogic.start("timeline16M", false)  # Gawr killed route
-
-
-func _on_gawr_win_dialog_finished(_timeline_name := "") -> void:
-	print("GawrCutscene: Gawr win dialog finished.")
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_gawr_win_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_gawr_win_dialog_finished)
-
-	Global.is_cutscene_active = false
-	Global.timeline = 6.5
-	# Ensure flags are in winning state
 	Global.ult_magus_form = true
-	Global.gawr_dead = true
+	
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+				
+	# Gawr win branch dialog
 
-	# Give Ultimate Magus form and send to Tromarvelia Town
-	if player_in_range:
-		player_in_range.unlock_and_force_form("UltimateMagus")
-		
-	Global.health_max += 10
-	Global.health = Global.health_max
-	Global.player.health_changed.emit(Global.health, Global.health_max)
 
-	_restore_player_camera()
 
-	if player_in_range:
-		var target_room := "Room_TromarveliaTown"
-		var target_spawn := "Spawn_FromTBattlefield"
-		transition_manager.travel_to(player_in_range, target_room, target_spawn)
-
-	Global.remove_quest_marker("Meet the Magus King")
 
 
 func _handle_battle_fail() -> void:
@@ -365,35 +421,23 @@ func _handle_battle_fail() -> void:
 	Global.ult_magus_form = false
 	Global.gawr_dead = false
 	#Global.affinity -= 1
+	
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+				
+	
 
-	if not battle_used_fail_route and Global.ult_magus_form == false and Global.gawr_dead == false:
-		battle_used_fail_route = true
-		Global.gawr_failed_route_used = true
-
-		# Gawr fail branch dialog (before Nora)
-		if Dialogic.timeline_ended.is_connected(_on_gawr_fail_dialog_finished):
-			Dialogic.timeline_ended.disconnect(_on_gawr_fail_dialog_finished)
-		Dialogic.timeline_ended.connect(_on_gawr_fail_dialog_finished)
-
-		Dialogic.start("timeline16MV2", false)  # “didn’t kill Gawr” route
-	else:
-		print("GawrCutscene: fail route already used or flags mismatch.")
 
 
-func _on_gawr_fail_dialog_finished(_timeline_name := "") -> void:
-	print("GawrCutscene: Gawr fail dialog finished → Nora cutscene conditions set.")
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	if Dialogic.timeline_ended.is_connected(_on_gawr_fail_dialog_finished):
-		Dialogic.timeline_ended.disconnect(_on_gawr_fail_dialog_finished)
-	Global.is_cutscene_active = false
-	# Match what your Nora cutscene expects:
-	# timeline == 6.5, after_battle_gawr == true, gawr_dead == false, ult_magus_form == false
-	Global.timeline = 6.5
-	Global.after_battle_gawr = true
-	Global.ult_magus_form = false
-	Global.gawr_dead = false
-
-	_restore_player_camera()
 
 	# ⚠️ No teleport here.
 	# Your existing Nora Area2D (with timeline16_5M / 16_5MV2) in this same room

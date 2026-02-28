@@ -1,5 +1,5 @@
 extends Area2D
-
+#NOT USED
 @export var target_scene_path: String = ""
 @export var target_position_in_scene: Vector2 = Vector2.ZERO
 @export var cutscene_animation_name_to_play: String = "cutscene1"

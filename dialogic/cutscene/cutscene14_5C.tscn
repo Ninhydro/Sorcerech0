@@ -1,9 +1,9 @@
-[gd_scene load_steps=55 format=3 uid="uid://bronoe2p580sf"]
+[gd_scene load_steps=54 format=3 uid="uid://cv63tmvs1x1y"]
 
-[ext_resource type="Script" path="res://dialogic/cutscene/cutscene14C.gd" id="1_4js64"]
-[ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="2_tcsx3"]
-[ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="3_a8hkf"]
-[ext_resource type="Texture2D" uid="uid://d21ogkbnx8dhe" path="res://assets_image/Characters/Replica_fini/Replica_phina-Sheet.png" id="4_vag7k"]
+[ext_resource type="Script" path="res://dialogic/cutscene/cutscene14_5C.gd" id="1_83cji"]
+[ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="2_f1a3o"]
+[ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="3_b2dcl"]
+[ext_resource type="Texture2D" uid="uid://d21ogkbnx8dhe" path="res://assets_image/Characters/Replica_fini/Replica_phina-Sheet.png" id="4_1cmye"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(309, 195)
@@ -109,9 +109,6 @@ _data = {
 "cutscene1.1": SubResource("Animation_4t64i"),
 "cutscene2": SubResource("Animation_x330y")
 }
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_a1io0"]
-size = Vector2(20, 417.25)
 
 [sub_resource type="Animation" id="Animation_mi3ym"]
 length = 0.001
@@ -831,10 +828,9 @@ _data = {
 "walk": SubResource("Animation_k7fgj")
 }
 
-[node name="cutscene14C" type="Area2D" groups=["replica_boss_cutscene"]]
+[node name="cutscene14_5C" type="Area2D" groups=["replica_boss_cutscene"]]
 position = Vector2(79, 74)
-script = ExtResource("1_4js64")
-boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])
+script = ExtResource("1_83cji")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-7, -26)
@@ -857,53 +853,10 @@ position = Vector2(113, 46)
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(122, 76)
 
-[node name="BossTimer" type="Timer" parent="."]
-wait_time = 60.0
-one_shot = true
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" groups=["boss1_cutscene"]]
-visible = false
-modulate = Color(0.380392, 0.380392, 0.380392, 0.784314)
-offset_left = 256.0
-offset_right = 320.0
-offset_bottom = 32.0
-
-[node name="TimerLabel" type="Label" parent="CanvasLayer"]
-offset_left = 280.0
-offset_top = 8.0
-offset_right = 320.0
-offset_bottom = 21.0
-text = "Time"
-metadata/_edit_use_anchors_ = true
-
-[node name="BarrierLeft" type="StaticBody2D" parent="." groups=["barrier"]]
-collision_layer = 7
-collision_mask = 7
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
-position = Vector2(-231, -130)
-shape = SubResource("RectangleShape2D_a1io0")
-
-[node name="BarrierRight" type="StaticBody2D" parent="." groups=["barrier"]]
-collision_layer = 7
-collision_mask = 7
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
-position = Vector2(249, -130)
-shape = SubResource("RectangleShape2D_a1io0")
-
-[node name="HealthSpawnMarker" type="Marker2D" parent="."]
-position = Vector2(-7, -202)
-
-[node name="HealthTimer" type="Timer" parent="."]
-wait_time = 60.0
-
 [node name="Nataly" type="Sprite2D" parent="."]
 position = Vector2(1, -39)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("2_tcsx3")
+texture = ExtResource("2_f1a3o")
 hframes = 8
 vframes = 13
 frame = 96
@@ -917,7 +870,7 @@ libraries = {
 [node name="Maya" type="Sprite2D" parent="."]
 position = Vector2(1, -37)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("3_a8hkf")
+texture = ExtResource("3_b2dcl")
 hframes = 8
 vframes = 19
 frame = 96
@@ -931,7 +884,7 @@ libraries = {
 [node name="Replica Fini" type="Sprite2D" parent="."]
 position = Vector2(0, -39)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("4_vag7k")
+texture = ExtResource("4_1cmye")
 hframes = 8
 vframes = 10
 frame = 72
