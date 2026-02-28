@@ -1,4 +1,26 @@
 join Player center
-Player (Normal): After battle cutscene 25. 
-Player (Sad): cutscene 26 backstory
-Player (Normal): cutscene 27 meet sterling, end chapter 7 cyber
+replica_fini: If… if Karol saw you now… she’d be ashamed…
+Player: No. She’d mourn what you became.
+Maya_adult: You okay?
+Player: Yeah... ugh... W-what is this…? It’s… inside me—
+[background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
+Karol: Fini… I’ve ruled long enough. Titles don’t sustain peace. It’s sustained by those strong enough to guard it when it falters.
+Fini: You’re trusting me with this? But… Lux…
+Karol: You are the only one I can trust. Lux… I will not burden him with this. You’ve seen both sides of this world. You know what it could be if they stopped trying to destroy each other.
+Fini: What if I fail?
+Karol: Then someone new will rise, as we did. But I don’t believe you will fail. You see the world clearly—and you still want to save it. We change it not by force, but by protecting those who still believe it can be better.
+Fini: Then I’ll carry it. I’ll protect it… and everything it stands for.
+[background arg="res://assets_image/Background/Black.png" fade="0.5"]
+. . . . 
+[background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
+. . . .
+Sterling: Fini. You promised we would do this together. You promised you would help me.
+Fini: I’m sorry, Sterling. This responsibility… it’s not for you. A centralized system controlling the core is too dangerous.
+Sterling: So that’s it? You spend a few years with them, and you choose that human over your own kind? Over me?
+Fini: It’s not about choosing sides! I just can’t risk the core falling into the wrong hands—any hands!
+Sterling: I always looked up to you… Sister… I thought we were eternal.
+Sterling: If this is your choice… then you stand alone.
+[background fade="0.5"]
+Maya_adult: Phina?! Are you okay?!
+Nataly: That energy... it’s pure Cyber Synchron. I've never see anything like this before 
+Player: I remember… now.

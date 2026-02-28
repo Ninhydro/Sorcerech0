@@ -1,3 +1,27 @@
-join Player center
-Player (Normal): after boss fight, cutscene 34 backstory. branch path no killing ro 16.5M
-Player (Sad): cutscene 35 end of chapter 7 magus
+[background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
+Karol: Lux? What is this? What have you done?!
+Lux: I… I just want to proof you I was worthy so I try to use the Sorcerech core
+Fini: And you stole it from the ancient ruins?!
+Gawr: RAWRR!!!!
+Fini: This is bad, Gawr the protector, must been in rage
+Gawr: Give me the core back!! GARRR!!
+"Magus soldier": That dragon is coming to the town
+Karol: Gawr… he’s out of control… he will destroy town
+Fini: Then we need to seal him…
+[background fade="0.0"]
+Nataly: We knock him out, that should do it right?
+Lux: Yes, I'll seal him again... Gawr...
+Player: You… I saw vision of Gawr, Karol, Fini and you Lux 
+Lux: Gawr… He was the slumbering beast and protector of the Sorcerch core. I was naive as a kid. I want to show how capable I am. I try to steal the core from him. 
+Maya_adult: How does a kid able to stole the most important core in the world?
+Lux: It was not that heavily guarded. But there is this main force field wall that can only be passed by the chosen one. So far no one able to pass through it.
+Lux: However, I have the blood of half Magus and Cyber, which turns out to be the key to passing the wall. After I took the core, Gawr awaken from the slumber but he didn't seem to accept me. He went full rage and went havoc around the town.
+Lux: Then my mom and Fini manage to save me. But when they try to give the core back to Gawr, he already didn’t recognize it, he already consumed with anger. At the end they decided to seal him.
+Nataly: Wait so… this power inside PHINA… is it the same as the one core you stole?
+Lux: Not anymore. At the end I’m unable to use the core. We have no idea how to use the core, it even took my mom and Fini several years to able to wield its power. even then they try not to use it much, since it just gives too much drawback and consequences. The core you have now has went through lots of modifications.
+Lux: But… I’m not sure you’ve awaken it’s power yet
+Lux: (It could be her existence prevent the core’s full potential?)
+Nataly: Lux... I have a question, how old is you? It's kinda bugs me since I remember on database that Queen Karol rule New Aerendale for centuries
+Lux: I lost count of my age. I was born as a special race between Magus and Cyber, so I’ve lived for a long time. My mom able to use the Sorcerech core to extend her live quite a bit too.
+Player: (So that's why Karol able to rule New Aerendale with Fini for so long)
+Maya_adult: Alright, alright, that’s enough lore bomb. Anyway, let's get back and rethink everything. 

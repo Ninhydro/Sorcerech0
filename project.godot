@@ -73,7 +73,8 @@ directories/dch_directory={
 "Woman": "res://dialogic/characters/Woman.dch",
 "Worker": "res://dialogic/characters/Worker.dch",
 "Young Student": "res://dialogic/characters/Young Student.dch",
-"Zach": "res://dialogic/characters/Zach.dch"
+"Zach": "res://dialogic/characters/Zach.dch",
+"replica_fini": "res://dialogic/characters/replica_fini.dch"
 }
 directories/dtl_directory={
 "Demo_end": "res://dialogic/timeline/Demo_end.dtl",
@@ -103,10 +104,13 @@ directories/dtl_directory={
 "timeline14_4M": "res://dialogic/timeline/timeline14_4M.dtl",
 "timeline15C": "res://dialogic/timeline/timeline15C.dtl",
 "timeline15M": "res://dialogic/timeline/timeline15M.dtl",
+"timeline15_2C": "res://dialogic/timeline/timeline15_2C.dtl",
+"timeline15_2M": "res://dialogic/timeline/timeline15_2M.dtl",
 "timeline16C": "res://dialogic/timeline/timeline16C.dtl",
 "timeline16CV2": "res://dialogic/timeline/timeline16CV2.dtl",
 "timeline16M": "res://dialogic/timeline/timeline16M.dtl",
 "timeline16MV2": "res://dialogic/timeline/timeline16MV2.dtl",
+"timeline16_2C": "res://dialogic/timeline/timeline16_2C.dtl",
 "timeline16_5C": "res://dialogic/timeline/timeline16_5C.dtl",
 "timeline16_5CV2": "res://dialogic/timeline/timeline16_5CV2.dtl",
 "timeline16_5M": "res://dialogic/timeline/timeline16_5M.dtl",
