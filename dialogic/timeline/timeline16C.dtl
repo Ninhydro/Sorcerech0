@@ -11,7 +11,7 @@ Fini: What if I fail?
 Karol: Then someone new will rise, as we did. But I don’t believe you will fail. You see the world clearly—and you still want to save it. We change it not by force, but by protecting those who still believe it can be better.
 Fini: Then I’ll carry it. I’ll protect it… and everything it stands for.
 [background arg="res://assets_image/Background/Black.png" fade="0.5"]
-. . . . 
+. . . .
 [background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
 . . . .
 Sterling: Fini. You promised we would do this together. You promised you would help me.
@@ -22,5 +22,5 @@ Sterling: I always looked up to you… Sister… I thought we were eternal.
 Sterling: If this is your choice… then you stand alone.
 [background fade="0.5"]
 Maya_adult: Phina?! Are you okay?!
-Nataly: That energy... it’s pure Cyber Synchron. I've never see anything like this before 
+Nataly: That energy... it’s pure Cyber Synchron. I've never see anything like this before
 Player: I remember… now.
