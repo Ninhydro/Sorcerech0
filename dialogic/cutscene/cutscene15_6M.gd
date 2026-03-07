@@ -23,6 +23,9 @@ var battle_used_fail_route: bool = false
 @onready var gawr: Node2D = $BodyPivot
 
 @onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
+
+@onready var cutscene_marker1: Marker2D = $CutsceneMarker1
 
 var target_room := "Room_ExactlyionTown"
 var target_spawn := "Spawn_FromExactlyionValentina"
@@ -80,7 +83,7 @@ func _setup_cutscene():
 	player_markers = {
 		# Example positions - adjust to match your scene
 		"marker1": marker1.global_position,
-		#"marker2": marker2.global_position,
+		"marker2": marker2.global_position,
 		#"marker3": marker3.global_position,
 		#"marker4": marker4.global_position,
 		#"marker5": marker5.global_position,
@@ -88,25 +91,31 @@ func _setup_cutscene():
 		
 	}
 	
+	cutscene_markers = {
+		"cutscene_marker1": cutscene_marker1.global_position,
+		#"cutscene_marker2": cutscene_marker2.global_position
+	}
+	
 	if Global.nora_dead == false:#first boss dead
 		# Branch: player directly killed the Replica Fini
 		sequence = [
-		#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
 		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
-		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1v2", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1v2_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		#{"type": "dialog", "name": "timeline10v2", "wait": true},
 		#{"type": "animation", "name": "anim2v2", "wait": true, "loop": false},
 		#{"type": "player_face", "direction": 1},
 		#{"type": "player_animation", "name": "attack",  "wait": false},
 		#{"type": "animation", "name": "anim2v2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline16_5M", "wait": true},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 		{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
@@ -118,25 +127,38 @@ func _setup_cutscene():
 	else: #first boss not dead
 		# Branch: player survived timer, didn't kill Replica
 		sequence = [
-		#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "wait", "duration": 0.5}, 
 		{"type": "fade_out", "wait": false},
 		
-		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1v2", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1v2_idle", "wait": false, "loop": true},
 		#{"type": "dialog", "name": "timeline10", "wait": true},
 		#{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 		#{"type": "player_face", "direction": 1},
 		#{"type": "player_animation", "name": "attack",  "wait": false},
 		#{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline16_5MV2", "wait": true},
+		{"type": "animation", "name": "anim2v2", "wait": false, "loop": false},
 		
 		{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
+		
+		{"type": "move_cutscene", "name": "cutscene_marker1", "duration": 0.2, "wait": false},
+		{"type": "move_player", "name": "marker2",  "duration": 0.1, "animation": "idle", "wait": false},
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "player_face", "direction": 1},
+		{"type": "animation", "name": "anim3v2", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim3v2_idle", "wait": false, "loop": false},
+		{"type": "dialog", "name": "timeline16_6MV2", "wait": true},
 		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 		
+		{"type": "wait", "duration": 0.1},		
+		{"type": "fade_in"},
 
 		]
 		#Dialogic.start("timeline10", false)

@@ -190,15 +190,21 @@ func _setup_cutscene():
 		
 		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		#{"type": "dialog", "name": "timeline9", "wait": true},
 		#{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 		#{"type": "player_animation", "name": "attack",  "wait": false},
 		#{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline15C", "wait": true},
+		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "attack",  "wait": false},
 		{"type": "dialog", "name": "timeline15_2C", "wait": true},
+		
+		
 		{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
 		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},

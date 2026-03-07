@@ -1417,6 +1417,7 @@ func set_player_cutscene_velocity(direction_vector: Vector2, speed_multiplier: f
 
 
 func play_player_visual_animation(anim_name: String):
+	#Not use this one
 	if not is_instance_valid(self): return
 	
 	if Global.is_cutscene_active:

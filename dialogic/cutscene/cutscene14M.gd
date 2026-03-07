@@ -48,6 +48,8 @@ var battle_used_fail_route: bool = false
 
 @onready var marker1: Marker2D = $Marker2D
 
+@onready var cutscene_marker1: Marker2D = $CutsceneMarker1
+
 func _ready() -> void:
 	# Timer label hidden until battle starts
 	cutscene_name = "BossMagus1Cutscene"
@@ -174,6 +176,12 @@ func _setup_cutscene():
 		
 	}
 	
+	cutscene_markers = {
+		"cutscene_marker1": cutscene_marker1.global_position,
+		#"cutscene_marker2": cutscene_marker2.global_position
+	}
+	
+	
 	# Simple sequence: just play dialog
 	sequence = [
 		{"type": "wait", "duration": 0.5},
@@ -182,13 +190,17 @@ func _setup_cutscene():
 		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
 		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		#{"type": "dialog", "name": "timeline9", "wait": true},
 		#{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 		#{"type": "player_animation", "name": "attack",  "wait": false},
 		#{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline15M", "wait": true},
+		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "attack",  "wait": false},
 		{"type": "dialog", "name": "timeline15_2M", "wait": true},
 		
 		{"type": "wait", "duration": 0.1},		

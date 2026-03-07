@@ -103,11 +103,13 @@ region_rect = Rect2(819.003, 479.241, 133.199, 488.253)
 metadata/_edit_lock_ = true
 
 [node name="cutscene14C" parent="." instance=ExtResource("5_jn263")]
-position = Vector2(-175, -3)
+position = Vector2(-176, -8)
 new_cutscene_path = NodePath("../cutscene14_5C")
+metadata/_edit_lock_ = true
 
 [node name="cutscene14_5C" parent="." instance=ExtResource("7_3omri")]
-position = Vector2(-181.751, 31.6884)
+position = Vector2(-168, -8)
+metadata/_edit_lock_ = true
 
 [node name="GrapplePoint10" parent="." instance=ExtResource("8_lmqlp")]
 position = Vector2(-88, -168)

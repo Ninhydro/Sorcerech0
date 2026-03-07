@@ -101,22 +101,24 @@ func _setup_cutscene():
 	if Global.valentina_dead == false:#first boss dead
 		# Branch: player directly killed the Replica Fini
 		sequence = [
-		#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+		{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
 		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
-		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1v2", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1v2_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		#{"type": "dialog", "name": "timeline10v2", "wait": true},
 		#{"type": "animation", "name": "anim2v2", "wait": true, "loop": false},
 		#{"type": "player_face", "direction": 1},
 		#{"type": "player_animation", "name": "attack",  "wait": false},
 		#{"type": "animation", "name": "anim2v2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline16_5C", "wait": true},
+		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		
 		
 		{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
@@ -128,20 +130,21 @@ func _setup_cutscene():
 	else: #first boss not dead
 		# Branch: player survived timer, didn't kill Replica
 		sequence = [
-		#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+		{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		{"type": "wait", "duration": 0.5}, 
 		{"type": "fade_out", "wait": false},
 		
-		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1v2", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1v2_idle", "wait": false, "loop": true},
 		#{"type": "dialog", "name": "timeline10", "wait": true},
 		#{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 		#{"type": "player_face", "direction": 1},
 		#{"type": "player_animation", "name": "attack",  "wait": false},
 		#{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline16_5CV2", "wait": true},
+		#{"type": "animation", "name": "anim2v2", "wait": false, "loop": false},
 		
 		{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
