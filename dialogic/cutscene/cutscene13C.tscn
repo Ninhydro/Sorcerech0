@@ -1,11 +1,11 @@
-[gd_scene load_steps=39 format=3 uid="uid://un1joupisgld"]
+[gd_scene load_steps=40 format=3 uid="uid://un1joupisgld"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene13C.gd" id="1_ok7xk"]
 [ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="3_ouapc"]
 [ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="4_csn5p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
-size = Vector2(556, 366)
+size = Vector2(328, 366)
 
 [sub_resource type="Animation" id="Animation_commh"]
 resource_name = "anim1"
@@ -259,11 +259,96 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0)
 }
 
+[sub_resource type="Animation" id="Animation_wj8uq"]
+resource_name = "anim3"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Maya:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Maya:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-151, 144), Vector2(-115, 144)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Nataly:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Nataly:flip_h")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Nataly:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-95, 144), Vector2(-64, 144)]
+}
+tracks/5/type = "animation"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Maya/AnimationPlayer")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"clips": PackedStringArray("walk_right"),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "animation"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Nataly/AnimationPlayer")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"clips": PackedStringArray("walk"),
+"times": PackedFloat32Array(0)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cywr2"]
 _data = {
 "anim1": SubResource("Animation_commh"),
 "anim1_idle": SubResource("Animation_wa8y3"),
-"anim2": SubResource("Animation_strc7")
+"anim2": SubResource("Animation_strc7"),
+"anim3": SubResource("Animation_wj8uq")
 }
 
 [sub_resource type="Animation" id="Animation_8a3uu"]
@@ -761,7 +846,7 @@ position = Vector2(79, 74)
 script = ExtResource("1_ok7xk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(77, 10)
+position = Vector2(45, 10)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -784,7 +869,7 @@ position = Vector2(-7, 3)
 [node name="npc2" type="Sprite2D" parent="."]
 
 [node name="Maya" type="Sprite2D" parent="."]
-position = Vector2(-115, 144)
+position = Vector2(-151, 144)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_ouapc")
 hframes = 8
@@ -798,7 +883,7 @@ libraries = {
 }
 
 [node name="Nataly" type="Sprite2D" parent="."]
-position = Vector2(-64, 144)
+position = Vector2(-95, 144)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_csn5p")
 hframes = 8

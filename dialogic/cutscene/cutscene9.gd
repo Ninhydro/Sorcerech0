@@ -61,6 +61,8 @@ func _process(delta: float) -> void:
 		var seconds: int = remaining % 60
 		timer_label.text = "%02d:%02d" % [minutes, seconds]
 
+func _on_body_entered(body):
+	pass
 
 #func _on_body_entered(body: Node) -> void:
 	#if body.is_in_group("player") and not _has_been_triggered:
@@ -209,6 +211,7 @@ func _on_cutscene_end():
 	magus.visible = false
 	cyber.visible = false
 	nataly.visible = false
+	Global.attacking = false
 	# Set timeline
 	start_boss2_battle()
 	

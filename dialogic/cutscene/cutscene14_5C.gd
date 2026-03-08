@@ -39,9 +39,26 @@ var target_spawn2 = "Spawn_FromExactlyionValentina"    # Name of the spawn marke
 @onready var nataly: Sprite2D = $Nataly
 @onready var maya: Sprite2D = $Maya
 @onready var fini: Sprite2D = $"Replica Fini"
+@onready var sterling: Sprite2D = $Sterling
+
 
 @onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
 
+func _ready() -> void:
+	# Only active when Global.timeline == 5.2
+	super._ready()
+
+func _process(delta: float) -> void:
+	# Enable trigger only on specific timeline
+	#if Global.timeline == 6.5:
+	#	collision_shape.disabled = false
+	#else:
+	#	collision_shape.disabled = true
+	pass
+func _on_body_entered(body):
+	pass
+		
 func start_cutscene2() -> void:
 	player_in_range = Global.player
 	_setup_cutscene()
@@ -80,10 +97,11 @@ func start_cutscene2() -> void:
 	#         anim_player.play("intro_alyra_alive")
 
 func _setup_cutscene():
-	cutscene_name = "cyberbosspart1"
+	cutscene_name = "finiboss14_5"
 	nataly.visible = false
 	maya.visible = false
 	fini.visible = false
+	sterling.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -93,7 +111,7 @@ func _setup_cutscene():
 	player_markers = {
 		# Example positions - adjust to match your scene
 		"marker1": marker1.global_position,
-		#"marker2": marker2.global_position,
+		"marker2": marker2.global_position,
 		#"marker3": marker3.global_position,
 		#"marker4": marker4.global_position,
 		#"marker5": marker5.global_position,
@@ -114,12 +132,18 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		#{"type": "dialog", "name": "timeline10v2", "wait": true},
-		#{"type": "animation", "name": "anim2v2", "wait": true, "loop": false},
-		#{"type": "player_face", "direction": 1},
-		#{"type": "player_animation", "name": "attack",  "wait": false},
-		#{"type": "animation", "name": "anim2v2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline16C", "wait": true},
+		{"type": "move_player", "name": "marker2",  "duration": 1, "animation": "shine", "wait": false},
+		{"type": "animation", "name": "anim1_2", "wait": true, "loop": false},
+		{"type": "dialog", "name": "timeline16_1C", "wait": true},
+		
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "player_form", "name": "UltimateCyber", "wait": true},
+		{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "load", "wait": false},
+		{"type": "wait", "duration": 0.5},
+		{"type": "player_animation", "name": "idle", "wait": false},
+		
+		{"type": "dialog", "name": "timeline16_1_2C", "wait": true},
 		
 		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
@@ -178,7 +202,10 @@ func _on_cutscene_end():
 	nataly.visible = false
 	maya.visible = false
 	fini.visible = false
-	
+	sterling.visible = false
+	Global.attacking = false
+	Global.is_cutscene_active = false
+
 	if Global.replica_fini_dead == true:#first boss dead
 		player_in_range.unlock_and_force_form("UltimateCyber")
 	

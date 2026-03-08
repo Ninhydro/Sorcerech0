@@ -11,7 +11,7 @@ var previous_player_camera: Camera2D = null
 
 # --- Optional camera / intro animation ---
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
-@onready var boss_camera: Camera2D = $BossCamera2D
+@onready var boss_camera: Camera2D = $Camera2D
 
 # --- Boss spawn / timers / UI ---
 @onready var boss_spawn_marker: Marker2D = $BossSpawnMarker
@@ -43,7 +43,7 @@ var battle_used_fail_route: bool = false
 
 @onready var nataly: Sprite2D = $Nataly
 @onready var maya: Sprite2D = $Maya
-@onready var lux: Sprite2D = $"Replica Fini"
+@onready var lux: Sprite2D = $Lux
 @onready var gawr: Node2D = $BodyPivot
 
 @onready var marker1: Marker2D = $Marker2D
@@ -154,7 +154,7 @@ func _on_body_entered(body: Node) -> void:
 
 
 func _setup_cutscene():
-	cutscene_name = "finiboss"
+	cutscene_name = "gawrboss14m"
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
@@ -203,33 +203,37 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "attack",  "wait": false},
 		{"type": "dialog", "name": "timeline15_2M", "wait": true},
 		
-		{"type": "wait", "duration": 0.1},		
+			
 		{"type": "fade_in"},
+		{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+		{"type": "wait", "duration": 0.1},	
 		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 		
 
 	]
 
 func _on_cutscene_start():
-	print("Cutscenefiniboss: Starting")
+	print("gawrboss14m: Starting")
 	# Player reference is already stored in _player_ref by parent class
 	if _player_ref:
 		player_in_range = _player_ref
 		print("Cutscenefiniboss: Player reference stored: ", player_in_range.name)
 
 func _on_cutscene_end():
-	print("Cutscenefiniboss: Finished")
+	print("gawrboss14m: Finished")
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
 	gawr.visible = false
 	# Set timeline
+	battling_flag = true
 	_start_boss_battle()
 	
 
 
 func _start_boss_battle() -> void:
 	_activate_barriers()
+	battling_flag = true
 	battle_cancelled_on_player_death = false
 	battle_active = false
 
@@ -380,7 +384,7 @@ func _on_boss_died() -> void:
 	if boss_timer:
 		boss_timer.stop()
 
-	boss_instance = null
+	
 	_handle_battle_success()
 
 
@@ -401,6 +405,12 @@ func _handle_battle_success() -> void:
 	Global.is_boss_battle = false
 	Global.ult_magus_form = true
 	
+	if boss_instance and is_instance_valid(boss_instance):
+		if boss_instance.tree_exited.is_connected(_on_boss_died):
+			boss_instance.tree_exited.disconnect(_on_boss_died)
+		boss_instance.queue_free()
+		boss_instance = null
+		
 	var node_path: NodePath = new_cutscene_path 
 	print("finishing battle cutscene1")
 	if node_path != NodePath("") and has_node(node_path):
@@ -435,6 +445,12 @@ func _handle_battle_fail() -> void:
 	Global.gawr_dead = false
 	#Global.affinity -= 1
 	
+	if boss_instance and is_instance_valid(boss_instance):
+		if boss_instance.tree_exited.is_connected(_on_boss_died):
+			boss_instance.tree_exited.disconnect(_on_boss_died)
+		boss_instance.queue_free()
+		boss_instance = null
+		
 	var node_path: NodePath = new_cutscene_path 
 	print("finishing battle cutscene1")
 	if node_path != NodePath("") and has_node(node_path):

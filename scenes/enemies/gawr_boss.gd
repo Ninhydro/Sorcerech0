@@ -74,6 +74,8 @@ var _facing := 1
 @onready var fire_shape: CollisionShape2D = $BodyPivot/HeadPivot/MouthMarker/FirePivot/FireHitbox/CollisionShape2D
 @onready var flame_sprite: AnimatedSprite2D = $BodyPivot/HeadPivot/MouthMarker/FirePivot/FlameSprite
 
+@onready var mouth_marker2: Marker2D = $BodyPivot/HeadPivot/MouthMarker/Marker2D
+
 # OPTIONAL (for more accurate slam target): put these Marker2D under each hand,
 # at the exact slam contact point (e.g. palm center).
 @export var left_slam_marker: NodePath
@@ -152,15 +154,16 @@ func _get_player() -> Node2D:
 	return p
 
 func _ready() -> void:
+	body_pivot.scale = Vector2(1,1)
 	health = max_health
 	randomize()
 
 	_left_slam_marker_node = get_node_or_null(left_slam_marker) as Marker2D
 	_right_slam_marker_node = get_node_or_null(right_slam_marker) as Marker2D
 
-	_disable_all_hitboxes()
-	_disable_all_weakspots()
-	_stop_flame_immediately()
+	#_disable_all_hitboxes()
+	#_disable_all_weakspots()
+	#_stop_flame_immediately()
 
 	# connect weakspots (area_entered only)
 	_connect_weakspot(head_weakspot)
@@ -199,7 +202,14 @@ func _ready() -> void:
 	set_process(true)
 
 	print("GawrBoss READY: ", name, " flash_targets=", _flash_targets.size())
-
+	call_deferred("_deferred_initial_setup")
+	
+func _deferred_initial_setup() -> void:
+	# Now it's safe to modify physics properties
+	_disable_all_hitboxes()
+	_disable_all_weakspots()
+	_stop_flame_immediately()
+	
 func _physics_process(delta: float) -> void:
 	player = _get_player()
 	
@@ -603,8 +613,8 @@ func _die() -> void:
 func _connect_weakspot(spot: Area2D) -> void:
 	if spot == null:
 		return
-	spot.monitoring = true
-	spot.monitorable = true
+	spot.set_deferred("monitoring", true)
+	spot.set_deferred("monitorable", true)
 	if not spot.area_entered.is_connected(_on_weakspot_area_entered):
 		spot.area_entered.connect(_on_weakspot_area_entered)
 
@@ -668,12 +678,12 @@ func _on_attack_hitbox_body_entered(body: Node, source_hitbox: Area2D) -> void:
 func _enable_hitbox(box: Area2D) -> void:
 	if box == null: return
 	var shape := box.get_node_or_null("CollisionShape2D") as CollisionShape2D
-	if shape: shape.disabled = false
+	if shape: shape.set_deferred("disabled", false)
 
 func _disable_hitbox(box: Area2D) -> void:
 	if box == null: return
 	var shape := box.get_node_or_null("CollisionShape2D") as CollisionShape2D
-	if shape: shape.disabled = true
+	if shape: shape.set_deferred("disabled", true)
 
 func _disable_all_hitboxes() -> void:
 	_disable_hitbox(left_hitbox)
@@ -1161,42 +1171,65 @@ func _do_minigame_slam_interrupt() -> void:
 	_minigame_doing_slam = false
 
 func do_final_flame_at(world_pos: Vector2) -> void:
-	# ✅ short, obvious burst
+	print("GAWRBOSS: do_final_flame_at STARTED at position: ", world_pos)
+	print("GAWRBOSS: Current mouth position: ", mouth_marker.global_position if mouth_marker else "NO MOUTH")
+	print("GAWRBOSS: Current facing: ", _facing)
+	
 	if dead:
+		print("GAWRBOSS: Boss is dead, aborting final flame")
 		return
 
-	# keep minigame state if you call this right before stopping minigame
+	# Stop any ongoing fire
 	_disable_hitbox(fire_hitbox)
 	_stop_flame_immediately()
+
+	# Face the target
+	var dx = world_pos.x - global_position.x
+	print("GAWRBOSS: Target dx: ", dx)
+	_set_facing_from_dx(dx)
+	print("GAWRBOSS: New facing after set: ", _facing)
 
 	# Pose for final flame
 	if anim:
 		if anim.has_animation("breath_lower_2"):
+			print("GAWRBOSS: Playing breath_lower_2")
 			anim.play("breath_lower_2")
 		await get_tree().create_timer(0.25 / _ts()).timeout
+		print("GAWRBOSS: breath_lower_2 finished")
 
 		if anim.has_animation("breath_fire_2"):
+			print("GAWRBOSS: Playing breath_fire_2")
 			anim.play("breath_fire_2")
+	else:
+		print("GAWRBOSS: No AnimationPlayer found!")
 
-	# Visual + hitbox burst
+	# Force update fire position to the target
+	print("GAWRBOSS: Updating fire to world position")
+	_update_fire_to_world_pos(world_pos)
+	
+	# Start flame visuals
+	print("GAWRBOSS: Starting flame sprite")
 	_start_flame_sprite()
 	await get_tree().create_timer(flame_start_time / _ts()).timeout
+	print("GAWRBOSS: Enabling fire hitbox")
 	_enable_hitbox(fire_hitbox)
 
+	# Keep updating fire position during the burst
 	var t := 0.0
-	var burst_time := 1.0
+	var burst_time := 1.5
+	print("GAWRBOSS: Starting flame burst loop for ", burst_time, " seconds")
 	while t < burst_time and not dead:
 		_update_fire_to_world_pos(world_pos)
 		_ensure_flame_cycle()
 		await get_tree().process_frame
 		t += get_process_delta_time() * _ts()
+		if int(t * 10) % 5 == 0:  # Print every ~0.5 seconds
+			print("GAWRBOSS: Flame burst ongoing, t=", t)
 
+	print("GAWRBOSS: Flame burst finished, disabling hitbox")
 	_disable_hitbox(fire_hitbox)
 	_stop_flame_sprite()
-
-	# return to charge pose if still in minigame
-	_ensure_minigame_idle()
-
+	print("GAWRBOSS: do_final_flame_at COMPLETED")
 
 func _force_face_left_minigame() -> void:
 	# left means _facing = -1 in your system
@@ -1217,18 +1250,30 @@ func _ensure_minigame_idle() -> void:
 			anim.play("breath_fire_2")
 
 func _update_fire_to_world_pos(target: Vector2) -> void:
+	print("GAWRBOSS: _update_fire_to_world_pos - target: ", target)
+	
 	if mouth_marker == null or fire_pivot == null:
+		print("GAWRBOSS: mouth_marker or fire_pivot is null!")
 		return
 
-	var origin: Vector2 = mouth_marker.global_position
+	# Get the CURRENT mouth position
+	var origin: Vector2 = mouth_marker2.global_position
+	
+	# SIMPLE MANUAL OFFSET - adjust these values until it looks right
+	var offset = Vector2(0, 0)  # tweak these numbers!
+	origin += offset
+	
+	print("GAWRBOSS: Mouth position (with offset): ", origin)
+	
 	var to_t: Vector2 = target - origin
 	var dist: float = max(to_t.length() + fire_extra_length_px, 1.0)
 
-	# Put pivot at mouth
+	# Put pivot at mouth (with offset)
 	fire_pivot.global_position = origin
 
-	# Aim directly at target (optionally clamp if you want)
+	# Aim directly at target
 	fire_pivot.global_rotation = to_t.angle()
+	print("GAWRBOSS: Fire rotation: ", rad_to_deg(fire_pivot.global_rotation), " degrees")
 
 	# Reset local transforms
 	if fire_hitbox:
@@ -1254,3 +1299,28 @@ func _update_fire_to_world_pos(target: Vector2) -> void:
 				base_width = float(tex.get_width())
 		if base_width > 0.0:
 			flame_sprite.scale = Vector2(dist / base_width, 1.0)
+
+func deferred_minigame_start(controller: Node) -> void:
+	# Wait one frame to ensure all physics is settled
+	await get_tree().process_frame
+	
+	# Now it's safe to set up the minigame
+	nora_minigame_active = true
+	velocity = Vector2.ZERO
+	_move_active = false
+	_attack_running = false
+	chase_enabled = false
+
+	_minigame_charge_time = 10.0  # Set your charge time
+	_minigame_final_marker = controller.get_node("FinalFlameMarker")
+	
+	_force_facing_left = true
+	_facing = -1
+	body_pivot.scale.x = -abs(body_pivot.scale.x)
+
+	# Use set_deferred for physics-related properties
+	call_deferred("_enable_weakspot", head_weakspot)
+	
+	# Start charge loop visuals
+	_play_minigame_charge_anims()
+	

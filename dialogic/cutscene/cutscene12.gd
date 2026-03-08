@@ -157,7 +157,11 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene12: Finished")
-	
+	alyra.visible = false
+	varek.visible = false
+	betael.visible = false
+	maya.visible = false
+	nataly.visible = false
 	# Set timeline
 	if Global.demo == true:
 		pass

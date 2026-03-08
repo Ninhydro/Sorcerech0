@@ -2423,6 +2423,9 @@ position = Vector2(50, 50)
 position = Vector2(-15.9631, -50.9034)
 shape = SubResource("RectangleShape2D_pd23g")
 
+[node name="Marker2D" type="Marker2D" parent="BodyPivot/HeadPivot/MouthMarker"]
+position = Vector2(-6.11111, -183.246)
+
 [node name="LeftArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(-21, -143)
 rotation = 0.135451

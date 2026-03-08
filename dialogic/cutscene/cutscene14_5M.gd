@@ -19,14 +19,30 @@ var battle_used_fail_route: bool = false
 
 @onready var nataly: Sprite2D = $Nataly
 @onready var maya: Sprite2D = $Maya
-@onready var lux: Sprite2D = $"Replica Fini"
+@onready var lux: Sprite2D = $Lux
+@onready var nora: Sprite2D = $Nora
 @onready var gawr: Node2D = $BodyPivot
 
 @onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
+@onready var marker3: Marker2D = $Marker2D3
 
 
 
+func _ready() -> void:
+	# Only active when Global.timeline == 5.2
+	super._ready()
 
+func _process(delta: float) -> void:
+	# Enable trigger only on specific timeline
+	#if Global.timeline == 6.5:
+	#	collision_shape.disabled = false
+	#else:
+	#	collision_shape.disabled = true
+	pass
+func _on_body_entered(body):
+	pass
+		
 func start_cutscene2() -> void:
 	player_in_range = Global.player
 	_setup_cutscene()
@@ -65,10 +81,11 @@ func start_cutscene2() -> void:
 	#         anim_player.play("intro_alyra_alive")
 
 func _setup_cutscene():
-	cutscene_name = "cyberbosspart1"
+	cutscene_name = "gawrboss14_5"
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
+	nora.visible = false
 	gawr.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
@@ -79,8 +96,8 @@ func _setup_cutscene():
 	player_markers = {
 		# Example positions - adjust to match your scene
 		"marker1": marker1.global_position,
-		#"marker2": marker2.global_position,
-		#"marker3": marker3.global_position,
+		"marker2": marker2.global_position,
+		"marker3": marker3.global_position,
 		#"marker4": marker4.global_position,
 		#"marker5": marker5.global_position,
 		#"marker6": marker6.global_position
@@ -90,7 +107,7 @@ func _setup_cutscene():
 	if Global.gawr_dead == true:#first boss dead
 		# Branch: player directly killed the Replica Fini
 		sequence = [
-		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+		{"type": "move_player", "name": "marker3",  "duration": 0.1, "animation": "run", "wait": false},
 		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
@@ -98,20 +115,32 @@ func _setup_cutscene():
 		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
 		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "shine", "wait": false},
 		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		
+		
+		
 		#{"type": "dialog", "name": "timeline10v2", "wait": true},
 		#{"type": "animation", "name": "anim2v2", "wait": true, "loop": false},
 		#{"type": "player_face", "direction": 1},
 		#{"type": "player_animation", "name": "attack",  "wait": false},
 		#{"type": "animation", "name": "anim2v2_idle", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline16M", "wait": true},
+		{"type": "player_form", "name": "UltimateMagus", "wait": true},
+		{"type": "move_player", "name": "marker3",  "duration": 0.5, "animation": "load", "wait": false},
+		#{"type": "player_animation", "name": "save",  "wait": true},
+		#{"type": "wait", "duration": 0.5},
+		{"type": "wait", "duration": 0.5},
+		{"type": "player_animation", "name": "idle", "wait": false},
+		{"type": "dialog", "name": "timeline16_1M", "wait": true},
+		
 		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
-		{"type": "wait", "duration": 0.1},		
+		#{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
-		
+		{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+		{"type": "wait", "duration": 0.5},		
 
 		]
 		#Dialogic.start("timeline10v2", false)
@@ -134,8 +163,10 @@ func _setup_cutscene():
 		{"type": "dialog", "name": "timeline16MV2", "wait": true},
 		#{"type": "animation", "name": "anim2v2", "wait": false, "loop": false},
 		
-		{"type": "wait", "duration": 0.1},		
+
 		{"type": "fade_in"},
+		{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+		{"type": "wait", "duration": 0.1},		
 		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 		
 
@@ -158,11 +189,14 @@ func _on_cutscene_end():
 	maya.visible = false
 	lux.visible = false
 	gawr.visible = false
+	nora.visible = false
 	
+	Global.is_cutscene_active = false
+	Global.attacking = false
 	if Global.gawr_dead == true:#first boss dead
 		#Global.ult_magus_form = true
 		#Global.gawr_dead = true
-
+		battling_flag = false
 		# Give Ultimate Magus form and send to Tromarvelia Town
 		if player_in_range:
 			player_in_range.unlock_and_force_form("UltimateMagus")
@@ -180,6 +214,7 @@ func _on_cutscene_end():
 
 		Global.remove_quest_marker("Meet the Magus King")
 	else:
+		battling_flag = true
 		Global.after_battle_gawr = true
 		Global.ult_magus_form = false
 		#Global.gawr_dead = false

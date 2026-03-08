@@ -35,7 +35,9 @@ func _process(delta: float) -> void:
 	else:
 		collision_shape.disabled = true
 
-
+func _on_body_entered(body):
+	pass
+	
 func _mark_triggered() -> void:
 	# Helper so both body_entered & manual start behave the same
 	if _has_been_triggered:
@@ -180,7 +182,7 @@ func _on_cutscene_end():
 	varek.visible = false
 	cyber.visible = false
 	nataly.visible = false
-	
+	Global.attacking = false
 	if Global.alyra_dead == false:
 		#Dialogic.start("timeline11V2", false)  # Alyra alive route
 		Global.persistent_saved_alyra = true

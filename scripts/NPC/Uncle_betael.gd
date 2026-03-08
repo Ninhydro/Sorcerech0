@@ -99,7 +99,7 @@ func _reset_dialog_state_after_timeout():
 		_reset_dialog_state_after_timeout()
 
 func _show_random_bubble():
-	print("_show_random_bubble called - player_in_range:", player_in_range)
+	#print("_show_random_bubble called - player_in_range:", player_in_range)
 	
 	if (bubble_texts.size() > 0 and 
 		Global.player and 
@@ -250,7 +250,7 @@ func create_simple_world_bubble(text: String):
 
 func _reset_bubble_timer():
 	var interval = randf_range(bubble_interval_min, bubble_interval_max)
-	print("Setting next bubble timer: ", interval, " seconds")
+	#print("Setting next bubble timer: ", interval, " seconds")
 	bubble_timer.start(interval)
 
 func _on_body_entered(body):

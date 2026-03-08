@@ -9,6 +9,9 @@ extends MasterCutscene
 var target_room = "Room_AerendaleJunkyard"     # Name of the destination room (node or scene)
 var target_spawn = "Spawn_ToMaya"    # Name of the spawn marker in the target room
 
+var target_room2 = "Room_TromarveliaBattlefield"     # Name of the destination room (node or scene)
+var target_spawn2 = "Spawn_FromTromarveliaTown2"    # Name of the spawn marker in the target room
+
 var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
@@ -25,14 +28,14 @@ var player_in_range = null
 @onready var marker3: Marker2D = $Marker2D3
 
 @onready var cutscene_marker1: Marker2D = $CutsceneMarker1
-@onready var cutscene_marker2: Marker2D = $CutsceneMarker1
+@onready var cutscene_marker2: Marker2D = $CutsceneMarker2
 
 # Called when the node enters the scene tree for the first time.
 func _on_body_entered(body):
 	print("Cutscene13m: Body entered - ", body.name if body else "null")
 	
 	# Check if timeline condition is met
-	if Global.timeline == 6.5 and Global.tromarvelia_two == false and body.is_in_group("player"):
+	if Global.timeline == 6.5 and Global.tromarvelia_two == false and Global.ult_magus_form == false and body.is_in_group("player"):
 		print("Cutscene13m: Conditions met, calling parent method")
 		# Store player reference first
 		player_in_range = body
@@ -55,6 +58,8 @@ func _on_body_entered(body):
 
 
 func _setup_cutscene():
+	#Global.alyra_dead = true
+	
 	cutscene_name = "Cutscene13m"
 	maya.visible = false
 	nataly.visible = false
@@ -110,11 +115,12 @@ func _setup_cutscene():
 		
 		{"type": "fade_in"},
 		{"type": "move_cutscene", "name": "cutscene_marker2", "duration": 0.2, "wait": false},
+		{"type": "move_player", "name": "marker2", "duration": 0.1, "animation": "run",  "wait": true},
 		{"type": "wait", "duration": 0.5},	
 		{"type": "fade_out", "wait": false},
 		{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
 		{"type": "player_face", "direction": 1},
-		{"type": "move_player", "name": "marker2", "duration": 0.5, "animation": "run",  "wait": true},
+		#{"type": "move_player", "name": "marker2", "duration": 0.5, "animation": "run",  "wait": true},
 		#{"type": "animation", "name": "anim3", "wait": true, "loop": false},
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "player_face", "direction": -1},
@@ -126,7 +132,7 @@ func _setup_cutscene():
 		{"type": "animation", "name": "anim4_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline14_4M", "wait": true},
 		
-		{"type": "move_player", "name": "marker1", "duration": 0.5, "animation": "run",  "wait": false},
+		#{"type": "move_player", "name": "marker1", "duration": 2, "animation": "run",  "wait": false},
 		{"type": "animation", "name": "anim5", "wait": false, "loop": false},
 		#{"type": "fade_in", "wait": true},
 		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
@@ -159,15 +165,18 @@ func _setup_cutscene():
 		{"type": "animation", "name": "anim2v2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline14_2MV2", "wait": true},
 		
-		{"type": "animation", "name": "ani4v2", "wait": true, "loop": false},
+		#{"type": "wait", "duration": 0.5},
+		{"type": "animation", "name": "anim4v2", "wait": true, "loop": false},
+		#{"type": "wait", "duration": 0.5},
 		{"type": "player_face", "direction": 1},
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim4v2_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline14M_3V2", "wait": true},
+		{"type": "dialog", "name": "timeline14_3MV2", "wait": true},
+		
 		#{"type": "fade_in", "wait": true},
 		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
 		{"type": "move_player", "name": "marker2", "duration": 0.5, "animation": "run",  "wait": false},
-		{"type": "animation", "name": "anim5v2", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim5v2", "wait": false, "loop": false},
 		#{"type": "wait", "duration": 0.5},	
 		{"type": "fade_in"},
 		
@@ -188,8 +197,15 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene13m: Finished")
+	maya.visible = false
+	nataly.visible = false
+	zach.visible = false
+	lux.visible = false
+	varek.visible = false
+	
 	Global.timeline = 6.5
 	Global.tromarvelia_two = true
+	transition_manager.travel_to(player_in_range, target_room2, target_spawn2)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

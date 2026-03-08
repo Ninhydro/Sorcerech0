@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://bronoe2p580sf"]
+[gd_scene load_steps=57 format=3 uid="uid://bronoe2p580sf"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene14C.gd" id="1_4js64"]
 [ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="2_tcsx3"]
@@ -528,12 +528,143 @@ tracks/10/keys = {
 "times": PackedFloat32Array(0)
 }
 
+[sub_resource type="Animation" id="Animation_fyjei"]
+resource_name = "anim3"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Nataly:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Nataly:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-135, 33), Vector2(-92, 33)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Maya:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Maya:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-207, 33), Vector2(-179, 33)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Replica Fini:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Replica Fini:flip_h")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Replica Fini:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(252, 33)]
+}
+tracks/8/type = "animation"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Nataly/AnimationPlayer")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"clips": PackedStringArray("walk"),
+"times": PackedFloat32Array(0)
+}
+tracks/9/type = "animation"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Maya/AnimationPlayer")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"clips": PackedStringArray("walk_right"),
+"times": PackedFloat32Array(0)
+}
+tracks/10/type = "animation"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Replica Fini/AnimationPlayer")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"clips": PackedStringArray("idle"),
+"times": PackedFloat32Array(0)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cywr2"]
 _data = {
 "anim1": SubResource("Animation_fm5ti"),
 "anim1_idle": SubResource("Animation_cytjm"),
 "anim2": SubResource("Animation_nao4p"),
-"anim2_idle": SubResource("Animation_5p0jn")
+"anim2_idle": SubResource("Animation_5p0jn"),
+"anim3": SubResource("Animation_fyjei")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a1io0"]
@@ -1284,7 +1415,7 @@ position = Vector2(113, 46)
 position = Vector2(122, 76)
 
 [node name="BossTimer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 5.0
 one_shot = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -1324,10 +1455,10 @@ shape = SubResource("RectangleShape2D_a1io0")
 position = Vector2(-7, -202)
 
 [node name="HealthTimer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 30.0
 
 [node name="Nataly" type="Sprite2D" parent="."]
-position = Vector2(-92, 33)
+position = Vector2(-132.85, 33)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_tcsx3")
 hframes = 8
@@ -1341,7 +1472,7 @@ libraries = {
 }
 
 [node name="Maya" type="Sprite2D" parent="."]
-position = Vector2(-179, 33)
+position = Vector2(-205.6, 33)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_a8hkf")
 hframes = 8
@@ -1355,10 +1486,9 @@ libraries = {
 }
 
 [node name="Replica Fini" type="Sprite2D" parent="."]
-position = Vector2(129, 33)
+position = Vector2(252, 33)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_vag7k")
-flip_h = true
 hframes = 8
 vframes = 10
 frame = 72

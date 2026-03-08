@@ -457,7 +457,7 @@ scale = Vector2(1, 1)
 position = Vector2(1400, -200)
 
 [node name="CyberEnemy" parent="." instance=ExtResource("11_gxyny")]
-position = Vector2(1088, -104)
+position = Vector2(1128, -112)
 
 [node name="RobodogEnemy" parent="." instance=ExtResource("12_g87bb")]
 position = Vector2(1064, -720)

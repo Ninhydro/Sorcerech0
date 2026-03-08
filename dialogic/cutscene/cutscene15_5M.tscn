@@ -1,111 +1,139 @@
-[gd_scene load_steps=9 format=3 uid="uid://0gdwofoh8pbg"]
+[gd_scene load_steps=16 format=3 uid="uid://0gdwofoh8pbg"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene15_5M.gd" id="1_ec8bb"]
+[ext_resource type="PackedScene" uid="uid://dtq452st0b2yu" path="res://scenes/enemies/gawr_boss.tscn" id="2_4wcc2"]
 [ext_resource type="Texture2D" uid="uid://cj3hygu68bt2p" path="res://assets_image/Objects/object1.png" id="2_dmtv0"]
+[ext_resource type="Texture2D" uid="uid://cifdgvorr53t7" path="res://assets_image/Characters/Nora/Nora-Sheet.png" id="3_iaafi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(652, 399)
 
-[sub_resource type="Animation" id="Animation_3uu3n"]
-resource_name = "cutscene1"
-length = 5.0
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 4.9, 5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"values": [{
-"args": [],
-"method": &"proxy_disable_player_input_for_cutscene"
-}, {
-"args": ["run"],
-"method": &"proxy_play_player_visual_animation"
-}, {
-"args": ["idle"],
-"method": &"proxy_play_player_visual_animation"
-}, {
-"args": [],
-"method": &"_start_dialogic_from_animation"
-}]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [1],
-"method": &"proxy_set_player_face_direction"
-}]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [Vector2(-1578, -427), 5.0, 1, 1],
-"method": &"proxy_move_player_to_position"
-}]
-}
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cywr2"]
 
-[sub_resource type="Animation" id="Animation_4t64i"]
-resource_name = "cutscene1.1"
-length = 2.0
-loop_mode = 1
-tracks/0/type = "method"
+[sub_resource type="Animation" id="Animation_lw422"]
+length = 0.001
+tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".")
+tracks/0/path = NodePath("Nora:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"values": [{
-"args": ["idle"],
-"method": &"proxy_play_player_visual_animation"
-}]
+"update": 1,
+"values": [32]
 }
 
-[sub_resource type="Animation" id="Animation_x330y"]
-resource_name = "cutscene2"
-length = 5.0
-tracks/0/type = "method"
+[sub_resource type="Animation" id="Animation_4wyw0"]
+resource_name = "attack"
+length = 0.8
+tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".")
+tracks/0/path = NodePath("Nora:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.2, 5),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [-1],
-"method": &"proxy_set_player_face_direction"
-}, {
-"args": [],
-"method": &"proxy_enable_player_input_after_cutscene"
-}]
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_cywr2"]
+[sub_resource type="Animation" id="Animation_u13b4"]
+resource_name = "attack_loop"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nora:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 4, 6]
+}
+
+[sub_resource type="Animation" id="Animation_41sdn"]
+resource_name = "die"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nora:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11, 12, 13, 14]
+}
+
+[sub_resource type="Animation" id="Animation_lws8b"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nora:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [32, 33, 34, 35, 36, 37]
+}
+
+[sub_resource type="Animation" id="Animation_r17ic"]
+resource_name = "shock"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nora:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [24, 25, 26, 27]
+}
+
+[sub_resource type="Animation" id="Animation_gogrh"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nora:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [16, 17, 18, 19, 20, 21, 22, 23]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n85i5"]
 _data = {
-"cutscene1": SubResource("Animation_3uu3n"),
-"cutscene1.1": SubResource("Animation_4t64i"),
-"cutscene2": SubResource("Animation_x330y")
+"RESET": SubResource("Animation_lw422"),
+"attack": SubResource("Animation_4wyw0"),
+"attack_loop": SubResource("Animation_u13b4"),
+"die": SubResource("Animation_41sdn"),
+"idle": SubResource("Animation_lws8b"),
+"shock": SubResource("Animation_r17ic"),
+"walk": SubResource("Animation_gogrh")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6fbaa"]
@@ -114,6 +142,7 @@ size = Vector2(58, 19)
 [node name="cutscene15_5M" type="Area2D"]
 position = Vector2(79, 74)
 script = ExtResource("1_ec8bb")
+boss_scene = ExtResource("2_4wcc2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-73, -74.5)
@@ -130,10 +159,22 @@ visible = false
 position = Vector2(1, -26)
 zoom = Vector2(0.8, 0.8)
 
-[node name="npc1" type="Sprite2D" parent="."]
+[node name="Nora" type="Sprite2D" parent="."]
+position = Vector2(-223, 17)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_iaafi")
+hframes = 8
+vframes = 5
+frame = 32
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Nora"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_n85i5")
+}
 
 [node name="SuccessTimer" type="Timer" parent="."]
-wait_time = 60.0
+wait_time = 40.0
 one_shot = true
 
 [node name="ChargeTimer" type="Timer" parent="."]
@@ -201,7 +242,7 @@ position = Vector2(104, 24)
 texture = ExtResource("2_dmtv0")
 
 [node name="FinalFlameMarker" type="Marker2D" parent="."]
-position = Vector2(-207, 46)
+position = Vector2(-279, 22)
 
 [node name="BossStart" type="Marker2D" parent="."]
 position = Vector2(-55, 118)

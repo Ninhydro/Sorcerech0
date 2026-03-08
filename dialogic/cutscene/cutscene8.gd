@@ -93,7 +93,7 @@ func _process(delta: float) -> void:
 	#		print("Boss1: timeline!=5 (", Global.timeline, "), disabling trigger")
 	#	collision_shape.disabled = true
 		
-	if Global.timeline == 6:
+	if Global.timeline >= 6:
 		_deactivate_barriers()
 		
 	
@@ -182,6 +182,7 @@ func _on_cutscene_end():
 	varek.visible = false
 	magus.visible = false
 	# Set timeline
+	Global.attacking = false
 	start_boss_battle()
 
 #func start_intro_cutscene() -> void:

@@ -33,8 +33,13 @@ var boss_camera: Camera2D = null
 var player_camera: Camera2D = null
 
 var minigame_started := false
-
+@export var boss_scene: PackedScene    
+var boss_instance: Node2D = null
+ 
 @export var new_cutscene_path: NodePath
+
+@onready var nora: Sprite2D = $Nora
+@onready var animation_nora: AnimationPlayer = $Nora/AnimationPlayer
 
 func _show_ui(show: bool) -> void:
 	#if timer_label: timer_label.visible = show
@@ -42,8 +47,10 @@ func _show_ui(show: bool) -> void:
 	if timer_color: timer_color.visible = show
 	
 func _ready() -> void:
+	#boss = boss_scene.instantiate()
+	#boss.global_position = $BossStart.global_position
 	_set_platforms_enabled(false)
-	
+	nora.visible = false
 	# timers setup
 	if success_timer:
 		success_timer.stop()
@@ -65,6 +72,8 @@ func _process(_delta: float) -> void:
 	if Global.timeline == 6.5 and Global.after_battle_gawr and (not Global.gawr_dead) and (not Global.ult_magus_form):
 		if collision_shape:
 			collision_shape.disabled = false
+		#boss_instance = boss_scene.instantiate()
+		#boss_instance.add_to_group("gawr_boss")
 	else:
 		if collision_shape:
 			collision_shape.disabled = true
@@ -130,17 +139,53 @@ func _on_body_entered(body: Node) -> void:
 	# start timers immediately
 	if charge_timer: charge_timer.start()
 	if success_timer: success_timer.start()
-
+	
+	call_deferred("_deferred_spawn_boss")
+	
+	nora.visible = true
+	animation_nora.play("attack_loop")
+	
 	# now try to find boss (retry if not ready yet)
-	boss = _find_boss()
-	if boss and not minigame_started:
-		boss.global_position = $BossStart.global_position
-		minigame_started = true
-		_bind_boss_signals()
-		_start_boss_minigame_mode()
-	else:
-		push_warning("NoraMinigame: boss not found yet, will retry in _process.")
+	#boss = boss_scene.instantiate() #_find_boss()
+	#add_child(boss)
+	#boss.global_position = $BossStart.global_position
+	
+	# Defer the boss's minigame setup to avoid physics conflicts
+	#boss.call_deferred("deferred_minigame_start", self)
+	
 
+	
+	#if boss and not minigame_started:
+	#	boss.global_position = $BossStart.global_position
+	#	minigame_started = true
+	#	_bind_boss_signals()
+	#	_start_boss_minigame_mode()
+	#else:
+	#	push_warning("NoraMinigame: boss not found yet, will retry in _process.")
+
+func _deferred_spawn_boss() -> void:
+	# This runs after the physics signal is fully processed
+	print("NoraMinigame: Deferred boss spawn starting...")
+	
+	# Create and add boss
+	boss = boss_scene.instantiate()
+	add_child(boss)
+	boss.global_position = $BossStart.global_position
+	minigame_started = true
+	_bind_boss_signals()
+	# Find boss camera now that boss exists
+	boss_camera = get_tree().get_first_node_in_group("gawr_boss_camera") as Camera2D
+	if boss_camera:
+		boss_camera.set_deferred("enabled", true)
+		boss_camera.call_deferred("make_current")
+	
+	# Wait one more frame to ensure boss is fully initialized
+	await get_tree().process_frame
+	
+	# Now start the minigame
+	if boss and boss.has_method("deferred_minigame_start"):
+		boss.deferred_minigame_start(self)
+		
 func _find_boss() -> Node:
 	return get_tree().get_first_node_in_group("gawr_boss")
 
@@ -238,6 +283,8 @@ func _success_nora() -> void:
 				cs_node.visible = true
 
 func _fail_nora() -> void:
+	#boss.do_final_flame_at(final_flame_marker.global_position)
+	await get_tree().create_timer(1.0).timeout
 	outcome_resolved = true
 	print("NoraMinigame: FAIL (charge expired or player died).")
 

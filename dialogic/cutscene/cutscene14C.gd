@@ -162,7 +162,7 @@ func _on_body_entered(body):
 		super._on_body_entered(body)
 
 func _setup_cutscene():
-	cutscene_name = "finiboss"
+	cutscene_name = "finiboss14c"
 	nataly.visible = false
 	maya.visible = false
 	fini.visible = false
@@ -204,9 +204,10 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "attack",  "wait": false},
 		{"type": "dialog", "name": "timeline15_2C", "wait": true},
 		
-		
-		{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
+		{"type": "animation", "name": "anim3", "wait": false, "loop": false},	
+		{"type": "wait", "duration": 0.5},	
+		#{"type": "fade_in"},
 		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 		
 
@@ -278,6 +279,7 @@ func _on_cutscene_end():
 
 func _start_boss_battle() -> void:
 	_activate_barriers()
+	battling_flag = true
 	battle_cancelled_on_player_death = false
 	battle_active = false
 

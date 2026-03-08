@@ -96,7 +96,12 @@ func exit():
 func physics_process(delta):
 	# Removed wall jump logic if it's supposed to happen OUTSIDE grapple
 	# If wall jump should release grapple:LedgeLeftON = true
-
+	#print("player.is_on_wall()", player.is_on_wall())
+	#print("is_grappling", is_grappling)
+	#print(player.LedgeLeftON)
+	#print(player.LedgeRightON)
+	#print(player.LedgeLeftON2)
+	#print(player.LedgeRightON2)
 	if player.is_on_wall() and Input.is_action_just_pressed("jump") and not is_grappling and (player.LedgeLeftON or player.LedgeRightON) and (player.LedgeLeftON2 or player.LedgeRightON2) :
 		print("wall jump")
 		player.wall_jump_just_happened = true

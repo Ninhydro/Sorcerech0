@@ -115,6 +115,8 @@ signal form_changed(new_form_name)
 @onready var LedgeLeftUpper = $Raycast/LedgeGrab/LedgeLeftUpper
 @onready var LedgeLeftUpper2 = $Raycast/LedgeGrab/LedgeLeftUpper2
 
+	
+	
 
 var LedgeLeftON = false
 var LedgeRightON = false
@@ -123,6 +125,8 @@ var LedgeRightON2 = false
 var is_grabbing_ledge = false
 var LedgePosition: Vector2 = Vector2.ZERO # The position where the player should hang
 var LedgeDirection: Vector2 = Vector2.ZERO # The direction of the ledge (+1 for right, -1 for left)
+
+
 
 @onready var camera = $CameraPivot/Camera2D
 
@@ -471,7 +475,23 @@ func _physics_process(delta):
 					sprite.flip_h = false
 					AreaAttackColl.position = Vector2(16,-8.75)
 					grapple_hand_point.position = Vector2(abs(grapple_hand_point.position.x), grapple_hand_point.position.y)
-
+				
+				if _is_platform_ray(LedgeRightUpper):
+					LedgeRightON = true
+				else:
+					LedgeRightON = false
+				if _is_platform_ray(LedgeRightUpper2):
+					LedgeRightON2 = true
+				else:
+					LedgeRightON2 = false
+				if _is_platform_ray(LedgeLeftUpper):
+					LedgeLeftON = true
+				else:
+					LedgeLeftON = false
+				if _is_platform_ray(LedgeLeftUpper2):
+					LedgeLeftON2 = true
+				else:
+					LedgeLeftON2 = false
 
 				# Apply horizontal movement based on input (only if not wall-jumping, dialog, or attacking)
 				if not wall_jump_just_happened and not Global.is_dialog_open and not Global.attacking and not is_grabbing_ledge and not is_grappling_active and not Global.saving and not Global.loading:

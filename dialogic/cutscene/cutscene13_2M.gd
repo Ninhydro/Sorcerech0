@@ -9,27 +9,33 @@ extends MasterCutscene
 var target_room = "Room_AerendaleJunkyard"     # Name of the destination room (node or scene)
 var target_spawn = "Spawn_ToMaya"    # Name of the spawn marker in the target room
 
+var target_room2 = "Room_TromarveliaBattlefield"     # Name of the destination room (node or scene)
+var target_spawn2 = "Spawn_FromTromarveliaTown2"    # Name of the spawn marker in the target room
+
 var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
 
 @onready var maya: Sprite2D = $Maya
+@onready var lux: Sprite2D = $Lux
 @onready var nataly: Sprite2D = $Nataly
 
 
 @onready var marker1: Marker2D = $Marker2D
 @onready var marker2: Marker2D = $Marker2D2
+@onready var marker3: Marker2D = $Marker2D3
+
+@onready var cutscene_marker1: Marker2D = $CutsceneMarker1
+@onready var cutscene_marker2: Marker2D = $CutsceneMarker1
 
 # Called when the node enters the scene tree for the first time.
-
-
 func _on_body_entered(body):
-	print("Cutscene13c: Body entered - ", body.name if body else "null")
+	print("Cutscene13m: Body entered - ", body.name if body else "null")
 	
 	# Check if timeline condition is met
-	if Global.timeline == 6.5 and Global.exactlyion_two == false and body.is_in_group("player"):
-		print("Cutscene13c: Conditions met, calling parent method")
+	if Global.timeline == 6.5 and Global.tromarvelia_two == true and body.is_in_group("player"):
+		print("Cutscene13m: Conditions met, calling parent method")
 		# Store player reference first
 		player_in_range = body
 		# Call parent's _on_body_entered
@@ -39,7 +45,7 @@ func _on_body_entered(body):
 		_setup_cutscene()
 		super._on_body_entered(body)
 	else:
-		print("Cutscene13c: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
+		print("Cutscene13m: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,9 +57,11 @@ func _on_body_entered(body):
 
 
 func _setup_cutscene():
-	cutscene_name = "Cutscene13c"
+	cutscene_name = "Cutscene13m"
 	maya.visible = false
 	nataly.visible = false
+	lux.visible = false
+
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -65,6 +73,11 @@ func _setup_cutscene():
 		"marker2": marker2.global_position
 	}
 	
+	cutscene_markers = {
+		"cutscene_marker1": cutscene_marker1.global_position,
+		"cutscene_marker2": cutscene_marker2.global_position,
+		#"cutscene_marker2": cutscene_marker2.global_position
+	}
 	# Simple sequence: just play dialog
 	#if Global.alyra_dead == false:
 	#		Dialogic.start("timeline12V2", false) #alive alive
@@ -72,6 +85,7 @@ func _setup_cutscene():
 	#	elif Global.alyra_dead == true:
 	#		Dialogic.start("timeline12", false) #alive dead
 	#if Global.demo == true:
+
 	sequence = [
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
@@ -80,36 +94,45 @@ func _setup_cutscene():
 		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline14C", "wait": true},
+		{"type": "dialog", "name": "timeline14_2_5M", "wait": true},
+		
 		#{"type": "fade_in", "wait": true},
 		#{"type": "animation", "name": "anim2_out", "wait": false, "loop": false},
-		
+
 		{"type": "fade_in"},
-		{"type": "animation", "name": "anim3", "wait": false, "loop": false},
-		{"type": "wait", "duration": 0.5},	
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "wait", "duration": 0.5},			
 		#{"type": "fade_out"}
 		]
+		#Dialogic.start("timeline14M", false)
+	
+		#Dialogic.start("timeline14MV2", false)
+
 			#Dialogic.start("Demo_end", false) #alive dead
 
 				
 
 func _on_cutscene_start():
-	print("Cutscene13c: Starting")
+	print("Cutscene13m: Starting")
 	# Player reference is already stored in _player_ref by parent class
 	if _player_ref:
 		player_in_range = _player_ref
-		print("Cutscene13c: Player reference stored: ", player_in_range.name)
+		print("Cutscene13m: Player reference stored: ", player_in_range.name)
 
 func _on_cutscene_end():
-	print("Cutscene13c: Finished")
+	print("Cutscene13m: Finished")
 	maya.visible = false
 	nataly.visible = false
-	Global.timeline = 6.5
-	Global.exactlyion_two = true
+	lux.visible = false
+
 	
+	Global.timeline = 6.5
+	Global.tromarvelia_two = false
+	#transition_manager.travel_to(player_in_range, target_room2, target_spawn2)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+
 
 
 
