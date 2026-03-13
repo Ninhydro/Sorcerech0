@@ -1,4 +1,4 @@
-extends Area2D
+extends MasterCutscene
 
 @export var gigaster_scene: PackedScene
 @export var boss_barriers: Array[NodePath] = []
@@ -27,64 +27,108 @@ var previous_player_camera: Camera2D = null
 var battle_active := false
 var battle_cancelled_on_player_death := false
 
-
+@export var new_cutscene_path: NodePath
 # ---------------------------------------------------------
 # AREA ENTER
 # ---------------------------------------------------------
 
-func _ready() -> void:
+
+
+
+func _ready():
 	_deactivate_barriers()
 
 	if health_timer:
 		health_timer.one_shot = false
-		#health_timer.wait_time = 30.0  # health drop every 30 seconds
 		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
 			health_timer.timeout.connect(_on_health_timer_timeout)
 	
-	if boss_camera:
-		boss_camera.add_to_group("gigaster_boss_camera")
+	super._ready()
+	#if boss_camera:
+	#	boss_camera.add_to_group("gigaster_boss_camera")
 
-func _process(delta):
-	#print("health",health_timer.time_left)
-	pass
-func _on_body_entered(body: Node) -> void:
-	if not body.is_in_group("player"):
-		return
+	
+func _on_body_entered(body):
+	print("Cutscene1: Body entered - ", body.name if body else "null")
+	
+	# Check if timeline condition is met
+	if Global.timeline == 8.8 and Global.route_status == "Magus" and not battle_active and body.is_in_group("player"):
+		print("Cutscene1: Conditions met, calling parent method")
+		# Store player reference first
+		player_in_range = body
+		# Call parent's _on_body_entered
+		#betael.visible = true
+		#maya.visible = false
+		_setup_cutscene()
+		super._on_body_entered(body)
+	else:
+		print("Cutscene1: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
+		
+func _setup_cutscene():
+	cutscene_name = "Cutscene3"
+	#alyra.visible = false
+	#varek.visible = false
+	play_only_once = true
+	area_activation_flag = ""  # No flag required
+	global_flag_to_set = ""  # We'll handle this manually
+	
+	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
-	player_in_range = body
+	
+	
+	# Simple sequence: just play dialog
+	sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		
+		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline20M", "wait": true},
+		
+		{"type": "wait", "duration": 0.5},		
+		{"type": "fade_in"},
+		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		
 
-	if _can_start_cutscene():
-		_start_intro_cutscene()
+	]
 
-# ---------------------------------------------------------
-func _can_start_cutscene() -> bool:
-	return (
-		Global.timeline == 8.8
-		and Global.route_status == "Magus"
-		and not battle_active
-	)
+func _on_cutscene_start():
+	print("Cutscene1: Starting")
+	# Player reference is already stored in _player_ref by parent class
+	if _player_ref:
+		player_in_range = _player_ref
+		print("Cutscene1: Player reference stored: ", player_in_range.name)
+
+func _on_cutscene_end():
+	print("Cutscene1: Finished")
+	battle_active = true
+	battle_cancelled_on_player_death = false
+	
+	Global.health = Global.health_max
+	Global.player.health_changed.emit(Global.health, Global.health_max)
+	s
+	_activate_barriers()
+	#_switch_to_boss_camera()
+	
+	_spawn_gigaster()
+	health_timer.start()
+	#Global.timeline = 7
+	#Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
+	#if player_in_range:
+	#		transition_manager.travel_to(player_in_range, target_room1, target_spawn1)
+	#var minigame = get_tree().get_first_node_in_group("sorting_minigame")
+	#if minigame:
+	#	minigame.start_game()
+		
+	print("Cutscene1: Set Global.timeline = ", Global.timeline)
+	
 
 # ---------------------------------------------------------
 # INTRO CUTSCENE
 # ---------------------------------------------------------
-func _start_intro_cutscene() -> void:
-	if health_timer:
-		health_timer.start()
-		#print("TIMERRRRRRRRRRRRR")
-	battle_active = true
-	battle_cancelled_on_player_death = false
-	Global.is_cutscene_active = true
 
-	_activate_barriers()
-	_switch_to_boss_camera()
-
-	Dialogic.start(intro_timeline)
-	await Dialogic.timeline_ended
-
-	if battle_cancelled_on_player_death:
-		return
-	
-	_spawn_gigaster()
 
 # ---------------------------------------------------------
 # BOSS SPAWN
@@ -141,10 +185,10 @@ func _on_boss_died() -> void:
 		return
 
 	battle_active = false
-	Global.is_cutscene_active = true
+	#Global.is_cutscene_active = true
 
-	Dialogic.start(outro_timeline)
-	await Dialogic.timeline_ended
+	#Dialogic.start(outro_timeline)
+	#await Dialogic.timeline_ended
 
 	_finalize_success()
 
@@ -166,13 +210,21 @@ func _finalize_success() -> void:
 	Global.remove_quest_marker("Fight for the Magus")
 	Global.is_cutscene_active = false
 	_cleanup_battle()
-
-	if player_in_range:
-		transition_manager.travel_to(
-			player_in_range,
-			target_room,
-			target_spawn
-		)
+	
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+				
+	#if player_in_range:
+	#	transition_manager.travel_to(player_in_range, target_room,target_spawn)
 
 # ---------------------------------------------------------
 # PLAYER DEATH CANCEL

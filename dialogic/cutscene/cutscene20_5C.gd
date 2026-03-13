@@ -6,90 +6,108 @@ extends MasterCutscene
 
 
 
-var target_room = "Room_AerendaleTown"     # Name of the destination room (node or scene)
-var target_spawn = "Spawn_FromJunkyard"    # Name of the spawn marker in the target room
+
 
 var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
+# --- Optional camera/timer UI ---
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+
+
+var previous_player_camera: Camera2D = null
+var boss_instance: Node = null
+var battle_active: bool = false
+var battle_cancelled_on_player_death: bool = false
+
+# --- Replica boss scene ---
+
+@export var target_room := "Room_Restart"
+@export var target_spawn := "Spawn_FromReality"
+# Boss scene to spawn
+
+
+# Optional: paths to next cutscene nodes (set in Inspector later)
+
+
+@onready var nataly: Sprite2D = $Nataly
+@onready var maya: Sprite2D = $Maya
+@onready var fini: Sprite2D = $"Replica Fini"
+@onready var sterling: Sprite2D = $Sterling
+
+
+@onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
+
+func _ready() -> void:
+	# Only active when Global.timeline == 5.2
+	super._ready()
+
+
+func _on_body_entered(body):
+	pass
+		
 func start_cutscene2() -> void:
 	player_in_range = Global.player
 	_setup_cutscene()
 	start_cutscene(player_in_range)
+	# If no player stored (e.g. called directly), try to find one
+	#var tree := get_tree()
+	#if tree == null:
+	#	print("Boss2Cutscene: start_cutscene() called but node not in scene tree, ignoring.")
+	#	return
+
+	# If no player stored (e.g. called directly), try to find one
+	#if player_in_range == null:
+	#	var players := tree.get_nodes_in_group("player")
+	#	if players.size() > 0:
+	#		player_in_range = players[0]
+	#	else:
+	#		print("Boss2Cutscene: No player found in group 'player', aborting.")
+	#		return
+	#Global.is_cutscene_active = true
+
+	# Choose dialog based on Global.first_boss_dead
+	#if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
+	#	Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+	#Dialogic.timeline_ended.connect(_on_dialogic_finished)
 	
-# Called when the node enters the scene tree for the first time.
+	#if Global.first_boss_dead:
+	#	Dialogic.start("timeline10v2", false)
+	#else:
+	#	Dialogic.start("timeline10", false)
 
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	if Global.timeline == 8.5 and (Global.route_status == "True" or Global.route_status == "Pacifist") :
-#		collision_shape.disabled = false
-#	else:
-#		collision_shape.disabled = true
-
+	# Optional: play different animations here:
+	# if anim_player:
+	#     if Global.first_boss_dead and anim_player.has_animation("intro_alyra_dead"):
+	#         anim_player.play("intro_alyra_dead")
+	#     elif not Global.first_boss_dead and anim_player.has_animation("intro_alyra_alive"):
+	#         anim_player.play("intro_alyra_alive")
 
 func _setup_cutscene():
 	cutscene_name = "magusbossfinal"
-	#nataly.visible = false
-	#maya.visible = false
-	#fini.visible = false
-	#sterling.visible = false
+	nataly.visible = false
+	maya.visible = false
+	fini.visible = false
+	sterling.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
 	
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
-	#player_markers = {
+	player_markers = {
 		# Example positions - adjust to match your scene
-	#	"marker1": marker1.global_position,
-	#	"marker2": marker2.global_position,
+		"marker1": marker1.global_position,
+		"marker2": marker2.global_position,
 		#"marker3": marker3.global_position,
 		#"marker4": marker4.global_position,
 		#"marker5": marker5.global_position,
 		#"marker6": marker6.global_position
 		
-	#}
+	}
 	
-	if Global.route_status == "True":
-			sequence = [
-			#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-			#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
-			{"type": "wait", "duration": 0.5},
-			{"type": "fade_out", "wait": false},
-			
-			{"type": "dialog", "name": "timeline19T", "wait": true},
-
-			
-			{"type": "wait", "duration": 0.1},		
-			{"type": "fade_in"},
-			#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
-			
-
-			]
-			#Dialogic.start("timeline19T", false)
-	elif Global.route_status == "Pacifist":
-			sequence = [
-				#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-				#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
-				{"type": "wait", "duration": 0.5},
-				{"type": "fade_out", "wait": false},
-				
-				{"type": "dialog", "name": "timeline19TP", "wait": true},
-
-				
-				{"type": "wait", "duration": 0.1},		
-				{"type": "fade_in"},
-				#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
-				
-
-				]
-			#Dialogic.start("timeline19TP", false)
-			Global.persistent_saved_lux = true
-			Global.check_100_percent_completion()
-			Global.save_persistent_data()
 
 	sequence = [
 		#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
@@ -143,38 +161,13 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene1boss: Finished")
-	#nataly.visible = false
-	#maya.visible = false
-	#fini.visible = false
-	#sterling.visible = false
+	nataly.visible = false
+	maya.visible = false
+	fini.visible = false
+	sterling.visible = false
 	Global.attacking = false
 	Global.is_cutscene_active = false
 
-	Global.timeline = 9
 	if player_in_range:
 		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 
-
-
-
-	
-	#if player_in_range:
-	#		transition_manager.travel_to(player_in_range, target_room, target_spawn)
-	#End Demo/Part 1
-	
-	
-	#Global.magus_form = true
-	#player_in_range.unlock_state("Magus")
-	#player_in_range.switch_state("Magus")
-	#Global.selected_form_index = 1
-	#player_in_range.current_state_index = Global.selected_form_index
-	#player_in_range.combat_fsm.change_state(IdleState.new(player_in_range))
-	
-	#Global.set_player_form(get_current_form_id())
-	#Global.current_form = get_current_form_id()
-	#Global.first_tromarvelia = true
-
-
-
-func _on_body_exited(body):
-	pass # Replace with function body.

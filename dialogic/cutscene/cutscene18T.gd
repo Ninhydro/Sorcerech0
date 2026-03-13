@@ -1,4 +1,4 @@
-extends Area2D
+extends MasterCutscene
 
 # ---------------------------------------------------------
 # CONFIG
@@ -22,7 +22,7 @@ var target_spawn = "Spawn_FromJunkyard"    # Name of the spawn marker in the tar
 # ---------------------------------------------------------
 # NODES
 # ---------------------------------------------------------
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
+#@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var spawn_point: Marker2D = $SpawnPoint
 @onready var boss_camera: Camera2D = $BossCamera
 @onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
@@ -44,6 +44,8 @@ var current_health_pickup: Node2D = null
 
 var platform_spawner: FallingPlatformSpawner
 
+@export var new_cutscene_path: NodePath
+
 # ---------------------------------------------------------
 # READY
 # ---------------------------------------------------------
@@ -55,93 +57,129 @@ func _ready() -> void:
 		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
 			health_timer.timeout.connect(_on_health_timer_timeout)
 
-	if boss_camera:
-		boss_camera.enabled = false
+	#if boss_camera:
+	#	boss_camera.enabled = false
+
+
+	
+func _on_body_entered(body):
+	print("Cutscene1: Body entered - ", body.name if body else "null")
+	
+	# Check if timeline condition is met
+	if not has_been_triggered and not battle_active and Global.timeline == 8 and (Global.route_status == "True" or Global.route_status == "Pacifist") and body.is_in_group("player"):
+		print("Cutscene1: Conditions met, calling parent method")
+		# Store player reference first
+		player_in_range = body
+		# Call parent's _on_body_entered
+		#betael.visible = true
+		#maya.visible = false
+		_setup_cutscene()
+		super._on_body_entered(body)
+	else:
+		print("Cutscene1: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
+		
+func _setup_cutscene():
+	cutscene_name = "Cutscene3"
+	#alyra.visible = false
+	#varek.visible = false
+	play_only_once = true
+	area_activation_flag = ""  # No flag required
+	global_flag_to_set = ""  # We'll handle this manually
+	
+	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
+
+	
+	if Global.route_status == "Pacifist":
+		sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		
+		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline18TP", "wait": true},
+		
+		{"type": "wait", "duration": 0.5},		
+		{"type": "fade_in"},
+		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		
+
+		]
+		#_start_pacifist_cutscene()
+	else:
+		sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		
+		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline18T", "wait": true},
+		
+		{"type": "wait", "duration": 0.5},		
+		{"type": "fade_in"},
+		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		
+
+		]
+		#_start_true_route_battle()
+	# Simple sequence: just play dialog
+
+
+func _on_cutscene_start():
+	print("Cutscene1: Starting")
+	# Player reference is already stored in _player_ref by parent class
+	if _player_ref:
+		player_in_range = _player_ref
+		print("Cutscene1: Player reference stored: ", player_in_range.name)
+
+func _on_cutscene_end():
+	print("Cutscene1: Finished")
+	
+	if Global.route_status == "Pacifist":
+		#_start_pacifist_cutscene()
+		Global.timeline = 8.5
+		Global.persistent_saved_lux = true
+		Global.check_100_percent_completion()
+		Global.save_persistent_data()
+
+		if player_in_range:
+			transition_manager.travel_to(player_in_range, target_room, target_spawn)
+
+		battle_active = false
+	
+	else:
+		#_start_true_route_battle()
+		
+		battle_active = true
+		_activate_barriers()
+	#battle_cancelled_on_player_death = false
+		Global.timeline = 8.5
+		Global.health = Global.health_max
+		Global.player.health_changed.emit(Global.health, Global.health_max)
+	
+		_spawn_boss()
+	#_switch_to_boss_camera()
+	
+	#_spawn_magus_king()
+		health_timer.start()
+	#Global.timeline = 7
+	#Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
+	#if player_in_range:
+	#		transition_manager.travel_to(player_in_range, target_room1, target_spawn1)
+	#var minigame = get_tree().get_first_node_in_group("sorting_minigame")
+	#if minigame:
+	#	minigame.start_game()
+		
+	print("Cutscene1: Set Global.timeline = ", Global.timeline)
+
 
 # ---------------------------------------------------------
 # TRIGGER CONDITIONS (IMPORTANT)
 # ---------------------------------------------------------
-func _can_start_cutscene() -> bool:
-	return (
-		not has_been_triggered
-		and not battle_active
-		and Global.timeline == 8
-		and (Global.route_status == "True" or Global.route_status == "Pacifist")
-	)
 
-# ---------------------------------------------------------
-# AREA ENTER
-# ---------------------------------------------------------
-func _on_body_entered(body: Node) -> void:
-	if not body.is_in_group("player"):
-		return
-
-	if not _can_start_cutscene():
-		return
-
-	has_been_triggered = true
-	battle_active = true
-	player_in_range = body
-
-	# HARD disable immediately
-	collision_shape.set_deferred("disabled", true)
-
-	if Global.route_status == "Pacifist":
-		_start_pacifist_cutscene()
-	else:
-		_start_true_route_battle()
-
-# ---------------------------------------------------------
-# PACIFIST ROUTE (NO BOSS)
-# ---------------------------------------------------------
-func _start_pacifist_cutscene() -> void:
-	Global.is_cutscene_active = true
-
-	Dialogic.start(pacifist_timeline)
-	await Dialogic.timeline_ended
-
-	Global.is_cutscene_active = false
-	Global.timeline = 9
-	Global.persistent_saved_lux = true
-	Global.check_100_percent_completion()
-	Global.save_persistent_data()
-
-	if player_in_range:
-		transition_manager.travel_to(player_in_range, target_room, target_spawn)
-
-	battle_active = false
-
-# ---------------------------------------------------------
-# TRUE ROUTE – INTRO
-# ---------------------------------------------------------
-func _start_true_route_battle() -> void:
-	battle_cancelled = false
-	Global.is_cutscene_active = true
-
-	_activate_barriers()
-	_switch_to_boss_camera()
-
-	Dialogic.start(intro_timeline_true)
-	if Dialogic.timeline_ended.is_connected(_on_intro_finished):
-		Dialogic.timeline_ended.disconnect(_on_intro_finished)
-	Dialogic.timeline_ended.connect(_on_intro_finished)
-		
-
-
-	#await Dialogic.timeline_ended
-
-
-func _on_intro_finished(_name = ""):
-	if battle_cancelled:
-		return
-	Global.is_cutscene_active = false
-	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
-	
-	if Dialogic.timeline_ended.is_connected(_on_intro_finished):
-		Dialogic.timeline_ended.disconnect(_on_intro_finished)
-
-	#await get_tree().process_frame
-	_spawn_boss()
 
 # ---------------------------------------------------------
 # BOSS SPAWN
@@ -201,24 +239,36 @@ func _on_boss_died() -> void:
 		return
 
 	battle_active = false
-	Global.is_cutscene_active = true
-
-	Dialogic.start(outro_timeline)
-	await Dialogic.timeline_ended
-
-	_finalize_success()
+	#Global.is_cutscene_active = true
+	_cleanup_battle()
+	#Global.timeline = 9
+	#Dialogic.start(outro_timeline)
+	#await Dialogic.timeline_ended
+	var node_path: NodePath = new_cutscene_path 
+	print("finishing battle cutscene1")
+	if node_path != NodePath("") and has_node(node_path):
+		var cs_node: Node = get_node(node_path)
+		print("get nodepath1")
+		if cs_node.has_method("start_cutscene2"):
+			cs_node.call("start_cutscene2")
+			print("get start_cutscene2")
+		else:
+			if cs_node is CanvasItem:
+				cs_node.visible = true
+				
+	#_finalize_success()
 
 # ---------------------------------------------------------
 # SUCCESS
 # ---------------------------------------------------------
-func _finalize_success() -> void:
-	_cleanup_battle()
+#func _finalize_success() -> void:
+#	_cleanup_battle()
 
-	Global.timeline = 9
-	Global.is_cutscene_active = false
+#	Global.timeline = 9
+#	Global.is_cutscene_active = false
 
-	if player_in_range:
-		transition_manager.travel_to(player_in_range, target_room, target_spawn)
+#	if player_in_range:
+#		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 
 # ---------------------------------------------------------
 # PLAYER DEATH CANCEL (CALLED FROM PLAYER)

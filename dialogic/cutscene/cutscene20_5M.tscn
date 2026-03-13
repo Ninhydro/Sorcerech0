@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://ut3qsktedt85"]
+[gd_scene load_steps=8 format=3 uid="uid://80itv60pmloo"]
 
-[ext_resource type="Script" path="res://dialogic/cutscene/cutscene19C.gd" id="1_wd5x1"]
+[ext_resource type="Script" path="res://dialogic/cutscene/cutscene20_5M.gd" id="1_wmswb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(323, 190)
@@ -107,9 +107,12 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
-[node name="cutscene19C" type="Area2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_faemg"]
+size = Vector2(20, 417.25)
+
+[node name="cutscene20_5M" type="Area2D" groups=["gigaster_boss_cutscene"]]
 position = Vector2(79, 74)
-script = ExtResource("1_wd5x1")
+script = ExtResource("1_wmswb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(91.5, 30)
@@ -120,11 +123,37 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="BossCamera" type="Camera2D" parent="."]
 position = Vector2(-2, -27)
-zoom = Vector2(0.8, 0.8)
+zoom = Vector2(0.7, 0.7)
 
 [node name="npc1" type="Sprite2D" parent="."]
+
+[node name="HealthSpawnMarker" type="Marker2D" parent="."]
+position = Vector2(-15, -106)
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(1, 110)
+
+[node name="BarrierLeft" type="StaticBody2D" parent="."]
+collision_layer = 4
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
+position = Vector2(-279, -74)
+shape = SubResource("RectangleShape2D_faemg")
+metadata/_edit_lock_ = true
+
+[node name="BarrierRight" type="StaticBody2D" parent="."]
+collision_layer = 4
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
+position = Vector2(273, -74)
+shape = SubResource("RectangleShape2D_faemg")
+
+[node name="Timer_HealthPickup" type="Timer" parent="."]
+wait_time = 60.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

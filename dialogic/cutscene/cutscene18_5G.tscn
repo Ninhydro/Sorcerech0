@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://ut3qsktedt85"]
+[gd_scene load_steps=8 format=3 uid="uid://dj8lq3gkgc4cg"]
 
-[ext_resource type="Script" path="res://dialogic/cutscene/cutscene19C.gd" id="1_wd5x1"]
+[ext_resource type="Script" path="res://dialogic/cutscene/cutscene18_5G.gd" id="1_705d2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(323, 190)
@@ -107,12 +107,15 @@ _data = {
 "cutscene2": SubResource("Animation_x330y")
 }
 
-[node name="cutscene19C" type="Area2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1i2jc"]
+size = Vector2(96, 417.25)
+
+[node name="cutscene18_5G" type="Area2D"]
 position = Vector2(79, 74)
-script = ExtResource("1_wd5x1")
+script = ExtResource("1_705d2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(91.5, 30)
+position = Vector2(-17, -23)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -120,11 +123,42 @@ libraries = {
 "": SubResource("AnimationLibrary_cywr2")
 }
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-2, -27)
-zoom = Vector2(0.8, 0.8)
+[node name="npc2" type="Sprite2D" parent="."]
 
-[node name="npc1" type="Sprite2D" parent="."]
+[node name="BossCamera" type="Camera2D" parent="."]
+position = Vector2(9, -58)
+zoom = Vector2(0.6, 0.6)
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(177, 54)
+
+[node name="SpawnPoint2" type="Marker2D" parent="."]
+position = Vector2(49, 54)
+
+[node name="SpawnPoint3" type="Marker2D" parent="."]
+position = Vector2(217, 54)
+
+[node name="BarrierLeft" type="StaticBody2D" parent="."]
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierLeft"]
+position = Vector2(-287, -114)
+shape = SubResource("RectangleShape2D_1i2jc")
+
+[node name="BarrierRight" type="StaticBody2D" parent="."]
+collision_layer = 7
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BarrierRight"]
+position = Vector2(313, -114)
+shape = SubResource("RectangleShape2D_1i2jc")
+
+[node name="HealthSpawnMarker" type="Marker2D" parent="."]
+position = Vector2(-23, -42)
+
+[node name="HealthTimer" type="Timer" parent="."]
+wait_time = 5.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
