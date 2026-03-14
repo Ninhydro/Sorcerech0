@@ -73,7 +73,8 @@ func _setup_cutscene():
 	
 	
 	# Simple sequence: just play dialog
-	sequence = [
+	if Global.alyra_dead == true:
+		sequence = [
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
@@ -81,14 +82,32 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline20C", "wait": true},
+		{"type": "dialog", "name": "timeline19C", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
 		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
-	]
+		]
+			#Dialogic.start("timeline19C", false)
+	elif Global.alyra_dead == false:
+		sequence = [
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		
+		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "dialog", "name": "timeline19CV2", "wait": true},
+		
+		{"type": "wait", "duration": 0.5},		
+		{"type": "fade_in"},
+		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		
+
+		]
 
 func _on_cutscene_start():
 	print("Cutscene1: Starting")

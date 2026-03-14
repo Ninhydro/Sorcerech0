@@ -1,5 +1,5 @@
 join Player center
-Player (Normal): Epilogue, go to
+Player (Normal): Epilogue Fast Travel, go to
 - Go to Tromarvelia
 	Player (Normal): Go to Tromarvelia
 	set {Global.teleport_last} = 1.1

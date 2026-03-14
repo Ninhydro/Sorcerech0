@@ -1,5 +1,7 @@
 join Player center
-Player (Normal): Cutscene in junkyard for decision route ending
+Nataly: Alright, are you ready to decide what we need to do, Phina?
+Maya_adult: We need to think carefully and choose either side with the Magus or Cyber... No, there has to be another way right?
+Player (Normal): Hmm... Let me think...
 - Side with Magus | [if {Global.affinity} <= 0] [else="disable"]
 	Go to magus route
 	set {Global.route_status} = "Magus"

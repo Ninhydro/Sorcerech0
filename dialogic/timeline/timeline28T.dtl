@@ -1,7 +1,21 @@
 join Player center
-Player (Normal): return back to maya house (there a tree planted there) cutscene 59 (nataly, maya)
+Nataly: Oh you're here, come on, everyone is waiting for you
+Maya_adult: Or you need to go somewhere else first? 
+Player: Hmm... (Proceeding will go to ending scene)
 - Continue to ending
-	Player (Happy): True Ending Normal, credits, can go back to epilogue mode
+	Player (Happy): Oh everyone is here
+	Maya_adult: Yeah we're having a picnic
+	Nataly: What a journey huh?
+	Maya_adult: So what's next?
+	Player (Happy): For the first time… I don’t have to.\
+Because I know you all be there with me.
+	Nataly: Then let’s stay. Just for a while.
+	. . . 
+	Narrator: No power is perfect. No future is certain.
+	Narrator: But with memory… comes understanding.
+	Narrator: With understanding… comes peace. 
+	Narrator: And with peace… a future...
+	Narrator: THE END
 	set {Global.game_cleared} = true
 - I want to talk with people
 	set {Global.game_cleared} = false

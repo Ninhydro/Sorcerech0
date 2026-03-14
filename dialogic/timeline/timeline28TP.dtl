@@ -1,7 +1,24 @@
 join Player center
-Player (Normal): lux alive, return back to maya house (there a tree planted there) cutscene 59v2 (nataly, maya, lux)
+Nataly: Oh you're here, come on, everyone is waiting for you
+Maya_adult: Or you need to go somewhere else first?
+Player: Hmm... (Proceeding will go to ending scene)
 - Continue to ending
-	Player (Happy): True Ending Pacifist, credits,  can go back to epilogue mode
+	Player (Happy): Oh everyone is here
+	Maya_adult: Yeah we're having a picnic
+	Nataly: What a journey huh?
+	Maya_adult: So what's next?
+	Player (Happy): For the first time… I don’t have to.\
+Because I know you all be there with me.
+	Varek_king: I spent years wanting to burn the world down. Now… I think I’d rather help rebuild it
+	Sterling: …I suppose even logic has its limits. You proved that, Fini. Or… Phina, now
+	Lux: Mother would’ve laughed at us. All this fighting over a ‘Core’… when the real power was just this.
+	Player: Then let’s make sure no one forgets it again
+	. . .
+	Narrator: No power is perfect. No future is certain.
+	Narrator: But with memory… comes understanding.
+	Narrator: With understanding… comes peace.
+	Narrator: And with peace… a future...
+	Narrator: THE END
 	set {Global.game_cleared} = true
 - I want to talk with people
 	set {Global.game_cleared} = false

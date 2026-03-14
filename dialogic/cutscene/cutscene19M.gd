@@ -58,7 +58,7 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline19M", "wait": true},
+		{"type": "dialog", "name": "timeline20M", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},

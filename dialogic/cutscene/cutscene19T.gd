@@ -54,6 +54,7 @@ func _setup_cutscene():
 	#}
 	
 	if Global.route_status == "True":
+		if Global.alyra_dead == true:
 			sequence = [
 			#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
 			#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
@@ -70,7 +71,24 @@ func _setup_cutscene():
 
 			]
 			#Dialogic.start("timeline19T", false)
+		else:
+			sequence = [
+			#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+			#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+			{"type": "wait", "duration": 0.5},
+			{"type": "fade_out", "wait": false},
+			
+			{"type": "dialog", "name": "timeline19TV2", "wait": true},
+
+			
+			{"type": "wait", "duration": 0.1},		
+			{"type": "fade_in"},
+			#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+			
+
+			]
 	elif Global.route_status == "Pacifist":
+		if Global.alyra_dead == true:
 			sequence = [
 				#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
 				#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
@@ -90,43 +108,27 @@ func _setup_cutscene():
 			Global.persistent_saved_lux = true
 			Global.check_100_percent_completion()
 			Global.save_persistent_data()
+		else:
+			sequence = [
+				#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+				#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+				{"type": "wait", "duration": 0.5},
+				{"type": "fade_out", "wait": false},
+				
+				{"type": "dialog", "name": "timeline19TPV2", "wait": true},
 
-	sequence = [
-		#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
-		{"type": "wait", "duration": 0.5},
-		{"type": "fade_out", "wait": false},
-		
-		{"type": "dialog", "name": "timeline20_5C", "wait": true},
-		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
-		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
-		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		#{"type": "dialog", "name": "timeline16C", "wait": true},
-		#{"type": "move_player", "name": "marker2",  "duration": 1, "animation": "shine", "wait": false},
-		#{"type": "animation", "name": "anim1_2", "wait": true, "loop": false},
-		#{"type": "dialog", "name": "timeline16_1C", "wait": true},
-		
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		#{"type": "player_form", "name": "UltimateCyber", "wait": true},
-		#{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "load", "wait": false},
-		#{"type": "wait", "duration": 0.5},
-		#{"type": "player_animation", "name": "idle", "wait": false},
-		
-		#{"type": "dialog", "name": "timeline16_1_2C", "wait": true},
-		
-		#{"type": "animation", "name": "anim2", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
-		#{"type": "dialog", "name": "timeline16_2C", "wait": true},
-		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
-		
-		{"type": "wait", "duration": 0.1},		
-		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
-		
+				
+				{"type": "wait", "duration": 0.1},		
+				{"type": "fade_in"},
+				#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+				
 
-		]
+				]
+			#Dialogic.start("timeline19TP", false)
+			Global.persistent_saved_lux = true
+			Global.check_100_percent_completion()
+			Global.save_persistent_data()
+
 		#Dialogic.start("timeline10v2", false)
 
 		#Dialogic.start("timeline10", false)

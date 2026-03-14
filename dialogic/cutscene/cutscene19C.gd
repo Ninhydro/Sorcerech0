@@ -1,4 +1,5 @@
 extends MasterCutscene
+#NOT USED
 
 #var _has_been_triggered: bool = false
 #@onready var collision_shape: CollisionShape2D = $CollisionShape2D
@@ -44,8 +45,8 @@ func _setup_cutscene():
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
 	
-	if Global.alyra_dead == true:
-		sequence = [
+
+	sequence = [
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
@@ -53,7 +54,7 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline19C", "wait": true},
+		{"type": "dialog", "name": "timeline20C", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
@@ -62,23 +63,7 @@ func _setup_cutscene():
 
 		]
 			#Dialogic.start("timeline19C", false)
-	elif Global.alyra_dead == false:
-		sequence = [
-		{"type": "wait", "duration": 0.5},
-		{"type": "fade_out", "wait": false},
-		
-		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
-		{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline19CV2", "wait": true},
-		
-		{"type": "wait", "duration": 0.5},		
-		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
-		
-
-		]
+	
 			#Dialogic.start("timeline19CV2", false)
 	# Simple sequence: just play dialog
 

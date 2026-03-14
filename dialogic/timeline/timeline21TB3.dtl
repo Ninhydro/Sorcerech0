@@ -1,5 +1,5 @@
 join Player center
-Player (Normal): Epilogue, go to
+Player (Normal): Epilogue Fast Travel, go to
 - Go to Exactlyion Mainframe
 	Player (Normal): Go to Exactlyion Mainframe
 	set {Global.teleport_last} = 3.1
@@ -7,5 +7,5 @@ Player (Normal): Epilogue, go to
 	Player (Normal): Go to Exactlyion Town
 	set {Global.teleport_last} = 3.2
 - Go normal way
-	Player (Normal): Go normal way 
+	Player (Normal): Go normal way
 	set {Global.teleport_last} = 3.3

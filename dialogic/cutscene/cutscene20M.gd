@@ -85,7 +85,7 @@ func _setup_cutscene():
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-		{"type": "dialog", "name": "timeline20M", "wait": true},
+		{"type": "dialog", "name": "timeline19M", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
@@ -108,7 +108,7 @@ func _on_cutscene_end():
 	
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max)
-	s
+	
 	_activate_barriers()
 	#_switch_to_boss_camera()
 	
