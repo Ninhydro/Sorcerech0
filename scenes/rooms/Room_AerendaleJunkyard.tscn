@@ -644,6 +644,7 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene2" parent="." instance=ExtResource("11_53y5o")]
 position = Vector2(-640, 54)
+metadata/_edit_lock_ = true
 
 [node name="cutscene0_5" parent="." instance=ExtResource("12_3u6ks")]
 position = Vector2(361, 55)
@@ -651,10 +652,10 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene12" parent="." instance=ExtResource("14_djwtx")]
 position = Vector2(27, 359)
-
-[node name="cutscene16_9" parent="." instance=ExtResource("15_1usq2")]
-position = Vector2(-179.525, 280.757)
 metadata/_edit_lock_ = true
+
+[node name="cutscene17" parent="." instance=ExtResource("15_1usq2")]
+position = Vector2(-195, 243)
 
 [node name="cutscene21T" parent="." instance=ExtResource("16_jysj8")]
 position = Vector2(295.573, -39.6841)

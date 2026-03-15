@@ -544,6 +544,7 @@ func end_cutscene():
 	cutscene_finished.emit()
 	
 	print(cutscene_name + ": Cutscene finished")
+	#await get_tree().create_timer(0.2).timeout
 	#call_deferred("queue_free")
 
 func _exit_tree():

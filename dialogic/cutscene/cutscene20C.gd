@@ -15,7 +15,7 @@ extends MasterCutscene
 @export var target_spawn := "Spawn_FromReality"
 
 @onready var spawn_point: Marker2D = $SpawnPoint
-@onready var boss_camera: Camera2D = $BossCamera
+@onready var boss_camera: Camera2D = $Camera2D
 @onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
 @onready var health_timer: Timer = $Timer_HealthPickup
 

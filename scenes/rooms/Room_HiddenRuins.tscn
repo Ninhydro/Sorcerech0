@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dignl4ivlyijc"]
+[gd_scene load_steps=27 format=3 uid="uid://dignl4ivlyijc"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_HiddenTown.gd" id="1_25ggv"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_grdml"]
@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="20_3jn1s"]
 [ext_resource type="PackedScene" uid="uid://bdr1pxrtguia0" path="res://scenes/enemies/Spawner_falling_spike.tscn" id="21_26582"]
 [ext_resource type="PackedScene" uid="uid://ca53ncao01ppo" path="res://scenes/enemies/Moving_platform1.tscn" id="22_ihjp7"]
+[ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="23_hb57h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0gaot"]
 size = Vector2(2656, 1064)
@@ -674,3 +675,6 @@ position = Vector2(1360, -696)
 
 [node name="SimpleMovingPlatform7" parent="." instance=ExtResource("22_ihjp7")]
 position = Vector2(1344, -528)
+
+[node name="cutscene17_2" parent="." instance=ExtResource("23_hb57h")]
+position = Vector2(97.8132, -59.8474)

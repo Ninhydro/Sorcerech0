@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bkcqtqfijxmyn"]
+[gd_scene load_steps=28 format=3 uid="uid://bkcqtqfijxmyn"]
 
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_876ac"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_b5ajo"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://bs105i3gcljkr" path="res://scenes/world/SaveSpot.tscn" id="16_ipody"]
 [ext_resource type="Texture2D" uid="uid://cqbdc5qcon2lg" path="res://assets_image/Objects/object0.png" id="17_fp5ec"]
 [ext_resource type="PackedScene" uid="uid://krbnmqo4s6nb" path="res://scenes/objects/TObject.tscn" id="18_o7pe3"]
+[ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="19_rxptd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_36fax"]
 size = Vector2(1510, 698)
@@ -435,6 +436,9 @@ position = Vector2(-896, -152)
 
 [node name="lux_slam_point" type="Marker2D" parent="." groups=["lux_slam_point"]]
 position = Vector2(-928, -96)
+
+[node name="cutscene17_2" parent="." instance=ExtResource("19_rxptd")]
+position = Vector2(-1388.42, -59.4657)
 
 [connection signal="body_entered" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_entered"]
 [connection signal="body_exited" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_exited"]

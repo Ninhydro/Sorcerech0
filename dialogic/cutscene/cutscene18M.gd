@@ -22,7 +22,7 @@ func _on_body_entered(body):
 	print("Cutscene1: Body entered - ", body.name if body else "null")
 	
 	# Check if timeline condition is met
-	if Global.timeline == 8 and Global.route_status == "Magus" and body.is_in_group("player"):
+	if Global.timeline == 8.2 and Global.route_status == "Magus" and body.is_in_group("player"):
 		print("Cutscene1: Conditions met, calling parent method")
 		# Store player reference first
 		player_in_range = body
@@ -47,8 +47,8 @@ func _setup_cutscene():
 
 				
 	if Global.valentina_dead == true:
-			Global.is_cutscene_active = false
-			Global.timeline = 8.5
+			#Global.is_cutscene_active = false
+			#Global.timeline = 8.5
 			sequence = [
 					#{"type": "wait", "duration": 0.5},
 					#{"type": "fade_out", "wait": false},

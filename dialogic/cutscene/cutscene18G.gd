@@ -21,7 +21,7 @@ extends MasterCutscene
 # NODES
 # ---------------------------------------------------------
 #@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var boss_camera: Camera2D = $BossCamera
+@onready var boss_camera: Camera2D = $Camera2D
 @onready var health_timer: Timer = $HealthTimer
 @onready var transition_manager = get_node("/root/TransitionManager")
 @onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
@@ -68,7 +68,7 @@ func _on_body_entered(body):
 	print("Cutscene1: Body entered - ", body.name if body else "null")
 	
 	# Check if timeline condition is met
-	if not triggered and Global.timeline == 8 and Global.route_status == "Genocide" and body.is_in_group("player"):
+	if not triggered and Global.timeline == 8.2 and Global.route_status == "Genocide" and body.is_in_group("player"):
 		print("Cutscene1: Conditions met, calling parent method")
 		# Store player reference first
 		player_in_range = body

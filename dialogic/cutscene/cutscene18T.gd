@@ -24,7 +24,7 @@ var target_spawn = "Spawn_FromJunkyard"    # Name of the spawn marker in the tar
 # ---------------------------------------------------------
 #@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var spawn_point: Marker2D = $SpawnPoint
-@onready var boss_camera: Camera2D = $BossCamera
+@onready var boss_camera: Camera2D = $Camera2D
 @onready var health_spawn_marker: Marker2D = $HealthSpawnMarker
 @onready var health_timer: Timer = $HealthTimer
 
@@ -66,7 +66,7 @@ func _on_body_entered(body):
 	print("Cutscene1: Body entered - ", body.name if body else "null")
 	
 	# Check if timeline condition is met
-	if not has_been_triggered and not battle_active and Global.timeline == 8 and (Global.route_status == "True" or Global.route_status == "Pacifist") and body.is_in_group("player"):
+	if not has_been_triggered and not battle_active and Global.timeline == 8.2 and (Global.route_status == "True" or Global.route_status == "Pacifist") and body.is_in_group("player"):
 		print("Cutscene1: Conditions met, calling parent method")
 		# Store player reference first
 		player_in_range = body

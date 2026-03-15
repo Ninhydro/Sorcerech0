@@ -135,7 +135,7 @@ libraries = {
 
 [node name="npc2" type="Sprite2D" parent="."]
 
-[node name="BossCamera" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(9, -58)
 zoom = Vector2(0.6, 0.6)
 

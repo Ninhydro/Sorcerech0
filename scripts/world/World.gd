@@ -166,7 +166,7 @@ func _notify_world_ready():
 
 
 func _process(delta):
-	var should_be_active = (Global.timeline >= 5 and Global.timeline < 6) or (Global.timeline >= 8 and Global.timeline < 9)
+	var should_be_active = (Global.timeline >= 5 and Global.timeline < 6)  #(Global.timeline >= 8 and Global.timeline < 9)
 	
 	if should_be_active:
 		war_effect.visible = true
