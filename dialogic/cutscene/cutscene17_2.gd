@@ -31,6 +31,10 @@ var _teleport_cooldown: bool = false
 
 @onready var nataly: Sprite2D = $Nataly
 @onready var maya: Sprite2D = $Maya
+@onready var varek: Sprite2D = $Varek_king
+@onready var zach: Sprite2D = $Zach
+@onready var sterling: Sprite2D = $Sterling
+@onready var lux: Sprite2D = $Lux
 
 # Called when the node enters the scene tree for the first time.
 func _on_body_entered(body):
@@ -56,6 +60,10 @@ func _setup_cutscene():
 	cutscene_name = "Cutscene17_2"
 	nataly.visible = false
 	maya.visible = false
+	varek.visible = false
+	zach.visible = false
+	sterling.visible = false
+	lux.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -84,14 +92,18 @@ func _setup_cutscene():
 		#Global.remove_quest_marker("Make decision at Maya's house")
 		if Global.alyra_dead == true:
 			sequence = [
+			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
-			#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+			{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 			{"type": "player_animation", "name": "idle",  "wait": false},
-			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			#{"type": "animation", "name": "anim1m", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim1m_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline17M", "wait": true},
+			{"type": "animation", "name": "anim2m", "wait": true, "loop": false},
+			
+			{"type": "animation", "name": "anim2m_idle", "wait": true, "loop": false},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
@@ -100,14 +112,18 @@ func _setup_cutscene():
 			#Dialogic.start("timeline17M", false)
 		elif Global.alyra_dead == false:
 			sequence = [
+			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
-			#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+			{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 			{"type": "player_animation", "name": "idle",  "wait": false},
-			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			#{"type": "animation", "name": "anim1mv2", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim1mv2_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline17MV2", "wait": true},
+			{"type": "animation", "name": "anim2mv2", "wait": true, "loop": false},
+			
+			{"type": "animation", "name": "anim2mv2_idle", "wait": true, "loop": false},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
@@ -119,14 +135,18 @@ func _setup_cutscene():
 		#Global.timeline = 8
 		#Global.remove_quest_marker("Make decision at Maya's house")
 		sequence = [
+			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
-			#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+			{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 			{"type": "player_animation", "name": "idle",  "wait": false},
-			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			#{"type": "animation", "name": "anim1c", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim1c_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline17C", "wait": true},
+			{"type": "animation", "name": "anim2c", "wait": true, "loop": false},
+			
+			{"type": "animation", "name": "anim2c_idle", "wait": true, "loop": false},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
@@ -138,14 +158,16 @@ func _setup_cutscene():
 		#Global.timeline = 8
 		#Global.remove_quest_marker("Make decision at Maya's house")
 		sequence = [
+			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
-			#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+			{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 			{"type": "player_animation", "name": "idle",  "wait": false},
-			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			#{"type": "animation", "name": "anim1t", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim1t_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline17T", "wait": true},
+			#{"type": "animation", "name": "anim2t", "wait": true, "loop": false},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
@@ -157,14 +179,16 @@ func _setup_cutscene():
 		#Global.timeline = 8
 		#Global.remove_quest_marker("Make decision at Maya's house")
 		sequence = [
+			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
-			#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+			{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 			{"type": "player_animation", "name": "idle",  "wait": false},
-			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			#{"type": "animation", "name": "anim1g", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim1g_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline17G", "wait": true},
+			#{"type": "animation", "name": "anim2g", "wait": true, "loop": false},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
@@ -188,6 +212,10 @@ func _on_cutscene_end():
 	Global.timeline = 8.2
 	nataly.visible = false
 	maya.visible = false
+	varek.visible = false
+	zach.visible = false
+	sterling.visible = false
+	lux.visible = false
 	if Global.route_status == "Magus":
 		#_teleport_cooldown = true
 		#Global.timeline = 8

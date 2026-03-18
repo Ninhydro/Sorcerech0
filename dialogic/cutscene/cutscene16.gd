@@ -14,6 +14,8 @@ var player_in_range = null
 @onready var transition_manager = get_node("/root/TransitionManager")
 
 # Called when the node enters the scene tree for the first time.
+@onready var nataly: Sprite2D = $Nataly
+@onready var maya: Sprite2D = $Maya
 
 func _on_body_entered(body):
 	print("Cutscene1: Body entered - ", body.name if body else "null")
@@ -32,8 +34,8 @@ func _on_body_entered(body):
 		
 func _setup_cutscene():
 	cutscene_name = "Cutscene3"
-	#alyra.visible = false
-	#varek.visible = false
+	nataly.visible = false
+	maya.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -49,8 +51,8 @@ func _setup_cutscene():
 		
 		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline16_8", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
@@ -69,6 +71,8 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene1: Finished")
+	nataly.visible = false
+	maya.visible = false
 	Global.timeline = 7
 	Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
 	#if player_in_range:
