@@ -1,110 +1,308 @@
-[gd_scene load_steps=7 format=3 uid="uid://ut3qsktedt85"]
+[gd_scene load_steps=21 format=3 uid="uid://ut3qsktedt85"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene19C.gd" id="1_wd5x1"]
+[ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="2_pw72a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(323, 190)
 
-[sub_resource type="Animation" id="Animation_3uu3n"]
-resource_name = "cutscene1"
-length = 5.0
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 4.9, 5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"values": [{
-"args": [],
-"method": &"proxy_disable_player_input_for_cutscene"
-}, {
-"args": ["run"],
-"method": &"proxy_play_player_visual_animation"
-}, {
-"args": ["idle"],
-"method": &"proxy_play_player_visual_animation"
-}, {
-"args": [],
-"method": &"_start_dialogic_from_animation"
-}]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [1],
-"method": &"proxy_set_player_face_direction"
-}]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [Vector2(-1578, -427), 5.0, 1, 1],
-"method": &"proxy_move_player_to_position"
-}]
-}
-
-[sub_resource type="Animation" id="Animation_4t64i"]
-resource_name = "cutscene1.1"
-length = 2.0
+[sub_resource type="Animation" id="Animation_8hy64"]
+resource_name = "anim1_idle"
 loop_mode = 1
-tracks/0/type = "method"
+tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".")
+tracks/0/path = NodePath("Nataly:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"values": [{
-"args": ["idle"],
-"method": &"proxy_play_player_visual_animation"
-}]
+"update": 1,
+"values": [true]
 }
-
-[sub_resource type="Animation" id="Animation_x330y"]
-resource_name = "cutscene2"
-length = 5.0
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.2, 5),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [-1],
-"method": &"proxy_set_player_face_direction"
-}, {
-"args": [],
-"method": &"proxy_enable_player_input_after_cutscene"
-}]
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Nataly:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Nataly:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(35, 87)]
+}
+tracks/3/type = "animation"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Nataly/AnimationPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": PackedStringArray("idle"),
+"times": PackedFloat32Array(0)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cywr2"]
 _data = {
-"cutscene1": SubResource("Animation_3uu3n"),
-"cutscene1.1": SubResource("Animation_4t64i"),
-"cutscene2": SubResource("Animation_x330y")
+"anim1_idle": SubResource("Animation_8hy64")
+}
+
+[sub_resource type="Animation" id="Animation_mi3ym"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [96]
+}
+
+[sub_resource type="Animation" id="Animation_eftat"]
+resource_name = "attack"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [24, 25, 26, 27, 28]
+}
+
+[sub_resource type="Animation" id="Animation_wylgi"]
+resource_name = "combo1"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="Animation" id="Animation_ogkpt"]
+resource_name = "combo2"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11, 12, 13, 14]
+}
+
+[sub_resource type="Animation" id="Animation_4qj3u"]
+resource_name = "defend"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [56, 57, 58, 59]
+}
+
+[sub_resource type="Animation" id="Animation_3rf42"]
+resource_name = "die"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [40, 41, 42, 43, 44, 45, 46]
+}
+
+[sub_resource type="Animation" id="Animation_vj735"]
+resource_name = "handsup"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [64, 65]
+}
+
+[sub_resource type="Animation" id="Animation_sfswr"]
+resource_name = "hurt"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [48, 49, 50, 51]
+}
+
+[sub_resource type="Animation" id="Animation_58k0k"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [96, 97, 98, 99, 100, 101]
+}
+
+[sub_resource type="Animation" id="Animation_qgi0q"]
+resource_name = "jump"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [72, 73]
+}
+
+[sub_resource type="Animation" id="Animation_ce8g2"]
+resource_name = "laser"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [32, 33, 34, 35, 36]
+}
+
+[sub_resource type="Animation" id="Animation_devve"]
+resource_name = "prepare"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [25, 24]
+}
+
+[sub_resource type="Animation" id="Animation_0a2o2"]
+resource_name = "run"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [88, 89, 90, 91, 92, 93, 94, 95]
+}
+
+[sub_resource type="Animation" id="Animation_22h2v"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [80, 81, 82, 83, 84, 85, 86, 87]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8u0e1"]
+_data = {
+"RESET": SubResource("Animation_mi3ym"),
+"attack": SubResource("Animation_eftat"),
+"combo1": SubResource("Animation_wylgi"),
+"combo2": SubResource("Animation_ogkpt"),
+"defend": SubResource("Animation_4qj3u"),
+"die": SubResource("Animation_3rf42"),
+"handsup": SubResource("Animation_vj735"),
+"hurt": SubResource("Animation_sfswr"),
+"idle": SubResource("Animation_58k0k"),
+"jump": SubResource("Animation_qgi0q"),
+"laser": SubResource("Animation_ce8g2"),
+"prepare": SubResource("Animation_devve"),
+"run": SubResource("Animation_0a2o2"),
+"walk": SubResource("Animation_22h2v")
 }
 
 [node name="cutscene19C" type="Area2D"]
@@ -125,6 +323,21 @@ position = Vector2(-2, -27)
 zoom = Vector2(0.8, 0.8)
 
 [node name="npc1" type="Sprite2D" parent="."]
+
+[node name="Nataly" type="Sprite2D" parent="."]
+position = Vector2(35, 87)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_pw72a")
+flip_h = true
+hframes = 8
+vframes = 13
+frame = 96
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Nataly"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_8u0e1")
+}
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

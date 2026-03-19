@@ -36,6 +36,8 @@ var _teleport_cooldown: bool = false
 @onready var sterling: Sprite2D = $Sterling
 @onready var lux: Sprite2D = $Lux
 
+@onready var marker1: Marker2D = $Marker2D
+
 # Called when the node enters the scene tree for the first time.
 func _on_body_entered(body):
 	print("Cutscene17_2: Body entered - ", body.name if body else "null")
@@ -70,16 +72,16 @@ func _setup_cutscene():
 	
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
-	#player_markers = {
+	player_markers = {
 		# Example positions - adjust to match your scene
-	#	"marker1": marker1.global_position,
+		"marker1": marker1.global_position,
 	#	"marker2": marker2.global_position,
 	#	"marker3": marker3.global_position,
 	#	"marker4": marker4.global_position,
 		#"marker5": marker5.global_position,
 		#"marker6": marker6.global_position
 		
-	#}
+	}
 	
 	#cutscene_markers = {
 	#	"cutscene_marker1": cutscene_marker1.global_position,
