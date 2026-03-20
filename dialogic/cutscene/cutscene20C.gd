@@ -33,7 +33,11 @@ var battle_cancelled_on_player_death := false
 
 @export var new_cutscene_path: NodePath
 # Called when the node enters the scene tree for the first time.
-	
+
+@onready var nataly: Sprite2D = $Nataly
+@onready var varek: Sprite2D = $Varek_king
+@onready var zach: Sprite2D = $Zach
+
 func _ready():
 	_deactivate_barriers()
 
@@ -62,8 +66,9 @@ func _on_body_entered(body):
 		
 func _setup_cutscene():
 	cutscene_name = "Cutscene3"
-	#alyra.visible = false
-	#varek.visible = false
+	nataly.visible = false
+	varek.visible = false
+	zach.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -78,10 +83,11 @@ func _setup_cutscene():
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
-		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "attack",  "wait": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline19C", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
@@ -96,10 +102,11 @@ func _setup_cutscene():
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
-		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim1v2", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "attack",  "wait": false},
+		{"type": "animation", "name": "anim1v2_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline19CV2", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
@@ -120,6 +127,10 @@ func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	battle_active = true
 	battle_cancelled_on_player_death = false
+	
+	nataly.visible = false
+	varek.visible = false
+	zach.visible = false
 	
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max)

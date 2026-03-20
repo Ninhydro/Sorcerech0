@@ -91,6 +91,7 @@ func _setup_cutscene():
 					
 					{"type": "player_animation", "name": "idle",  "wait": false},
 					{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+					{"type": "player_animation", "name": "attack",  "wait": false},
 					{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 					{"type": "dialog", "name": "timeline18C", "wait": true},
 					
@@ -113,6 +114,7 @@ func _setup_cutscene():
 
 					{"type": "player_animation", "name": "idle",  "wait": false},
 					{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+					{"type": "player_animation", "name": "attack",  "wait": false},
 					{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 					{"type": "dialog", "name": "timeline18CV2", "wait": true},
 					

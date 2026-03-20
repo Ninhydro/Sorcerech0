@@ -17,6 +17,7 @@ var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
+@onready var nataly: Sprite2D = $Nataly
 # Called when the node enters the scene tree for the first time.
 func _on_body_entered(body):
 	print("Cutscene1: Body entered - ", body.name if body else "null")
@@ -37,7 +38,7 @@ func _on_body_entered(body):
 func _setup_cutscene():
 	cutscene_name = "Cutscene3"
 	#alyra.visible = false
-	#varek.visible = false
+	nataly.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -78,6 +79,7 @@ func _on_cutscene_start():
 func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	Global.timeline = 8.8
+	nataly.visible = false
 	#Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
 	#if player_in_range:
 	#		transition_manager.travel_to(player_in_range, target_room1, target_spawn1)
