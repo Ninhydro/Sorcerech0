@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bqps2coqsm63e" path="res://scenes/enemies/gigaster_boss.tscn" id="2_eblvc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
-size = Vector2(323, 190)
+size = Vector2(323, 189)
 
 [sub_resource type="Animation" id="Animation_3uu3n"]
 resource_name = "cutscene1"
@@ -118,7 +118,7 @@ gigaster_scene = ExtResource("2_eblvc")
 boss_barriers = Array[NodePath]([NodePath("BarrierLeft"), NodePath("BarrierRight")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(91.5, 30)
+position = Vector2(15, 17.5)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -128,7 +128,7 @@ libraries = {
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-2, -27)
-zoom = Vector2(0.7, 0.7)
+zoom = Vector2(0.6, 0.6)
 
 [node name="npc1" type="Sprite2D" parent="."]
 

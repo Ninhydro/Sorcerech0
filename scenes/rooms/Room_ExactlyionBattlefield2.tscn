@@ -453,7 +453,7 @@ position = Vector2(-575, -866)
 metadata/_edit_lock_ = true
 
 [node name="cutscene19M" parent="." instance=ExtResource("9_nr8er")]
-position = Vector2(-2016, -1112)
+position = Vector2(-2032, -1149)
 metadata/_edit_lock_ = true
 
 [node name="TankEnemy" parent="." instance=ExtResource("11_i75da")]

@@ -23,6 +23,7 @@ var player_in_range = null
 
 @onready var marker1: Marker2D = $Marker2D
 @onready var marker2: Marker2D = $Marker2D2
+@onready var marker3: Marker2D = $Marker2D3
 # Called when the node enters the scene tree for the first time.
 func _on_body_entered(body):
 	print("Cutscene1: Body entered - ", body.name if body else "null")

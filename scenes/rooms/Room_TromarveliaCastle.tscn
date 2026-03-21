@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bps10xv2v18d"]
+[gd_scene load_steps=13 format=3 uid="uid://bps10xv2v18d"]
 
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_bbbin"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_nlimn"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cuxaeo2kjkia3" path="res://dialogic/cutscene/cutscene21_5B2.tscn" id="6_apnbt"]
 [ext_resource type="PackedScene" uid="uid://krbnmqo4s6nb" path="res://scenes/objects/TObject.tscn" id="7_i0p6g"]
 [ext_resource type="PackedScene" uid="uid://bmt4xfvarbv61" path="res://scenes/enemies/GawrFlamethrower.tscn" id="8_vl1ak"]
+[ext_resource type="PackedScene" uid="uid://cv2q1slwrnr0t" path="res://dialogic/cutscene/cutscene20_5C.tscn" id="10_c3fya"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_grype"]
 size = Vector2(1456, 784)
@@ -145,3 +146,6 @@ position = Vector2(-176, -208)
 
 [node name="Platform_High" type="Marker2D" parent="PlatformMarkers"]
 position = Vector2(-176, -304)
+
+[node name="cutscene20_5C" parent="." instance=ExtResource("10_c3fya")]
+position = Vector2(-345.686, -208.709)

@@ -15,6 +15,9 @@ var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
+@onready var ninhydro: Sprite2D = $"NPC special"
+#@onready var marker2: Marker2D = $Marker2D2
+#
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_has_been_triggered = false
@@ -39,7 +42,7 @@ func _on_body_entered(body):
 func _setup_cutscene():
 	cutscene_name = "Cutscene3"
 	#alyra.visible = false
-	#varek.visible = false
+	ninhydro.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -53,10 +56,10 @@ func _setup_cutscene():
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
-		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline21R", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
@@ -79,6 +82,7 @@ func _on_cutscene_end():
 	Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
 	Global.route_status = "None"
 	_has_been_triggered = false
+	ninhydro.visible = false
 	#player_status & kills need to be reset from NPC
 	#affinity need to be reset from NPC
 

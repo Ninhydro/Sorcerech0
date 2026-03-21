@@ -38,6 +38,8 @@ var battle_cancelled_on_player_death := false
 @onready var varek: Sprite2D = $Varek_king
 @onready var zach: Sprite2D = $Zach
 
+@onready var marker1: Marker2D = $Marker2D
+
 func _ready():
 	_deactivate_barriers()
 
@@ -80,6 +82,7 @@ func _setup_cutscene():
 	# Simple sequence: just play dialog
 	if Global.alyra_dead == true:
 		sequence = [
+		{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
@@ -99,6 +102,7 @@ func _setup_cutscene():
 			#Dialogic.start("timeline19C", false)
 	elif Global.alyra_dead == false:
 		sequence = [
+		{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		

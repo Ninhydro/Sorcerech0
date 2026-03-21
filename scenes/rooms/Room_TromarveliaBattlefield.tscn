@@ -652,11 +652,10 @@ position = Vector2(4344, 1352)
 position = Vector2(-1064, 2104)
 
 [node name="cutscene18C" parent="." instance=ExtResource("10_g6inm")]
-position = Vector2(2541, 1446)
+position = Vector2(2545, 1459)
 
 [node name="cutscene19C" parent="." instance=ExtResource("11_8uals")]
-position = Vector2(4016, 1259)
-metadata/_edit_lock_ = true
+position = Vector2(4008, 1236)
 
 [node name="MagusEnemy2" parent="." instance=ExtResource("13_ahjc7")]
 position = Vector2(-280, -256)
