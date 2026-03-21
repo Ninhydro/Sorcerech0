@@ -62,6 +62,7 @@ scale = Vector2(2.61218, 2.61468)
 texture = ExtResource("1_her3h")
 
 [node name="NPC" type="Node2D" parent="."]
+visible = false
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]
 position = Vector2(-920, 728)
@@ -803,6 +804,9 @@ object_id = "14"
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(-1961, 1678)
 
+[node name="Marker2D2" type="Marker2D" parent="."]
+position = Vector2(1357, 1335)
+
 [node name="SpikeTrap3" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("24_ecmun")]
 z_index = -1
 position = Vector2(-1902, 1879)
@@ -816,12 +820,12 @@ respawn_marker = NodePath("../Marker2D")
 [node name="SpikeTrap5" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("24_ecmun")]
 z_index = -1
 position = Vector2(1384, 1488)
-respawn_marker = NodePath("../Marker2D")
+respawn_marker = NodePath("../Marker2D2")
 
 [node name="SpikeTrap6" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("24_ecmun")]
 z_index = -1
 position = Vector2(1472, 1488)
-respawn_marker = NodePath("../Marker2D")
+respawn_marker = NodePath("../Marker2D2")
 
 [node name="ExplosiveDoor" parent="." instance=ExtResource("26_kkbhd")]
 z_index = -1

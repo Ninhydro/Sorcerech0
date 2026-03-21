@@ -94,7 +94,7 @@ func _setup_cutscene():
 		#Global.remove_quest_marker("Make decision at Maya's house")
 		if Global.alyra_dead == true:
 			sequence = [
-			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+			{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
@@ -105,16 +105,16 @@ func _setup_cutscene():
 			{"type": "dialog", "name": "timeline17M", "wait": true},
 			{"type": "animation", "name": "anim2m", "wait": true, "loop": false},
 			
-			{"type": "animation", "name": "anim2m_idle", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim2m_idle", "wait": false, "loop": false},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
-			#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+			{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 			]
 			#Dialogic.start("timeline17M", false)
 		elif Global.alyra_dead == false:
 			sequence = [
-			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+			{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
@@ -125,10 +125,11 @@ func _setup_cutscene():
 			{"type": "dialog", "name": "timeline17MV2", "wait": true},
 			{"type": "animation", "name": "anim2mv2", "wait": true, "loop": false},
 			
-			{"type": "animation", "name": "anim2mv2_idle", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim2mv2_idle", "wait": false, "loop": false},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
+			{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 			#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 			]
 			#Dialogic.start("timeline17MV2", false)
@@ -137,7 +138,7 @@ func _setup_cutscene():
 		#Global.timeline = 8
 		#Global.remove_quest_marker("Make decision at Maya's house")
 		sequence = [
-			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+			{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
@@ -148,10 +149,11 @@ func _setup_cutscene():
 			{"type": "dialog", "name": "timeline17C", "wait": true},
 			{"type": "animation", "name": "anim2c", "wait": true, "loop": false},
 			
-			{"type": "animation", "name": "anim2c_idle", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim2c_idle", "wait": false, "loop": false},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
+			{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 			#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 			]
 		#Dialogic.start("timeline17C", false)
@@ -160,7 +162,7 @@ func _setup_cutscene():
 		#Global.timeline = 8
 		#Global.remove_quest_marker("Make decision at Maya's house")
 		sequence = [
-			{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+			{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
@@ -173,6 +175,7 @@ func _setup_cutscene():
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
+			{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 			#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 			]
 		#Dialogic.start("timeline17T", false)
@@ -194,6 +197,7 @@ func _setup_cutscene():
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
+			{"type": "animation", "name": "anim3", "wait": false, "loop": false},
 			#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 			]
 		#Dialogic.start("timeline17G", false)

@@ -33,6 +33,7 @@ func _on_body_entered(body):
 		print("Cutscene1: Conditions met, calling parent method")
 		# Store player reference first
 		player_in_range = body
+		#Global.nora_dead = false
 		# Call parent's _on_body_entered
 		#betael.visible = true
 		#maya.visible = false
@@ -67,23 +68,24 @@ func _setup_cutscene():
 			#Global.is_cutscene_active = false
 			#Global.timeline = 8.5
 			sequence = [
-					#{"type": "wait", "duration": 0.5},
-					#{"type": "fade_out", "wait": false},
+					{"type": "wait", "duration": 0.5},
+					{"type": "fade_out", "wait": false},
 					
 					#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
-					#{"type": "player_animation", "name": "idle",  "wait": false},
+					{"type": "player_animation", "name": "idle",  "wait": false},
 					#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-					#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-					#{"type": "dialog", "name": "timeline16_9", "wait": true},
+					{"type": "animation", "name": "anim0_idle", "wait": false, "loop": true},
+					{"type": "dialog", "name": "timeline18_0C", "wait": true},
 					
-					#{"type": "wait", "duration": 0.5},		
-					#{"type": "fade_in"},
+					{"type": "wait", "duration": 0.5},		
+					{"type": "fade_in"},
+					{"type": "animation", "name": "anim4", "wait": true, "loop": false},
 				]
 			print("Global.nora_dead")
 	elif Global.nora_dead == false:
 			if Global.valentina_dead == true:
 				sequence = [
-					{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+					{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 					{"type": "wait", "duration": 0.5},
 					{"type": "fade_out", "wait": false},
 					
@@ -98,6 +100,7 @@ func _setup_cutscene():
 					
 					{"type": "wait", "duration": 0.5},		
 					{"type": "fade_in"},
+					{"type": "animation", "name": "anim4", "wait": true, "loop": false},
 					#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 					
 
@@ -106,7 +109,7 @@ func _setup_cutscene():
 				print("Global.valentina_dead")
 			elif Global.valentina_dead == false:
 				sequence = [
-					{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+					{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 					{"type": "wait", "duration": 0.5},
 					{"type": "fade_out", "wait": false},
 					
@@ -129,6 +132,7 @@ func _setup_cutscene():
 					
 					{"type": "wait", "duration": 0.5},		
 					{"type": "fade_in"},
+					{"type": "animation", "name": "anim4", "wait": true, "loop": false},
 					#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 					
 

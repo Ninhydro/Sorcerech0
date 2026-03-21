@@ -121,6 +121,7 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene20C" parent="." instance=ExtResource("5_1upmd")]
 position = Vector2(-344, -208)
+new_cutscene_path = NodePath("../cutscene20_5C")
 metadata/_edit_lock_ = true
 
 [node name="cutscene21_5B2" parent="." instance=ExtResource("6_apnbt")]

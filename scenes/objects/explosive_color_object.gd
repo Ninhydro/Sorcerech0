@@ -3,6 +3,7 @@ extends ColorObject
 class_name ExplosiveColorObject
 
 @export var fuse_time: float = 3.0  # seconds before explosion
+@export var explosion_radius: float = 150.0  # Maximum distance to affect door
 
 @onready var hitbox: Area2D = $Hitbox
 #@onready var countdown_label: Label = $CountdownLabel
@@ -93,9 +94,15 @@ func explode():
 		await animation_player.animation_finished
 	
 	# Tell the door it was hit
-	if door_ref:
-		door_ref.on_explosive_hit()
+	if door_ref and not door_ref.destroyed:
+		var distance_to_door = global_position.distance_to(door_ref.global_position)
+		print("ExplosiveObject: Distance to door: ", distance_to_door)
+		
+		if distance_to_door <= explosion_radius:
+			print("ExplosiveObject: Door within range! Destroying door.")
+			door_ref.on_explosive_hit()
+		else:
+			print("ExplosiveObject: Door too far away (", distance_to_door, " > ", explosion_radius, ") - not destroying")
 	else:
-		print("ExplosiveObject: No door_ref to notify – check parent hierarchy.")
-	
+		print("ExplosiveObject: No door_ref to notify or door already destroyed.")
 	queue_free()

@@ -82,7 +82,7 @@ func _setup_cutscene():
 	# Simple sequence: just play dialog
 	if Global.alyra_dead == true:
 		sequence = [
-		{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
@@ -95,14 +95,14 @@ func _setup_cutscene():
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
 		]
 			#Dialogic.start("timeline19C", false)
 	elif Global.alyra_dead == false:
 		sequence = [
-		{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
@@ -115,7 +115,7 @@ func _setup_cutscene():
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
 		]
@@ -131,6 +131,8 @@ func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	battle_active = true
 	battle_cancelled_on_player_death = false
+	battling_flag = true
+	#REMEBER THIS FLAG
 	
 	nataly.visible = false
 	varek.visible = false

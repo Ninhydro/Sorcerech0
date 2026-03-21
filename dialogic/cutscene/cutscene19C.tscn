@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://ut3qsktedt85"]
+[gd_scene load_steps=22 format=3 uid="uid://ut3qsktedt85"]
 
 [ext_resource type="Script" path="res://dialogic/cutscene/cutscene19C.gd" id="1_wd5x1"]
 [ext_resource type="Texture2D" uid="uid://bh33t8htmakba" path="res://assets_image/Characters/Nataly/Nataly-Sheet.png" id="2_pw72a"]
@@ -56,9 +56,60 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0)
 }
 
+[sub_resource type="Animation" id="Animation_fmx8a"]
+resource_name = "anim2"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Nataly:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Nataly:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(35, 87)]
+}
+tracks/3/type = "animation"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Nataly/AnimationPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"clips": PackedStringArray("idle"),
+"times": PackedFloat32Array(0)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cywr2"]
 _data = {
-"anim1_idle": SubResource("Animation_8hy64")
+"anim1_idle": SubResource("Animation_8hy64"),
+"anim2": SubResource("Animation_fmx8a")
 }
 
 [sub_resource type="Animation" id="Animation_mi3ym"]
@@ -325,6 +376,7 @@ zoom = Vector2(0.8, 0.8)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Nataly" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(35, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_pw72a")

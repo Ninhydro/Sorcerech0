@@ -1528,7 +1528,7 @@ func play_cutscene_animation(anim_name: String):
 			match form:
 				"Magus": anim_state.travel("attack_magus")
 				"Cyber": anim_state.travel("attack_cyber")
-				"UltimateMagus": anim_state.travel("attack_ult_magus")
+				"UltimateMagus": anim_state.travel("attack_ult_magus_1")
 				"UltimateCyber": anim_state.travel("attack_ult_cyber")
 				_: anim_state.travel("idle_normal")
 		"skill":

@@ -141,6 +141,8 @@ directories/dtl_directory={
 "timeline18MV2": "res://dialogic/timeline/timeline18MV2.dtl",
 "timeline18T": "res://dialogic/timeline/timeline18T.dtl",
 "timeline18TP": "res://dialogic/timeline/timeline18TP.dtl",
+"timeline18_0C": "res://dialogic/timeline/timeline18_0C.dtl",
+"timeline18_0M": "res://dialogic/timeline/timeline18_0M.dtl",
 "timeline19C": "res://dialogic/timeline/timeline19C.dtl",
 "timeline19CV2": "res://dialogic/timeline/timeline19CV2.dtl",
 "timeline19G": "res://dialogic/timeline/timeline19G.dtl",

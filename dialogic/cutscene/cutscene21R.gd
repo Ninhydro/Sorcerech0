@@ -43,7 +43,7 @@ func _setup_cutscene():
 	cutscene_name = "Cutscene3"
 	#alyra.visible = false
 	ninhydro.visible = false
-	play_only_once = true
+	play_only_once = false
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
 	
@@ -64,7 +64,7 @@ func _setup_cutscene():
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim1", "wait": false, "loop": false},
 		
 
 	]

@@ -49,8 +49,8 @@ func _handle_window_change(size: Vector2i, position: Vector2i):
 	var screen_size = DisplayServer.screen_get_size()
 	var half_screen_width = screen_size.x / 2
 	
-	print("Global: Window changed - Size: ", size, " | Position: ", position)
-	print("Global: Screen: ", screen_size, " | Half-width: ", half_screen_width)
+	#print("Global: Window changed - Size: ", size, " | Position: ", position)
+	#print("Global: Screen: ", screen_size, " | Half-width: ", half_screen_width)
 	
 	# Check if window is at screen edge (snapped)
 	var at_left_edge = position.x < snap_threshold
@@ -514,6 +514,12 @@ func _process(delta):
 		print("valentina_dead: ", Global.valentina_dead)
 		print("Global.is_cutscene_active: ", Global.is_cutscene_active)
 		print("demo: ", Global.demo)
+		print("ending_cyber ",Global.ending_cyber)
+		print("ending_magus ",Global.ending_magus)
+		print("ending_genocide ",Global.ending_genocide)
+		print("ending_true ",Global.ending_true)
+		print("ending_pacifist ",Global.ending_pacifist)
+		
 	
 	# Only proceed if the "no" action is pressed AND a timeline is currently active
 

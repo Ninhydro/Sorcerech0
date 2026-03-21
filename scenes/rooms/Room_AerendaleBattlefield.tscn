@@ -50,6 +50,7 @@ position = Vector2(48, -7)
 script = ExtResource("1_wgtaq")
 
 [node name="NPC" type="Node2D" parent="."]
+visible = false
 position = Vector2(1632, -745)
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]

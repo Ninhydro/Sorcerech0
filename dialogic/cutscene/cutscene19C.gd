@@ -59,7 +59,7 @@ func _setup_cutscene():
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
 		]

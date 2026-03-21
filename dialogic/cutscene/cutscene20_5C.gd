@@ -32,8 +32,8 @@ var battle_cancelled_on_player_death: bool = false
 
 
 @onready var nataly: Sprite2D = $Nataly
-@onready var maya: Sprite2D = $Maya
-@onready var fini: Sprite2D = $"Replica Fini"
+@onready var varek: Sprite2D = $Varek_king
+@onready var zach: Sprite2D = $Zach
 @onready var sterling: Sprite2D = $Sterling
 
 
@@ -88,8 +88,8 @@ func start_cutscene2() -> void:
 func _setup_cutscene():
 	cutscene_name = "magusbossfinal"
 	nataly.visible = false
-	maya.visible = false
-	fini.visible = false
+	varek.visible = false
+	zach.visible = false
 	sterling.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
@@ -111,7 +111,7 @@ func _setup_cutscene():
 
 	if Global.alyra_dead == true:
 		sequence = [
-		{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
@@ -123,14 +123,14 @@ func _setup_cutscene():
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
 		]
 			#Dialogic.start("timeline19C", false)
 	elif Global.alyra_dead == false:
 		sequence = [
-		{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "idle", "wait": false},
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
@@ -142,7 +142,7 @@ func _setup_cutscene():
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
 		]
@@ -163,8 +163,8 @@ func _on_cutscene_start():
 func _on_cutscene_end():
 	print("Cutscene1boss: Finished")
 	nataly.visible = false
-	maya.visible = false
-	fini.visible = false
+	varek.visible = false
+	zach.visible = false
 	sterling.visible = false
 	Global.attacking = false
 	Global.is_cutscene_active = false
