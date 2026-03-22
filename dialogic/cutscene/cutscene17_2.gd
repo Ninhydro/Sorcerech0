@@ -106,6 +106,7 @@ func _setup_cutscene():
 			{"type": "animation", "name": "anim2m", "wait": true, "loop": false},
 			
 			{"type": "animation", "name": "anim2m_idle", "wait": false, "loop": false},
+			{"type": "dialog", "name": "timeline17M_2", "wait": true},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
@@ -126,6 +127,7 @@ func _setup_cutscene():
 			{"type": "animation", "name": "anim2mv2", "wait": true, "loop": false},
 			
 			{"type": "animation", "name": "anim2mv2_idle", "wait": false, "loop": false},
+			{"type": "dialog", "name": "timeline17M_2", "wait": true},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
@@ -150,6 +152,7 @@ func _setup_cutscene():
 			{"type": "animation", "name": "anim2c", "wait": true, "loop": false},
 			
 			{"type": "animation", "name": "anim2c_idle", "wait": false, "loop": false},
+			{"type": "dialog", "name": "timeline17C_1", "wait": true},
 			
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},

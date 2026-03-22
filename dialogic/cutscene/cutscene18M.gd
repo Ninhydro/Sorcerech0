@@ -16,6 +16,15 @@ var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
+@onready var nataly: Sprite2D = $Nataly
+@onready var maya: Sprite2D = $Maya
+@onready var nora: Sprite2D = $Nora
+@onready var valentina: Sprite2D = $Valentina
+
+@onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
+@onready var marker3: Marker2D = $Marker2D3
+
 # Called when the node enters the scene tree for the first time.
 
 func _on_body_entered(body):
@@ -36,8 +45,10 @@ func _on_body_entered(body):
 		
 func _setup_cutscene():
 	cutscene_name = "Cutscene3"
-	#alyra.visible = false
-	#varek.visible = false
+	nataly.visible = false
+	maya.visible = false
+	nora.visible = false
+	valentina.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -50,33 +61,40 @@ func _setup_cutscene():
 			#Global.is_cutscene_active = false
 			#Global.timeline = 8.5
 			sequence = [
-					#{"type": "wait", "duration": 0.5},
-					#{"type": "fade_out", "wait": false},
-					
-					#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
-					#{"type": "player_animation", "name": "idle",  "wait": false},
-					#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-					#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
-					#{"type": "dialog", "name": "timeline16_9", "wait": true},
-					
-					#{"type": "wait", "duration": 0.5},		
-					#{"type": "fade_in"},
-				]
-			print("Global.nora_dead")
-	elif Global.valentina_dead == false:
-			if Global.nora_dead == true:
-				sequence = [
 					{"type": "wait", "duration": 0.5},
 					{"type": "fade_out", "wait": false},
 					
 					#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 					{"type": "player_animation", "name": "idle",  "wait": false},
+					#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+					{"type": "animation", "name": "anim0_idle", "wait": false, "loop": true},
+					{"type": "dialog", "name": "timeline18_0M", "wait": true},
+					
+					{"type": "wait", "duration": 0.5},		
+					{"type": "fade_in"},
+					{"type": "animation", "name": "anim4", "wait": true, "loop": false},
+				]
+			print("Global.nora_dead")
+	elif Global.valentina_dead == false:
+			if Global.nora_dead == true:
+				sequence = [
+					{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
+					{"type": "wait", "duration": 0.5},
+					{"type": "fade_out", "wait": false},
+					
+					{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+					{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "run", "wait": false},
+					
+					{"type": "player_animation", "name": "idle",  "wait": false},
 					{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+					{"type": "player_animation", "name": "attack",  "wait": false},
 					{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 					{"type": "dialog", "name": "timeline18M", "wait": true},
 					
 					{"type": "wait", "duration": 0.5},		
 					{"type": "fade_in"},
+					{"type": "animation", "name": "anim4", "wait": true, "loop": false},
+					
 					#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 					
 
@@ -85,17 +103,32 @@ func _setup_cutscene():
 				print("Global.valentina_dead")
 			elif Global.nora_dead == false:
 				sequence = [
+					{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 					{"type": "wait", "duration": 0.5},
 					{"type": "fade_out", "wait": false},
 					
-					#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+					{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+					{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "run", "wait": false},
+
 					{"type": "player_animation", "name": "idle",  "wait": false},
 					{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+					{"type": "player_animation", "name": "attack",  "wait": false},
 					{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 					{"type": "dialog", "name": "timeline18MV2", "wait": true},
 					
+					{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+					{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
+					{"type": "dialog", "name": "timeline18M_2V2", "wait": true},
+					
+					{"type": "move_player", "name": "marker3",  "duration": 2, "animation": "run", "wait": false},
+					{"type": "animation", "name": "anim3", "wait": true, "loop": false},
+					{"type": "animation", "name": "anim3_idle", "wait": false, "loop": true},
+					
 					{"type": "wait", "duration": 0.5},		
 					{"type": "fade_in"},
+					{"type": "animation", "name": "anim4", "wait": true, "loop": false},
+					
+					
 					#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 					
 
@@ -116,6 +149,10 @@ func _on_cutscene_start():
 func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	Global.timeline = 8.5
+	nataly.visible = false
+	maya.visible = false
+	nora.visible = false
+	valentina.visible = false
 	#Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
 	#if player_in_range:
 	#		transition_manager.travel_to(player_in_range, target_room1, target_spawn1)

@@ -4601,11 +4601,9 @@ position = Vector2(1225, -5162)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Nataly" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(105, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_xnsfy")
-flip_h = true
 hframes = 8
 vframes = 13
 frame = 96
@@ -4618,7 +4616,7 @@ libraries = {
 
 [node name="Maya" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(38, 87)
+position = Vector2(-116, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_qy7ey")
 hframes = 8
@@ -4662,7 +4660,6 @@ libraries = {
 }
 
 [node name="Sterling" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(175, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("6_6cabr")

@@ -32,6 +32,11 @@ var battle_cancelled_on_player_death := false
 # AREA ENTER
 # ---------------------------------------------------------
 
+@onready var maya: Sprite2D = $Maya
+@onready var sterling: Sprite2D = $Sterling
+@onready var giga: Node2D = $BodyPivot
+
+@onready var marker1: Marker2D = $Marker2D
 
 
 
@@ -66,8 +71,9 @@ func _on_body_entered(body):
 		
 func _setup_cutscene():
 	cutscene_name = "Cutscene3"
-	#alyra.visible = false
-	#varek.visible = false
+	maya.visible = false
+	sterling.visible = false
+	giga.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -78,17 +84,25 @@ func _setup_cutscene():
 	
 	# Simple sequence: just play dialog
 	sequence = [
+		
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
-		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "player_animation", "name": "attack",  "wait": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline19M", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		
+		{"type": "wait", "duration": 0.5},
+		{"type": "fade_out", "wait": false},
+		
 		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
@@ -105,7 +119,10 @@ func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	battle_active = true
 	battle_cancelled_on_player_death = false
-	
+	battling_flag = true
+	maya.visible = false
+	sterling.visible = false
+	giga.visible = false
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max)
 	

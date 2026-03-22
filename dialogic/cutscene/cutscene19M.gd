@@ -54,14 +54,15 @@ func _setup_cutscene():
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
-		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
+		{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline20M", "wait": true},
 		
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		#{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
