@@ -43,6 +43,7 @@ directories/dch_directory={
 "Fini": "res://dialogic/characters/Fini.dch",
 "Fini_ball": "res://dialogic/characters/Fini_ball.dch",
 "Gawr": "res://dialogic/characters/Gawr.dch",
+"God": "res://dialogic/characters/God.dch",
 "Karol": "res://dialogic/characters/Karol.dch",
 "Lux": "res://dialogic/characters/Lux.dch",
 "Machine": "res://dialogic/characters/Machine.dch",

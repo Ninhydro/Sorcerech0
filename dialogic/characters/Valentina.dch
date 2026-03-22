@@ -8,7 +8,7 @@
 "sound_moods": {},
 "style": ""
 },
-"default_portrait": "Sad",
+"default_portrait": "Angry",
 "description": "",
 "display_name": "Valentina",
 "mirror": false,
@@ -24,6 +24,15 @@
 "scale": 1,
 "scene": ""
 },
+"Bored": {
+"export_overrides": {
+"image": "\"res://assets_image/Characters/Valentina/valentina_bored.png\""
+},
+"mirror": false,
+"offset": Vector2(0, 0),
+"scale": 1,
+"scene": ""
+},
 "Happy": {
 "export_overrides": {
 "image": "\"res://assets_image/Characters/Valentina/valentina_happy.png\""
@@ -33,9 +42,9 @@
 "scale": 1,
 "scene": ""
 },
-"Sad": {
+"Shocked": {
 "export_overrides": {
-"image": "\"res://assets_image/Characters/Valentina/-valentina_sad.png\""
+"image": "\"res://assets_image/Characters/Valentina/Valentina_Shocked.png\""
 },
 "mirror": false,
 "offset": Vector2(0, 0),

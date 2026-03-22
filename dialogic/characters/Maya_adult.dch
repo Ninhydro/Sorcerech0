@@ -41,6 +41,15 @@
 "offset": Vector2(0, 0),
 "scale": 1,
 "scene": ""
+},
+"Shocked": {
+"export_overrides": {
+"image": "\"res://assets_image/Characters/Maya/Maya_adult_shocked.png\""
+},
+"mirror": false,
+"offset": Vector2(0, 0),
+"scale": 1,
+"scene": ""
 }
 },
 "scale": 1.0

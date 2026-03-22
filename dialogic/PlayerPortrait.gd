@@ -38,38 +38,38 @@ func set_all_portraits():
 	normal_portraits = {
 		"Angry": preload("res://assets_image/Background/Transparant.png"),
 		"Happy": preload("res://assets_image/Background/Transparant.png"),
-		"Normal": preload("res://assets_image/Background/Transparant.png"),
-		"Sad": preload("res://assets_image/Background/Transparant.png")
+		"Sad": preload("res://assets_image/Background/Transparant.png"),
+		"Shocked": preload("res://assets_image/Background/Transparant.png")
 
 	}
 	# Cyber Portraits
 	cyber_portraits = {
 		"Angry": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Angry.png"),
 		"Happy": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Happy.png"),
-		"Normal": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Happy.png"),
-		"Sad": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Sad.png")
+		"Sad": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Sad.png"),
+		"Shocked": preload("res://assets_image/Characters/Phina/Cyber/Cyber_Shocked.png")
 
 	}
 	# Magus Portraits
 	magus_portraits = {
 		"Angry": preload("res://assets_image/Characters/Phina/Magus/Magus_Angry.png"),
 		"Happy": preload("res://assets_image/Characters/Phina/Magus/Magus_Happy.png"),
-		"Normal": preload("res://assets_image/Characters/Phina/Magus/Magus_Happy.png"),
-		"Sad": preload("res://assets_image/Characters/Phina/Magus/Magus_Sad.png")
+		"Sad": preload("res://assets_image/Characters/Phina/Magus/Magus_Sad.png"),
+		"Shocked": preload("res://assets_image/Characters/Phina/Magus/Magus_Shocked.png")
 	}
 	# Ultimate Magus Portraits (Fix the typo: UltimateMagus_Angrt.png should be UltimateMagus_Angry.png)
 	ultimatemagus_portraits = {
 		"Angry": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Angry.png"), # FIX FILENAME HERE
 		"Happy": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Happy.png"),
-		"Normal": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Happy.png"),
-		"Sad": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Sad.png")
+		"Sad": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Sad.png"),
+		"Shocked": preload("res://assets_image/Characters/Phina/UltimateMagus/UltimateMagus_Shocked.png")
 	}
 	# Ultimate Cyber Portraits
 	ultimatecyber_portraits = {
 		"Angry": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Angry.png"),
 		"Happy": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Happy.png"),
-		"Normal": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Happy.png"),
-		"Sad": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Sad.png")
+		"Sad": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Sad.png"),
+		"Shocked": preload("res://assets_image/Characters/Phina/UltimateCyber/UltimateCyber_Shocked.png")
 	}
 
 
