@@ -8,6 +8,7 @@
 size = Vector2(34, 30)
 
 [node name="TObject" type="RigidBody2D" groups=["TelekinesisObject"]]
+scale = Vector2(0.6, 0.6)
 script = ExtResource("1_nn8xr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

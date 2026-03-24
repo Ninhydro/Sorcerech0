@@ -2101,7 +2101,6 @@ position = Vector2(1225, -5162)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Nataly" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(35, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_vnelp")
@@ -2116,6 +2115,7 @@ libraries = {
 }
 
 [node name="Maya" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(182, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_pow2d")

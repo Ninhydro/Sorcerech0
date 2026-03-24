@@ -75,6 +75,7 @@ func _setup_cutscene():
 	sterling.visible = false
 	giga.visible = false
 	play_only_once = true
+	
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
 	
@@ -226,8 +227,14 @@ func _finalize_success() -> void:
 	Global.save_persistent_data()
 	Global.remove_quest_marker("Fight for the Magus")
 	Global.is_cutscene_active = false
-	_cleanup_battle()
+	_deactivate_barriers()
 	
+	if boss_instance and is_instance_valid(boss_instance):
+		if boss_instance.tree_exited.is_connected(_on_boss_died):
+			boss_instance.tree_exited.disconnect(_on_boss_died)
+		boss_instance.queue_free()
+		boss_instance = null
+		
 	var node_path: NodePath = new_cutscene_path 
 	print("finishing battle cutscene1")
 	if node_path != NodePath("") and has_node(node_path):

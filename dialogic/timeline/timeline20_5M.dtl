@@ -4,8 +4,9 @@ Sterling: Fini... ... did our skybridge mean anything?
 Sterling: If I cannot save my world... I will not let you twist it.\
 Protocol Omega… initiated.
 Maya_adult: She triggered a self desctruct like spell! The city’s going nuclear!
-Player: Everyone MOVE! 
+Player: Everyone MOVE!
 Player: Sterling...
+[background arg="res://assets_image/Background/Black.png" fade="0.0"]
 Nora: Oh God, You're saved
 Maya_adult: Yeah but everyone here is...
 Player: We did what we had to.\
@@ -14,6 +15,7 @@ Maya_adult: There’s no pride in this. Just ashes.
 Player: She wanted peace too. Just… in her own broken way.
 Nora: And now we hold the territory. No core. No gods.\
 Just responsibility.
+[background arg="res://assets_image/Background/Black.png" fade="0.0"]
 Narrator: The war ended not with a victor’s cheer, but with silence.
 Narrator: Exactlyion burned, its steel spires crumbling into smoke and ash.
 Narrator: Tromarvelia stood unopposed — but the air was heavy, the dream of unity buried beneath the rubble of a hollow victory.

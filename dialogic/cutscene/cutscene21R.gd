@@ -16,6 +16,7 @@ var player_in_range = null
 @onready var transition_manager = get_node("/root/TransitionManager")
 
 @onready var ninhydro: Sprite2D = $"NPC special"
+@onready var anime: AnimationPlayer = $"NPC special/AnimationPlayer"
 #@onready var marker2: Marker2D = $Marker2D2
 #
 # Called when the node enters the scene tree for the first time.
@@ -42,7 +43,8 @@ func _on_body_entered(body):
 func _setup_cutscene():
 	cutscene_name = "Cutscene3"
 	#alyra.visible = false
-	ninhydro.visible = false
+	ninhydro.visible = true
+	anime.play("ninhydro")
 	play_only_once = false
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -82,7 +84,7 @@ func _on_cutscene_end():
 	Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
 	Global.route_status = "None"
 	_has_been_triggered = false
-	ninhydro.visible = false
+	ninhydro.visible = true
 	#player_status & kills need to be reset from NPC
 	#affinity need to be reset from NPC
 

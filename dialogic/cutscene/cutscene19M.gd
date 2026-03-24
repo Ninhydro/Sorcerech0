@@ -19,7 +19,7 @@ var player_in_range = null
 # Called when the node enters the scene tree for the first time.
 #func _ready():
 #	pass
-
+@onready var maya: Sprite2D = $Maya
 
 # Called when the node enters the scene tree for the first time.
 func _on_body_entered(body):
@@ -40,7 +40,7 @@ func _on_body_entered(body):
 		
 func _setup_cutscene():
 	cutscene_name = "Cutscene3"
-	#alyra.visible = false
+	maya.visible = false
 	#varek.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
@@ -82,6 +82,7 @@ func _on_cutscene_start():
 func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	Global.timeline = 8.8
+	maya.visible = false
 	#Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
 	#if player_in_range:
 	#		transition_manager.travel_to(player_in_range, target_room1, target_spawn1)

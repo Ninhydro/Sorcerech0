@@ -4615,8 +4615,7 @@ libraries = {
 }
 
 [node name="Maya" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(-116, 87)
+position = Vector2(38, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_qy7ey")
 hframes = 8

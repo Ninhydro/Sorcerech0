@@ -61,6 +61,7 @@ func _setup_cutscene():
 			#Global.is_cutscene_active = false
 			#Global.timeline = 8.5
 			sequence = [
+					{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "idle", "wait": false},
 					{"type": "wait", "duration": 0.5},
 					{"type": "fade_out", "wait": false},
 					
