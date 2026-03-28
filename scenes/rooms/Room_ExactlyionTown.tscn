@@ -980,8 +980,7 @@ position = Vector2(1605.47, 103.991)
 metadata/_edit_lock_ = true
 
 [node name="cutscene4C" parent="." instance=ExtResource("14_38vj6")]
-position = Vector2(-408, 56)
-metadata/_edit_lock_ = true
+position = Vector2(-408, 53)
 
 [node name="cutscene4_5" parent="." instance=ExtResource("15_hq0yp")]
 position = Vector2(-681, -135.75)
@@ -1047,7 +1046,7 @@ position = Vector2(2231, -479)
 position = Vector2(-634.506, -115.542)
 
 [node name="cutscene17_2" parent="." instance=ExtResource("32_k08rr")]
-position = Vector2(-408, -59)
+position = Vector2(-363, -59)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

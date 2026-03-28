@@ -504,8 +504,8 @@ tracks/8/path = NodePath("Nataly/AnimationPlayer")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"clips": PackedStringArray(),
-"times": PackedFloat32Array()
+"clips": PackedStringArray("prepare"),
+"times": PackedFloat32Array(0)
 }
 tracks/9/type = "animation"
 tracks/9/imported = false
@@ -524,13 +524,13 @@ tracks/10/path = NodePath("Replica Fini/AnimationPlayer")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"clips": PackedStringArray("idle"),
+"clips": PackedStringArray("pprepare"),
 "times": PackedFloat32Array(0)
 }
 
 [sub_resource type="Animation" id="Animation_fyjei"]
 resource_name = "anim3"
-length = 2.0
+length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -541,7 +541,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -577,7 +577,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -601,7 +601,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -1458,7 +1458,7 @@ position = Vector2(-7, -202)
 wait_time = 30.0
 
 [node name="Nataly" type="Sprite2D" parent="."]
-position = Vector2(-132.85, 33)
+position = Vector2(-92, 33)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_tcsx3")
 hframes = 8
@@ -1472,7 +1472,7 @@ libraries = {
 }
 
 [node name="Maya" type="Sprite2D" parent="."]
-position = Vector2(-205.6, 33)
+position = Vector2(-179, 33)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_a8hkf")
 hframes = 8
@@ -1486,9 +1486,10 @@ libraries = {
 }
 
 [node name="Replica Fini" type="Sprite2D" parent="."]
-position = Vector2(252, 33)
+position = Vector2(129, 33)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_vag7k")
+flip_h = true
 hframes = 8
 vframes = 10
 frame = 72

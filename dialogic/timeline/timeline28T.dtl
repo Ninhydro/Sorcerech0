@@ -1,8 +1,9 @@
 join Player center
 Nataly: Oh you're here, come on, everyone is waiting for you
-Maya_adult: Or you need to go somewhere else first? 
+Maya_adult: Or you need to go somewhere else first?
 Player: Hmm... (Proceeding will go to ending scene)
 - Continue to ending
+	[background arg="res://assets_image/Background/Black.png" fade="0.0"]
 	Player (Happy): Oh everyone is here
 	Maya_adult: Yeah we're having a picnic
 	Nataly: What a journey huh?
@@ -10,10 +11,10 @@ Player: Hmm... (Proceeding will go to ending scene)
 	Player (Happy): For the first time… I don’t have to.\
 Because I know you all be there with me.
 	Nataly: Then let’s stay. Just for a while.
-	. . . 
+	. . .
 	Narrator: No power is perfect. No future is certain.
 	Narrator: But with memory… comes understanding.
-	Narrator: With understanding… comes peace. 
+	Narrator: With understanding… comes peace.
 	Narrator: And with peace… a future...
 	Narrator: THE END
 	set {Global.game_cleared} = true

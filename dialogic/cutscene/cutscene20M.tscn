@@ -197,7 +197,7 @@ tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "clips": PackedStringArray("attack_left", "idle"),
-"times": PackedFloat32Array(1.7, 2.5)
+"times": PackedFloat32Array(0, 2.5)
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -4861,6 +4861,7 @@ wait_time = 60.0
 position = Vector2(169, 102)
 
 [node name="Sterling" type="Sprite2D" parent="."]
+visible = false
 z_index = 2
 position = Vector2(-86, 74)
 scale = Vector2(0.6, 0.6)
@@ -4878,7 +4879,7 @@ libraries = {
 
 [node name="Maya" type="Sprite2D" parent="."]
 z_index = 2
-position = Vector2(222, 74)
+position = Vector2(128, 74)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_ssawh")
 hframes = 8
@@ -4893,7 +4894,7 @@ libraries = {
 
 [node name="BodyPivot" type="Node2D" parent="."]
 z_index = -1
-position = Vector2(-47, 157.443)
+position = Vector2(-47, 156.761)
 
 [node name="BodySprite" type="Sprite2D" parent="BodyPivot"]
 z_index = -2
@@ -4923,7 +4924,7 @@ texture = ExtResource("6_gni4j")
 
 [node name="RightArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(88.8889, -150.222)
-rotation = -0.290224
+rotation = -0.282293
 
 [node name="ArmSpriteR" type="Sprite2D" parent="BodyPivot/RightArm"]
 position = Vector2(-146.764, -89.0607)
@@ -4934,7 +4935,7 @@ frame = 20
 
 [node name="RightHand" type="Node2D" parent="BodyPivot/RightArm"]
 position = Vector2(46, 59)
-rotation = 0.0129629
+rotation = 0.0288264
 
 [node name="HandSpriteR" type="Sprite2D" parent="BodyPivot/RightArm/RightHand"]
 z_index = 1
@@ -4950,11 +4951,11 @@ position = Vector2(-62.2222, -241.111)
 texture = ExtResource("5_i0use")
 hframes = 4
 vframes = 11
-frame = 43
+frame = 39
 
 [node name="LeftArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(-21, -143)
-rotation = 0.245596
+rotation = 0.225766
 
 [node name="ArmSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm"]
 position = Vector2(-45.4117, -92.6779)
@@ -4965,7 +4966,7 @@ frame = 16
 
 [node name="LeftHand" type="Node2D" parent="BodyPivot/LeftArm"]
 position = Vector2(-42, 45)
-rotation = -0.0129629
+rotation = -0.0288264
 
 [node name="HandSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm/LeftHand"]
 z_index = 1
@@ -4980,6 +4981,15 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_smide")
 }
+
+[node name="BlackOverlay" type="ColorRect" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0)
+offset_left = -20783.0
+offset_top = -14168.0
+offset_right = 3993.0
+offset_bottom = 3368.0
+color = Color(0, 0, 0, 1)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

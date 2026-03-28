@@ -38,6 +38,9 @@ var battle_cancelled_on_player_death := false
 @onready var varek: Sprite2D = $Varek_king
 @onready var zach: Sprite2D = $Zach
 
+@onready var soldier1: Sprite2D = $"Magus soldier"
+@onready var soldier2: Sprite2D = $"Magus soldier2"
+
 @onready var marker1: Marker2D = $Marker2D
 
 func _ready():
@@ -71,6 +74,8 @@ func _setup_cutscene():
 	nataly.visible = false
 	varek.visible = false
 	zach.visible = false
+	soldier1.visible = false
+	soldier2.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -137,7 +142,8 @@ func _on_cutscene_end():
 	nataly.visible = false
 	varek.visible = false
 	zach.visible = false
-	
+	soldier1.visible = false
+	soldier2.visible = false
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max)
 	

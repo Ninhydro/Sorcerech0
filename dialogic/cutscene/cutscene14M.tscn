@@ -632,8 +632,8 @@ tracks/10/path = NodePath("Nataly/AnimationPlayer")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"clips": PackedStringArray(),
-"times": PackedFloat32Array()
+"clips": PackedStringArray("prepare"),
+"times": PackedFloat32Array(0)
 }
 tracks/11/type = "animation"
 tracks/11/imported = false
@@ -642,8 +642,8 @@ tracks/11/path = NodePath("Maya/AnimationPlayer")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"clips": PackedStringArray(),
-"times": PackedFloat32Array()
+"clips": PackedStringArray("attack_right"),
+"times": PackedFloat32Array(0)
 }
 tracks/12/type = "animation"
 tracks/12/imported = false
@@ -652,8 +652,8 @@ tracks/12/path = NodePath("Lux/AnimationPlayer")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
-"clips": PackedStringArray(),
-"times": PackedFloat32Array()
+"clips": PackedStringArray("prepare"),
+"times": PackedFloat32Array(0)
 }
 tracks/13/type = "animation"
 tracks/13/imported = false
@@ -4256,7 +4256,7 @@ position = Vector2(-7, -202)
 wait_time = 30.0
 
 [node name="Nataly" type="Sprite2D" parent="."]
-position = Vector2(-199, 50)
+position = Vector2(-158, 50)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_0fgsc")
 hframes = 8
@@ -4270,7 +4270,7 @@ libraries = {
 }
 
 [node name="Maya" type="Sprite2D" parent="."]
-position = Vector2(-223, 50)
+position = Vector2(-192, 50)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_gbrla")
 hframes = 8
@@ -4284,7 +4284,7 @@ libraries = {
 }
 
 [node name="Lux" type="Sprite2D" parent="."]
-position = Vector2(-142, 50)
+position = Vector2(-113, 50)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("5_q1x0p")
 hframes = 10
@@ -4298,13 +4298,13 @@ libraries = {
 }
 
 [node name="BodyPivot" type="Node2D" parent="."]
-visible = false
-position = Vector2(137, 148)
+position = Vector2(137, 151.929)
+rotation = -0.174533
 scale = Vector2(-1, 1)
 
 [node name="RightArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(68, -144)
-rotation = -0.296706
+rotation = -0.425638
 
 [node name="ArmSpriteR" type="Sprite2D" parent="BodyPivot/RightArm"]
 position = Vector2(-57.1623, -97.1415)
@@ -4315,6 +4315,7 @@ frame = 8
 
 [node name="RightHand" type="Node2D" parent="BodyPivot/RightArm"]
 position = Vector2(40.5082, 65.9704)
+rotation = 0.425638
 
 [node name="HandSpriteR" type="Sprite2D" parent="BodyPivot/RightArm/RightHand"]
 z_index = 1
@@ -4343,7 +4344,7 @@ frame = 16
 
 [node name="LeftArm" type="Node2D" parent="BodyPivot"]
 position = Vector2(-21, -143)
-rotation = 0.174533
+rotation = 0.251105
 
 [node name="ArmSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm"]
 position = Vector2(40, -101)
@@ -4354,6 +4355,7 @@ frame = 28
 
 [node name="LeftHand" type="Node2D" parent="BodyPivot/LeftArm"]
 position = Vector2(-42, 45)
+rotation = -0.425638
 
 [node name="HandSpriteL" type="Sprite2D" parent="BodyPivot/LeftArm/LeftHand"]
 z_index = 1

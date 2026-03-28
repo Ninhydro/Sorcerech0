@@ -563,8 +563,7 @@ position = Vector2(-1335.26, 123.939)
 metadata/_edit_lock_ = true
 
 [node name="cutscene4M" parent="." instance=ExtResource("12_2serk")]
-position = Vector2(287, 56)
-metadata/_edit_lock_ = true
+position = Vector2(287, 54)
 
 [node name="cutscene4_5" parent="." instance=ExtResource("13_v0bov")]
 position = Vector2(680, -138)
@@ -596,7 +595,7 @@ tape_texture = ExtResource("25_1lvi8")
 position = Vector2(637.302, -107.638)
 
 [node name="cutscene17_2" parent="." instance=ExtResource("26_cpmd7")]
-position = Vector2(90.1704, -64.217)
+position = Vector2(45.1704, -61.217)
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]

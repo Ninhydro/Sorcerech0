@@ -114,7 +114,7 @@ frame = 7
 metadata/_edit_lock_ = true
 
 [node name="cutscene18T" parent="." instance=ExtResource("6_651r7")]
-position = Vector2(-176, 0)
+position = Vector2(-176, -5)
 metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -123,10 +123,13 @@ position = Vector2(-232, -152)
 zoom = Vector2(0.4, 0.4)
 
 [node name="SpawnerFallSpike2" parent="." instance=ExtResource("8_4yxlw")]
+visible = false
 position = Vector2(-312, -208)
 
 [node name="SpawnerFallSpike4" parent="." instance=ExtResource("8_4yxlw")]
+visible = false
 position = Vector2(-160, -208)
 
 [node name="SpawnerFallSpike7" parent="." instance=ExtResource("8_4yxlw")]
+visible = false
 position = Vector2(-8, -208)

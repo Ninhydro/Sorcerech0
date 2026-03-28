@@ -22,6 +22,9 @@ var player_in_range = null
 @onready var varek: Sprite2D = $Varek_king
 @onready var nataly: Sprite2D = $Nataly
 
+@onready var soldier1: Sprite2D = $"Magus soldier"
+@onready var soldier2: Sprite2D = $"Magus soldier2"
+
 
 @onready var marker1: Marker2D = $Marker2D
 @onready var marker2: Marker2D = $Marker2D2
@@ -66,6 +69,8 @@ func _setup_cutscene():
 	zach.visible = false
 	lux.visible = false
 	varek.visible = false
+	soldier1.visible = false
+	soldier2.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -202,7 +207,8 @@ func _on_cutscene_end():
 	zach.visible = false
 	lux.visible = false
 	varek.visible = false
-	
+	soldier1.visible = false
+	soldier2.visible = false
 	Global.timeline = 6.5
 	Global.tromarvelia_two = true
 	transition_manager.travel_to(player_in_range, target_room2, target_spawn2)

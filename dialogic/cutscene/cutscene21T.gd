@@ -15,6 +15,15 @@ var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
+@onready var nataly: Sprite2D = $Nataly
+@onready var maya: Sprite2D = $Maya
+@onready var lux: Sprite2D = $Lux
+
+@onready var anim_lux: AnimationPlayer = $Lux/AnimationPlayer
+@onready var anim_nataly: AnimationPlayer = $Nataly/AnimationPlayer
+@onready var anim_maya: AnimationPlayer = $Maya/AnimationPlayer
+
+@onready var marker1: Marker2D = $Marker2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	interaction_label.visible = false
@@ -54,14 +63,21 @@ func _process(delta):
 			#handle_interaction()
 			_setup_cutscene()
 			start_cutscene(player_in_range)
-		
+			nataly.visible = true
+			maya.visible = true
+			lux.visible = true
+			anim_lux.play("idle")
+			anim_nataly.play("idle")
+			anim_maya.play("idle")
+			
 	else:
 		collision_shape.disabled = true
 		
 func _setup_cutscene():
 	cutscene_name = "Cutscene17"
-	#alyra.visible = false
-	#varek.visible = false
+	#nataly.visible = false
+	#maya.visible = false
+	#lux.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -94,8 +110,9 @@ func _setup_cutscene():
 			
 			#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 			{"type": "player_animation", "name": "idle",  "wait": false},
-			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+			#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			
 			{"type": "dialog", "name": "timeline28T", "wait": true},
 			
 			{"type": "wait", "duration": 0.5},		
@@ -112,8 +129,9 @@ func _setup_cutscene():
 			
 			#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 			{"type": "player_animation", "name": "idle",  "wait": false},
-			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		#	{"type": "animation", "name": "anim1p_idle", "wait": true, "loop": false},
+			
+			#{"type": "dialog", "name": "timeline19TP_1", "wait": true},{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline28TP", "wait": true},
 			
 			{"type": "wait", "duration": 0.5},		
@@ -137,6 +155,9 @@ func _on_cutscene_end():
 	print("Cutscene17: Finished")
 	#Global.timeline = 10
 	#Global.remove_quest_marker("Find the the other way with Lux")
+	nataly.visible = false
+	maya.visible = false
+	lux.visible = false
 	Global.timeline = 10
 	if Global.game_cleared == true:
 		var main_menu_scene_path = "res://scenes/ui/MainMenu.tscn"

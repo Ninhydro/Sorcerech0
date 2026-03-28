@@ -33,12 +33,9 @@ var battle_cancelled_on_player_death: bool = false
 
 @onready var nataly: Sprite2D = $Nataly
 @onready var maya: Sprite2D = $Maya
-@onready var fini: Sprite2D = $"Replica Fini"
-@onready var sterling: Sprite2D = $Sterling
-
+@onready var lux: Sprite2D = $Lux
 
 @onready var marker1: Marker2D = $Marker2D
-@onready var marker2: Marker2D = $Marker2D2
 
 func _ready() -> void:
 	# Only active when Global.timeline == 5.2
@@ -89,8 +86,8 @@ func _setup_cutscene():
 	cutscene_name = "magusbossfinal"
 	nataly.visible = false
 	maya.visible = false
-	fini.visible = false
-	sterling.visible = false
+	lux.visible = false
+
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
@@ -100,7 +97,7 @@ func _setup_cutscene():
 	player_markers = {
 		# Example positions - adjust to match your scene
 		"marker1": marker1.global_position,
-		"marker2": marker2.global_position,
+		#"marker2": marker2.global_position,
 		#"marker3": marker3.global_position,
 		#"marker4": marker4.global_position,
 		#"marker5": marker5.global_position,
@@ -110,22 +107,22 @@ func _setup_cutscene():
 	
 
 	sequence = [
-		#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-		#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+		{"type": "player_face", "direction": -1}, #1 is right, -1 is left
 		{"type": "wait", "duration": 0.5},
 		{"type": "fade_out", "wait": false},
 		
-		{"type": "dialog", "name": "timeline19G", "wait": true},
+	
 		#{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 		#{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": false},
-		#{"type": "player_animation", "name": "idle",  "wait": false},
-		#{"type": "animation", "name": "anim1", "wait": true, "loop": false},
-		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+		{"type": "player_animation", "name": "idle",  "wait": false},
+		{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		#{"type": "dialog", "name": "timeline16C", "wait": true},
 		#{"type": "move_player", "name": "marker2",  "duration": 1, "animation": "shine", "wait": false},
 		#{"type": "animation", "name": "anim1_2", "wait": true, "loop": false},
 		#{"type": "dialog", "name": "timeline16_1C", "wait": true},
-		
+		{"type": "dialog", "name": "timeline19G", "wait": true},
 		#{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		#{"type": "player_form", "name": "UltimateCyber", "wait": true},
 		#{"type": "move_player", "name": "marker1",  "duration": 0.5, "animation": "load", "wait": false},
@@ -141,7 +138,7 @@ func _setup_cutscene():
 		
 		{"type": "wait", "duration": 0.1},		
 		{"type": "fade_in"},
-		#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
 		
 
 		]
@@ -163,8 +160,8 @@ func _on_cutscene_end():
 	print("Cutscene1boss: Finished")
 	nataly.visible = false
 	maya.visible = false
-	fini.visible = false
-	sterling.visible = false
+	lux.visible = false
+
 	Global.attacking = false
 	Global.is_cutscene_active = false
 

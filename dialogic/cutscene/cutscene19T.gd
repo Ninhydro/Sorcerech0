@@ -13,6 +13,13 @@ var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
 
+@onready var nataly: Sprite2D = $Nataly
+@onready var maya: Sprite2D = $Maya
+@onready var lux: Sprite2D = $Lux
+
+@onready var marker1: Marker2D = $Marker2D
+@onready var marker2: Marker2D = $Marker2D2
+
 func start_cutscene2() -> void:
 	player_in_range = Global.player
 	_setup_cutscene()
@@ -32,75 +39,109 @@ func start_cutscene2() -> void:
 
 func _setup_cutscene():
 	cutscene_name = "magusbossfinal"
-	#nataly.visible = false
-	#maya.visible = false
-	#fini.visible = false
-	#sterling.visible = false
+	nataly.visible = false
+	maya.visible = false
+	lux.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
 	
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
-	#player_markers = {
+	player_markers = {
 		# Example positions - adjust to match your scene
-	#	"marker1": marker1.global_position,
-	#	"marker2": marker2.global_position,
+		"marker1": marker1.global_position,
+		"marker2": marker2.global_position,
 		#"marker3": marker3.global_position,
 		#"marker4": marker4.global_position,
 		#"marker5": marker5.global_position,
 		#"marker6": marker6.global_position
 		
-	#}
+	}
+	
 	
 	if Global.route_status == "True":
 		if Global.alyra_dead == true:
 			sequence = [
-			#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-			#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+			{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+			{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
+			{"type": "player_animation", "name": "idle",  "wait": false},
+			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			{"type": "dialog", "name": "timeline19T_1", "wait": true},
+			
+			{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "save", "wait": false},
+			{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+			{"type": "wait", "duration": 0.1},	
+			#{"type": "animation", "name": "anim3", "wait": true, "loop": false},
 			{"type": "dialog", "name": "timeline19T", "wait": true},
 
 			
 			{"type": "wait", "duration": 0.1},		
 			{"type": "fade_in"},
-			#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+			{"type": "animation", "name": "anim0", "wait": false, "loop": false},
 			
 
 			]
 			#Dialogic.start("timeline19T", false)
 		else:
 			sequence = [
-			#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-			#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+			{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+			{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 			{"type": "wait", "duration": 0.5},
 			{"type": "fade_out", "wait": false},
 			
+			{"type": "player_animation", "name": "idle",  "wait": false},
+			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
+			{"type": "dialog", "name": "timeline19T_1", "wait": true},
+			
+			{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "save", "wait": false},
+			{"type": "animation", "name": "anim2", "wait": true, "loop": false},
+			{"type": "wait", "duration": 0.1},	
+			#{"type": "animation", "name": "anim3", "wait": true, "loop": false},
 			{"type": "dialog", "name": "timeline19TV2", "wait": true},
 
 			
 			{"type": "wait", "duration": 0.1},		
 			{"type": "fade_in"},
-			#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+			{"type": "animation", "name": "anim0", "wait": false, "loop": false},
 			
 
 			]
 	elif Global.route_status == "Pacifist":
 		if Global.alyra_dead == true:
 			sequence = [
-				#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-				#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+				{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+				{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 				{"type": "wait", "duration": 0.5},
 				{"type": "fade_out", "wait": false},
+				
+				{"type": "animation", "name": "anim1p", "wait": true, "loop": false},
+				{"type": "dialog", "name": "timeline19TP_1", "wait": true},
+				{"type": "animation", "name": "anim2p", "wait": true, "loop": false},
+				{"type": "dialog", "name": "timeline19TP_2", "wait": true},
+				{"type": "animation", "name": "anim3p", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim3p_idle", "wait": true, "loop": false},
+				{"type": "dialog", "name": "timeline19TP_3", "wait": true},
+				{"type": "animation", "name": "anim4p", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim4p_idle", "wait": true, "loop": false},
+				{"type": "dialog", "name": "timeline19TP_4", "wait": true},
+				
+				{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "save", "wait": false},
+				{"type": "animation", "name": "anim5p", "wait": true, "loop": false},
+				{"type": "wait", "duration": 0.1},	
+				#{"type": "animation", "name": "anim6p", "wait": true, "loop": false},
 				
 				{"type": "dialog", "name": "timeline19TP", "wait": true},
 
 				
 				{"type": "wait", "duration": 0.1},		
 				{"type": "fade_in"},
-				#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+				{"type": "animation", "name": "anim0", "wait": false, "loop": false},
 				
 
 				]
@@ -110,17 +151,33 @@ func _setup_cutscene():
 			Global.save_persistent_data()
 		else:
 			sequence = [
-				#{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
-				#{"type": "player_face", "direction": -1}, #1 is right, -1 is left
+				{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
+				{"type": "player_face", "direction": 1}, #1 is right, -1 is left
 				{"type": "wait", "duration": 0.5},
 				{"type": "fade_out", "wait": false},
+				
+				{"type": "animation", "name": "anim1p", "wait": true, "loop": false},
+				{"type": "dialog", "name": "timeline19TP_1", "wait": true},
+				{"type": "animation", "name": "anim2p", "wait": true, "loop": false},
+				{"type": "dialog", "name": "timeline19TP_2", "wait": true},
+				{"type": "animation", "name": "anim3p", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim3p_idle", "wait": true, "loop": false},
+				{"type": "dialog", "name": "timeline19TP_3", "wait": true},
+				{"type": "animation", "name": "anim4p", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim4p_idle", "wait": true, "loop": false},
+				{"type": "dialog", "name": "timeline19TP_4", "wait": true},
+				
+				{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "save", "wait": false},
+				{"type": "animation", "name": "anim5p", "wait": true, "loop": false},
+				{"type": "wait", "duration": 0.1},	
+				#{"type": "animation", "name": "anim6p", "wait": true, "loop": false},
 				
 				{"type": "dialog", "name": "timeline19TPV2", "wait": true},
 
 				
 				{"type": "wait", "duration": 0.1},		
 				{"type": "fade_in"},
-				#{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+				{"type": "animation", "name": "anim0", "wait": false, "loop": false},
 				
 
 				]
@@ -145,10 +202,9 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene1boss: Finished")
-	#nataly.visible = false
-	#maya.visible = false
-	#fini.visible = false
-	#sterling.visible = false
+	nataly.visible = false
+	maya.visible = false
+	lux.visible = false
 	Global.attacking = false
 	Global.is_cutscene_active = false
 
