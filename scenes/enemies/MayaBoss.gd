@@ -832,6 +832,7 @@ func die():
 	queue_free()
 	try_drop_health()
 	# Play death animation
+	Global.increment_kills()
 	handle_animation()
 
 # -------------------------------------------------

@@ -75,6 +75,7 @@ func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	alyra.visible = false
 	varek.visible = false
+	Global.attacking= false
 	# Set timeline
 	Global.timeline = 5
 	Global.add_quest_marker("Go back to New Aerendale!", Vector2(600,2256))

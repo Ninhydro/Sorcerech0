@@ -64,7 +64,9 @@ func _ready() -> void:
 		health_timer.one_shot = false
 		if not health_timer.timeout.is_connected(_on_health_timer_timeout):
 			health_timer.timeout.connect(_on_health_timer_timeout)
-
+	Global.route_status = "Pacifist"
+	Global.kills = 0
+	lux.visible = false
 	#if boss_camera:
 	#	boss_camera.enabled = false
 
@@ -87,7 +89,7 @@ func _on_body_entered(body):
 		print("Cutscene1: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
 		
 func _setup_cutscene():
-	cutscene_name = "Cutscene3"
+	cutscene_name = "beforeluxboss"
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
@@ -123,6 +125,7 @@ func _setup_cutscene():
 		{"type": "move_player", "name": "marker2",  "duration": 0.5, "animation": "jump", "wait": false},
 		{"type": "animation", "name": "anim2p", "wait": true, "loop": false},
 		{"type": "move_player", "name": "marker3",  "duration": 0.5, "animation": "jump", "wait": false},
+		{"type": "animation", "name": "anim2p_2", "wait": true, "loop": false},
 		{"type": "animation", "name": "anim2p_idle", "wait": false, "loop": true},
 		{"type": "player_animation", "name": "idle",  "wait": false},
 		{"type": "player_face", "direction": 1},
@@ -131,6 +134,7 @@ func _setup_cutscene():
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
 		{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
 		
 
 		]
@@ -152,6 +156,7 @@ func _setup_cutscene():
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
 		{"type": "animation", "name": "anim3", "wait": false, "loop": false},
+		{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
 		
 
 		]
@@ -160,32 +165,47 @@ func _setup_cutscene():
 
 
 func _on_cutscene_start():
-	print("Cutscene1: Starting")
+	print("beforeluxboss: Starting")
 	# Player reference is already stored in _player_ref by parent class
 	if _player_ref:
 		player_in_range = _player_ref
-		print("Cutscene1: Player reference stored: ", player_in_range.name)
+		print("beforeluxboss: Player reference stored: ", player_in_range.name)
 
 func _on_cutscene_end():
-	print("Cutscene1: Finished")
+	print("beforeluxboss: Finished")
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
+	Global.attacking= false
 	if Global.route_status == "Pacifist":
 		#_start_pacifist_cutscene()
 		Global.timeline = 8.5
 		Global.persistent_saved_lux = true
 		Global.check_100_percent_completion()
 		Global.save_persistent_data()
-
-		if player_in_range:
-			transition_manager.travel_to(player_in_range, target_room, target_spawn)
-
 		battle_active = false
+		battling_flag = false
+		#if player_in_range:
+		#	transition_manager.travel_to(player_in_range, target_room, target_spawn)
+		var node_path: NodePath = new_cutscene_path 
+		print("finishing battle cutscenelux")
+		if node_path != NodePath("") and has_node(node_path):
+			var cs_node: Node = get_node(node_path)
+			print("get nodepath1")
+			if cs_node.has_method("start_cutscene3"):
+				#await get_tree().create_timer(0.1).timeout
+				#Global.is_cutscene_active = true
+				#await get_tree().create_timer(0.1).timeout
+				cs_node.call("start_cutscene3")
+				print("get start_cutscene3")
+			else:
+				if cs_node is CanvasItem:
+					cs_node.visible = true
+		
 	
 	else:
 		#_start_true_route_battle()
-		
+		battling_flag = true
 		battle_active = true
 		_activate_barriers()
 	#battle_cancelled_on_player_death = false
@@ -206,7 +226,7 @@ func _on_cutscene_end():
 	#if minigame:
 	#	minigame.start_game()
 		
-	print("Cutscene1: Set Global.timeline = ", Global.timeline)
+	print("beforeluxboss: Set Global.timeline = ", Global.timeline)
 
 
 # ---------------------------------------------------------
@@ -253,6 +273,7 @@ func _spawn_boss() -> void:
 		
 		print("Starting ", spawner.spawner_id, " with delay: ", spawner.start_delay, "s")
 		spawner.start_spawning()
+		#spawner.stop_spawning() 
 	
 	print("=== BOSS: All spawners started ===")
 	
@@ -282,9 +303,9 @@ func _on_boss_died() -> void:
 	if node_path != NodePath("") and has_node(node_path):
 		var cs_node: Node = get_node(node_path)
 		print("get nodepath1")
-		if cs_node.has_method("start_cutscene2"):
-			cs_node.call("start_cutscene2")
-			print("get start_cutscene2")
+		if cs_node.has_method("start_cutscene3"):
+			cs_node.call("start_cutscene3")
+			print("get start_cutscene3")
 		else:
 			if cs_node is CanvasItem:
 				cs_node.visible = true
@@ -332,7 +353,17 @@ func _cleanup_battle() -> void:
 	_deactivate_barriers()
 	_restore_player_camera()
 	remove_from_group("magus_king_boss_cutscene")
-
+	var all_spawners = get_tree().get_nodes_in_group("falling_platform_spawner")
+	for i in range(all_spawners.size()):
+		var spawner = all_spawners[i]
+		spawner.spawner_id = "Spawner" + str(i+1)
+		#spawner.start_delay = delay
+		#delay += 1.0  # Stagger starts by 1 second each
+		
+		#print("Starting ", spawner.spawner_id, " with delay: ", spawner.start_delay, "s")
+		#spawner.start_spawning()
+		spawner.stop_spawning() 
+		print("stop spawning")
 # ---------------------------------------------------------
 # CAMERA
 # ---------------------------------------------------------

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bkcqtqfijxmyn"]
+[gd_scene load_steps=29 format=3 uid="uid://bkcqtqfijxmyn"]
 
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_876ac"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_b5ajo"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://cqbdc5qcon2lg" path="res://assets_image/Objects/object0.png" id="17_fp5ec"]
 [ext_resource type="PackedScene" uid="uid://krbnmqo4s6nb" path="res://scenes/objects/TObject.tscn" id="18_o7pe3"]
 [ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="19_rxptd"]
+[ext_resource type="PackedScene" uid="uid://dj8lq3gkgc4cg" path="res://dialogic/cutscene/cutscene18_5G.tscn" id="20_v7hsq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_36fax"]
 size = Vector2(1510, 698)
@@ -340,6 +341,7 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene18G" parent="." instance=ExtResource("10_72xc6")]
 position = Vector2(-928, -7)
+new_cutscene_path = NodePath("../cutscene18_5G")
 metadata/_edit_lock_ = true
 
 [node name="VideoTapePickup" parent="." instance=ExtResource("14_luh2u")]
@@ -439,6 +441,9 @@ position = Vector2(-928, -96)
 
 [node name="cutscene17_2" parent="." instance=ExtResource("19_rxptd")]
 position = Vector2(-1388.42, -59.4657)
+
+[node name="cutscene18_5G" parent="." instance=ExtResource("20_v7hsq")]
+position = Vector2(-924.999, -7.85182)
 
 [connection signal="body_entered" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_entered"]
 [connection signal="body_exited" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_exited"]

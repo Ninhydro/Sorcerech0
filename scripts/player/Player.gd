@@ -204,6 +204,7 @@ func enable_input():
 
 
 func _ready():
+	#Global.remove_quest_marker("Destroy Everyone!")
 	#Global.kills += 50
 	#Global.affinity -= 5
 	#Global.affinity += 10
@@ -311,10 +312,15 @@ func _ready():
 	
 
 	#switch_state("Normal")
-
+func _process(delta):
+	# Don't process if cutscene is active
+	if Global.is_cutscene_active:
+		return
 
 #var current_form2 = Dialogic.VAR.get_variable("player_current_form", "Normal")
 func _physics_process(delta):
+	#if Global.is_cutscene_active:
+	 #   return
 	#print(current_form2)
 	#if animation_player:
 	#	print("Current animation: ", animation_player.current_animation, 
@@ -808,6 +814,8 @@ func get_current_form_id() -> String:
 		return "Normal"
 
 func _input(event):
+	if Global.is_cutscene_active:
+		return
 	if current_state:
 		current_state.handle_input(event)
 		
@@ -1585,15 +1593,36 @@ func disable_player_input_for_cutscene():
 	Global.is_cutscene_active = true # Set the global flag
 	print("Player: Input and direct control disabled for cutscene.")
 	# Stop normal physics processing (movement, input handling)
+	
+	Input.action_release("move_left")
+	Input.action_release("move_right")
+	Input.action_release("jump")
+	Input.action_release("yes")
+	Input.action_release("no")
+	Input.action_release("form_next")
+	Input.action_release("form_prev")
+	Input.action_release("form_apply")
+	
 	set_physics_process(false)
 	set_process(false) 
 	set_process_input(false)
 	velocity = Vector2.ZERO # Stop any current player movement
 
 func enable_player_input_after_cutscene():
+	#await get_tree().process_frame
 	Global.is_cutscene_active = false # Clear the global flag
 	print("Player: Input and direct control enabled after cutscene.")
 	# Reset any temporary cutscene velocity
+	
+	Input.action_release("move_left")
+	Input.action_release("move_right")
+	Input.action_release("jump")
+	Input.action_release("yes")
+	Input.action_release("no")
+	Input.action_release("form_next")
+	Input.action_release("form_prev")
+	Input.action_release("form_apply")
+	
 	velocity.x = 0
 	
 	# Re-enable physics and process

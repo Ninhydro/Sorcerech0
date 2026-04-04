@@ -134,6 +134,7 @@ func _on_cutscene_end():
 	alyra.visible = false
 	maya.visible = false
 	varek.visible = false
+	Global.attacking= false
 	# Set timeline
 	Global.timeline = 3.5
 	Global.add_quest_marker("Explore Tromarvelia", Vector2(-3664,-48))

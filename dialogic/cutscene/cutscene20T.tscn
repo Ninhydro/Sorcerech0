@@ -1213,7 +1213,6 @@ libraries = {
 position = Vector2(97, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_rj4yr")
-flip_h = true
 hframes = 8
 vframes = 13
 frame = 96

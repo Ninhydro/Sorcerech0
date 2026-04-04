@@ -95,6 +95,8 @@ func _on_cutscene_end():
 	var minigame = get_tree().get_first_node_in_group("sorting_minigame")
 	if minigame:
 		minigame.start_game()
+	
+	Global.attacking= false
 		
 	print("Cutscene1: Set Global.timeline = ", Global.timeline)
 	

@@ -109,7 +109,7 @@ position = Vector2(264, -168)
 texture = ExtResource("7_blild")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." groups=["Platforms"]]
-collision_layer = 4
+collision_layer = 36
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(344, 7)

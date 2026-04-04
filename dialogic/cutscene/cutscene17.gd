@@ -59,16 +59,20 @@ func _on_body_entered(body):
 		#maya.visible = false
 		_setup_cutscene()
 		super._on_body_entered(body)
+		
 	else:
 		print("Cutscene17: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
 		
 func _setup_cutscene():
+	#Global.kills = 50
+	#Global.affinity = 11
 	cutscene_name = "Cutscene17"
 	nataly.visible = false
 	maya.visible = false
 	play_only_once = false
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
+	
 	
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
@@ -117,6 +121,7 @@ func _on_cutscene_end():
 	print("Cutscene17: Finished")
 	nataly.visible = false
 	maya.visible = false
+	Global.attacking= false
 	if Global.route_status == "Magus":
 		_teleport_cooldown = true
 		Global.timeline = 8
@@ -166,7 +171,7 @@ func _on_cutscene_end():
 		Global.remove_quest_marker("Make decision at Maya's house")
 		#Dialogic.start("timeline17T", false)
 		if player_in_range:
-			transition_manager.travel_to(player_in_range, target_room4, target_spawn4)
+			transition_manager.travel_to(player_in_range, target_room5, target_spawn5)
 		Global.add_quest_marker("Find the the other way with Lux", Vector2(6032,3520))
 		await get_tree().create_timer(1).timeout
 		_teleport_cooldown = false

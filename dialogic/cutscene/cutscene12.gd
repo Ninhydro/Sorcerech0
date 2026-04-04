@@ -162,6 +162,7 @@ func _on_cutscene_end():
 	betael.visible = false
 	maya.visible = false
 	nataly.visible = false
+	Global.attacking= false
 	# Set timeline
 	if Global.demo == true:
 		pass

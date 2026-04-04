@@ -225,6 +225,7 @@ func _on_cutscene_end():
 	maya.visible = false
 	lux.visible = false
 	gawr.visible = false
+	Global.attacking= false
 	# Set timeline
 	battling_flag = true
 	_start_boss_battle()
@@ -401,7 +402,7 @@ func _handle_battle_success() -> void:
 	Global.gawr_dead = true
 	Global.after_battle_gawr = true
 	#Global.affinity += 1
-	Global.increment_kills()
+	#Global.increment_kills()
 	Global.is_boss_battle = false
 	Global.ult_magus_form = true
 	

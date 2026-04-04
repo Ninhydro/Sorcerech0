@@ -606,7 +606,7 @@ func _die() -> void:
 	if anim and anim.has_animation("die"):
 		anim.play("die")
 	boss_died.emit()
-
+	Global.increment_kills()
 # ----------------------------
 # WEAKSPOT DETECTION
 # ----------------------------

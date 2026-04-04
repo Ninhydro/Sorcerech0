@@ -157,6 +157,7 @@ func _on_cutscene_end():
 	nora.visible = false
 	valentina.visible = false
 	Global.timeline = 8.5
+	Global.attacking= false
 	#Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
 	#if player_in_range:
 	#		transition_manager.travel_to(player_in_range, target_room1, target_spawn1)

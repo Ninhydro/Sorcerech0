@@ -8,6 +8,33 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
 size = Vector2(323, 190)
 
+[sub_resource type="Animation" id="Animation_x3qju"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Nataly:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [46]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Maya:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [53]
+}
+
 [sub_resource type="Animation" id="Animation_vct61"]
 resource_name = "anim1"
 tracks/0/type = "value"
@@ -135,33 +162,6 @@ tracks/10/path = NodePath("Maya:frame")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [53]
-}
-
-[sub_resource type="Animation" id="Animation_x3qju"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Nataly:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [46]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Maya:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -1245,7 +1245,7 @@ position = Vector2(-23, -42)
 wait_time = 5.0
 
 [node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(-79, 54)
+position = Vector2(-79, 65)
 
 [node name="Lux" type="Sprite2D" parent="."]
 visible = false

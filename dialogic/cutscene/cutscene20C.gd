@@ -144,6 +144,7 @@ func _on_cutscene_end():
 	zach.visible = false
 	soldier1.visible = false
 	soldier2.visible = false
+	Global.attacking= false
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max)
 	

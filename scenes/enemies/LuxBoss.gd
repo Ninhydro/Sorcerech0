@@ -742,6 +742,7 @@ func die():
 	
 	print("LuxBoss: Died!")
 	emit_signal("boss_died")
+	Global.increment_kills()
 	queue_free()
 
 # -------------------------------------------------

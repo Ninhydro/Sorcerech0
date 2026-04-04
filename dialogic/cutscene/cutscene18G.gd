@@ -121,6 +121,7 @@ func _setup_cutscene():
 		{"type": "dialog", "name": "timeline18G", "wait": true},
 		
 		{"type": "animation", "name": "anim2", "wait": false, "loop": false},
+		{"type": "player_animation", "name": "attack",  "wait": false},
 		{"type": "wait", "duration": 0.5},		
 		{"type": "fade_in"},
 		{"type": "animation", "name": "anim3", "wait": false, "loop": false},
@@ -139,13 +140,15 @@ func _on_cutscene_start():
 func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	battle_active = true
+	battling_flag = true
 	#battle_cancelled_on_player_death = false
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
+	Global.attacking= false
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max)
-	Global.health_regeneration_rate = 1
+	Global.health_regeneration_rate = 2
 	
 	#Global.is_cutscene_active = true
 	_activate_barriers()
@@ -157,7 +160,8 @@ func _on_cutscene_end():
 	#_switch_to_boss_camera()
 	
 	#_spawn_magus_king()
-	health_timer.start()
+	#health_timer.start()
+	
 	_start_battle() 
 	#Global.timeline = 7
 	#Global.add_quest_marker("Make decision at Maya's house", Vector2(-1352, 2264))
@@ -369,9 +373,9 @@ func _on_boss_died(boss):
 # ---------------------------------------------------------
 func _end_battle_success() -> void:
 	print("Ending battle successfully")
-	Global.is_cutscene_active = true
-	Dialogic.start(outro_timeline)
-	await Dialogic.timeline_ended
+	#Global.is_cutscene_active = true
+	#Dialogic.start(outro_timeline)
+	#await Dialogic.timeline_ended
 
 	_cleanup()
 

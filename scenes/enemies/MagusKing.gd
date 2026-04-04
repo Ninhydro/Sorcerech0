@@ -1088,6 +1088,7 @@ func _die() -> void:
 	# Emit signal and queue free
 	print("MAGUS KING: Emitting boss_died signal and queue_free")
 	emit_signal("boss_died")
+	Global.increment_kills()
 	queue_free()
 # =====================================================
 # CLEANUP

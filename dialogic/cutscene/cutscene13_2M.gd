@@ -124,7 +124,7 @@ func _on_cutscene_end():
 	maya.visible = false
 	nataly.visible = false
 	lux.visible = false
-
+	Global.attacking= false
 	
 	Global.timeline = 6.5
 	Global.tromarvelia_two = false

@@ -139,7 +139,7 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene11: Finished")
-	
+	Global.attacking= false
 	Global.timeline = 6.2
 	# Set timeline
 	#if Global.demo == true:

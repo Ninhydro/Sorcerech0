@@ -131,7 +131,7 @@ func _on_cutscene_end():
 	# Apply all the rewards and state changes
 	Global.timeline = 4
 	Global.cyber_form = true
-	
+	Global.attacking= false
 	# Health increase
 	player_in_range.unlock_and_force_form("Cyber")
 	Global.health_max += 10

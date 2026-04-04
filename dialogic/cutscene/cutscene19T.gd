@@ -20,8 +20,9 @@ var player_in_range = null
 @onready var marker1: Marker2D = $Marker2D
 @onready var marker2: Marker2D = $Marker2D2
 
-func start_cutscene2() -> void:
+func start_cutscene3() -> void:
 	player_in_range = Global.player
+	#Global.is_cutscene_active = true
 	_setup_cutscene()
 	start_cutscene(player_in_range)
 	
@@ -38,14 +39,16 @@ func start_cutscene2() -> void:
 
 
 func _setup_cutscene():
-	cutscene_name = "magusbossfinal"
+	cutscene_name = "afterluxboss"
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
 	play_only_once = true
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
-	
+	#Global.is_cutscene_active = true
+	#battle_active = false
+	#battling_flag = false
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
 	player_markers = {
@@ -73,7 +76,7 @@ func _setup_cutscene():
 			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline19T_1", "wait": true},
 			
-			{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "save", "wait": false},
+			{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "shine", "wait": false},
 			{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 			{"type": "wait", "duration": 0.1},	
 			#{"type": "animation", "name": "anim3", "wait": true, "loop": false},
@@ -95,11 +98,12 @@ func _setup_cutscene():
 			{"type": "fade_out", "wait": false},
 			
 			{"type": "player_animation", "name": "idle",  "wait": false},
+			{"type": "player_animation", "name": "idle",  "wait": false},
 			{"type": "animation", "name": "anim1", "wait": true, "loop": false},
 			{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline19T_1", "wait": true},
 			
-			{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "save", "wait": false},
+			{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "shine", "wait": false},
 			{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 			{"type": "wait", "duration": 0.1},	
 			#{"type": "animation", "name": "anim3", "wait": true, "loop": false},
@@ -120,18 +124,19 @@ func _setup_cutscene():
 				{"type": "wait", "duration": 0.5},
 				{"type": "fade_out", "wait": false},
 				
-				{"type": "animation", "name": "anim1p", "wait": true, "loop": false},
+				{"type": "player_animation", "name": "idle",  "wait": false},
+				{"type": "animation", "name": "anim1p", "wait": false, "loop": true},
 				{"type": "dialog", "name": "timeline19TP_1", "wait": true},
-				{"type": "animation", "name": "anim2p", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim2p",  "wait": true, "loop": false},
 				{"type": "dialog", "name": "timeline19TP_2", "wait": true},
 				{"type": "animation", "name": "anim3p", "wait": true, "loop": false},
-				{"type": "animation", "name": "anim3p_idle", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim3p_idle", "wait": false, "loop": true},
 				{"type": "dialog", "name": "timeline19TP_3", "wait": true},
 				{"type": "animation", "name": "anim4p", "wait": true, "loop": false},
-				{"type": "animation", "name": "anim4p_idle", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim4p_idle", "wait": false, "loop": true},
 				{"type": "dialog", "name": "timeline19TP_4", "wait": true},
 				
-				{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "save", "wait": false},
+				{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "shine", "wait": false},
 				{"type": "animation", "name": "anim5p", "wait": true, "loop": false},
 				{"type": "wait", "duration": 0.1},	
 				#{"type": "animation", "name": "anim6p", "wait": true, "loop": false},
@@ -146,9 +151,9 @@ func _setup_cutscene():
 
 				]
 			#Dialogic.start("timeline19TP", false)
-			Global.persistent_saved_lux = true
-			Global.check_100_percent_completion()
-			Global.save_persistent_data()
+			#Global.persistent_saved_lux = true
+			#Global.check_100_percent_completion()
+			#Global.save_persistent_data()
 		else:
 			sequence = [
 				{"type": "move_player", "name": "marker1",  "duration": 0.1, "animation": "run", "wait": false},
@@ -156,18 +161,19 @@ func _setup_cutscene():
 				{"type": "wait", "duration": 0.5},
 				{"type": "fade_out", "wait": false},
 				
-				{"type": "animation", "name": "anim1p", "wait": true, "loop": false},
+				{"type": "player_animation", "name": "idle",  "wait": false},
+				{"type": "animation", "name": "anim1p", "wait": false, "loop": true},
 				{"type": "dialog", "name": "timeline19TP_1", "wait": true},
-				{"type": "animation", "name": "anim2p", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim2p",  "wait": true, "loop": false},
 				{"type": "dialog", "name": "timeline19TP_2", "wait": true},
 				{"type": "animation", "name": "anim3p", "wait": true, "loop": false},
-				{"type": "animation", "name": "anim3p_idle", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim3p_idle", "wait": false, "loop": true},
 				{"type": "dialog", "name": "timeline19TP_3", "wait": true},
 				{"type": "animation", "name": "anim4p", "wait": true, "loop": false},
-				{"type": "animation", "name": "anim4p_idle", "wait": true, "loop": false},
+				{"type": "animation", "name": "anim4p_idle","wait": false, "loop": true},
 				{"type": "dialog", "name": "timeline19TP_4", "wait": true},
 				
-				{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "save", "wait": false},
+				{"type": "move_player", "name": "marker2",  "duration": 2, "animation": "shine", "wait": false},
 				{"type": "animation", "name": "anim5p", "wait": true, "loop": false},
 				{"type": "wait", "duration": 0.1},	
 				#{"type": "animation", "name": "anim6p", "wait": true, "loop": false},
@@ -182,9 +188,9 @@ func _setup_cutscene():
 
 				]
 			#Dialogic.start("timeline19TP", false)
-			Global.persistent_saved_lux = true
-			Global.check_100_percent_completion()
-			Global.save_persistent_data()
+			#Global.persistent_saved_lux = true
+			#Global.check_100_percent_completion()
+			#Global.save_persistent_data()
 
 		#Dialogic.start("timeline10v2", false)
 
@@ -194,14 +200,15 @@ func _setup_cutscene():
 
 
 func _on_cutscene_start():
-	print("Cutscene1boss: Starting")
+	print("afterluxboss: Starting")
 	# Player reference is already stored in _player_ref by parent class
+	#Global.is_cutscene_active = true
 	if _player_ref:
 		player_in_range = _player_ref
-		print("Cutscene1: Player reference stored: ", player_in_range.name)
+		print("afterluxboss: Player reference stored: ", player_in_range.name)
 
 func _on_cutscene_end():
-	print("Cutscene1boss: Finished")
+	print("afterluxboss: Finished")
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false

@@ -174,8 +174,10 @@ func _setup_cutscene():
 			#{"type": "animation", "name": "anim1t", "wait": true, "loop": false},
 			{"type": "animation", "name": "anim1t_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline17T", "wait": true},
-			#{"type": "animation", "name": "anim2t", "wait": true, "loop": false},
-			
+			{"type": "animation", "name": "anim2t", "wait": true, "loop": false},
+			{"type": "animation", "name": "anim2t_idle", "wait": false, "loop": true},
+			{"type": "dialog", "name": "timeline17T_2", "wait": true},
+			{"type": "animation", "name": "anim3t", "wait": true, "loop": false},
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
 			{"type": "animation", "name": "anim3", "wait": false, "loop": false},
@@ -197,7 +199,7 @@ func _setup_cutscene():
 			{"type": "animation", "name": "anim1g_idle", "wait": false, "loop": true},
 			{"type": "dialog", "name": "timeline17G", "wait": true},
 			#{"type": "animation", "name": "anim2g", "wait": true, "loop": false},
-			
+			{"type": "animation", "name": "anim2g", "wait": false, "loop": true},
 			{"type": "wait", "duration": 0.5},		
 			{"type": "fade_in"},
 			{"type": "animation", "name": "anim3", "wait": false, "loop": false},
@@ -225,6 +227,7 @@ func _on_cutscene_end():
 	zach.visible = false
 	sterling.visible = false
 	lux.visible = false
+	Global.attacking= false
 	if Global.route_status == "Magus":
 		#_teleport_cooldown = true
 		#Global.timeline = 8
@@ -264,7 +267,10 @@ func _on_cutscene_end():
 		#await get_tree().create_timer(0.5).timeout
 		#if collision_shape:
 		#	collision_shape.set_deferred("disabled", false)
-		
+	
+	elif Global.route_status == "True" or Global.route_status == "Pacifist":
+		if player_in_range:
+			transition_manager.travel_to(player_in_range, target_room4, target_spawn4)
 	# Override the parent's play_only_once behavior for this route
 		
 	

@@ -97,7 +97,7 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene1: Finished")
-	
+	Global.attacking= false
 	# Set timeline
 	Global.timeline = 2
 	print("Cutscene1: Set Global.timeline = ", Global.timeline)

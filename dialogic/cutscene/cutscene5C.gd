@@ -101,6 +101,7 @@ func _on_cutscene_end():
 	alyra.visible = false
 	valentina.visible = false
 	varek.visible = false
+	Global.attacking= false
 	# Set timeline
 	Global.timeline = 4
 	Global.meet_valentina_one = true

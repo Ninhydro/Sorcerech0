@@ -124,6 +124,7 @@ func _on_cutscene_end():
 	maya.visible = false
 	sterling.visible = false
 	giga.visible = false
+	Global.attacking= false
 	Global.health = Global.health_max
 	Global.player.health_changed.emit(Global.health, Global.health_max)
 	
@@ -222,7 +223,7 @@ func _finalize_success() -> void:
 	Global.timeline = 9
 	Global.ending_magus = true
 	Global.persistent_ending_magus = true
-	
+	#Global.increment_kills()
 	Global.check_100_percent_completion()
 	Global.save_persistent_data()
 	Global.remove_quest_marker("Fight for the Magus")
@@ -232,6 +233,7 @@ func _finalize_success() -> void:
 	if boss_instance and is_instance_valid(boss_instance):
 		if boss_instance.tree_exited.is_connected(_on_boss_died):
 			boss_instance.tree_exited.disconnect(_on_boss_died)
+		boss_instance.handle_death()
 		boss_instance.queue_free()
 		boss_instance = null
 		

@@ -123,15 +123,15 @@ func update_profile_data():
 		if Global.kills == 0:
 			status_label.text = "Pacifist"
 			status_label.add_theme_color_override("font_color", status_text_color_good)
-			Global.player_status = "Pacifist"
+			#Global.player_status = "Pacifist"
 		elif Global.kills > 0 and Global.kills < 50:
 			status_label.text = "Neutral"
 			status_label.add_theme_color_override("font_color", status_text_color_normal)
-			Global.player_status = "Neutral"
+			#Global.player_status = "Neutral"
 		elif Global.kills >= 50:
 			status_label.text = "Genocide"
 			status_label.add_theme_color_override("font_color", status_text_color_bad)
-			Global.player_status = "Genocide"
+			#Global.player_status = "Genocide"
 		#status_label.text = "Status: " + Global.player_status # Update status label
 		
 		_update_affinity_display(Global.affinity) # Update affinity visual

@@ -117,6 +117,7 @@ func _on_cutscene_end():
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
+	Global.attacking= false
 	Global.timeline = 10
 	Global.remove_quest_marker("Find the the other way with Lux")
 

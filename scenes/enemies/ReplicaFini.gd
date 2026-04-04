@@ -624,7 +624,7 @@ func _handle_boss_death() -> void:
 		current_animation = "death"
 		animation_player.play("death")
 		await animation_player.animation_finished
-
+	Global.increment_kills()
 	queue_free()
 
 

@@ -106,7 +106,7 @@ func _on_cutscene_end():
 	nataly.visible = false
 	Global.timeline = 6.5
 	Global.exactlyion_two = true
-	
+	Global.attacking= false
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

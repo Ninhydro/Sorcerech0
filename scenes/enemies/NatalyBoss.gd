@@ -154,6 +154,8 @@ func _die() -> void:
 		try_drop_health()
 		can_drop_health = false
 		emit_signal("boss_died")
+		
+	Global.increment_kills()
 	queue_free()
 
 # =====================================================

@@ -6,8 +6,8 @@ extends MasterCutscene
 
 @onready var interaction_label = $Label 
 
-var target_room = "Room_AerendaleTown"     # Name of the destination room (node or scene)
-var target_spawn = "Spawn_FromJunkyard"    # Name of the spawn marker in the target room
+var target_room = "Room_AerendaleJunkyard"     # Name of the destination room (node or scene)
+var target_spawn = "Spawn_FromMaya"    # Name of the spawn marker in the target room
 
 
 
@@ -24,11 +24,18 @@ var player_in_range = null
 @onready var anim_maya: AnimationPlayer = $Maya/AnimationPlayer
 
 @onready var marker1: Marker2D = $Marker2D
+
+var _teleport_cooldown: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	interaction_label.visible = false
 	#player_in_range = Global.player
+	nataly.visible = false
+	maya.visible = false
+	lux.visible = false
+	
 	super._ready()
+	
 
 
 #func _on_body_entered(body):
@@ -50,25 +57,43 @@ func _ready():
 
 func _on_body_entered(body):
 	#print("Player position: ",player_node_ref.global_position)
-
+	if _teleport_cooldown:
+		print("last Cutscene: In cooldown, ignoring trigger")
+		return
 	interaction_label.visible = true # Show the "Press E to Save" label
-	if body.name == "Player":
+	#if body.name == "Player":
+	#	player_in_range = body
+	
+	if Global.timeline == 10 and (Global.route_status == "True" or Global.route_status == "Pacifist") and Global.game_cleared == false and  body.is_in_group("player"):
+		print("Cutscene17: Conditions met, calling parent method")
+		# Store player reference first
 		player_in_range = body
-
+		#play_only_once = false
+		# Call parent's _on_body_entered
+		#betael.visible = true
+		#maya.visible = false
+		#_setup_cutscene()
+		#super._on_body_entered(body)
+		
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Global.timeline == 10 and (Global.route_status == "True" or Global.route_status == "Pacifist") and Global.game_cleared == false:
-		collision_shape.disabled = false			
-		if player_in_range and Input.is_action_just_pressed("yes") and not _has_been_triggered:
+		
+		collision_shape.disabled = false
+		nataly.visible = true
+		maya.visible = true
+		lux.visible = true
+		anim_lux.play("idle")
+		anim_nataly.play("idle")
+		anim_maya.play("idle")
+			
+		if player_in_range and Input.is_action_just_pressed("yes"): #and not _has_been_triggered:
 			#handle_interaction()
+			#_has_been_triggered = true
 			_setup_cutscene()
 			start_cutscene(player_in_range)
-			nataly.visible = true
-			maya.visible = true
-			lux.visible = true
-			anim_lux.play("idle")
-			anim_nataly.play("idle")
-			anim_maya.play("idle")
+			
 			
 	else:
 		collision_shape.disabled = true
@@ -78,10 +103,10 @@ func _setup_cutscene():
 	#nataly.visible = false
 	#maya.visible = false
 	#lux.visible = false
-	play_only_once = true
+	play_only_once = false
 	area_activation_flag = ""  # No flag required
 	global_flag_to_set = ""  # We'll handle this manually
-	
+	ending = true
 	# IMPORTANT: Make sure your scene has these Marker2D nodes or set positions manually
 
 	#player_markers = {
@@ -155,11 +180,13 @@ func _on_cutscene_end():
 	print("Cutscene17: Finished")
 	#Global.timeline = 10
 	#Global.remove_quest_marker("Find the the other way with Lux")
+	Global.attacking= false
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
 	Global.timeline = 10
 	if Global.game_cleared == true:
+		
 		var main_menu_scene_path = "res://scenes/ui/MainMenu.tscn"
 		var main_menu_packed_scene = load(main_menu_scene_path)
 		if Global.route_status == "True":
@@ -175,7 +202,13 @@ func _on_cutscene_end():
 			Global.save_persistent_data()
 			get_tree().change_scene_to_packed(main_menu_packed_scene)
 	elif Global.game_cleared == false:
-		pass
+		_teleport_cooldown = true
+		if player_in_range:
+			transition_manager.travel_to(player_in_range, target_room, target_spawn)
+		#_has_been_triggered = false
+		await get_tree().create_timer(1).timeout
+		_teleport_cooldown = false
+		#Global.timeline = 7
 
 
 #func handle_interaction():

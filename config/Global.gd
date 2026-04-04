@@ -485,16 +485,17 @@ func regenerate_health(delta: float) -> void:
 	# Calculate how much health to add
 	var health_to_add = health_regeneration_rate * health_regeneration_timer
 	
-	if health_to_add >= 1.0:  # Add at least 1 health point
-		var int_health_to_add = int(health_to_add)
-		health = min(health + int_health_to_add, health_max)
-		
-		# Keep the fractional part for next time
-		health_regeneration_timer -= int_health_to_add / health_regeneration_rate
-		
-		if player and player.has_signal("health_changed"):
-			player.health_changed.emit(health, health_max)
-		print("Regenerated health: ", health, "/", health_max)
+	if game_cleared == false:
+		if health_to_add >= 1.0:  # Add at least 1 health point
+			var int_health_to_add = int(health_to_add)
+			health = min(health + int_health_to_add, health_max)
+			
+			# Keep the fractional part for next time
+			health_regeneration_timer -= int_health_to_add / health_regeneration_rate
+			
+			if player and player.has_signal("health_changed"):
+				player.health_changed.emit(health, health_max)
+			print("Regenerated health: ", health, "/", health_max)
 		
 func _init():
 	# Initialize essential settings only
@@ -505,6 +506,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("debug1"):  # Assign a key like F1
 		print("timeline: ", Global.timeline)
 		print("form: ",Global.current_form)
+		print("player_status: ", Global.player_status)
 		print("route status: ", Global.route_status)
 		print("kills: ", Global.kills)
 		print("alyra_dead: ", Global.alyra_dead)
@@ -522,7 +524,22 @@ func _process(delta):
 		
 	
 	# Only proceed if the "no" action is pressed AND a timeline is currently active
-
+	
+	if Global.playerBody:
+		# Get data from Global or playerBody directly
+		#kills_label.text = "Kills: " + str(Global.kills)
+		if Global.kills == 0:
+			#status_label.text = "Pacifist"
+			#status_label.add_theme_color_override("font_color", status_text_color_good)
+			Global.player_status = "Pacifist"
+		elif Global.kills > 0 and Global.kills < 50:
+			#status_label.text = "Neutral"
+			#status_label.add_theme_color_override("font_color", status_text_color_normal)
+			Global.player_status = "Neutral"
+		elif Global.kills >= 50:
+			#status_label.text = "Genocide"
+			#status_label.add_theme_color_override("font_color", status_text_color_bad)
+			Global.player_status = "Genocide"
 
 	if Input.is_action_just_pressed("no") and Dialogic.current_timeline != null:
 		# Toggle the internal paused state FIRST

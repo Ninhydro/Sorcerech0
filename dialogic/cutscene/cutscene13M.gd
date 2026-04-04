@@ -209,6 +209,7 @@ func _on_cutscene_end():
 	varek.visible = false
 	soldier1.visible = false
 	soldier2.visible = false
+	Global.attacking= false
 	Global.timeline = 6.5
 	Global.tromarvelia_two = true
 	transition_manager.travel_to(player_in_range, target_room2, target_spawn2)

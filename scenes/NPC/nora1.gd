@@ -717,7 +717,7 @@ func _on_cutscene_end():
 	# Set your global flags and rewards
 	Global.timeline = 4
 	Global.magus_form = true
-	
+	Global.attacking= false
 	if player_in_range and player_in_range.has_method("unlock_and_force_form"):
 		player_in_range.unlock_and_force_form("Magus")
 	

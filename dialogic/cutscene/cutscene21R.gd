@@ -44,6 +44,7 @@ func _setup_cutscene():
 	cutscene_name = "Cutscene3"
 	#alyra.visible = false
 	ninhydro.visible = true
+	ninhydro.flip_h = true
 	anime.play("ninhydro")
 	play_only_once = false
 	area_activation_flag = ""  # No flag required
@@ -85,6 +86,7 @@ func _on_cutscene_end():
 	Global.route_status = "None"
 	_has_been_triggered = false
 	ninhydro.visible = true
+	Global.attacking= false
 	#player_status & kills need to be reset from NPC
 	#affinity need to be reset from NPC
 

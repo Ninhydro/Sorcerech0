@@ -225,6 +225,7 @@ func _on_cutscene_end():
 	nataly.visible = false
 	maya.visible = false
 	fini.visible = false
+	Global.attacking= false
 	# Set timeline
 	_start_boss_battle()
 
@@ -398,7 +399,7 @@ func _handle_battle_success() -> void:
 	Global.ult_cyber_form = true
 	Global.replica_fini_dead = true
 	#Global.affinity -= 1
-	Global.increment_kills()
+	#Global.increment_kills()
 	
 	var node_path: NodePath = new_cutscene_path 
 	print("finishing battle cutscene1")

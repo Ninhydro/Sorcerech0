@@ -30,6 +30,7 @@ var _player_ref: CharacterBody2D = null
 var _original_position: Vector2 
 
 var battling_flag = false
+var ending: bool = false
 
 # Override Functions (for child scenes)
 func _setup_cutscene():
@@ -88,8 +89,11 @@ func start_cutscene(player: CharacterBody2D = null):
 	if collision_shape:
 		collision_shape.set_deferred("disabled", true)
 	
+	_disable_player_input()
+	
 	# Call start callback
 	_on_cutscene_start()
+	#_disable_player_input()
 	cutscene_started.emit()
 	
 	# Start cutscene flow
@@ -498,13 +502,15 @@ func end_cutscene():
 	if not _is_cutscene_active:
 		return
 	
+	
+		
 	print(cutscene_name + ": Ending cutscene")
 	
 	_is_cutscene_active = false
 	Global.is_cutscene_active = false
 	
 	# Call end callback
-	_on_cutscene_end()
+	
 	
 	# Switch back to player camera
 	#await _fade_in()
@@ -512,9 +518,20 @@ func end_cutscene():
 		_switch_to_cutscene_camera()
 	else:
 		_switch_to_player_camera()
-	await get_tree().create_timer(0.5).timeout
-	#await get_tree().create_timer(1).timeout
-	await _fade_out()
+		
+	
+	#if ending:
+
+	#	_enable_player_input()
+	#	black_overlay.visible = false
+	#	Dialogic.clear(Dialogic.ClearFlags.FULL_CLEAR)
+	#	if Dialogic.timeline_ended.is_connected(_on_dialogic_finished):
+	#		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
+	#	_on_cutscene_end()
+	#	print("ENDING")
+	#	return
+	
+
 	# Enable player input
 	_enable_player_input()
 	
@@ -532,6 +549,15 @@ func end_cutscene():
 	if _player_ref and is_instance_valid(_player_ref):
 		_play_player_animation("idle")
 	
+	
+	
+	_on_cutscene_end()
+	
+	if not ending:
+		await get_tree().create_timer(0.5).timeout
+	#await get_tree().create_timer(1).timeout
+		await _fade_out()
+	
 	# Hide black overlay
 	if black_overlay:
 		black_overlay.visible = false
@@ -539,7 +565,7 @@ func end_cutscene():
 	# Re-enable collision if not play only once
 	if not play_only_once and collision_shape:
 		collision_shape.set_deferred("disabled", false)
-	
+		
 	# Emit finished signal
 	cutscene_finished.emit()
 	

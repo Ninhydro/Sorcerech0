@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cnkwa1lnnfamm"]
+[gd_scene load_steps=41 format=3 uid="uid://cnkwa1lnnfamm"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_56olx"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_i5ly2"]
@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://bxrrheo8fnq7l" path="res://assets_image/Characters/Maya/Maya-Sheet.png" id="18_i3io5"]
 [ext_resource type="PackedScene" uid="uid://cbct0mwdg7l3g" path="res://scenes/NPC_cutscene/uncle_betael.tscn" id="26_gkrn8"]
 [ext_resource type="PackedScene" uid="uid://b2m2qi88or5r7" path="res://scenes/NPC_cutscene/maya_kid.tscn" id="27_nxexn"]
+[ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="27_rp2os"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvylh"]
 size = Vector2(70.5, 96)
@@ -368,7 +369,7 @@ text = "Betael & Maya Room"
 metadata/_edit_use_anchors_ = true
 
 [node name="Test_dialog" parent="." instance=ExtResource("6_8xp5d")]
-position = Vector2(-746, 507)
+position = Vector2(-753.453, 518.619)
 
 [node name="Background" type="Node2D" parent="."]
 z_index = -10
@@ -656,13 +657,16 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene17" parent="." instance=ExtResource("15_1usq2")]
 position = Vector2(-195, 243)
+metadata/_edit_lock_ = true
 
 [node name="cutscene21T" parent="." instance=ExtResource("16_jysj8")]
-position = Vector2(295.573, -39.6841)
-metadata/_edit_lock_ = true
+position = Vector2(295.573, -60.6841)
 
 [node name="Maya kid" parent="." instance=ExtResource("27_nxexn")]
 position = Vector2(-70, 367)
+
+[node name="cutscene17_2" parent="." instance=ExtResource("27_rp2os")]
+position = Vector2(119.047, -60.1308)
 
 [connection signal="body_entered" from="Doors/Door_Maya" to="." method="_on_door_maya_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Maya" to="." method="_on_door_maya_body_exited"]

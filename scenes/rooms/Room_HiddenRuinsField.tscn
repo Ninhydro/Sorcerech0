@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://klvtn501ec6g"]
+[gd_scene load_steps=12 format=3 uid="uid://klvtn501ec6g"]
 
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_qjc0v"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_y8a7g"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://do1ulxr4tfsln" path="res://assets_image/Background/True/True-Sheet.png" id="5_8rvyr"]
 [ext_resource type="PackedScene" uid="uid://cgh0xyjdhxwam" path="res://dialogic/cutscene/cutscene18T.tscn" id="6_651r7"]
 [ext_resource type="PackedScene" uid="uid://dgedici0if2ki" path="res://scenes/enemies/Spawner_falling_platform.tscn" id="8_4yxlw"]
+[ext_resource type="PackedScene" uid="uid://bw6lovd5tkvhv" path="res://dialogic/cutscene/cutscene19T.tscn" id="9_vemw3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eyd5r"]
 size = Vector2(1272, 536)
@@ -115,6 +116,7 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene18T" parent="." instance=ExtResource("6_651r7")]
 position = Vector2(-176, -5)
+new_cutscene_path = NodePath("../cutscene19T")
 metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -133,3 +135,6 @@ position = Vector2(-160, -208)
 [node name="SpawnerFallSpike7" parent="." instance=ExtResource("8_4yxlw")]
 visible = false
 position = Vector2(-8, -208)
+
+[node name="cutscene19T" parent="." instance=ExtResource("9_vemw3")]
+position = Vector2(-269.057, -59.1427)

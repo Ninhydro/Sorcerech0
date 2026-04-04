@@ -78,6 +78,7 @@ func _on_cutscene_end():
 	print("Cutscene1: Finished")
 	alyra.visible = false
 	varek.visible = false
+	Global.attacking= false
 	# Set timeline
 	Global.timeline = 4
 	if Global.teleport_first == 0.0:

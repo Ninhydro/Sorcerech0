@@ -8,6 +8,7 @@ extends MasterCutscene
 
 
 
+
 var player_in_range = null
 
 @onready var transition_manager = get_node("/root/TransitionManager")
@@ -83,7 +84,7 @@ func start_cutscene2() -> void:
 	#         anim_player.play("intro_alyra_alive")
 
 func _setup_cutscene():
-	cutscene_name = "magusbossfinal"
+	cutscene_name = "Genocidebossfinal"
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
@@ -150,21 +151,22 @@ func _setup_cutscene():
 
 
 func _on_cutscene_start():
-	print("Cutscene1boss: Starting")
+	print("Genocidebossfinal: Starting")
 	# Player reference is already stored in _player_ref by parent class
 	if _player_ref:
 		player_in_range = _player_ref
 		print("Cutscene1: Player reference stored: ", player_in_range.name)
 
 func _on_cutscene_end():
-	print("Cutscene1boss: Finished")
+	print("Genocidebossfinal: Finished")
 	nataly.visible = false
 	maya.visible = false
 	lux.visible = false
 
 	Global.attacking = false
 	Global.is_cutscene_active = false
-
+	Global.remove_quest_marker("Destroy Everyone!")
+	
 	if player_in_range:
 		transition_manager.travel_to(player_in_range, target_room, target_spawn)
 

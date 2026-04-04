@@ -222,6 +222,7 @@ func _on_cutscene_end():
 	gawr.visible = false
 	nora.visible = false
 	battling_flag = false
+	Global.attacking= false
 	player_in_range.camera.enabled = true
 	player_in_range.camera.make_current()
 	
