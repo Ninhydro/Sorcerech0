@@ -500,40 +500,46 @@ position = Vector2(-383, 298)
 [node name="TObject" parent="." instance=ExtResource("15_hbpom")]
 position = Vector2(-624, -32)
 
-[node name="LaserTrap" parent="." instance=ExtResource("16_7ebdu")]
+[node name="LaserTrap" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("16_7ebdu")]
 z_index = -1
 position = Vector2(88, -56)
+respawn_marker = NodePath("../Marker2D")
 
-[node name="LaserTrap2" parent="." instance=ExtResource("16_7ebdu")]
+[node name="LaserTrap2" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("16_7ebdu")]
 z_index = -1
 position = Vector2(88, -88)
 on_time = 0.8
 off_time = 0.8
+respawn_marker = NodePath("../Marker2D")
 
-[node name="LaserTrap3" parent="." instance=ExtResource("16_7ebdu")]
+[node name="LaserTrap3" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("16_7ebdu")]
 z_index = -1
 position = Vector2(88, -120)
 on_time = 0.5
 off_time = 0.5
+respawn_marker = NodePath("../Marker2D")
 
-[node name="LaserTrap4" parent="." instance=ExtResource("16_7ebdu")]
+[node name="LaserTrap4" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("16_7ebdu")]
 z_index = -1
 position = Vector2(-184, -536)
 local_direction = Vector2(0, -1)
+respawn_marker = NodePath("../Marker2D2")
 
-[node name="LaserTrap5" parent="." instance=ExtResource("16_7ebdu")]
+[node name="LaserTrap5" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("16_7ebdu")]
 z_index = -1
 position = Vector2(-152, -536)
 on_time = 0.8
 off_time = 0.8
 local_direction = Vector2(0, -1)
+respawn_marker = NodePath("../Marker2D2")
 
-[node name="LaserTrap6" parent="." instance=ExtResource("16_7ebdu")]
+[node name="LaserTrap6" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("16_7ebdu")]
 z_index = -1
 position = Vector2(-120, -536)
 on_time = 0.5
 off_time = 0.5
 local_direction = Vector2(0, -1)
+respawn_marker = NodePath("../Marker2D2")
 
 [node name="puzzledoor2" parent="." instance=ExtResource("17_i5sc4")]
 z_index = -1
@@ -555,3 +561,9 @@ stay_pressed = false
 position = Vector2(-1607, -1030)
 door_target = NodePath("../puzzledoor2")
 stay_pressed = false
+
+[node name="Marker2D" type="Marker2D" parent="." groups=["respawn_points"]]
+position = Vector2(-120, 0)
+
+[node name="Marker2D2" type="Marker2D" parent="." groups=["respawn_points"]]
+position = Vector2(-56, -600)

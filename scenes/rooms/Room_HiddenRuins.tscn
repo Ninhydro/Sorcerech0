@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dignl4ivlyijc"]
+[gd_scene load_steps=25 format=3 uid="uid://dignl4ivlyijc"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_HiddenTown.gd" id="1_25ggv"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_grdml"]
@@ -21,7 +21,6 @@
 [ext_resource type="PackedScene" uid="uid://chyvw0q7b38o0" path="res://scenes/enemies/AnimatronicEnemy.tscn" id="19_mhgjg"]
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="20_3jn1s"]
 [ext_resource type="PackedScene" uid="uid://bdr1pxrtguia0" path="res://scenes/enemies/Spawner_falling_spike.tscn" id="21_26582"]
-[ext_resource type="PackedScene" uid="uid://ca53ncao01ppo" path="res://scenes/enemies/Moving_platform1.tscn" id="22_ihjp7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0gaot"]
 size = Vector2(2656, 1064)
@@ -523,7 +522,7 @@ position = Vector2(1856, -456)
 position = Vector2(736, -128)
 
 [node name="ArachneEnemy2" parent="." instance=ExtResource("14_k0wi8")]
-position = Vector2(1304, -712)
+position = Vector2(1312, -728)
 wall_side = 1
 
 [node name="AndroidEnemy" parent="." instance=ExtResource("15_c6auo")]
@@ -551,7 +550,7 @@ position = Vector2(536, -552)
 position = Vector2(928, -616)
 
 [node name="ArachneEnemy3" parent="." instance=ExtResource("14_k0wi8")]
-position = Vector2(1232, -144)
+position = Vector2(1272, -160)
 wall_side = 1
 
 [node name="DragonEnemy3" parent="." instance=ExtResource("13_qvvsh")]
@@ -564,113 +563,161 @@ position = Vector2(1624, -128)
 position = Vector2(1088, -616)
 
 [node name="ArachneEnemy4" parent="." instance=ExtResource("14_k0wi8")]
-position = Vector2(1936, -760)
+position = Vector2(1944, -768)
 wall_side = 1
 
 [node name="HealthPickup" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(432, -400)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup9" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(144, -560)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup10" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(1808, -792)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup2" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(1136, -136)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup3" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(2272, -24)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup4" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(1936, -120)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup5" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(928, -328)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup6" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(1488, -632)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup7" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(936, -784)
+metadata/_edit_lock_ = true
 
 [node name="HealthPickup8" parent="." instance=ExtResource("20_3jn1s")]
 position = Vector2(1528, -432)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike" parent="." instance=ExtResource("21_26582")]
 position = Vector2(272, -496)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike2" parent="." instance=ExtResource("21_26582")]
 position = Vector2(528, -496)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike18" parent="." instance=ExtResource("21_26582")]
 position = Vector2(464, -784)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike19" parent="." instance=ExtResource("21_26582")]
 position = Vector2(2272, -192)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike3" parent="." instance=ExtResource("21_26582")]
 position = Vector2(152, -440)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike4" parent="." instance=ExtResource("21_26582")]
 position = Vector2(864, -240)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike5" parent="." instance=ExtResource("21_26582")]
 position = Vector2(944, -240)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike6" parent="." instance=ExtResource("21_26582")]
 position = Vector2(800, -240)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike7" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1872, -232)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike8" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1512, -232)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike9" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1272, -544)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike10" parent="." instance=ExtResource("21_26582")]
 position = Vector2(928, -552)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike11" parent="." instance=ExtResource("21_26582")]
 position = Vector2(880, -840)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike12" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1232, -840)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike13" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1464, -832)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike14" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1552, -832)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike15" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1504, -832)
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike16" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1728, -544)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
 [node name="SpawnerFallSpike17" parent="." instance=ExtResource("21_26582")]
 position = Vector2(1656, -544)
+metadata/_edit_lock_ = true
 
-[node name="SimpleMovingPlatform" parent="." instance=ExtResource("22_ihjp7")]
-position = Vector2(680, -120)
+[node name="SpawnerFallSpike20" parent="." instance=ExtResource("21_26582")]
+position = Vector2(640, -96)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
-[node name="SimpleMovingPlatform2" parent="." instance=ExtResource("22_ihjp7")]
-position = Vector2(1312, -128)
+[node name="SpawnerFallSpike21" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1312, -120)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
-[node name="SimpleMovingPlatform3" parent="." instance=ExtResource("22_ihjp7")]
-position = Vector2(1392, -136)
+[node name="SpawnerFallSpike22" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1408, -136)
+metadata/_edit_lock_ = true
 
-[node name="SimpleMovingPlatform4" parent="." instance=ExtResource("22_ihjp7")]
+[node name="SpawnerFallSpike23" parent="." instance=ExtResource("21_26582")]
 position = Vector2(2016, -88)
+spawn_interval = 4.0
+metadata/_edit_lock_ = true
 
-[node name="SimpleMovingPlatform5" parent="." instance=ExtResource("22_ihjp7")]
-position = Vector2(792, -696)
+[node name="SpawnerFallSpike24" parent="." instance=ExtResource("21_26582")]
+position = Vector2(704, -696)
+metadata/_edit_lock_ = true
 
-[node name="SimpleMovingPlatform6" parent="." instance=ExtResource("22_ihjp7")]
-position = Vector2(1360, -696)
+[node name="SpawnerFallSpike25" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1360, -712)
+metadata/_edit_lock_ = true
 
-[node name="SimpleMovingPlatform7" parent="." instance=ExtResource("22_ihjp7")]
-position = Vector2(1344, -528)
+[node name="SpawnerFallSpike26" parent="." instance=ExtResource("21_26582")]
+position = Vector2(1344, -536)
+metadata/_edit_lock_ = true

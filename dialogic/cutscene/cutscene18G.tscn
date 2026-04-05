@@ -1308,7 +1308,7 @@ _data = {
 "walk_right": SubResource("Animation_6kcm6")
 }
 
-[node name="cutscene18G" type="Area2D"]
+[node name="cutscene18G" type="Area2D" groups=["genocide_boss_cutscene"]]
 position = Vector2(79, 74)
 script = ExtResource("1_ceec3")
 maya_scene = ExtResource("2_5h2dk")

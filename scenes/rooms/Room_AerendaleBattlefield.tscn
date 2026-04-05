@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dbo4t4k7ob3qg"]
+[gd_scene load_steps=32 format=3 uid="uid://dbo4t4k7ob3qg"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_2u37g"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_gdouu"]
@@ -22,10 +22,9 @@
 [ext_resource type="PackedScene" uid="uid://dqionmsy23twr" path="res://scenes/objects/health_pickup.tscn" id="17_mtnn4"]
 [ext_resource type="PackedScene" uid="uid://ctc3cbhtbq6hf" path="res://scenes/objects/MagicStonePickup.tscn" id="18_m4dm1"]
 [ext_resource type="PackedScene" uid="uid://b2gmv5cvy0lxk" path="res://scenes/objects/MicrochipPickup.tscn" id="19_o6ccp"]
-[ext_resource type="PackedScene" uid="uid://ca53ncao01ppo" path="res://scenes/enemies/Moving_platform1.tscn" id="20_xyqpq"]
 [ext_resource type="PackedScene" uid="uid://duuqngmhvpksa" path="res://scenes/enemies/ArachneEnemy.tscn" id="23_4tyy6"]
-[ext_resource type="PackedScene" uid="uid://bvacwftw67o46" path="res://scenes/enemies/Moving_platform2.tscn" id="23_p3n5p"]
 [ext_resource type="PackedScene" uid="uid://nquxmuq3we7x" path="res://dialogic/cutscene/cutscene7.tscn" id="26_etqsb"]
+[ext_resource type="PackedScene" uid="uid://cjqjk388kktjn" path="res://scenes/enemies/Spawner_falling_spike2.tscn" id="27_3dhx8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t4ope"]
 size = Vector2(4395, 465)
@@ -1966,26 +1965,6 @@ pickup_id = "MC_004"
 position = Vector2(-472, -569)
 pickup_id = "MC_005"
 
-[node name="SimpleMovingPlatform" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(-1640, -409)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform4" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(1608, -345)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform5" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(1512, -337)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform7" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(1696, 759)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform8" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(1592, 791)
-wait_time = 3.0
-
 [node name="ArachneEnemy" parent="." instance=ExtResource("23_4tyy6")]
 position = Vector2(-1336, 375)
 shoot_range = 200.0
@@ -1994,48 +1973,52 @@ wall_side = 1
 [node name="BeastEnemy8" parent="." instance=ExtResource("14_6yk5q")]
 position = Vector2(-1312, 647)
 
-[node name="SimpleMovingPlatform11" parent="." instance=ExtResource("23_p3n5p")]
-position = Vector2(-1592, -249)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform2" parent="." instance=ExtResource("23_p3n5p")]
-position = Vector2(-1696, -249)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform3" parent="." instance=ExtResource("23_p3n5p")]
-position = Vector2(1560, -217)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform6" parent="." instance=ExtResource("23_p3n5p")]
-position = Vector2(1648, 919)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform9" parent="." instance=ExtResource("23_p3n5p")]
-position = Vector2(1544, 935)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform13" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(664, -561)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform14" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(720, -577)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform15" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(608, -577)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform16" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(-792, -401)
-wait_time = 3.0
-
-[node name="SimpleMovingPlatform17" parent="." instance=ExtResource("20_xyqpq")]
-position = Vector2(-728, -401)
-wait_time = 3.0
-
 [node name="BeastEnemy9" parent="." instance=ExtResource("14_6yk5q")]
 position = Vector2(264, 751)
 
 [node name="cutscene7" parent="." instance=ExtResource("26_etqsb")]
 position = Vector2(-248, -282)
+
+[node name="SpawnerFallSpike2" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(-1675, -396)
+spawn_interval = 7.0
+
+[node name="SpawnerFallSpike3" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(-1567, -399)
+spawn_interval = 6.0
+
+[node name="SpawnerFallSpike4" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(1607, -335)
+spawn_interval = 6.0
+
+[node name="SpawnerFallSpike5" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(1571, -334)
+spawn_interval = 7.0
+
+[node name="SpawnerFallSpike6" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(1690, 762)
+spawn_interval = 6.0
+
+[node name="SpawnerFallSpike7" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(1638, 781)
+spawn_interval = 7.0
+
+[node name="SpawnerFallSpike8" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(1565, 795)
+spawn_interval = 6.0
+
+[node name="SpawnerFallSpike9" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(576, -478)
+spawn_interval = 6.0
+
+[node name="SpawnerFallSpike10" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(678, -484)
+spawn_interval = 7.0
+
+[node name="SpawnerFallSpike11" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(-675, -484)
+spawn_interval = 7.0
+
+[node name="SpawnerFallSpike12" parent="." instance=ExtResource("27_3dhx8")]
+position = Vector2(-761, -474)
+spawn_interval = 6.0

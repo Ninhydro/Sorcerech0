@@ -236,6 +236,8 @@ func shoot_projectile():
 		projectile.speed = projectile_speed
 		projectile.damage = enemy_damage
 		projectile.lifetime = projectile_lifetime
+		projectile.sprite.rotation = shoot_direction.angle() + (PI)
+
 
 func handle_animation():
 	var new_animation := ""

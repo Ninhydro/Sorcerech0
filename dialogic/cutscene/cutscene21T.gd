@@ -187,7 +187,7 @@ func _on_cutscene_end():
 	Global.timeline = 10
 	if Global.game_cleared == true:
 		
-		var main_menu_scene_path = "res://scenes/ui/MainMenu.tscn"
+		var main_menu_scene_path = "res://scenes/world/credits.tscn" #credits
 		var main_menu_packed_scene = load(main_menu_scene_path)
 		if Global.route_status == "True":
 			Global.ending_true = true

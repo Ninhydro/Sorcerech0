@@ -186,6 +186,18 @@ tracks/14/keys = {
 "update": 0,
 "values": [Color(0, 0, 0, 1)]
 }
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("Rock:visible")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_a2e2s"]
 resource_name = "anim1"
@@ -326,6 +338,18 @@ tracks/11/keys = {
 "transitions": PackedFloat32Array(),
 "update": 0,
 "values": []
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Rock:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_umff7"]
@@ -3340,16 +3364,15 @@ position = Vector2(49, 86)
 
 [node name="Rock" type="Sprite2D" parent="."]
 visible = false
-modulate = Color(0.4, 0.286275, 0.137255, 1)
+modulate = Color(0.227451, 0.498039, 0.686275, 1)
 position = Vector2(121, 84)
 texture = ExtResource("2_utraj")
 region_enabled = true
 region_rect = Rect2(14.053, 61.5304, 77.8096, 99.8908)
 
 [node name="Lux" type="Sprite2D" parent="."]
-visible = false
 z_index = -1
-position = Vector2(68, 87)
+position = Vector2(120, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_dcrwr")
 flip_h = true
@@ -3365,9 +3388,10 @@ libraries = {
 
 [node name="Nataly" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(99, 87)
+position = Vector2(-137.6, 34.4)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_fo2ae")
+flip_h = true
 hframes = 8
 vframes = 13
 frame = 96
@@ -3380,7 +3404,7 @@ libraries = {
 
 [node name="Maya" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(13, 87)
+position = Vector2(43.4, 34.4)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_cseus")
 hframes = 8
@@ -3404,6 +3428,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="WhiteOverlay" type="ColorRect" parent="."]
 visible = false
+modulate = Color(0, 0, 0, 1)
 offset_left = -20439.0
 offset_top = -14130.0
 offset_right = 4337.0

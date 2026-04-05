@@ -167,7 +167,7 @@ vframes = 5
 frame = 4
 
 [node name="ProjectileSpawn" type="Marker2D" parent="VisualRoot"]
-position = Vector2(-32, -24)
+position = Vector2(-11.4286, -22.8571)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -180,19 +180,22 @@ autostart = true
 [node name="Hitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
 position = Vector2(0, -19.25)
 shape = SubResource("RectangleShape2D_ljdqk")
 
 [node name="DealAttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DealAttackArea"]
+visible = false
 position = Vector2(0, -15)
 shape = SubResource("RectangleShape2D_a7b8b")
 
 [node name="RangeChase" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RangeChase"]
-position = Vector2(0, -16)
+visible = false
+position = Vector2(11.4286, -11.4286)
 shape = SubResource("CircleShape2D_4pq4r")
 
 [node name="WallRay" type="RayCast2D" parent="."]

@@ -914,7 +914,9 @@ func check_hitbox():
 	var hitbox_areas = $Hitbox.get_overlapping_areas()
 	var damage: int = 0
 	var hit_spike_ref: SpikeTrap = null
+	var hit_laser_ref: LaserTrap = null
 
+	
 	if hitbox_areas:
 		for area in hitbox_areas:
 			# Spikes
@@ -938,6 +940,8 @@ func check_hitbox():
 			take_damage(damage)
 		elif hit_spike_ref != null:
 			respawn_nearby_spike(hit_spike_ref)
+		elif hit_laser_ref != null:
+			respawn_nearby_laser(hit_laser_ref)
 			
 func take_damage(damage):
 	print("Player taking damage: ", damage, " from source: ", get_stack())
@@ -1010,9 +1014,18 @@ func handle_death():
 		for node in tree.get_nodes_in_group("magus_king_boss_cutscene"):
 			if node.has_method("cancel_magus_king_boss_battle_on_player_death"):
 				node.cancel_magus_king_boss_battle_on_player_death()
+		
+		for node in tree.get_nodes_in_group("genocide_boss_cutscene"):
+			if node.has_method("cancel_boss_battle_on_player_death"):
+				node.cancel_boss_battle_on_player_death()
+		
+		for node in tree.get_nodes_in_group("lux_boss_cutscene"):
+			if node.has_method("cancel_boss_battle_on_player_death"):
+				node.cancel_boss_battle_on_player_death()
+				
 	
 	# Wait for death animation to play (adjust time as needed)
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(2).timeout
 	
 	# Reset to latest save point
 	load_from_save_slot(1)
@@ -1125,6 +1138,50 @@ func respawn_nearby_spike(spike_ref: SpikeTrap = null):
 
 	health_changed.emit(Global.health, Global.health_max)
 
+func respawn_nearby_laser(laser_ref: LaserTrap = null):
+	# Prevent re-entrance / chain-triggering
+	if not can_take_damage or dead:
+		return
+	
+	can_take_damage = false
+	player_hit = true
+
+	# Percentage damage from spikes
+	var spike_damage = int((spike_damage_percentage / 100.0) * Global.health_max)
+	Global.health = max(0, Global.health - spike_damage)
+
+	# Death by spikes
+	if Global.health <= 0:
+		Global.health = 0
+		health_changed.emit(Global.health, Global.health_max)
+		handle_death()
+		return
+
+	# Decide where to respawn
+	var safe_position: Vector2 = Vector2.ZERO
+
+	# 1) Prefer spike's custom marker if set
+	if laser_ref != null and is_instance_valid(laser_ref) and laser_ref.respawn_marker != null:
+		safe_position = laser_ref.respawn_marker.global_position
+	else:
+		# 2) Fallback: search nearby safe tile
+		safe_position = await find_nearby_safe_position()
+
+	# Apply respawn pos with a slight upward offset so we don't clip into floor
+	if safe_position != Vector2.ZERO:
+		global_position = safe_position + Vector2(0, -8)
+	velocity = Vector2.ZERO  # stop any fall momentum
+
+	# Hurt feedback
+	sprite.modulate = Color(1, 0.5, 0.5)
+	await get_tree().create_timer(0.3).timeout
+	sprite.modulate = Color(1, 1, 1)
+
+	player_hit = false
+	can_take_damage = true
+
+	health_changed.emit(Global.health, Global.health_max)
+	
 	
 func find_nearby_safe_position() -> Vector2:
 	# Try several positions mainly above the current spot

@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjqjk388kktjn"]
+
+[ext_resource type="Script" path="res://scenes/enemies/Spawner_falling_spike.gd" id="1_rgvnn"]
+[ext_resource type="PackedScene" uid="uid://scuohqg16l4u" path="res://scenes/enemies/falling_spike.tscn" id="2_57pys"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gvyg3"]
+radius = 195.921
+
+[node name="SpawnerFallSpike2" type="Node2D"]
+script = ExtResource("1_rgvnn")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(0, 192)
+shape = SubResource("CircleShape2D_gvyg3")
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, 8)
+
+[node name="FallingSpike" parent="." instance=ExtResource("2_57pys")]
+modulate = Color(0.721569, 0.537255, 0.321569, 1)
+z_index = -1
+position = Vector2(0, -29)
+gravity = 800.0
+max_fall_speed = 500.0
+knockback_force = 10.0

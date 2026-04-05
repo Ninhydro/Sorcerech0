@@ -12,6 +12,7 @@ radius = 208.154
 [node name="LaserTrap" type="Area2D"]
 position = Vector2(224, 88)
 script = ExtResource("1_qbxan")
+instant_kill = false
 local_direction = Vector2(-1, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

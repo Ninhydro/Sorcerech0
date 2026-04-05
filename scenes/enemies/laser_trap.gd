@@ -22,9 +22,11 @@ var player_nearby: bool = false
 var beam_on: bool = false
 var cycle_timer: float = 0.0
 
+@export var respawn_marker: Marker2D   
 
 func _ready() -> void:
 	# Damage callback
+	add_to_group("laser")
 	body_entered.connect(_on_body_entered)
 	
 	# Detection area (for "player nearby")
@@ -32,6 +34,9 @@ func _ready() -> void:
 		detection_area.body_entered.connect(_on_detection_body_entered)
 		detection_area.body_exited.connect(_on_detection_body_exited)
 	
+	if respawn_marker == null and has_node("RespawnPoint"):
+		respawn_marker = $RespawnPoint
+		
 	# Start in OFF state
 	beam_on = false
 	cycle_timer = off_time
