@@ -1,12 +1,11 @@
 [background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
-Lux: Give it to me! I can handle it! Mother’s wrong—!
-Fini: Lux, *stop*. This isn’t strength— it’s suicide!
-Fini: Lux, *stop*. This isn’t strength— it’s suicide!
-Lux: Then why you?! A machine can’t even *feel* what it means to protect her
+Lux: Give the core to me! It's my core! I need to give proof Mom...
+Fini: Lux stop! This isn’t strength— it’s suicide!
+Lux: Then why you?! A machine that can’t even "feel", why you're the chosen one?!
 Fini: … No Lux don’t go…
 [background arg="res://assets_image/Background/Black.png" fade="0.5"]
 Player: I didn’t want this… I just…
-Player: Alyra… Varek… don’t go…
+Player: No… don’t go…
 [background arg="res://assets_image/CG/CG12.png" fade="0.0"]
 Player (Normal): ...warm...light...
 Maya_adult: Phina?! Phina! Nataly! She’s awake!
@@ -18,10 +17,10 @@ Maya_adult: You’re in the junkyard, in my room. You’ve been… sleeping.
 Maya_adult: Everyone thought you’d never come back, but I knew! I told them—your heart—\
 Your heart was still beating.
 Player (Normal): But… I don’t have a heart.
-Maya_adult: That never stopped you before.
+Maya_adult: Yes you do! Maybe not real one, but  I can feel you alive inside
 Nataly: It’s… a lot to catch you up on.
 Player (Normal): Alyra…? Varek…?
-. . . . .  
+. . . . .
 Maya_adult: Alyra died... ten years ago. Protecting you.
 Nataly: Varek disappeared right after. Nobody’s seen him since the battle. We searched for years.
 Player (Normal): I remember… red skies… fire… then… darkness.
@@ -40,18 +39,19 @@ Nataly: Not only that, At first only whispers. But after Exactlyion decrypted th
 Maya_adult: That’s why Uncle Bettle and I joined the Revolutionary front.
 Maya_adult: Not to start more war — but to protect New Aerandale. To protect you.
 Player (Normal): You… protected me… for ten years?
-Maya_adult: Every day. Repaired your systems. Kept you powered.\
+Maya_adult: Every day, Kept you powered and protect you.\
 Talked to you. Even when you didn’t respond, I knew you heard me.
 Player (Normal): I heard… everything. Faint… but warm. Maya… thank you.
 Maya_adult: Don’t thank me yet. We need you more than ever.\
-People need something real to believe in again. And you're real.
-Player (Normal): I feel… stronger. But colder, too.
-Maya_adult: And me? I’ve been training. Ten years of magic. Ice and fire. I’m not just the kid from the junkyard anymore.
-Player (Normal): You’ve grown… strong.
+People need something real to believe in again. Someone like you
+Player (Normal): I do I feel… stronger now
+Maya_adult: Well me too! ’ve been training. Ten years of magic. Ice and fire. I’m not just the kid from the junkyard anymore.
+Player (Normal): Maya, you've really grown
 Maya_adult: Because I had to. For you.
 Nataly: Listen. Things are worse now.\
 The Magus and Cyber leaders won’t stop unless someone stands between them. Like Alyra & Varek tried to do
 Player (Normal): Then we continue their journey.
 Nataly: We will. But first… I need to tell you something.\
 About Alyra. About what we were trying to do before it all fell apart.
-Nataly: ...She always wanted peace. But we had different ways of chasing it.
+Maya_adult: Ok, but for now let me show you around
+Nataly: Come to me later and we'll talk

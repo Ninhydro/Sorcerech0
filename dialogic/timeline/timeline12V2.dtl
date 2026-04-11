@@ -1,12 +1,11 @@
 [background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
-Lux: Give it to me! I can handle it! Mother’s wrong—!
-Fini: Lux, *stop*. This isn’t strength— it’s suicide!
-Fini: Lux, *stop*. This isn’t strength— it’s suicide!
-Lux: Then why you?! A machine can’t even *feel* what it means to protect her
+Lux: Give the core to me! It's my core! I need to give proof Mom...
+Fini: Lux stop! This isn’t strength— it’s suicide!
+Lux: Then why you?! A machine that can’t even "feel", why you're the chosen one?!
 Fini: … No Lux don’t go…
 [background arg="res://assets_image/Background/Black.png" fade="0.5"]
 Player: I didn’t want this… I just…
-Player: Alyra… Varek… don’t go…
+Player: No… don’t go…
 [background arg="res://assets_image/CG/CG12.png" fade="0.0"]
 Player (Normal): ...warm...light...Alyra?...
 Maya_adult: ...Huh? Wait--- Phina?! She's awake! She's awake!
@@ -24,9 +23,13 @@ Nataly: It's a lot to catch you up on. The war didn't stop—it got colder. Side
 Maya_adult: And everyone knows about you now, Phina. The spies found data from the old war. They know you're Fini. They know about the Core.
 Alyra: You're not a person to them anymore. You're a strategic objective. A key. A threat.
 Varek_soldier: Which is why we've kept you hidden. But the whispers are everywhere. Tromarvelia and Exactlyion are gearing up. They think whoever controls you, controls everything.
-Player (Normal): I feel... stronger. But the world feels... colder.
-Maya_adult: That's why I've been training! Ten years of magic! I'm not a kid anymore. I can help!
+Maya_adult: Well that doesn't matter, That’s why Uncle Bettle and I joined the Revolutionary front.
+Maya_adult: We're been protecting you for all these years, how do you feel Phina?
+Player (Normal): Hmm.. I do feel... stronger now
+Maya_adult: Well, me too! I've been training! Ten years of magic! I'm not a kid anymore. I can help!
+Player (Normal): Maya... Alright, then what do we do now?
 Nataly: We need to finish what we started. But we can't do it from here.
 Alyra: You have to go. Talk to the leaders. Show them the Core isn't a weapon.
 Varek_soldier: We'll keep things stable here. Or as stable as you can with Zach's goons breathing down your neck.
-Player (Normal): Then we continue. For everyone.
+Maya_adult: Ok we can talk that later, for now let me show you around
+Nataly: Come to me later and we'll talk
