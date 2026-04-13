@@ -5,20 +5,21 @@ Player: Hmm... (Proceeding will go to ending scene)
 - Continue to ending
 	[background arg="res://assets_image/Background/Black.png" fade="0.0"]
 	Player (Happy): Oh everyone is here
-	Maya_adult: Yeah we're having a picnic
+	Maya_adult: Yeah we're having a picnic, come join us
 	Nataly: What a journey huh?
-	Maya_adult: So what's next?
-	Player (Happy): For the first time… I don’t have to.\
-Because I know you all be there with me.
+	Player (Happy): Yeah I'm glad we finally made it
 	Varek_king: I spent years wanting to burn the world down. Now… I think I’d rather help rebuild it
 	Sterling: …I suppose even logic has its limits. You proved that, Fini. Or… Phina, now
 	Lux: Mother would’ve laughed at us. All this fighting over a ‘Core’… when the real power was just this.
 	Player: Then let’s make sure no one forgets it again
+	Maya_adult: So what's next?
+	Player (Happy): For the first time… I'm not sure
+	Player (Happy): But I'm okay with it. Because I know you all be there with me.
 	. . .
 	Narrator: No power is perfect. No future is certain.
 	Narrator: But with memory… comes understanding.
 	Narrator: With understanding… comes peace.
-	Narrator: And with peace… a future...
+	Narrator: And with peace… a better future to be told...
 	Narrator: THE END
 	set {Global.game_cleared} = true
 - I want to talk with people
