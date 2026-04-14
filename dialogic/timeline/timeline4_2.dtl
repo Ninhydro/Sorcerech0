@@ -1,14 +1,15 @@
-join Alyra (Angry) right [mirrored="true"]
-join Varek_soldier (Angry) rightmost [mirrored="true"]
-Alyra (Angry): What the—?!
-Varek_soldier (Angry): ...That robot... has magic?
+join Alyra (Shocked) center [mirrored="true"]
+join Varek_soldier (Angry) right [mirrored="true"]
+Alyra (Shocked): What the—?!
+Varek_soldier (Shocked): ...That robot... has magic?
+update Alyra (Shocked) center [z_index="1" mirrored="true"]
 Alyra (Happy): And it’s… adorable!?
 . . . . .
-join Maya_kid (Sad) left
+join Maya_kid (Sad) left [z_index="2"]
 Maya_kid (Sad): Anyway, we’re not here to fight.
 Fini_ball: Fight hurt. Fighting bad. Friends… better?
 Alyra (Happy): You’re right cutei. This is stupid of me, I overreacted. Sorry, uh... what’s your name?
-Varek_soldier (Happy): ...Varek. Ex-Magus soldier, and you are?
+Varek_soldier (Angry): ...Varek. Ex-Magus soldier, and you are?
 Alyra (Happy): Alyra. Freelance travelling merchant. No allegiance, no titles.
 Fini_ball: Phina!
 Maya_kid (Happy): I’m Maya. This is Phina. You both look like you’ve been wrestling dragons… and starving. How about eat something at our shack’s nearby.

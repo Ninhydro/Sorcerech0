@@ -288,6 +288,7 @@ variables={
 "player_current_form": ""
 }
 text/autoadvance_enabled=false
+history/simple_history_enabled=false
 
 [display]
 
