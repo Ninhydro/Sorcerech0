@@ -17,7 +17,7 @@
 "portraits": {
 "Angry": {
 "export_overrides": {
-"image": "\"res://assets_image/Characters/Zach/AI_Zach_angry.png\""
+"image": "\"res://assets_image/Characters/Zach/Zach_angry.png\""
 },
 "mirror": false,
 "offset": Vector2(0, 0),
@@ -26,16 +26,16 @@
 },
 "Happy": {
 "export_overrides": {
-"image": "\"res://assets_image/Characters/Zach/AI_Zach_happy.png\""
+"image": "\"res://assets_image/Characters/Zach/Zach_happy.png\""
 },
 "mirror": false,
 "offset": Vector2(0, 0),
 "scale": 1,
 "scene": ""
 },
-"Sad": {
+"Shocked": {
 "export_overrides": {
-"image": "\"res://assets_image/Characters/Zach/AI_Zach_sad.png\""
+"image": "\"res://assets_image/Characters/Zach/Zach_shocked.png\""
 },
 "mirror": false,
 "offset": Vector2(0, 0),
@@ -43,5 +43,5 @@
 "scene": ""
 }
 },
-"scale": 0.7
+"scale": 0.8
 }

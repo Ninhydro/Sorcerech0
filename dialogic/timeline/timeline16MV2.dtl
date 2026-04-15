@@ -1,12 +1,18 @@
-join Player center
 Gawr: RAWRR!!!!
+join Player right
 Player (Normal): There have to be way to talk to him
-Nataly: We can't talk him out... maybe our choice really is to kill him...
-Nora: I see that you've awaken Gawr
-Player (Normal): Nora?!
-Maya_adult: What are you doing here?
-Nora: Well someone need to stop Gawr right?
-Player (Normal): You can stop him?
-Nora: I can seal him, but I need some time
-Nora: Please distract him while I'm incant my spell
-Maya_adult: Gotcha, alright we need to protect Nora and distract Gawr
+join Nataly center
+Nataly (Angry): We can't talk him out... maybe our choice really is to kill him...
+join Nora left
+Nora (Happy): I see that you've awaken Gawr
+Player (Shocked): Nora?!
+leave Player
+join Maya_adult right
+Maya_adult (Shocked): What are you doing here?
+Nora (Happy): I'm here to stop Gawr from rampaging of course
+leave Nataly
+join Player center [mirrored="true"]
+Player (Angry): You can stop him?
+Nora (Angry): I can seal him, but I need some time
+Nora (Angry): Please distract him while I'm incant my spell
+Maya_adult (Angry): Gotcha, alright we need to protect Nora and distract Gawr

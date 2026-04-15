@@ -1,6 +1,8 @@
+join Nataly right
+Nataly (Angry): Alright, are you ready to decide what we need to do, Phina?
+join Maya_adult left
+Maya_adult (Happy): We need to think carefully and choose either side with the Magus or Cyber... No, there has to be another way right?
 join Player center
-Nataly: Alright, are you ready to decide what we need to do, Phina?
-Maya_adult: We need to think carefully and choose either side with the Magus or Cyber... No, there has to be another way right?
 Player (Happy): Hmm... Let me think...
 - Side with Magus | [if {Global.affinity} <= 0] [else="disable"]
 	Alright Magus side it is

@@ -1,10 +1,17 @@
-Sterling: You made the right choice. We move on Tromarvelia. Their king has defied every chance at peace.
-Valentina: The data confirms it — Magus production is shifting toward weaponized mana. They're preparing for total war.
-Nataly: If we hesitate, they’ll strike first. We take this chance… or lose everything.
-Maya_adult: So that's it...? You're siding with Cyber, with Sterling?
-Player: Maya… it’s not about sides, please we need to do this
-Maya_adult: No, I'm sorry. Sterling wants control, we all know that. Order over freedom. You think that’s peace?
-Player: She’s trying to end the war.
-Maya_adult: At the cost of Tromarvelia?! At the cost of people who trusted you? Who loved you?
-Player: No, Maya, please, I don’t want to lose you…
-Maya_adult: ...Sorry Phina, But I’ll stand against you. If that’s what it takes to protect my kind
+join Sterling right
+Sterling (Happy): You made the right choice. We move on Tromarvelia. Their king has defied every chance at peace.
+join Valentina center
+Valentina (Bored): The data confirms it — Magus production is shifting toward weaponized mana. They're preparing for total war.
+join Nataly left
+Nataly (Angry): If we hesitate, they’ll strike first. We take this chance… or lose everything.
+leave Nataly
+join Maya_adult left
+Maya_adult (Shocked): So that's it...? You're siding with Cyber, with Sterling?
+leave Valentina
+join Player center
+Player (Sad): Maya… it’s not about sides, please we need to do this
+Maya_adult (Angry): No, I'm sorry. Sterling wants control, we all know that. Order over freedom. You think that’s peace?
+Player (Sad): She’s trying to end the war.
+Maya_adult (Angry): At the cost of Tromarvelia?! At the cost of people who trusted you? Who loved you?
+Player (Sad): No, Maya, please, I don’t want to lose you…
+Maya_adult (Sad): ...Sorry Phina, But I’ll stand against you. If that’s what it takes to protect my kind

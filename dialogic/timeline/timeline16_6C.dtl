@@ -1,16 +1,31 @@
-Maya_adult: Phina?! Are you okay?!
-Nataly: That energy... it’s pure Cyber Synchron. I've never see anything like this before
-Player: I remember… now.
-Valentina: Oh God... I thought I was done for
-Maya_adult: We made it!
-Player (Normal): But we're unable to meet Sterling System
-Valentina: About that...
-Valentina: I received message to all resident of Exactlyion from Sterling System
-Sterling: My dear citizen of Exactlyion. We're been invaded by spy from our Magus enemies
-Sterling: The spy was my dear former sister... She was brainwashed by the Magus King
-Sterling: Her name is Fini. please report to your nearest officer if you seen her
-Sterling: That' all for now
-Valentina: As you see, you're on wanted list now
-Nataly: That Sterling!
-Maya_adult: What do we do now?
-Player: We need to think carefully of our decision...
+join Maya_adult left
+Maya_adult (Shocked): Phina?! Are you okay?!
+join Nataly right
+Nataly (Shocked): That energy... it’s pure Cyber Synchron. I've never see anything like this before
+join Player center
+Player (Sad): I remember… now.
+leave Maya_adult
+join Valentina left
+Valentina (Shocked): Oh God... I thought I was done for
+leave Valentina
+join Maya_adult left
+Maya_adult (Happy): We made it!
+Player (Sad): But we're unable to meet Sterling System
+Valentina (Bored): About that...
+leave Maya_adult
+join Valentina left
+Valentina (Bored): I received message to all resident of Exactlyion from Sterling System
+leave Nataly
+join Sterling right
+Sterling (Happy): My dear citizen of Exactlyion. We're been invaded by spy from our Magus enemies
+Sterling (Angry): The spy was my dear former sister... She was brainwashed by the Magus King
+Sterling (Angry): Her name is Fini. please report to your nearest officer if you seen her
+Sterling (Angry): That' all for now
+leave Sterling
+Valentina (Bored): As you see, you're on wanted list now
+join Nataly right
+Nataly (Angry): That Sterling!
+leave Maya_adult
+join Valentina left
+Maya_adult (Angry): What do we do now?
+Player (Angry): We need to think carefully of our decision...

@@ -1,5 +1,6 @@
-join Player center
 replica_fini: If… if Karol saw you now… she’d be ashamed…
-Player: No. She’d mourn what you became.
-Maya_adult: You okay?
-Player: Yeah... ugh... W-what is this…? It’s… inside me—
+join Player center
+Player (Angry): No. She’d mourn what you became.
+join Maya_adult left
+Maya_adult (Sad): You okay?
+Player (Sad): Yeah... ugh... W-what is this…? It’s… inside me—
