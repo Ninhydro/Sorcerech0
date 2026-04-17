@@ -1,8 +1,9 @@
 [background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
-Sterling: Fini. You promised we would do this together. You promised you would help me.
-Fini: I’m sorry, Sterling. This responsibility… it’s not for you. A centralized system controlling the core is too dangerous.
-Sterling: So that’s it? You spend a few years with them, and you choose that human over your own kind? Over me?
-Fini: It’s not about choosing sides! I just can’t risk the core falling into the wrong hands—any hands!
-Sterling: I always looked up to you… Sister… I thought we were eternal.
-Sterling: If this is your choice… then you stand alone.
-[background fade="0.5"]
+join Sterling left
+Sterling (Sad): Fini. You promised we would do this together. You promised you would help me.
+join Fini right
+Fini (Sad): I’m sorry, Sterling. This responsibility… it’s not for you. A centralized system controlling the core is too dangerous.
+Sterling (Angry): So that’s it? You spend a few years with them, and you choose that human over your own kind? Over me?
+Fini (Sad): It’s not about choosing sides! I just can’t risk the core falling into the wrong hands—any hands!
+Sterling (Sad): I always looked up to you… Sister… I thought we were eternal.
+Sterling (Sad): If this is your choice… then you stand alone.

@@ -1,10 +1,12 @@
 [background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
-Karol: Lux? What is this? What have you done?!
+join Karol left
+Karol (Sad): Lux? What is this? What have you done?!
 Lux: I… I just want to proof you I was worthy so I try to use the Sorcerech core
-Fini: And you stole it from the ancient ruins?!
+join Fini right
+Fini (Shocked): And you stole it from the ancient ruins?!
 Gawr: RAWRR!!!!
-Fini: This is bad, Gawr the protector, must been in rage
+Fini (Angry): This is bad, Gawr the protector, must been in rage
 Gawr: Give me the core back!! GARRR!!
 "Magus soldier": That dragon is coming to the town
-Karol: Gawr… he’s out of control… he will destroy town
-Fini: Then we need to seal him…
+Karol (Sad): Gawr… he’s out of control… he will destroy town
+Fini (Angry): Then we need to seal him…
