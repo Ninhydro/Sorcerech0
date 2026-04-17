@@ -1,10 +1,13 @@
-Lux: You’re better than me. Better than all of us... I see that now.
-Player: Why…? You didn’t have to—
-Lux: All this time... I thought she robbed me...
-Player: Karol took your pain. Your death.
-Lux: I know now... Mother saw what I didn’t...
-Lux: ...That love isn’t measured in power, but in what you shield others from.
-Lux: Don’t make my mistake. Protect them... *differently*.\
+join Lux right
+Lux (Sad): You’re better than me. Better than all of us... I see that now.
+join Player left
+Player (Sad): Why…? You didn’t have to—
+Lux (Sad): All this time... I thought she robbed me...
+Player (Sad): Karol took your pain. Your death.
+Lux (Sad): I know now... Mother saw what I didn’t...
+Lux (Sad): ...That love isn’t measured in power, but in what you shield others from.
+Lux (Sad): Don’t make my mistake. Protect them... *differently*.\
 The Sorcerech is not just about power…
-Player: If I can’t make you hear each other…\
+leave Lux
+Player (Sad): If I can’t make you hear each other…\
 Then let me help you remember.

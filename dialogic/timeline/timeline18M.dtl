@@ -1,5 +1,8 @@
-Valentina: I'm sorry but this is as far you can go
-Player: Valentina...
-Maya_adult: Oh no, what should we do?!
-Player: We have no choice
-Valentina: I'm not good at battle, but my security system is unstoppable!
+join Valentina leftmost
+Valentina (Angry): I'm sorry but this is as far you can go
+join Player center
+Player (Sad): Valentina...
+join Maya_adult rightmost
+Maya_adult (Shocked): Oh no, what should we do?!
+Player (Angry): We have no choice
+Valentina (Angry): I'm not good at battle, but my security system is unstoppable!

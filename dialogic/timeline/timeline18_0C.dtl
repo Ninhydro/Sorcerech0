@@ -1,3 +1,6 @@
-Sterling: Phase one complete. Resistance is heavier than expected. Focus on pushing to the King's Throne
-Nataly: We’ll carve a path. Just keep the backline secure.
-Player: Hmm... I have a feeling someone suppose to be here...
+join Sterling leftmost
+Sterling (Angry): Phase one complete. Resistance is heavier than expected. Focus on pushing to the King's Throne
+join Nataly rightmost
+Nataly (Angry): We’ll carve a path. Just keep the backline secure.
+join Player center
+Player (Sad): Hmm... I have a feeling someone suppose to be here...

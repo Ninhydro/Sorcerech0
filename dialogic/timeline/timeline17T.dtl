@@ -1,5 +1,10 @@
-Player (Normal): If we're siding with either Magus or Cyber it will leads to—destruction and loss. There must be another way.
-Nataly (Happy): Agreed. The cycle of vengeance has to end.
-Maya_adult (Happy): But how? Both sides are entrenched in their ideologies.
-Player (Normal): We need to find a solution that transcends both factions.
-Lux: So you need some answer?
+join Player center
+Player (Happy): If we're siding with either Magus or Cyber it will leads to—destruction and loss. There must be another way.
+join Nataly leftmost
+Nataly (Angry): Agreed. The cycle of vengeance has to end.
+join Maya_adult rightmost
+Maya_adult (Sad): But how? Both sides are entrenched in their ideologies.
+Player (Angry): We need to find a solution that transcends both factions.
+leave Maya_adult
+join Lux rightmost [mirrored="true"]
+Lux (Happy): So you need some answer?

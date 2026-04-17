@@ -1,13 +1,13 @@
-join Lux right
+join Lux rightmost
 Lux (Angry): The Magus King thinks war is the answer. He’s not entirely wrong. But he’s also not ready for what’s coming.
 join Player center
 Player (Sad): What do you mean?
 Lux (Angry): This is where Gawr sleeps. The Holy Beast. Long ago, he helped us to get the sorcerech core
-join Maya_adult left
+join Maya_adult leftmost
 Maya_adult (Shocked): Wait… really??
 Lux (Angry): That is what I heard,  but yeah it was made from the power of cyber and magus, and Gawr play a vital role in it
 leave Maya_adult
-join Nataly left
+join Nataly leftmost
 Nataly (Angry): So that’s how they made it.
 Lux (Angry): But Gawr wasn’t exactly happy about it. Beast instinct. He wanted to keep the power. Fight broke out. We sealed him.
 Player (Sad): And now?

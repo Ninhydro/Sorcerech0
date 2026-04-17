@@ -1,9 +1,16 @@
-Varek_king: You made the right choice friend. We’ll hit Exactlyion now, while their guard is down.
-Nataly: You’re serious about this? You’re really siding with him?
-Player: Yes. We’ve seen what Cyber has done. What they did is control and suppression.
-Nataly: And what? Magus rule is freedom? You’re just shifting the cage.
-Nataly: What about Alyra?! She gave her life for balance — not for you to pick a damn side!
-Maya_adult: And what did balance get us, Nataly? Graves. Lies. Rotting cities.
-Nataly: ...You were supposed to be the bridge of us
-Player: I’m sorry Nataly… but there's no choice, we have to do this
-Nataly: Then I’m done. I won’t follow you into this.
+join Varek_king leftmost [mirrored="true"]
+Varek_king (Happy): You made the right choice friend. We’ll hit Exactlyion now, while their guard is down.
+join Nataly rightmost [mirrored="true"]
+Nataly (Shocked): You’re serious about this? You’re really siding with him?
+join Player center
+Player (Sad): Yes. We’ve seen what Cyber has done. What they did is control and suppression.
+Nataly (Angry): And what? Magus rule is freedom? You’re just shifting the cage.
+Nataly (Angry): What about Alyra?! She gave her life for balance — not for you to pick a damn side!
+leave Player
+join Maya_adult center [mirrored="true"]
+Maya_adult (Sad): And what did balance get us, Nataly? Graves. Lies. Rotting cities.
+Nataly (Sad): ...You were supposed to be the bridge of us
+leave Maya_adult
+join Player center
+Player (Sad): I’m sorry Nataly… but there's no choice, we have to do this
+Nataly (Sad): Then I’m done. I won’t follow you into this.

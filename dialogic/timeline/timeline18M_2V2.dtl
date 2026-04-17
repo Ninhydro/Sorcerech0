@@ -1,5 +1,8 @@
-Nora: I never thought I’d cast spells inside a city made of steel.
-Player: Nora?!
-Nora: You guys go ahead, I'll take care of her
-Maya_adult: Uh... Don't die on me Nora
-Player: Alright let's go!
+join Nora rightmost
+Nora (Happy): I never thought I’d cast spells inside a city made of steel.
+join Player center
+Player (Shocked): Nora?!
+Nora (Angry): You guys go ahead, I'll take care of her
+join Maya_adult left
+Maya_adult (Sad): Uh... Don't die on me Nora
+Player (Angry): Alright let's go!

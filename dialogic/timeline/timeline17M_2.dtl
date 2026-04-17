@@ -1,3 +1,5 @@
-Varek_king: She’ll understand. Eventually.
-Varek_king: ... Alright let's get moving to Exactlyion
-Player: Okay...
+join Varek_king leftmost [mirrored="true"]
+Varek_king (Sad): She’ll understand. Eventually.
+Varek_king (Sad): ... Alright let's get moving to Exactlyion
+join Player center
+Player (Sad): Okay...

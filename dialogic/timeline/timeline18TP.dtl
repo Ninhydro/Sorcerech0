@@ -1,7 +1,9 @@
-Lux: Why aren’t you fighting me?
-Player: Because I believe in you. You don’t have to do this.
-Lux: If we don’t trigger the monument… we can’t end the cycle
-Player: Then let’s end it a different way. Together
-Lux: You always had it all, didn’t you, Fini… Everyone believed in you. Even Mom… even now. You were the hero. And I… I was just a mistake carved out of prophecy
-Player: That’s not true, Lux
-Lux: Then prove it! Fight me! If I can’t end this… then maybe I can finally be more than your shadow!
+join Lux left
+Lux (Angry): Why aren’t you fighting me?
+join Player right
+Player (Sad): Because I believe in you. You don’t have to do this.
+Lux (Angry): If we don’t trigger the monument… we can’t end the cycle
+Player (Happy): Then let’s end it a different way. Together
+Lux (Sad): You always had it all, didn’t you, Fini… Everyone believed in you. Even Mom… even now. You were the hero. And I… I was just a mistake carved out of prophecy
+Player (Sad): That’s not true, Lux
+Lux (Angry): Then prove it! Fight me! If I can’t end this… then maybe I can finally be more than your shadow!

@@ -1,8 +1,7 @@
 join Alyra (Shocked) center [mirrored="true"]
-join Varek_soldier (Angry) right [mirrored="true"]
+join Varek_soldier (Shocked) right [mirrored="true"]
 Alyra (Shocked): What the—?!
 Varek_soldier (Shocked): ...That robot... has magic?
-update Alyra (Shocked) center [z_index="1" mirrored="true"]
 Alyra (Happy): And it’s… adorable!?
 . . . . .
 join Maya_kid (Sad) left [z_index="2"]

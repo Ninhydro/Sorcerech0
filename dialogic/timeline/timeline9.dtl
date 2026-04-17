@@ -1,8 +1,8 @@
-join Alyra (Angry) center [mirrored="true"]
+join Alyra (Angry) left [mirrored="true"]
 Alyra (Angry): No… no, no… That’s the town. It’s under attack!
-join Varek_soldier (Angry) right [mirrored="true"]
+join Varek_soldier (Angry) rightmost [mirrored="true"]
 Varek_soldier (Angry): The air smells like scorched mana. There’s already been a massacre.
-join Player (Sad) left [mirrored="true"]
+join Player (Sad) right [mirrored="true"]
 Player (Sad): Why… fighting again? This place… was home…
 . . .
 Varek_soldier (Angry): We should step in.

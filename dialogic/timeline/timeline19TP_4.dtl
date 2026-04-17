@@ -1,10 +1,14 @@
-Maya_adult: There we go
-Player (Normal): But how do you come here? I thought the monument barrier block anyone to come in?
-Nataly: The moment that earthquake happened some reason the barrier is gone, and we figure there something bad going on with you
-Lux: Ha… I.. I’m sorry Phina… I thought if I ended it… maybe you wouldn’t have to…
-Player (Normal): Stop that nonsense! You’re one of us. That’s what peace means—no one gets left behind
-Lux: But there’s no other way to get the activate the Sorcerech core
-Player (Normal): Then we’ll find another way to get peace even without the core
-Nataly: Wait everyone, did you see that, This… energy. It’s responding to us?
-Maya_adult: So this iz the Sorcerech power? Magus and Cyber… together
-Player: I see now… Sorcerech was never about destruction… It was a memory—a mirror. And I will show the world what it forgot
+join Maya_adult leftmost
+Maya_adult (Happy): There we go
+join Player center
+Player (Happy): But how do you come here? I thought the monument barrier block anyone to come in?
+join Nataly left
+Nataly (Happy): The moment that earthquake happened some reason the barrier is gone, and we figure there something bad going on with you
+join Nataly right
+Lux (Sad): Ha… I.. I’m sorry Phina… I thought if I ended it… maybe you wouldn’t have to…
+Player (Happy): Stop that nonsense! You’re one of us. That’s what peace means—no one gets left behind
+Lux (Sad): But there’s no other way to get the activate the Sorcerech core
+Player (Happy): Then we’ll find another way to get peace even without the core
+Nataly (Shocked): Wait everyone, did you see that, This… energy. It’s responding to us?
+Maya_adult (Shocked): So this iz the Sorcerech power? Magus and Cyber… together
+Player (Shocked): I see now… Sorcerech was never about destruction… It was a memory—a mirror. And I will show the world what it forgot

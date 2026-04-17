@@ -1,6 +1,13 @@
+[background arg="res://assets_image/Background/Black.png" fade="0.0"]
 . . .
-MEMORY PULSE
-Varek_king: What is this…? … Alyra… I… remember.
-Varek_king: I see… what I’ve become.
-Sterling: Fini… You really… wanted me to feel this…?
-Sterling: I didn't realize Exactlyion was so corrupted because of me….
+Player: If I can’t make you hear each other…\\
+Then let me help you remember.
+Player: MEMORY PULSE
+join Varek_king center
+Varek_king (Sad): What is this…? … Alyra… I… remember.
+Varek_king (Sad): I see… what I’ve become.
+leave Varek_king
+join Sterling center
+Sterling (Sad): Fini… You really… wanted me to feel this…?
+Sterling (Sad): I didn't realize Exactlyion was so corrupted because of me….
+leave Sterling

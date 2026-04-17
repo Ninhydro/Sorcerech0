@@ -1,13 +1,13 @@
-join Lux left
+join Lux leftmost
 Lux (Happy): It’s hard, isn’t it? Watching someone you love become something else.
-join Maya_adult right
+join Maya_adult rightmost
 Maya_adult (Shocked): Who—?
 join Player center
 Player (Shocked): You... ...Lux?
 Lux (Sad): Still remember me, huh?
 Lux (Happy): That’s unexpected…
 leave Maya_adult
-join Nataly right
+join Nataly rightmost
 Nataly (Shocked): Wait… you're Karol’s son, right? Mixed blood — Magus and Cyber.
 Lux (Happy): I see the records haven't faded. Yeah. That’s me. And Fini… to be honest I've been searching for you all this time
 Player (Happy): I'm Phina now. But yeah, sorry I don't really remember my past

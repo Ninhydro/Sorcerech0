@@ -1,6 +1,6 @@
-join Nataly right
+join Nataly rightmost [mirrored="true"]
 Nataly (Angry): Alright, are you ready to decide what we need to do, Phina?
-join Maya_adult left
+join Maya_adult leftmost
 Maya_adult (Happy): We need to think carefully and choose either side with the Magus or Cyber... No, there has to be another way right?
 join Player center
 Player (Happy): Hmm... Let me think...

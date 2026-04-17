@@ -1,6 +1,9 @@
-Lux: Agh-… my leg… it's crush by the boulder
-Player (Normal): Hang on, I'll try to remove this
-Lux: No, Phina, run! The cave going to collapse. \
+join Lux right
+Lux (Angry): Agh-… my leg… it's crush by the boulder
+join Player left
+Player (Shocked): Hang on, I'll try to remove this
+Lux (Sad): No, Phina, run! The cave going to collapse. \
 It’s already over for me, if I die, you will have the power to change this world
-Player (Normal): I’m not going to get that sort of power, your life is more important than that
-Maya_adult: Need a hand, dummy?
+Player (Angry): I’m not going to get that sort of power, your life is more important than that
+join Maya_adult leftmost
+Maya_adult (Happy): Need a hand, dummy?

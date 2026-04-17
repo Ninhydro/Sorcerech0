@@ -1,7 +1,12 @@
-Sterling: Phase one complete. Resistance is heavier than expected. Focus on pushing to the King's Throne
-Nataly: We’ll carve a path. Just keep the backline secure.
+join Sterling leftmost
+Sterling (Angry): Phase one complete. Resistance is heavier than expected. Focus on pushing to the King's Throne
+leave Sterling
+join Nataly center
+Nataly (Angry): We’ll carve a path. Just keep the backline secure.
 ...
-Nora: I'm sorry but you shall not pass here!
-Player: Nora...
-Nataly: Looks like we have no choice
-Nora: I'm not good at battle, but I can stop you with these obstacle puzzle!
+join Nora rightmost [mirrored="true"]
+Nora (Angry): I'm sorry but you shall not pass here!
+join Player left
+Player (Sad): Nora...
+Nataly (Angry): Looks like we have no choice
+Nora (Angry): I'm not good at battle, but I can stop you with these obstacle puzzle!

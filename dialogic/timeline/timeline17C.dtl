@@ -1,14 +1,15 @@
-join Sterling right
+join Sterling rightmost [mirrored="true"]
 Sterling (Happy): You made the right choice. We move on Tromarvelia. Their king has defied every chance at peace.
 join Valentina center
 Valentina (Bored): The data confirms it — Magus production is shifting toward weaponized mana. They're preparing for total war.
 join Nataly left
 Nataly (Angry): If we hesitate, they’ll strike first. We take this chance… or lose everything.
 leave Nataly
-join Maya_adult left
+join Maya_adult leftmost
 Maya_adult (Shocked): So that's it...? You're siding with Cyber, with Sterling?
+update Sterling (Angry)
 leave Valentina
-join Player center
+join Player center [mirrored="true"]
 Player (Sad): Maya… it’s not about sides, please we need to do this
 Maya_adult (Angry): No, I'm sorry. Sterling wants control, we all know that. Order over freedom. You think that’s peace?
 Player (Sad): She’s trying to end the war.

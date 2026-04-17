@@ -1,9 +1,15 @@
-Zach: So… this is how Magus ends. 
-Player: You could’ve stopped.
-Zach: Kings will never stop...
-Player: I wanted you to listen.
-Nataly: End it already Phina, we can't change his mind
-Player: . . . 
+join Zach right
+Zach (Angry): So… this is how Magus ends.
+join Player left
+Player (Sad): You could’ve stopped.
+Zach (Angry): Kings will never stop!
+Player (Sad): I wanted you to listen.
+join Nataly leftmost
+Nataly (Sad): End it already Phina, we can't change his mind
+Player (Sad): . . .
+leave Zach
+leave Player
+leave Nataly
 [background arg="res://assets_image/Background/Black.png" fade="0.0"]
 Sterling: Zach eliminated. Magus command has collapsed.
 Sterling: New Aerandale and Tromarvelia are now under Cyber protection.

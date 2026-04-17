@@ -1,3 +1,6 @@
-Valentina: I'm sorry but this is as far you can go
-Player: Valentina...
-Maya_adult: Oh no, what should we do?!
+join Valentina leftmost
+Valentina (Angry): I'm sorry but this is as far you can go
+join Player center
+Player (Sad): Valentina...
+join Maya_adult rightmost
+Maya_adult (Shocked): Oh no, what should we do?!

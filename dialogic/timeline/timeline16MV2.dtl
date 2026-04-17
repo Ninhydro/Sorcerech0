@@ -1,13 +1,13 @@
 Gawr: RAWRR!!!!
-join Player right
+join Player rightmost
 Player (Normal): There have to be way to talk to him
 join Nataly center
 Nataly (Angry): We can't talk him out... maybe our choice really is to kill him...
-join Nora left
+join Nora leftmost
 Nora (Happy): I see that you've awaken Gawr
 Player (Shocked): Nora?!
 leave Player
-join Maya_adult right
+join Maya_adult rightmost
 Maya_adult (Shocked): What are you doing here?
 Nora (Happy): I'm here to stop Gawr from rampaging of course
 leave Nataly

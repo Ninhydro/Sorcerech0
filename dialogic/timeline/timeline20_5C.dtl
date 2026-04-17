@@ -1,8 +1,12 @@
-Varek_king: So… this is it… huh.
-Player: You left us no choice.
-Varek_king: I never had a choice… not after Alyra...
-Varek_king: End it. Or the war will never stop
-Player: I’m sorry.
+join Varek_king right
+Varek_king (Sad): So… this is it… huh.
+join Player left
+Player (Sad): You left us no choice.
+Varek_king (Sad): I never had a choice… not after Alyra...
+Varek_king (Angry): End it. Or the war will never stop
+Player (Sad): I’m sorry.
+leave Varek_king
+leave Player
 [background arg="res://assets_image/Background/Black.png" fade="0.0"]
 Sterling: Tromarvelia has fallen. New Aerandale is under Cyber protection.\
 You did well, Phina. Even without the Core.

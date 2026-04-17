@@ -1,6 +1,6 @@
 join Maya_adult center
 Maya_adult (Sad): He… he really changed.
-join Nataly right [mirrored="true"]
+join Nataly rightmost [mirrored="true"]
 Nataly (Sad): No. I think he’s still in there, just buried under too much rage.
-join Player left
+join Player leftmost
 Player (Sad): We couldn’t bring him back…

@@ -1,3 +1,6 @@
-Nataly: You’re not going anywhere without us!
-Player (Normal): Maya! Nataly!”
-Maya_adult: Hurry, pull him! I'll put spell on this boulder
+join Nataly left
+Nataly (Happy): You’re not going anywhere without us!
+join Player right
+Player (Happy): Maya! Nataly!”
+join Maya_adult leftmost
+Maya_adult (Happy): Hurry, pull him! I'll put spell on this boulder

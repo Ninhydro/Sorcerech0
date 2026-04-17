@@ -1,6 +1,6 @@
-join Varek_soldier (Happy) rightmost [mirrored="true"]
+join Varek_soldier (Happy) right [mirrored="true"]
 Varek_soldier (Sad): You're awake?
-join Alyra (Happy) right [mirrored="true"]
+join Alyra (Happy) left [mirrored="true"]
 Alyra (Sad): How are you feeling?
 join Player (Happy) center
 Player (Sad): I remember now, my name was Fini

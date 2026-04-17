@@ -1,6 +1,6 @@
-join Maya_adult left
+join Maya_adult leftmost
 Maya_adult (Sad): Phina?! Are you okay?!
-join Nataly right
+join Nataly rightmost
 Nataly (Sad): That energy... it’s pure Cyber Synchron. I've never see anything like this before
 join Player center
 Player (Happy): I remember… now.

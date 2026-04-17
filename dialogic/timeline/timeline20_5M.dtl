@@ -1,12 +1,18 @@
-Sterling: Fini… I’m sorry…
-Player: You mattered. You still do. But this… had to stop.
-Sterling: Fini... ... did you still remember that one time we watch the stary sky?
-Player: . . . 
-Sterling: If I cannot save my world... I will not let you twist it.\
+join Sterling left
+Sterling (Sad): Fini… I’m sorry…
+join Player right
+Player (Sad): You mattered. You still do. But this… had to stop.
+Sterling (Sad): Fini... ... did you still remember that one time we watch the stary sky?
+Player (Sad): . . .
+Sterling (Angry): If I cannot save my world... I will not let you twist it.\
 Protocol Omega… initiated.
-Maya_adult: What's this earthquake?! She triggered a self desctruct like spell! 
-Player: Everyone MOVE!
-Player: Sterling...
+leave Sterling
+join Maya_adult rightmost
+Maya_adult (Angry): What's this earthquake?! She triggered a self desctruct like spell!
+Player (Angry): Everyone MOVE!
+Player (Sad): Sterling...
+leave Player
+leave Maya_adult
 [background arg="res://assets_image/Background/Black.png" fade="0.0"]
 Nora: Oh God, You're saved
 Maya_adult: Yeah but everyone here is...

@@ -1,7 +1,11 @@
-Maya_adult: Phina what's wrong with you? Why are you attacking those people?
-Player (Normal): No more balance. No more begging.\
-The world doesn’t deserve harmony. 
-Maya_adult: Phina?  What are you talking about?!
-Nataly: Maya, Watch out!
-Player (Normal): I've decided to burn this hell world
-Nataly: Maya! we need to run for now
+join Maya_adult right
+Maya_adult (Shocked): Phina what's wrong with you? Why are you attacking those people?
+join Player left
+Player (Angry): No more balance. No more begging.\
+The world doesn’t deserve harmony.
+Maya_adult (Shocked): Phina?  What are you talking about?!
+leave Maya_adult
+join Nataly right [mirrored="true"]
+Nataly (Shocked): Maya, Watch out!
+Player (Angry): I've decided to burn this hell world
+Nataly (Angry): Maya! we need to run for now

@@ -1,6 +1,6 @@
-join Maya_adult right
+join Maya_adult rightmost
 Maya_adult: Where are we?
-join Lux left
+join Lux leftmost
 Lux: We're hidden inside the castle floor
 join Nataly center [mirrored="true"]
 Nataly: What? you're bring us inside the castle?

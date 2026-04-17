@@ -1,6 +1,6 @@
-join Sterling right [mirrored="true"]
+join Sterling rightmost [mirrored="true"]
 Sterling (Happy): Access granted. That was… impressive. You destroyed yourself. Efficient.
-join Maya_adult left
+join Maya_adult center
 Maya_adult (Shocked): ...That’s Sterling?
 join Nataly leftmost
 Nataly (Angry): Yeah. Don’t be fooled by the size.\
@@ -8,7 +8,7 @@ Sterling’s an AI older than any government left standing.
 Sterling (Happy): The fact that you made it here, You remember everything don’t you Fini…
 Sterling (Angry): No, you're not quite her. You're just another soul in her shell
 leave Maya_adult
-join Player left
+join Player center
 Player (Angry): Because if I stop, then the war will continue
 Sterling (Angry): An abstract response. I’ll ask plainly. What do you want?
 Player (Angry): Peace. A real one. Not controlled by fear or weapons.\
@@ -25,7 +25,7 @@ I will not stop you. For now.
 Sterling (Angry): But if you bring me his head... my resources, armies, and satellites are yours.
 leave Sterling
 Maya_adult (Sad): That… was intense. And she’s terrifying.
-join Nataly right [mirrored="true"]
+join Nataly rightmost [mirrored="true"]
 Nataly (Angry): She's very hard to talk to. We need to think of our next decision carefully
 Maya_adult (Happy): We don’t need to answer that today. Let’s get back. Plan our next move.
 Player (Sad): Sterling…

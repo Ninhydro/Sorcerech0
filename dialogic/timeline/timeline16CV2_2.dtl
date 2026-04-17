@@ -1,8 +1,8 @@
 replica_fini: You leave me no choice...
-join Nataly left
+join Nataly leftmost
 Nataly (Shocked): Oh no! She shot a rocket to the town
 join Maya_adult center
 Maya_adult (Angry): We have to stop it, hurry!
 replica_fini: Make your choice Fini
-join Player right
+join Player rightmost
 Player (Angry): (I have to stop the rocket)

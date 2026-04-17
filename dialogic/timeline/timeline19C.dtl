@@ -1,11 +1,13 @@
-Varek_king: So… this is what you’ve become.\
+join Varek_king right
+Varek_king (Sad): So… this is what you’ve become.\
 Siding as Sterling's pet
-Player: We tried to talk. You turned away.
-Varek_king: Cyber doesn’t want peace — they want a world of wires and silence.\
+join Varek_king left
+Player (Sad): We tried to talk. You turned away.
+Varek_king (Angry): Cyber doesn’t want peace — they want a world of wires and silence.\
 A kingdom where nothing breathes unless it’s programmed to.
-Player: That’s not true. Cyber gives life where Magus let it die.\
+Player (Angry): That’s not true. Cyber gives life where Magus let it die.\
 While you ordered loyalty, your people starved in your name.
-Varek_king: That was the old King, Now as I'm the king, I will be protecting them!
-Player: This is not you Varek
-Varek_king: Enough words.\
+Varek_king (Angry): That was the old King, Now as I'm the king, I will be protecting them!
+Player (Sad): This is not you Varek
+Varek_king (Angry): Enough words.\
 If you stand for Cyber… then you stand against me.

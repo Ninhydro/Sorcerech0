@@ -1,8 +1,13 @@
-join Player center
+join Nataly leftmost
 Nataly: Oh you're here, come on, everyone is waiting for you
+join Maya_adult rightmost
 Maya_adult: Or you need to go somewhere else first?
+join Player center
 Player: Hmm... (Proceeding will go to ending scene)
 - Continue to ending
+	leave Player
+	leave Maya_adult
+	leave Nataly
 	[background arg="res://assets_image/Background/Black.png" fade="0.0"]
 	Player (Happy): Oh everyone is here
 	Maya_adult: Yeah we're having a picnic, come join us
