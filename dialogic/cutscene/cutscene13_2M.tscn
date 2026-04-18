@@ -2858,6 +2858,7 @@ position = Vector2(79, 74)
 script = ExtResource("1_ampcr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(85.5, 56)
 shape = SubResource("RectangleShape2D_xwwtj")
 
@@ -2867,16 +2868,16 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(73, 86)
+position = Vector2(73, 101)
 zoom = Vector2(0.8, 0.8)
 
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="CutsceneMarker1" type="Marker2D" parent="."]
-position = Vector2(-335, 86)
+position = Vector2(-335, 102)
 
 [node name="CutsceneMarker2" type="Marker2D" parent="."]
-position = Vector2(73, 86)
+position = Vector2(73, 102)
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(-175, 134)

@@ -558,7 +558,7 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(9, -50)
+position = Vector2(9, -28)
 zoom = Vector2(0.8, 0.8)
 
 [node name="Marker2D" type="Marker2D" parent="."]

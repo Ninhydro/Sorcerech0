@@ -1088,7 +1088,6 @@ position = Vector2(-7, 3)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Uncle Betael" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-63, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_f2fo4")

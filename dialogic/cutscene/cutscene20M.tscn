@@ -4826,10 +4826,11 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-2, -27)
+position = Vector2(-2, -16)
 zoom = Vector2(0.6, 0.6)
 
 [node name="npc1" type="Sprite2D" parent="."]
+position = Vector2(0, 3)
 
 [node name="HealthSpawnMarker" type="Marker2D" parent="."]
 position = Vector2(-15, -106)
@@ -4861,7 +4862,6 @@ wait_time = 60.0
 position = Vector2(169, 102)
 
 [node name="Sterling" type="Sprite2D" parent="."]
-visible = false
 z_index = 2
 position = Vector2(-86, 74)
 scale = Vector2(0.6, 0.6)
@@ -4879,7 +4879,7 @@ libraries = {
 
 [node name="Maya" type="Sprite2D" parent="."]
 z_index = 2
-position = Vector2(128, 74)
+position = Vector2(222, 74)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_ssawh")
 hframes = 8

@@ -702,7 +702,7 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(96, 70)
+position = Vector2(96, 78)
 zoom = Vector2(0.8, 0.8)
 
 [node name="npc2" type="Sprite2D" parent="."]

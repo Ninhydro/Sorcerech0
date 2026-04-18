@@ -979,7 +979,7 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(100, -44)
+position = Vector2(100, -36)
 zoom = Vector2(0.8, 0.8)
 
 [node name="Marker2D" type="Marker2D" parent="."]
@@ -992,6 +992,7 @@ position = Vector2(196, -8)
 position = Vector2(52, -38)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_dprbb")
+flip_h = true
 hframes = 8
 vframes = 2
 frame = 8
@@ -1003,9 +1004,10 @@ libraries = {
 }
 
 [node name="Maya kid" type="Sprite2D" parent="."]
-position = Vector2(96, -38)
+position = Vector2(-1, -38)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_4xehl")
+flip_h = true
 hframes = 8
 vframes = 19
 frame = 139

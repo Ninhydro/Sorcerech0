@@ -1959,7 +1959,7 @@ position = Vector2(91.5, 30)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(89, 62)
+position = Vector2(89, 78)
 zoom = Vector2(0.8, 0.8)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -1984,7 +1984,6 @@ position = Vector2(1225, -5162)
 [node name="npc2" type="Sprite2D" parent="."]
 
 [node name="Nataly" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-136, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_prn37")

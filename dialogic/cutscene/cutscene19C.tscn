@@ -376,7 +376,6 @@ zoom = Vector2(0.8, 0.8)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Nataly" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(35, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_pw72a")

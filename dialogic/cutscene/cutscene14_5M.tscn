@@ -4789,6 +4789,7 @@ position = Vector2(79, 74)
 script = ExtResource("1_mtyl7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(-71, -10)
 shape = SubResource("RectangleShape2D_xwwtj")
 
@@ -4798,7 +4799,7 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-31, -10)
+position = Vector2(-31, -3)
 zoom = Vector2(0.7, 0.7)
 
 [node name="npc1" type="Sprite2D" parent="."]

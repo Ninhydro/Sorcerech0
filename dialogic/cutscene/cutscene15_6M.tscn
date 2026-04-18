@@ -5971,7 +5971,12 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-7, -2)
+position = Vector2(-7, 14)
+zoom = Vector2(0.8, 0.8)
+
+[node name="Camera2D2" type="Camera2D" parent="."]
+visible = false
+position = Vector2(1225, -5139)
 zoom = Vector2(0.8, 0.8)
 
 [node name="npc1" type="Sprite2D" parent="."]
@@ -5989,7 +5994,7 @@ position = Vector2(1353, -5122)
 position = Vector2(-71, 46)
 
 [node name="CutsceneMarker1" type="Marker2D" parent="."]
-position = Vector2(1225, -5162)
+position = Vector2(1225, -5138)
 
 [node name="Nataly" type="Sprite2D" parent="."]
 position = Vector2(1330, -5125)
@@ -6136,6 +6141,7 @@ offset_bottom = 3368.0
 color = Color(0, 0, 0, 1)
 
 [node name="WhiteOverlay" type="ColorRect" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0

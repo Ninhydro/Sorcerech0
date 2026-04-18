@@ -1226,7 +1226,7 @@ libraries = {
 [node name="npc2" type="Sprite2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(9, -58)
+position = Vector2(9, -56)
 zoom = Vector2(0.6, 0.6)
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
@@ -1248,7 +1248,6 @@ wait_time = 5.0
 position = Vector2(-79, 65)
 
 [node name="Lux" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(0, 34)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_fckyq")

@@ -2269,7 +2269,7 @@ zoom = Vector2(0.8, 0.8)
 
 [node name="Camera2D2" type="Camera2D" parent="."]
 visible = false
-position = Vector2(-1519, 246)
+position = Vector2(-1519, 277)
 zoom = Vector2(0.8, 0.8)
 
 [node name="Marker2D" type="Marker2D" parent="."]
@@ -2304,8 +2304,7 @@ position = Vector2(-1519, 278)
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Maya kid" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(-1547, 278)
+position = Vector2(-23, -24)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_yehhj")
 hframes = 8
@@ -2319,7 +2318,6 @@ libraries = {
 }
 
 [node name="Alyra" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-1439, 278)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_nl6ah")
@@ -2335,7 +2333,6 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-1467, 278)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_u47py")

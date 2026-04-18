@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://divyak7nalilb" path="res://assets_image/placeholder/Props Items and VFX/fireball/spritesheet.png" id="7_pw2vs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
-size = Vector2(131, 75)
+size = Vector2(131, 103)
 
 [sub_resource type="Animation" id="Animation_wx1nw"]
 resource_name = "anim1"
@@ -3128,7 +3128,7 @@ position = Vector2(79, 74)
 script = ExtResource("1_d1t25")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-4.5, -27.5)
+position = Vector2(-4.5, -13.5)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

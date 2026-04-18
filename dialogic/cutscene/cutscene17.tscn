@@ -788,13 +788,12 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(96, 70)
+position = Vector2(96, 78)
 zoom = Vector2(0.8, 0.8)
 
 [node name="npc1" type="Sprite2D" parent="."]
 
 [node name="Nataly" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(80, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_s33cd")
@@ -809,7 +808,6 @@ libraries = {
 }
 
 [node name="Maya" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(24, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_evmds")
