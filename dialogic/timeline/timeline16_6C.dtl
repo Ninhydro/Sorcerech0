@@ -16,12 +16,12 @@ leave Maya_adult
 join Valentina leftmost
 Valentina (Bored): I received message to all resident of Exactlyion from Sterling System
 leave Nataly
-join Sterling right [mirrored="true"]
-Sterling (Happy): My dear citizen of Exactlyion. We're been invaded by spy from our Magus enemies
-Sterling (Angry): The spy was my dear former sister... She was brainwashed by the Magus King
-Sterling (Angry): Her name is Fini. please report to your nearest officer if you seen her
-Sterling (Angry): That' all for now
-leave Sterling
+join Sterling_holo right [mirrored="true"]
+Sterling_holo (Happy): My dear citizen of Exactlyion. We're been invaded by spy from our Magus enemies
+Sterling_holo (Angry): The spy was my dear former sister... She was brainwashed by the Magus King
+Sterling_holo (Angry): Her name is Fini. please report to your nearest officer if you seen her
+Sterling_holo (Angry): That' all for now
+leave Sterling_holo
 Valentina (Bored): As you see, you're on wanted list now
 join Nataly rightmost [mirrored="true"]
 Nataly (Angry): That Sterling!

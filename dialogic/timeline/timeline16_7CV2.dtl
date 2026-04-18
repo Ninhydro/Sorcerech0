@@ -7,12 +7,12 @@ Player (Sad): I remember… now.
 Robot: Attention citizen of Exactlyion, we got new message from our leader.
 Nataly (Angry): Sterling!
 leave Maya_adult
-join Sterling right [mirrored="true"]
-Sterling (Happy): My dear citizen of Exactlyion. We're been invaded by spy from our Magus enemies
-Sterling (Angry): The spy was my dear former sister... She was brainwashed by the Magus King
-Sterling (Angry): Her name is Fini. please report to your nearest officer if you seen her
-Sterling (Angry): That' all for now
-leave Sterling
+join Sterling_holo right [mirrored="true"]
+Sterling_holo (Happy): My dear citizen of Exactlyion. We're been invaded by spy from our Magus enemies
+Sterling_holo (Angry): The spy was my dear former sister... She was brainwashed by the Magus King
+Sterling_holo (Angry): Her name is Fini. please report to your nearest officer if you seen her
+Sterling_holo (Angry): That' all for now
+leave Sterling_holo
 Nataly (Angry): Ah great, now we're on the  wanted list
 Nataly (Angry): That Sterling!
 join Maya_adult rightmost

@@ -1,6 +1,7 @@
-Valentina (Happy): I'm building a machine that able to produce a special microchip
-Valentina (Happy): But I need a high amount of kinetic energy, which you can help me with
-join Player (Happy) right [mirrored="true"]
+join Valentina_holo right [mirrored="true"]
+Valentina_holo (Happy): I'm building a machine that able to produce a special microchip
+Valentina_holo (Happy): But I need a high amount of kinetic energy, which you can help me with
+join Player (Happy) left [mirrored="true"]
 Player (Happy): How do I help?
 Valentina (Happy): Use these canon and keep moving to the goal. Move like a pinball!
 Valentina (Happy): The faster you keep moving to the goal the greater kinetic energy accumulated
