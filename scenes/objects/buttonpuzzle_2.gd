@@ -17,7 +17,13 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
+func _process(delta):
 
+	if Global.valentina_dead == false:
+		pass
+	elif Global.valentina_dead == true:
+		queue_free()
+		
 func _on_body_entered(body: Node2D) -> void:
 	if not _is_valid_press_body(body):
 		return

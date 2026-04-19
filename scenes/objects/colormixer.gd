@@ -36,7 +36,12 @@ func _ready():
 	add_to_group("ColorMixers")
 	body_entered.connect(_on_body_entered)
 
-
+func _process(delta):
+	if Global.nora_dead == false:
+		pass
+	elif Global.nora_dead == true:
+		queue_free()
+		
 func _on_body_entered(body: Node):
 	if body is ColorObject and not is_mixing and body.is_available_for_mixing:
 		add_color_to_mix(body)

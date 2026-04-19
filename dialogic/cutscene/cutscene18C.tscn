@@ -2130,7 +2130,6 @@ libraries = {
 }
 
 [node name="Nora" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(205, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_y18ts")
@@ -2146,8 +2145,7 @@ libraries = {
 }
 
 [node name="Valentina" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(15, 87)
+position = Vector2(60, 87)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("5_5rg5x")
 hframes = 7

@@ -30,6 +30,10 @@ func _process(delta: float) -> void:
 	if is_moving:
 		_move_door(delta)
 
+	if Global.valentina_dead == false:
+		pass
+	elif Global.valentina_dead == true:
+		queue_free()
 
 # Called by buttons when they become pressed (first time)
 func register_button_pressed() -> void:

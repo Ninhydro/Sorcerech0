@@ -25,6 +25,12 @@ func _ready():
 func _process(delta):
 	if $AnimationPlayer:
 		$AnimationPlayer.speed_scale = Global.global_time_scale
+
+	if Global.nora_dead == false:
+		pass
+	elif Global.nora_dead == true:
+		queue_free()
+		
 # Called by ExplosiveColorObject when its explosion hits the door
 func on_explosive_hit():
 	if destroyed:

@@ -22,6 +22,12 @@ func _ready():
 		else:
 			print("Sign: door_path is set, but node is missing or not ExplosiveDoor.")
 
+func _process(delta):
+	if Global.nora_dead == false:
+		pass
+	elif Global.nora_dead == true:
+		queue_free()
+		
 func _on_body_entered(body: Node2D) -> void:
 	if body == Global.playerBody:
 		player_near = true
