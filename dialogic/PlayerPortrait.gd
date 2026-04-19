@@ -1,5 +1,5 @@
 # PlayerPortrait.gd
-extends Node2D
+extends DialogicPortrait 
 
 @onready var portrait_sprite: Sprite2D = $PortraitSprite
 
@@ -11,6 +11,10 @@ var ultimatemagus_portraits: Dictionary = {}
 var ultimatecyber_portraits: Dictionary = {}
 
 var portraits_initialized: bool = false
+
+var _prev_z_index := 0
+var unhighlighted_color := Color.DARK_GRAY
+
 
 func _ready():
 	if not is_instance_valid(portrait_sprite):
@@ -77,6 +81,7 @@ func set_all_portraits():
 
 
 func _update_portrait(_character: DialogicCharacter, portrait_name_with_parens: String) -> void:
+	apply_character_and_portrait(_character, portrait_name_with_parens)
 	if not portraits_initialized:
 		print("PlayerPortrait: Portraits not initialized yet. Initializing now...")
 		set_all_portraits()
@@ -182,7 +187,14 @@ func _get_covered_rect() -> Rect2:
 func _should_do_portrait_update(_character: DialogicCharacter, _portrait_name: String) -> bool:
 	return true
 
+func _set_mirror(mirror: bool) -> void:
+	if is_instance_valid(portrait_sprite):
+		portrait_sprite.flip_h = mirror
+
+	
+
 func _highlight() -> void:
+	# --- Existing visual tween (scale + brightness) ---
 	if is_instance_valid(portrait_sprite):
 		if portrait_sprite.has_meta("highlight_tween"):
 			var existing_tween = portrait_sprite.get_meta("highlight_tween")
@@ -194,7 +206,13 @@ func _highlight() -> void:
 		highlight_tween.tween_property(portrait_sprite, "scale", Vector2(1.05, 1.05), 0.2)
 		portrait_sprite.set_meta("highlight_tween", highlight_tween)
 
+	# --- NEW: Bring this portrait to the front (z_index) ---
+	_prev_z_index = DialogicUtil.autoload().Portraits.get_character_info(character).get('z_index', 0)
+	DialogicUtil.autoload().Portraits.change_character_z_index(character, 99)
+
+
 func _unhighlight() -> void:
+	# --- Existing visual tween (reset) ---
 	if is_instance_valid(portrait_sprite):
 		if portrait_sprite.has_meta("highlight_tween"):
 			var existing_tween = portrait_sprite.get_meta("highlight_tween")
@@ -205,3 +223,7 @@ func _unhighlight() -> void:
 		unhighlight_tween.tween_property(portrait_sprite, "modulate", Color(1, 1, 1, 1), 0.2)
 		unhighlight_tween.tween_property(portrait_sprite, "scale", Vector2(1, 1), 0.2)
 		portrait_sprite.set_meta("highlight_tween", unhighlight_tween)
+
+	# --- NEW: Restore previous z_index ---
+	DialogicUtil.autoload().Portraits.change_character_z_index(character, _prev_z_index)
+	
