@@ -71,6 +71,7 @@ collision_layer = 16
 collision_mask = 2
 script = ExtResource("1_6vvu8")
 speech_bubble_scene = ExtResource("3_h2uyu")
+sprites_for_timeline = Array[Texture2D]([null])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -16.5)

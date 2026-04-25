@@ -343,6 +343,7 @@ variables={
 "Global.ending_magus": false,
 "Global.game_cleared": false,
 "Global.gawr_dead": false,
+"Global.last_choice_made": "",
 "Global.nora_dead": false,
 "Global.player_status": "",
 "Global.replica_fini_dead": false,

@@ -235,6 +235,7 @@ func normal_time():
 #Timeline
 var timeline = 0 
 #0 prologue cutscene, after done change to 1, 
+#Part 1:
 #1 tutorial mode, to house (block until maya house)
 #2 minigame mode, block until house and guide to minigame
 #3 after minigame expand to town, starting chapter part 1 but stop until town, see dialog npc new aerendale
@@ -242,8 +243,8 @@ var timeline = 0
 #Quest 2x: find out Tromarvelia & Exactlyion
 #5 after unlock both form go to part 1 climax, change npc dialog about war
 #Quest 1x: go back to New Aerendale
+#Part 2:
 #6-6.2 start part 2, change npc dialog for part 2
-
 #Quest 1x: Talk back at junkyard
 #6.5
 #Quest 2x: Explore Tromarvelia & Exactlyion
@@ -253,7 +254,8 @@ var timeline = 0
 #Quest 1x: Ending Magus, Cyber, Genocide, True/Pacifist
 #9 restart timeline if not true or pacifist
 #10 Epilogue mode (after true end or pacifist end) final change on npc dialog
-
+var last_choice_made: String
+var npc_choice_memory: Dictionary = {}   # stores choices per NPC and timeline
 
 var magus_form = false
 var cyber_form = false
@@ -679,7 +681,7 @@ func get_save_data() -> Dictionary:
 		"explode_door": explode_door,
 		"cannon_goal_door_destroyed": cannon_goal_door_destroyed,
 		"final_puzzle_door": final_puzzle_door,
-		
+		"NPC_choices": npc_choice_memory,
 		"demo": demo,
 		
 		
@@ -764,7 +766,8 @@ func apply_load_data(data: Dictionary):
 	explode_door = data.get("explode_door", false)
 	cannon_goal_door_destroyed = data.get("cannon_goal_door_destroyed", false)
 	final_puzzle_door = data.get("final_puzzle_door", false)
-	
+	npc_choice_memory = data.get("NPC_choices", false)
+
 	demo = data.get("demo", false)
 
 	print("Global: Save data loaded successfully.")
@@ -859,6 +862,7 @@ func reset_to_defaults():
 	explode_door = false
 	cannon_goal_door_destroyed = false
 	final_puzzle_door = false
+	npc_choice_memory = {}
 	
 	demo = false
 	

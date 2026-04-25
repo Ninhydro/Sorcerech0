@@ -1,3 +1,7 @@
 join Uncle_Betael (Angry) center
-Uncle_Betael (Angry): Oh, hi small guy, Are you here for more work? 
+Uncle_Betael (Angry): Oh, hi small guy, Are you here for more work?
 Uncle_Betael (Happy): I have some battery for you later or maybe you want oil?
+- A | [=""]
+	set {Global.last_choice_made} = "A"
+- B | [=""]
+	set {Global.last_choice_made} = "B"

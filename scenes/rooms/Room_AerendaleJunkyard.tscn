@@ -161,8 +161,11 @@ script = ExtResource("1_xsv6q")
 
 [node name="NPC" type="Node2D" parent="."]
 
+[node name="Maya kid" parent="NPC" instance=ExtResource("27_nxexn")]
+position = Vector2(-70, 367)
+
 [node name="Uncle Betael" parent="NPC" instance=ExtResource("26_gkrn8")]
-position = Vector2(-229, 369)
+position = Vector2(-39, 65)
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]
 visible = false
@@ -661,9 +664,6 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene21T" parent="." instance=ExtResource("16_jysj8")]
 position = Vector2(295.573, -60.6841)
-
-[node name="Maya kid" parent="." instance=ExtResource("27_nxexn")]
-position = Vector2(-70, 367)
 
 [node name="cutscene17_2" parent="." instance=ExtResource("27_rp2os")]
 position = Vector2(119.047, -60.1308)
