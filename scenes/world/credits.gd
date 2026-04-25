@@ -41,7 +41,8 @@ var credits = [
 	],[
 		"-Illustration CG Art-",
 		"Imperial Cat Circus",
-		"Nur sandi"
+		"Nur sandi",
+		"Mommy Clara"
 
 	],[
 		"-BGM-",
