@@ -165,7 +165,7 @@ script = ExtResource("1_xsv6q")
 position = Vector2(-70, 367)
 
 [node name="Uncle Betael" parent="NPC" instance=ExtResource("26_gkrn8")]
-position = Vector2(-39, 65)
+position = Vector2(-241, 369)
 
 [node name="NPC1" type="Sprite2D" parent="NPC"]
 visible = false

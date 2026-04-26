@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://baky2m7irkgi0"]
+[gd_scene load_steps=19 format=3 uid="uid://baky2m7irkgi0"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_anecf"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_gh3vf"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dkm5pxo2cyk1h" path="res://scenes/objects/puzzledoor.tscn" id="13_l0ofh"]
 [ext_resource type="PackedScene" uid="uid://bnasyvy0oaxae" path="res://scenes/objects/puzzledoor_1.tscn" id="14_a8pdl"]
 [ext_resource type="PackedScene" uid="uid://dpuc0x80rk5r" path="res://scenes/objects/buttonpuzzle_1.tscn" id="15_pfv6s"]
+[ext_resource type="PackedScene" uid="uid://bjhj4nrelo1e7" path="res://scenes/NPC_cutscene/nora.tscn" id="16_tjmdt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f1ip1"]
 size = Vector2(2369, 407)
@@ -345,3 +346,6 @@ position = Vector2(-1014, -120)
 door_target = NodePath("../puzzledoor1")
 stay_pressed = false
 metadata/_edit_lock_ = true
+
+[node name="Nora2" parent="." instance=ExtResource("16_tjmdt")]
+position = Vector2(-131, 81)

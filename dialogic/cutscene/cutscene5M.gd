@@ -18,6 +18,7 @@ var player_in_range = null
 @onready var varek: Sprite2D = $Varek_soldier
 
 
+	
 func _on_body_entered(body):
 	print("Cutscene1: Body entered - ", body.name if body else "null")
 	

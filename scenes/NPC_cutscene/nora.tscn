@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://bjhj4nrelo1e7"]
+[gd_scene load_steps=14 format=3 uid="uid://bjhj4nrelo1e7"]
 
-[ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_l122s"]
+[ext_resource type="Script" path="res://scripts/NPC/nora.gd" id="1_jl1ve"]
 [ext_resource type="Texture2D" uid="uid://cifdgvorr53t7" path="res://assets_image/Characters/Nora/Nora-Sheet.png" id="2_kd4at"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_74i72"]
 
 [sub_resource type="Animation" id="Animation_lw422"]
 length = 0.001
@@ -129,8 +130,17 @@ _data = {
 "walk": SubResource("Animation_gogrh")
 }
 
-[node name="Nora" type="Node2D"]
-script = ExtResource("1_l122s")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cskw2"]
+size = Vector2(14, 31)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6w8g7"]
+size = Vector2(32, 49)
+
+[node name="Nora" type="CharacterBody2D"]
+z_index = -1
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_jl1ve")
 
 [node name="Nora" type="Sprite2D" parent="."]
 position = Vector2(0, -39)
@@ -145,3 +155,20 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_n85i5")
 }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_cskw2")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_6w8g7")
+
+[node name="BubbleTimer" type="Timer" parent="."]
+
+[node name="BubbleContainer" type="Node2D" parent="."]
+
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_74i72")]
+visible = false

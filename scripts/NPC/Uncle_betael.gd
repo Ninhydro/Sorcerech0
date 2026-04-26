@@ -6,7 +6,9 @@ extends CharacterBody2D
 @onready var bubble_timer: Timer = $BubbleTimer
 
 # Configuration
-@export var dialog_timeline: String = "betael1"
+@export var dialog_timeline1: String = "betael1"
+@export var dialog_timeline2: String = "betael2"
+@export var dialog_timeline3: String = "betael3"
 @export var bubble_texts: Array[String] = [
 	#"Ah You're back",
 	#"Need something?",
@@ -26,31 +28,28 @@ var play_once: bool = false
 var player_in_range: bool = false 
 var current_bubble = null  # Track current bubble instance
 
-@export var sprites_for_timeline: Array[Texture2D] = [] 
+#@export var sprites_for_timeline: Array[Texture2D] = [] 
 
 
-func get_current_dialog_timeline() -> String:
-	var stored_choice = Global.npc_choice_memory.get(name, {}).get(Global.timeline, null)
-	if stored_choice != null:
-		return dialog_timeline + "_" + stored_choice   # e.g. "betael_A"
-	# If no stored choice yet, use the base timeline (or base + "_choice" if you want a choice dialog)
-	return dialog_timeline   # change to dialog_timeline + "_choice" if first interaction should present options
 
-func update_sprite_by_timeline():
-	if sprites_for_timeline.size() >= Global.timeline and sprites_for_timeline[Global.timeline-1]:
-		sprite_2d.texture = sprites_for_timeline[Global.timeline-1]
+#func update_sprite_by_timeline():
+#	if sprites_for_timeline.size() >= Global.timeline and sprites_for_timeline[Global.timeline-1]:
+#		sprite_2d.texture = sprites_for_timeline[Global.timeline-1]
 
-func _on_choice_made(choice_data: Dictionary):
-	var choice_id = choice_data.get("id", "")
-	if choice_id == "":
-		choice_id = choice_data.get("text", "")
+#func _on_choice_made(choice_data: Dictionary):
+#	var choice_id = choice_data.get("id", "")
+#	if choice_id == "":
+#		choice_id = choice_data.get("text", "")
 	
-	if not Global.npc_choice_memory.has(name):
-		Global.npc_choice_memory[name] = {}
-	Global.npc_choice_memory[name][Global.timeline] = choice_id
-	print("Stored choice ", choice_id, " for ", name, " timeline ", Global.timeline)
+#	if not Global.npc_choice_memory.has(name):
+#		Global.npc_choice_memory[name] = {}
+#	Global.npc_choice_memory[name][Global.timeline] = choice_id
+#	print("Stored choice ", choice_id, " for ", name, " timeline ", Global.timeline)
 
 
+#if Global.npc_choice_memory.get("Uncle Betael", {}).get(7, "") == "A":
+	#print("Betael was helped on timeline 7")
+	
 func _ready():
 	print("NPC _ready called")
 	# Initially hide the NPC
@@ -69,12 +68,12 @@ func _ready():
 
 func _process(delta):
 	# Only process if timeline condition is met
-	print(Global.npc_choice_memory)
+	#print(Global.npc_choice_memory)
 	if not Global.timeline >= 3:
 		return
 	
 	# Make visible when condition is met
-	if not visible:
+	if not visible and Global.timeline >= 3:
 		visible = true
 		animation_player.play("idle")
 	
@@ -94,7 +93,8 @@ func _process(delta):
 		player_in_range and 
 		Input.is_action_just_pressed("yes") and 
 		not is_dialog_active and
-		not play_once):
+		not play_once and
+		visible):
 		
 		_start_dialog()
 
@@ -110,7 +110,13 @@ func _start_dialog():
 	interaction_cooldown = 1
 	
 	# Start Dialogic
-	Dialogic.start(dialog_timeline, false)
+	if Global.timeline < 6:
+		Dialogic.start(dialog_timeline1, false)
+	elif  Global.timeline >= 6 and  Global.timeline < 10:
+		Dialogic.start(dialog_timeline2, false)
+	elif Global.timeline >= 10:
+		Dialogic.start(dialog_timeline3, false)
+		
 	Dialogic.timeline_ended.connect(_on_dialog_end, CONNECT_ONE_SHOT)
 
 	# Remove current bubble if exists

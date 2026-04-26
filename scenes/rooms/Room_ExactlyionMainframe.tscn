@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://djx4sn2eal13h"]
+[gd_scene load_steps=14 format=3 uid="uid://djx4sn2eal13h"]
 
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_b6t2i"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_mpnj4"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dev7yrvstdbqy" path="res://assets_image/Characters/GigaSter/Gigaster.png" id="7_blild"]
 [ext_resource type="Texture2D" uid="uid://cqbdc5qcon2lg" path="res://assets_image/Objects/object0.png" id="8_uci3q"]
 [ext_resource type="PackedScene" uid="uid://80itv60pmloo" path="res://dialogic/cutscene/cutscene20_5M.tscn" id="9_gxem3"]
+[ext_resource type="PackedScene" uid="uid://cd8brqhmhhuj8" path="res://scenes/NPC_cutscene/sterling.tscn" id="10_82tqg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kpp03"]
 size = Vector2(1336, 584)
@@ -134,3 +135,6 @@ position = Vector2(520, 56)
 
 [node name="cutscene20_5M" parent="." instance=ExtResource("9_gxem3")]
 position = Vector2(353.352, -41.0613)
+
+[node name="Sterling" parent="." instance=ExtResource("10_82tqg")]
+position = Vector2(544, 65)

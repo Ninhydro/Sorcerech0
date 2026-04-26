@@ -1,17 +1,18 @@
 extends CharacterBody2D
 
-@onready var sprite_2d: Sprite2D = $"Maya kid"
-@onready var animation_player: AnimationPlayer =$"Maya kid/AnimationPlayer"
+@onready var sprite_2d: Sprite2D = $Alyra
+@onready var animation_player: AnimationPlayer = $Alyra/AnimationPlayer
 @onready var interaction_area: Area2D = $InteractionArea
 @onready var bubble_timer: Timer = $BubbleTimer
 
 # Configuration
-@export var dialog_timeline: String = "maya_kid1"
+#@export var dialog_timeline1: String = "betael1"
+@export var dialog_timeline2: String = "alyra2"
+@export var dialog_timeline3: String = "alyra3"
 @export var bubble_texts: Array[String] = [
-	#"Phina you're here!",
-	#"Wanna some batteries?",
-	#"Wanna play with me?",
-	
+	#"Ah You're back",
+	#"Need something?",
+	#"Old Uncle Betael here to help"
 ]
 @export var bubble_interval_min: float = 5.0
 @export var bubble_interval_max: float = 15.0
@@ -27,11 +28,33 @@ var play_once: bool = false
 var player_in_range: bool = false 
 var current_bubble = null  # Track current bubble instance
 
+#@export var sprites_for_timeline: Array[Texture2D] = [] 
+
+
+
+#func update_sprite_by_timeline():
+#	if sprites_for_timeline.size() >= Global.timeline and sprites_for_timeline[Global.timeline-1]:
+#		sprite_2d.texture = sprites_for_timeline[Global.timeline-1]
+
+#func _on_choice_made(choice_data: Dictionary):
+#	var choice_id = choice_data.get("id", "")
+#	if choice_id == "":
+#		choice_id = choice_data.get("text", "")
+	
+#	if not Global.npc_choice_memory.has(name):
+#		Global.npc_choice_memory[name] = {}
+#	Global.npc_choice_memory[name][Global.timeline] = choice_id
+#	print("Stored choice ", choice_id, " for ", name, " timeline ", Global.timeline)
+
+
+#if Global.npc_choice_memory.get("Uncle Betael", {}).get(7, "") == "A":
+	#print("Betael was helped on timeline 7")
+	
 func _ready():
 	print("NPC _ready called")
 	# Initially hide the NPC
 	visible = false
-	animation_player.play("idle")
+	
 	# Start bubble timer
 	_reset_bubble_timer()
 	
@@ -39,24 +62,27 @@ func _ready():
 	interaction_area.body_entered.connect(_on_body_entered)
 	interaction_area.body_exited.connect(_on_body_exited)
 	bubble_timer.timeout.connect(_show_random_bubble)
+	
+	#update_sprite_by_timeline() 
+	
 
 func _process(delta):
 	# Only process if timeline condition is met
-	
-	if not (Global.timeline >= 3.5 and Global.timeline <= 5):
-		visible = false
+	#print(Global.npc_choice_memory)
+	if not Global.timeline >= 6:
 		return
 	
 	# Make visible when condition is met
-	#if not visible:
-	#	visible = true
-	#	animation_player.play("idle")
+	if not visible and Global.timeline >= 6 and Global.alyra_dead == false:
+		visible = true
+		animation_player.play("idle")
 	
 	# Flip sprite based on player position
 	if Global.player:
 		sprite_2d.flip_h = Global.player.global_position.x < global_position.x
 	
 	# Handle cooldown
+	#print(is_dialog_active)
 	if interaction_cooldown > 0:
 		interaction_cooldown -= delta
 		if interaction_cooldown <= 0:
@@ -67,7 +93,7 @@ func _process(delta):
 		player_in_range and 
 		Input.is_action_just_pressed("yes") and 
 		not is_dialog_active and
-		not play_once and 
+		not play_once and
 		visible):
 		
 		_start_dialog()
@@ -81,18 +107,34 @@ func _start_dialog():
 	play_once = true
 	
 	# Start cooldown
-	interaction_cooldown = 1.0
+	interaction_cooldown = 1
 	
 	# Start Dialogic
-	Dialogic.start(dialog_timeline, false)
-	
+	#if Global.timeline < 6:
+	#	Dialogic.start(dialog_timeline1, false)
+	if  Global.timeline >= 6 and  Global.timeline < 10 and Global.alyra_dead == false:
+		Dialogic.start(dialog_timeline2, false)
+	elif Global.timeline >= 10 and Global.alyra_dead == false:
+		Dialogic.start(dialog_timeline3, false)
+		
+	Dialogic.timeline_ended.connect(_on_dialog_end, CONNECT_ONE_SHOT)
+
 	# Remove current bubble if exists
 	remove_current_bubble()
 	
 	# Reset after delay
-	reset_play_once_after_delay(10.0)
+	#reset_play_once_after_delay(interaction_cooldown)
 	_reset_dialog_state_after_timeout()
 
+func _on_dialog_end():
+	is_dialog_active = false
+	# Store the global variable into persistent memory
+	if Global.last_choice_made != "":
+		if not Global.npc_choice_memory.has(name):
+			Global.npc_choice_memory[name] = {}
+		Global.npc_choice_memory[name][Global.timeline] = Global.last_choice_made
+		Global.last_choice_made = "" # Reset for next time
+		
 func _reset_dialog_state_after_timeout():
 	await get_tree().create_timer(0.5).timeout
 	var dialogic_nodes = get_tree().get_nodes_in_group("dialogic_main_node")
@@ -265,6 +307,7 @@ func _on_body_entered(body):
 func _on_body_exited(body):
 	if body == Global.player:
 		player_in_range = false
+		play_once = false
 		print("Player exited interaction area")
 
 func reset_play_once_after_delay(seconds: float = 10.0):
@@ -285,3 +328,5 @@ func _input(event):
 			create_speech_bubble_scene("MANUAL TEST BUBBLE!")
 		else:
 			print("Cannot test: Global.timeline < 3")
+
+

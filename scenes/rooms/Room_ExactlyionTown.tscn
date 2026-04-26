@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=41 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -33,6 +33,7 @@
 [ext_resource type="PackedScene" uid="uid://v0h32bpwx4lr" path="res://dialogic/cutscene/cutscene07.tscn" id="30_wt683"]
 [ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="32_k08rr"]
 [ext_resource type="PackedScene" uid="uid://ted2qp5nhbhq" path="res://dialogic/cutscene/cutsceneLux0.tscn" id="33_cexh0"]
+[ext_resource type="PackedScene" uid="uid://cd8brqhmhhuj8" path="res://scenes/NPC_cutscene/sterling.tscn" id="34_b1ffn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5eae"]
 size = Vector2(4176, 608)
@@ -1050,7 +1051,10 @@ position = Vector2(-634.506, -115.542)
 position = Vector2(-363, -59)
 
 [node name="cutsceneLux" parent="." instance=ExtResource("33_cexh0")]
-position = Vector2(247.469, 54.0079)
+position = Vector2(247.469, 56.0079)
+
+[node name="Sterling" parent="." instance=ExtResource("34_b1ffn")]
+position = Vector2(1608, 81)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

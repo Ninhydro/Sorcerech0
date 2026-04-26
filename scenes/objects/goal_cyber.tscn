@@ -1451,7 +1451,7 @@ libraries = {
 }
 
 [node name="Valentina" type="Sprite2D" parent="."]
-position = Vector2(20, 578)
+position = Vector2(123, 578)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("5_yyq1p")
 flip_h = true

@@ -766,9 +766,14 @@ func apply_load_data(data: Dictionary):
 	explode_door = data.get("explode_door", false)
 	cannon_goal_door_destroyed = data.get("cannon_goal_door_destroyed", false)
 	final_puzzle_door = data.get("final_puzzle_door", false)
-	npc_choice_memory = data.get("NPC_choices", false)
+	npc_choice_memory = data.get("NPC_choices", {})
 
-	demo = data.get("demo", false)
+	# Force demo off for full game builds
+	var is_full_game = true   # set this via a build flag or constant
+	if is_full_game:
+		demo = false
+	else:
+		demo = data.get("demo", false)
 
 	print("Global: Save data loaded successfully.")
 
@@ -864,7 +869,7 @@ func reset_to_defaults():
 	final_puzzle_door = false
 	npc_choice_memory = {}
 	
-	demo = false
+	demo = true
 	
 # Helper functions for quest marker serialization
 func _serialize_quest_markers() -> Dictionary:

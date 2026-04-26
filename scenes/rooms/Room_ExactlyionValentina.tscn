@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://c2nv1v2dftw2b" path="res://scenes/world/CyberSpot.tscn" id="9_8umyr"]
 [ext_resource type="PackedScene" uid="uid://cqe2806456nq5" path="res://scenes/world/CanonBounce.tscn" id="10_fkhx6"]
 [ext_resource type="PackedScene" uid="uid://bynnmdej0ya1q" path="res://scenes/objects/goal_cyber.tscn" id="11_rqjc1"]
-[ext_resource type="PackedScene" uid="uid://d0t6dr5qww2g8" path="res://scenes/NPC/valentina1.tscn" id="12_jikgo"]
+[ext_resource type="PackedScene" uid="uid://b7ddruc2isjnt" path="res://scenes/NPC_cutscene/valentina.tscn" id="14_nkpgx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7sxdh"]
 size = Vector2(2296, 728)
@@ -406,7 +406,7 @@ position = Vector2(131, -156)
 use_exactlyion_style = true
 
 [node name="GrapplePoint12" parent="." instance=ExtResource("8_1kmoo")]
-position = Vector2(432, -36)
+position = Vector2(432, -35)
 use_exactlyion_style = true
 
 [node name="GrapplePoint11" parent="." instance=ExtResource("8_1kmoo")]
@@ -429,7 +429,5 @@ use_exactlyion_style = true
 position = Vector2(958, -203)
 use_exactlyion_style = true
 
-[node name="valentina1" parent="." node_paths=PackedStringArray("marker_minigame", "marker_timeline_5") groups=["valentina"] instance=ExtResource("12_jikgo")]
-position = Vector2(1232, 48)
-marker_minigame = NodePath("../SpawnPoints/Valentina1")
-marker_timeline_5 = NodePath("../SpawnPoints/Valentina2")
+[node name="Valentina" parent="." instance=ExtResource("14_nkpgx")]
+position = Vector2(-272, 65)

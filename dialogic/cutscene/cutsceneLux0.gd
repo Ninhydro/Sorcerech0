@@ -15,15 +15,18 @@ var player_in_range = null
 var lux_encounter = false
 @export var maguspos = false 
 
+func _ready():
+	luxanim.play("idle")
+	if maguspos == true:
+		lux.flip_h = true
+	elif maguspos == false:
+		lux.flip_h = false
+	super._ready()
+	
 func _process(delta):
 	if Global.timeline <= 6.5:
 		if lux_encounter == false:
 			lux.visible = true
-			luxanim.play("idle")
-			if maguspos == true:
-				lux.flip_h = true
-			elif maguspos == false:
-				lux.flip_h = false
 		else:
 			lux.visible = false
 	else:

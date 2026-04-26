@@ -1,6 +1,6 @@
 # ValentinaNPC.gd
 extends CharacterBody2D
-
+#NOT USED
 @onready var sprite = $Sprite2D
 @onready var animation_player = $AnimationPlayer
 
@@ -137,8 +137,10 @@ func show_valentina_at_timeline_5():
 	#	return
 	
 	#print("Valentina: Showing at timeline 5")
-	is_visible = true
-	visible = true
+	#is_visible = true
+	#visible = true
+	is_visible = false
+	visible = false
 	#collision_layer = 1
 	#collision_mask = 1
 	

@@ -87,8 +87,9 @@ func _ready():
 		#if minigame_stations.size() > 0:
 		#	var final_station = get_node(minigame_stations[minigame_stations.size() - 1])
 		#	global_position = final_station.global_position
+		visible = false
 		move_to_final_position()
-		start_final_position_bubbles()
+		#start_final_position_bubbles()
 		print("Nora: Minigame already completed (from Global flag) - disabled")
 	else:
 		# Check individual station completions from global flags
@@ -321,7 +322,7 @@ func complete_minigame(success: bool):
 		print("Nora: Wonderful! You made %s!" % ColorObject.ColorType.keys()[current_goal])
 		print("Nora: Station %d completed! Global flag set." % current_station_index)
 		
-		show_completion_speech() 
+		#show_completion_speech() 
 		stop_instruction_timer()
 		
 		if goals_completed < minigame_stations.size():
@@ -584,7 +585,7 @@ func move_to_final_position():
 		if animation_player:
 			animation_player.play("idle")
 		
-		start_final_position_bubbles()
+		#start_final_position_bubbles()
 		print("Nora: Moved to final position at ", global_position)
 	else:
 		print("Nora: Final position marker not found")
@@ -609,13 +610,13 @@ func move_to_final_position_animated():
 		target_position = final_marker.global_position
 		is_moving = true
 		print("Nora: Moving to final position from ", global_position, " to ", target_position)
-		
+		visible = false
 		# Wait for movement to complete using a better approach
 		await _wait_for_movement_completion()
 		
 		# Start bubbles after movement
 		print("Nora: Final position movement completed, starting bubbles")
-		start_final_position_bubbles()
+		#start_final_position_bubbles()
 	else:
 		print("Nora: Final position marker not found")
 
@@ -772,18 +773,38 @@ func remove_current_bubble():
 		current_bubble.queue_free()
 		current_bubble = null
 
+func _show_dialog_and_wait(timeline_name: String):
+	var finished = false
+	var connection = func(): finished = true
+	Dialogic.timeline_ended.connect(connection)
+	Dialogic.start(timeline_name, false)
+	await get_tree().create_timer(0.05).timeout   # ensure Dialogic starts
+	while not finished:
+		await get_tree().process_frame
+	Dialogic.timeline_ended.disconnect(connection)
+	
 func show_station_speech():
 	"""Show speech bubble based on current station"""
 	if Global.meet_nora_one == true:
+		var timeline = ""
 		match current_station_index:
-			0:  # Station 1 - Green
-				create_speech_bubble("Mix the orbs to create GREEN orb!")
-			1:  # Station 2 - Purple
-				create_speech_bubble("Alright, next one I need to get PURPLE orb")
-			2:  # Station 3 - Gold
-				create_speech_bubble("This is the final one, I need GOLDEN orb. You need to mix TWO TIMES!")
-			_:
-				pass
+			0: return   
+			1: timeline = "timeline6M_2"
+			2: timeline = "timeline6M_3"
+		if timeline:
+			await _show_dialog_and_wait(timeline)
+			if minigame_active and not stations_completed[current_station_index]:
+				start_instruction_timer()
+			
+		#match current_station_index:
+		#	0:  # Station 1 - Green
+		#		create_speech_bubble("Mix the orbs to create GREEN orb!")
+		#	1:  # Station 2 - Purple
+		#		create_speech_bubble("Alright, next one I need to get PURPLE orb")
+		#	2:  # Station 3 - Gold
+		#		create_speech_bubble("This is the final one, I need GOLDEN orb. You need to mix TWO TIMES!")
+		#	_:
+		#		pass
 	else:
 		pass
 		

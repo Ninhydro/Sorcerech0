@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://b7ddruc2isjnt"]
+[gd_scene load_steps=16 format=3 uid="uid://b7ddruc2isjnt"]
 
-[ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_p8nb0"]
+[ext_resource type="Script" path="res://scripts/NPC/valentina.gd" id="1_a4740"]
 [ext_resource type="Texture2D" uid="uid://dssfx0bup0cll" path="res://assets_image/Characters/Valentina/Valentina-Sheet.png" id="2_ajtb1"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_mef41"]
 
 [sub_resource type="Animation" id="Animation_421ll"]
 length = 0.001
@@ -163,8 +164,17 @@ _data = {
 "walk": SubResource("Animation_ffm2x")
 }
 
-[node name="Valentina" type="Node2D"]
-script = ExtResource("1_p8nb0")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lched"]
+size = Vector2(14, 31)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kqoge"]
+size = Vector2(32, 49)
+
+[node name="Valentina" type="CharacterBody2D"]
+z_index = -1
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_a4740")
 
 [node name="Valentina" type="Sprite2D" parent="."]
 position = Vector2(0, -39)
@@ -179,3 +189,20 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_iltfp")
 }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_lched")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_kqoge")
+
+[node name="BubbleTimer" type="Timer" parent="."]
+
+[node name="BubbleContainer" type="Node2D" parent="."]
+
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_mef41")]
+visible = false

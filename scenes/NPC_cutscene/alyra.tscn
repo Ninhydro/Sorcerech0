@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://caff580ncq3i5"]
+[gd_scene load_steps=21 format=3 uid="uid://caff580ncq3i5"]
 
-[ext_resource type="Script" path="res://scenes/NPC_cutscene/anim_npc.gd" id="1_qcdm5"]
+[ext_resource type="Script" path="res://scripts/NPC/alyra.gd" id="1_atvcd"]
 [ext_resource type="Texture2D" uid="uid://dibdc1w6uho4q" path="res://assets_image/Characters/Alyra/Alyra-Sheet.png" id="1_snuxq"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_l7ukv"]
 
 [sub_resource type="Animation" id="Animation_2qmwb"]
 length = 0.001
@@ -115,6 +116,22 @@ tracks/0/keys = {
 "values": [9]
 }
 
+[sub_resource type="Animation" id="Animation_cm3gx"]
+resource_name = "prepare"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Alyra:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
 [sub_resource type="Animation" id="Animation_863qq"]
 resource_name = "protect"
 length = 0.3
@@ -214,22 +231,6 @@ tracks/0/keys = {
 "values": [54, 55, 56, 57, 58, 59, 60, 61]
 }
 
-[sub_resource type="Animation" id="Animation_cm3gx"]
-resource_name = "prepare"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Alyra:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, 1]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yvq0w"]
 _data = {
 "RESET": SubResource("Animation_2qmwb"),
@@ -248,8 +249,17 @@ _data = {
 "walk": SubResource("Animation_7mkw6")
 }
 
-[node name="Alyra" type="Node2D"]
-script = ExtResource("1_qcdm5")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xupu"]
+size = Vector2(14, 31)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gelxt"]
+size = Vector2(32, 49)
+
+[node name="Alyra" type="CharacterBody2D"]
+z_index = -1
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_atvcd")
 
 [node name="Alyra" type="Sprite2D" parent="."]
 position = Vector2(0, -38)
@@ -264,3 +274,20 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_yvq0w")
 }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_0xupu")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_gelxt")
+
+[node name="BubbleTimer" type="Timer" parent="."]
+
+[node name="BubbleContainer" type="Node2D" parent="."]
+
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_l7ukv")]
+visible = false

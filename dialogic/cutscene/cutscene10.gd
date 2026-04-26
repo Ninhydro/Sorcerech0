@@ -206,7 +206,7 @@ func _on_cutscene_end():
 	Global.enable_health_regeneration() 
 	Global.health_regeneration_rate = 0.25
 	
-	Global.demo = false
+	#Global.demo = false
 	
 	if Global.demo == true:
 		Global.timeline = 6
@@ -217,7 +217,8 @@ func _on_cutscene_end():
 		#Dialogic.timeline_ended.connect(_on_dialogic_finished)
 		#Dialogic.start("Demo_end", false) #alive dead
 	else:
-		Global.timeline = 6.2
+		#Global.timeline = 6.2
+		Global.timeline = 6
 		Global.add_quest_marker("Look around & talk back at Maya's House", Vector2(-1352, 2264))
 
 

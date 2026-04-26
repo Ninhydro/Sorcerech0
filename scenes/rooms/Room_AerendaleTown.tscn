@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dho52j1svafa7"]
+[gd_scene load_steps=27 format=3 uid="uid://dho52j1svafa7"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_Hub.gd" id="1_67lrk"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_sl44h"]
@@ -19,6 +19,8 @@
 [ext_resource type="PackedScene" uid="uid://tf62behhy24m" path="res://dialogic/cutscene/cutscene20T.tscn" id="16_02tm2"]
 [ext_resource type="PackedScene" uid="uid://dwlkqkti5wf4m" path="res://dialogic/cutscene/cutscene11_5.tscn" id="17_xqbna"]
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="18_f1bny"]
+[ext_resource type="PackedScene" uid="uid://caff580ncq3i5" path="res://scenes/NPC_cutscene/alyra.tscn" id="20_qehyv"]
+[ext_resource type="PackedScene" uid="uid://d38yjmvupqs8e" path="res://scenes/NPC_cutscene/varek_soldier.tscn" id="21_pfm7b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t33p6"]
 size = Vector2(2256, 584)
@@ -975,3 +977,9 @@ metadata/_edit_lock_ = true
 
 [node name="cutscene21_5B1" parent="." instance=ExtResource("18_f1bny")]
 position = Vector2(1560, -152)
+
+[node name="Alyra" parent="." instance=ExtResource("20_qehyv")]
+position = Vector2(507, 64)
+
+[node name="Varek_soldier" parent="." instance=ExtResource("21_pfm7b")]
+position = Vector2(528, 65)

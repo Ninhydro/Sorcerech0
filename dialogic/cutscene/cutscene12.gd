@@ -32,7 +32,7 @@ func _on_body_entered(body):
 	print("Cutscene12: Body entered - ", body.name if body else "null")
 	
 	# Check if timeline condition is met
-	if Global.timeline == 6.2  and body.is_in_group("player"):
+	if Global.timeline == 6  and body.is_in_group("player"):
 		print("Cutscene12: Conditions met, calling parent method")
 		# Store player reference first
 		player_in_range = body

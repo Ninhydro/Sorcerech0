@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://d31x3lq4tpd8s"]
+[gd_scene load_steps=36 format=3 uid="uid://d31x3lq4tpd8s"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_MagusTown.gd" id="1_imj52"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_0kg3k"]
@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://v0h32bpwx4lr" path="res://dialogic/cutscene/cutscene07.tscn" id="25_u7h6x"]
 [ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="26_cpmd7"]
 [ext_resource type="PackedScene" uid="uid://ted2qp5nhbhq" path="res://dialogic/cutscene/cutsceneLux0.tscn" id="27_8t1g5"]
+[ext_resource type="PackedScene" uid="uid://cl7rydee22g02" path="res://scenes/NPC_cutscene/magus_king.tscn" id="28_3t4hv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wlrbn"]
 size = Vector2(3432, 638.5)
@@ -601,6 +602,9 @@ position = Vector2(45.1704, -61.217)
 [node name="cutsceneLux" parent="." instance=ExtResource("27_8t1g5")]
 position = Vector2(-325.346, 54.4915)
 maguspos = true
+
+[node name="Magus_king" parent="." instance=ExtResource("28_3t4hv")]
+position = Vector2(-1297, 113)
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]
