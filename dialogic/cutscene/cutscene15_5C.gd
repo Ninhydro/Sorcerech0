@@ -137,7 +137,7 @@ func on_rocket_hit_by_player() -> void:
 
 	Global.ult_cyber_form = true
 	Global.valentina_dead = false
-	Global.affinity += 1
+	Global.affinity += 2
 	Global.persistent_saved_valentina = true
 	Global.check_100_percent_completion()
 	Global.save_persistent_data()

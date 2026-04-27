@@ -1,2 +1,12 @@
-"Old woman": Old man Kellin passed last winter. Said he didn't want to see another war.
-"Old woman": The market's tense. Magus and Cyber used to trade here. Not anymore…
+Baker: The old man, passed last winter. Said he didn't want to see another war.
+Baker: The market's tense. Magus and Cyber used to trade here. Not anymore…
+Baker: Tromarvelia, they have some reformation and becoming more intense toward Cyber. While Exactlyion increase their security measure and interrogate every Magus that enter, what a mess...
+Baker: How do you think this going to end?
+- Magus may have the upper hand
+	Baker: Yeah you maybe right. The Cyber have top notch security, but even that may not last long. 
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Magus_baker"
+- Cyber have unstoppable system
+	Baker: Yeah that's kinda true, even if you kill Cyber leader, their system will not die.
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Cyber_baker"

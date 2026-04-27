@@ -1,2 +1,11 @@
-Man: Hi, I’m from Aerendale, I’m here for more opportunities. But I hate these robots, they're stealing my jobs!
-Option? cyber or magus side
+Worker: Hi, I’m from Aerendale, I’m here for more opportunities. But I hate these robots, they're stealing my jobs!
+Worker: I guess being rich here is just a dream...
+Worker: Heh... Do you think I made the right choice?
+- Hang in there, you'll find a job
+	Worker: Yeah you maybe right. I cannot give up!
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Work_here"
+- You should go back to your dad
+	Worker: Go back to Aerendale?! No way! I'm fed up with that old man
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Go_back"

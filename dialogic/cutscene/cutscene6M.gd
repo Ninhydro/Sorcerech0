@@ -62,7 +62,7 @@ func _on_dialogic_finished(_timeline_name = ""):
 		Dialogic.timeline_ended.disconnect(_on_dialogic_finished)
 
 
-
+	Global.affinity -= 1
 	Global.timeline = 4
 	Global.magus_form = true
 	player_in_range.unlock_state("Magus")

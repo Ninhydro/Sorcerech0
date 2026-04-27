@@ -43,7 +43,7 @@ var _parent_menu_reference: Node = null # To go back to the PauseMenu
 
 # --- Inventory Slot Settings ---
 const INVENTORY_SLOT_SIZE = Vector2(20, 20) # Size of each inventory box in pixels
-const MAX_INVENTORY_SLOTS = 10 # Total number of inventory slots to display (e.g., 4 rows of 5)
+const MAX_INVENTORY_SLOTS = 9 # Total number of inventory slots to display (e.g., 4 rows of 5)
 # --- End Inventory Slot Settings ---
 
 var status_text_color_normal : Color = Color.DIM_GRAY
@@ -58,6 +58,10 @@ var status_text_color_cyber : Color = Color.BLUE
 	"Tape_A": preload("res://assets_image/Objects/collect_objects8.png"),
 	"Tape_B": preload("res://assets_image/Objects/collect_objects9.png"),
 	"Tape_C": preload("res://assets_image/Objects/collect_objects10.png"),
+	"Glasses": preload("res://assets_image/Objects/Objects2.png"),   # change path
+	"Screwdriver": preload("res://assets_image/Objects/Objects3.png"),
+	"Sword": preload("res://assets_image/Objects/Objects4.png"),
+
 }
 
 @export var item_display_names: Dictionary = {
@@ -66,8 +70,24 @@ var status_text_color_cyber : Color = Color.BLUE
 	"Tape_A": "Video Tape: Past",
 	"Tape_B": "Video Tape: Present",
 	"Tape_C": "Video Tape: Future",
+	"Glasses": "Glasses",
+	"Screwdriver": "Screwdriver",
+	"Sword": "Sword",
+	
 }
 
+var _current_popup: Control = null
+
+@export var item_descriptions: Dictionary = {
+	"Microchip": "A small processing unit chip, maybe it will be useful in the future.",
+	"MagicStone": "A glowing crystal, maybe it will be useful in the future",
+	"Tape_A": "Recording of past events. It said: gssor://vvv.xntstad.bnl/vzsbg?u=Vl4niha_ZDZ",
+	"Tape_B": "Video about Ceaser cipher decode. Past is -1 and Future is +1? What does it means?",
+	"Tape_C": "Recording of the future? It said: iuuqt://xxx.xfcuppot.dpn/fo/dbowbt/bopnbmpvt-dpoofdujpo/mjtu?ujumf_op=73091",
+	"Glasses": "Glasses, that the old merchant looking for",
+	"Screwdriver": "Screwdriver, maybe that kid can use it",
+	"Sword": "A sturdy blade, maybe that boy can use it",
+}
 
 func _ready():
 	back_button.pressed.connect(_on_back_button_pressed)
@@ -157,7 +177,14 @@ func update_profile_data():
 			inventory_list.append("Tape_B")   # Present
 		if Global.persistent_video_tape_3_collected:
 			inventory_list.append("Tape_C")   # Future
-
+		
+		if Global.has_glasses:
+			inventory_list.append("Glasses")
+		if Global.has_screwdriver:
+			inventory_list.append("Screwdriver")
+		if Global.has_sword:
+			inventory_list.append("Sword")
+	
 		_update_inventory_display(inventory_list)
 	else:
 		printerr("ProfileScene: Global.playerBody is not set!")
@@ -214,8 +241,11 @@ func _update_inventory_display(inventory_list: Array):
 		
 		var item_slot = VBoxContainer.new()
 		item_slot.set_custom_minimum_size(INVENTORY_SLOT_SIZE)
-		item_slot.mouse_filter = Control.MOUSE_FILTER_PASS
-		
+		#item_slot.mouse_filter = Control.MOUSE_FILTER_PASS
+		item_slot.mouse_filter = Control.MOUSE_FILTER_STOP 
+		item_slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		item_slot.size_flags_vertical = Control.SIZE_EXPAND_FILL
+
 		var slot_style = StyleBoxFlat.new()
 		slot_style.bg_color = Color(0.15, 0.15, 0.15, 1.0)
 		slot_style.border_width_left = 1
@@ -235,10 +265,11 @@ func _update_inventory_display(inventory_list: Array):
 		item_slot.add_theme_constant_override("margin_top", 2)
 		item_slot.add_theme_constant_override("margin_bottom", 2)
 
-		inventory_grid.add_child(item_slot)
+		#inventory_grid.add_child(item_slot)
 
 		# --- ICON ---
 		var item_texture_rect = TextureRect.new()
+		item_texture_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		item_texture_rect.set_custom_minimum_size(Vector2(24, 24))
 		item_texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		item_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -292,6 +323,7 @@ func _update_inventory_display(inventory_list: Array):
 			base_name = item_id
 
 		var item_label = Label.new()
+		item_label.mouse_filter = Control.MOUSE_FILTER_IGNORE 
 		item_label.text = base_name
 		item_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		item_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -309,29 +341,107 @@ func _update_inventory_display(inventory_list: Array):
 			item_label.theme = item_font_theme
 		
 		item_slot.add_child(item_label)
-	
+		item_slot.gui_input.connect(_on_item_slot_gui_input.bind(item_id))
+		inventory_grid.add_child(item_slot)
+		#inventory_grid.add_child(item_slot) get error E 0:00:23:0050   profile_menu.gd:343 @ _update_inventory_display(): Can't add child '@VBoxContainer@294' to 'InventoryContainer', already has a parent 'InventoryContainer'.
+
+
+		
 	# 3) Fill remaining slots as empty
 	var used_slots := unique_ids.size()
 	for i in range(used_slots, MAX_INVENTORY_SLOTS):
 		var empty_slot = VBoxContainer.new()
 		empty_slot.set_custom_minimum_size(INVENTORY_SLOT_SIZE)
 		empty_slot.mouse_filter = Control.MOUSE_FILTER_PASS
+		empty_slot.alignment = BoxContainer.ALIGNMENT_CENTER  # center children
 		
 		var empty_slot_style = StyleBoxFlat.new()
-		empty_slot_style.bg_color = Color(0.1, 0.1, 0.1, 1.0)
-		empty_slot_style.border_width_left = 1
-		empty_slot_style.border_width_right = 1
-		empty_slot_style.border_width_top = 1
-		empty_slot_style.border_width_bottom = 1
-		empty_slot_style.border_color = Color(0.2, 0.2, 0.2, 1.0)
+		empty_slot_style.bg_color = Color(0.05, 0.05, 0.05, 1.0)   # very dark
+		empty_slot_style.border_width_left = 2
+		empty_slot_style.border_width_right = 2
+		empty_slot_style.border_width_top = 2
+		empty_slot_style.border_width_bottom = 2
+		empty_slot_style.border_color = Color(0.9, 0.9, 0.9, 1.0)   # bright light grey (almost white)
 		empty_slot_style.corner_radius_top_left = 4
 		empty_slot_style.corner_radius_top_right = 4
 		empty_slot_style.corner_radius_bottom_left = 4
 		empty_slot_style.corner_radius_bottom_right = 4
 		empty_slot.add_theme_stylebox_override("panel", empty_slot_style)
 		
+		# Add a simple "Empty" label so it's clearly an empty slot
+		var empty_label = Label.new()
+		empty_label.text = ""
+		empty_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		empty_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		empty_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
+		empty_label.add_theme_color_override("font_outline_color", Color.BLACK)
+		empty_label.add_theme_constant_override("outline_size", 1)
+		
+		# Small font for empty text
+		var empty_font = inventory_grid.get_theme_font("font")
+		if empty_font:
+			var empty_theme = Theme.new()
+			empty_theme.set_font("font", "Label", empty_font)
+			empty_theme.set_font_size("font_size", "Label", 6)
+			empty_label.theme = empty_theme
+		
+		empty_slot.add_child(empty_label)
 		inventory_grid.add_child(empty_slot)
 
+func _on_item_slot_gui_input(event: InputEvent, item_id: String):
+	print("DEBUG: Slot clicked for item: ", item_id)   # <-- ADD THIS
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_show_item_description(item_id, event.global_position)
+
+func _show_item_description(item_id: String, global_pos: Vector2):
+	# Remove any existing popup
+	if _current_popup and is_instance_valid(_current_popup):
+		_current_popup.queue_free()
+	
+	var desc_text = item_descriptions.get(item_id, "No description available.")
+	
+	# Create a PanelContainer
+	var popup_panel = PanelContainer.new()
+	var popup_label = Label.new()
+	popup_label.text = desc_text
+	popup_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	popup_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	popup_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	
+	# Grey styling
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.2, 0.2, 0.2, 0.95)   # dark grey background
+	style.set_border_width_all(2)
+	style.border_color = Color(0.6, 0.6, 0.6)      # light grey border
+	style.set_corner_radius_all(5)
+	style.set_content_margin_all(8)
+	popup_panel.add_theme_stylebox_override("panel", style)
+	
+	popup_panel.add_child(popup_label)
+	popup_panel.set_custom_minimum_size(Vector2(150, 40))
+	popup_panel.size = Vector2(200, 60)   # fixed size
+	
+	# Center on screen
+	var viewport_size = get_viewport().get_visible_rect().size
+	var popup_position = (viewport_size - popup_panel.size) / 2
+	popup_panel.position = popup_position
+	
+	add_child(popup_panel)
+	_current_popup = popup_panel
+	
+	# Timer to auto‑remove
+	var timer = Timer.new()
+	timer.one_shot = true
+	timer.wait_time = 2.0
+	timer.timeout.connect(_on_popup_timer_timeout)
+	add_child(timer)
+	timer.start()
+	
+func _on_popup_timer_timeout():
+	if _current_popup and is_instance_valid(_current_popup):
+		_current_popup.queue_free()
+		_current_popup = null
+	
 func _update_affinity_display(affinity_value: int):
 	# Update the ProgressBar value
 	#affinity_progress_bar.value = affinity_value
@@ -340,7 +450,7 @@ func _update_affinity_display(affinity_value: int):
 	var clamped_affinity = clampi(affinity_value, MIN_AFFINITY, MAX_AFFINITY)
 	#print(f"Clamped affinity: {clamped_affinity}")
 
-	if clamped_affinity < 0: #negative
+	if clamped_affinity < 0: #negative magus
 		print("Affinity is negative. Setting yellow bar.")
 		negative_affinity_bar.value = clamped_affinity
 		positive_affinity_bar.value = 0 # Reset positive bar
@@ -350,7 +460,7 @@ func _update_affinity_display(affinity_value: int):
 		#affinity_value_label.add_theme_color_override("font_color", Color.YELLOW)
 		#print(f"Negative bar value: {negative_affinity_bar.value}, visible: {negative_affinity_bar.visible}")
 		#print(f"Positive bar value: {positive_affinity_bar.value}, visible: {positive_affinity_bar.visible}")
-	elif clamped_affinity > 0: #positive
+	elif clamped_affinity > 0: #positive cyber
 		print("Affinity is positive. Setting blue bar.")
 		positive_affinity_bar.value = clamped_affinity
 		negative_affinity_bar.value = 0 # Reset negative bar

@@ -250,7 +250,7 @@ func _success_nora() -> void:
 
 	# Apply your success flags
 	Global.nora_dead = false
-	Global.affinity -= 1
+	Global.affinity -= 2
 	Global.persistent_saved_nora = true
 	Global.check_100_percent_completion()
 	Global.save_persistent_data()

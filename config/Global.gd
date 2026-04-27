@@ -605,6 +605,14 @@ func set_current_game_scene_path(path: String):
 	current_scene_path = path
 	print("Global: Current game scene path set to: " + current_scene_path)
 
+#Inventory key items
+var has_glasses: bool = false
+var glasses_on_man: bool = false
+var has_screwdriver: bool = false
+var screwdriver_on_boy: bool = false
+var has_sword: bool = false
+var sword_on_boy: bool = false
+
 
 func get_save_data() -> Dictionary:
 	
@@ -682,6 +690,15 @@ func get_save_data() -> Dictionary:
 		"cannon_goal_door_destroyed": cannon_goal_door_destroyed,
 		"final_puzzle_door": final_puzzle_door,
 		"NPC_choices": npc_choice_memory,
+		
+		"has_glasses": has_glasses,
+		"has_screwdriver": has_screwdriver,
+		"has_sword": has_sword,
+		"glasses_on_man": glasses_on_man,
+		"screwdriver_on_boy": screwdriver_on_boy,
+		"sword_on_boy": sword_on_boy,
+		
+		
 		"demo": demo,
 		
 		
@@ -767,7 +784,14 @@ func apply_load_data(data: Dictionary):
 	cannon_goal_door_destroyed = data.get("cannon_goal_door_destroyed", false)
 	final_puzzle_door = data.get("final_puzzle_door", false)
 	npc_choice_memory = data.get("NPC_choices", {})
-
+	
+	has_glasses = data.get("has_glasses", false)
+	has_screwdriver = data.get("has_screwdriver", false)
+	has_sword = data.get("has_sword", false)
+	glasses_on_man = data.get("glasses_on_man", false)
+	screwdriver_on_boy = data.get("screwdriver_on_boy", false)
+	sword_on_boy = data.get("sword_on_boy", false)
+	
 	# Force demo off for full game builds
 	var is_full_game = true   # set this via a build flag or constant
 	if is_full_game:
@@ -868,6 +892,12 @@ func reset_to_defaults():
 	cannon_goal_door_destroyed = false
 	final_puzzle_door = false
 	npc_choice_memory = {}
+	has_glasses = false
+	has_screwdriver = false
+	has_sword = false
+	glasses_on_man = false
+	screwdriver_on_boy = false
+	sword_on_boy = false
 	
 	demo = true
 	

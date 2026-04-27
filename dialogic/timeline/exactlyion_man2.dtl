@@ -1,2 +1,13 @@
-"Old man": I work in a factory. It’s getting tougher and tougher cause of the war
-Option? cyber or magus side
+Worker: I work in a factory. It’s getting tougher and tougher cause of the war
+Worker: Hey you're that chosen sorcerech robot or whatever right? Can you do something?
+- Don't worry I'll find peace!
+	Worker: Hahaha, sure, goodluck kid!
+	Worker: I hope I was as lively as I use to be, I...
+	Worker: I kinda miss home...
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Work_here2"
+- Maybe you should focus on yourself first
+	Worker: What?! did my old man told you to say that?
+	Worker: Maybe I should visit him sometimes...
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Go_back2"

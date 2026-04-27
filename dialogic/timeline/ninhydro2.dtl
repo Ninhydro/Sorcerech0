@@ -1,2 +1,32 @@
 Ninhydro: Hi, I’m just a normal merchant. Oh, you want to change your fate?
-Ninhydro: Options merchants\:
+Ninhydro: I assume you have the materials for me? Ok let's see...
+- Who are you?
+	Ninhydro: I'm what you called Game Dev.  If you can find materials I need, I can change your fate.
+	Ninhydro: Side with Magus, Side with Cyber or even remove your kills number, whatever you want
+	Ninhydro: So start collecting! Or another idea is to redo the game!
+- Force affinity to Magus
+	if {Global.persistent_magic_stones} >= 10:
+		Ninhydro: Oh you have enough materials. Alright, I can do that...
+		Ninhydro: *Poof* Now you're on Magus side
+		set {Global.affinity} = -10
+	else:
+		Ninhydro: Seems you don't have enough magic stones.
+		Ninhydro: You need 10 in order to do this
+- Force affinity to Cyber
+	if {Global.persistent_microchips} >= 10:
+		Ninhydro: Oh you have enough materials. Alright, I can do that...
+		Ninhydro: *Poof* Now you're on Cyber side
+		set {Global.affinity} = 10
+	else:
+		Ninhydro: Seems you don't have enough microchips
+		Ninhydro: You need 10 in order to do this
+- Reset Kills
+	if {Global.persistent_video_tapes} >= 3:
+		Ninhydro: Oh you find my lost tapes. Alright, I can do that...
+		Ninhydro: *Poof* You now have 0 kills and innocent as an angel
+		Ninhydro: However, I cannot bring back the dead, I can only erase your sins...
+		Ninhydro: If you want to bring someone back, you need to redo the game
+		set {Global.kills} = 0
+	else:
+		Ninhydro: Seems you don't have enough video tapes
+		Ninhydro: You need to find all my lost tapes, there are only 3 of them

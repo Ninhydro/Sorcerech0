@@ -446,6 +446,7 @@ func _handle_battle_fail() -> void:
 		current_health_pickup.queue_free()
 		current_health_pickup = null
 		
+	Global.affinity += 1
 	Global.ult_cyber_form = false
 	Global.replica_fini_dead = false
 	

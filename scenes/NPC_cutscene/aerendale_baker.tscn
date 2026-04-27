@@ -1,0 +1,105 @@
+[gd_scene load_steps=10 format=3 uid="uid://b2lwl03dc7k46"]
+
+[ext_resource type="Script" path="res://scenes/NPC_cutscene/aerendale_baker.gd" id="1_r63gn"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="2_s50yh"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_6wyhd"]
+
+[sub_resource type="Animation" id="Animation_rphk2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [72]
+}
+
+[sub_resource type="Animation" id="Animation_sg3su"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [72, 73, 74, 75]
+}
+
+[sub_resource type="Animation" id="Animation_0uuhl"]
+resource_name = "idle2"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [68, 69, 70, 71]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oxyk4"]
+_data = {
+"RESET": SubResource("Animation_rphk2"),
+"idle": SubResource("Animation_sg3su"),
+"idle2": SubResource("Animation_0uuhl")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xupu"]
+size = Vector2(14, 31)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gelxt"]
+size = Vector2(32, 49)
+
+[node name="Baker" type="CharacterBody2D"]
+z_index = -1
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_r63gn")
+
+[node name="NPC" type="Sprite2D" parent="."]
+position = Vector2(0, -19)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_s50yh")
+hframes = 4
+vframes = 19
+frame = 72
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NPC"]
+libraries = {
+"": SubResource("AnimationLibrary_oxyk4")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_0xupu")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+visible = false
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_gelxt")
+
+[node name="BubbleTimer" type="Timer" parent="."]
+
+[node name="BubbleContainer" type="Node2D" parent="."]
+
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_6wyhd")]
+visible = false

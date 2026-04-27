@@ -444,7 +444,7 @@ func _handle_battle_fail() -> void:
 	# Fail flags (pre-Nora)
 	Global.ult_magus_form = false
 	Global.gawr_dead = false
-	#Global.affinity -= 1
+	Global.affinity -= 1
 	
 	if boss_instance and is_instance_valid(boss_instance):
 		if boss_instance.tree_exited.is_connected(_on_boss_died):

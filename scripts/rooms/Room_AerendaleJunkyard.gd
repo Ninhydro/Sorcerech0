@@ -9,6 +9,7 @@ extends Node2D
 @onready var door_area = $Doors/Door_Maya
 
 func _ready():
+
 	door.visible = false
 	print("Room_AerendaleJunkyard: _ready() called.")
 	if not test_dialog_cutscene:

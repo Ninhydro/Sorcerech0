@@ -1,0 +1,149 @@
+[gd_scene load_steps=11 format=3 uid="uid://cnoti5gvt2kpa"]
+
+[ext_resource type="Script" path="res://scenes/NPC_cutscene/aerendale_merchant.gd" id="1_0eiwk"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="1_wjsdh"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_c07vm"]
+[ext_resource type="Texture2D" uid="uid://dcxuslibxrh30" path="res://assets_image/Objects/Objects2.png" id="4_u6kfs"]
+
+[sub_resource type="Animation" id="Animation_sg3su"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [64, 65, 66, 67]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Glasses:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_rphk2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [64]
+}
+
+[sub_resource type="Animation" id="Animation_ijnwu"]
+resource_name = "idle_2"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [64, 65, 66, 67]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Glasses:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Glasses:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(5.96046e-08, -28.5), Vector2(5.96046e-08, -27.5), Vector2(5.96046e-08, -26.8333), Vector2(5.96046e-08, -27.6667), Vector2(5.96046e-08, -27.5)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oxyk4"]
+_data = {
+"RESET": SubResource("Animation_rphk2"),
+"idle": SubResource("Animation_sg3su"),
+"idle_2": SubResource("Animation_ijnwu")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0xupu"]
+size = Vector2(14, 31)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gelxt"]
+size = Vector2(32, 49)
+
+[node name="Merchant" type="CharacterBody2D"]
+z_index = -1
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_0eiwk")
+
+[node name="NPC" type="Sprite2D" parent="."]
+position = Vector2(0, -19)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_wjsdh")
+hframes = 4
+vframes = 19
+frame = 64
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NPC"]
+libraries = {
+"": SubResource("AnimationLibrary_oxyk4")
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -16.5)
+shape = SubResource("RectangleShape2D_0xupu")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+visible = false
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_gelxt")
+
+[node name="BubbleTimer" type="Timer" parent="."]
+
+[node name="BubbleContainer" type="Node2D" parent="."]
+
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_c07vm")]
+visible = false
+
+[node name="Glasses" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(5.96046e-08, -26.8333)
+scale = Vector2(0.112061, 0.140625)
+texture = ExtResource("4_u6kfs")
+flip_h = true
