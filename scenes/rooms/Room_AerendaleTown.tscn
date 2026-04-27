@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dho52j1svafa7"]
+[gd_scene load_steps=30 format=3 uid="uid://dho52j1svafa7"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_Hub.gd" id="1_67lrk"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_sl44h"]
@@ -21,6 +21,9 @@
 [ext_resource type="PackedScene" uid="uid://bbpmi5nk8dqls" path="res://dialogic/cutscene/cutscene21_5B1.tscn" id="18_f1bny"]
 [ext_resource type="PackedScene" uid="uid://caff580ncq3i5" path="res://scenes/NPC_cutscene/alyra.tscn" id="20_qehyv"]
 [ext_resource type="PackedScene" uid="uid://d38yjmvupqs8e" path="res://scenes/NPC_cutscene/varek_soldier.tscn" id="21_pfm7b"]
+[ext_resource type="PackedScene" uid="uid://cnoti5gvt2kpa" path="res://scenes/NPC_cutscene/aerendale_merchant.tscn" id="22_6j52r"]
+[ext_resource type="PackedScene" uid="uid://b2lwl03dc7k46" path="res://scenes/NPC_cutscene/aerendale_baker.tscn" id="23_ka2ip"]
+[ext_resource type="PackedScene" uid="uid://ca6pssw3hpj3" path="res://scenes/NPC_cutscene/aerendale_man.tscn" id="24_hlq5j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t33p6"]
 size = Vector2(2256, 584)
@@ -983,3 +986,12 @@ position = Vector2(507, 64)
 
 [node name="Varek_soldier" parent="." instance=ExtResource("21_pfm7b")]
 position = Vector2(528, 65)
+
+[node name="Merchant" parent="." instance=ExtResource("22_6j52r")]
+position = Vector2(192, 64)
+
+[node name="Baker" parent="." instance=ExtResource("23_ka2ip")]
+position = Vector2(256, 64)
+
+[node name="Man" parent="." instance=ExtResource("24_hlq5j")]
+position = Vector2(365, 64)

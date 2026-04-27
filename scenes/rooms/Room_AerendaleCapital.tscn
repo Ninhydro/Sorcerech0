@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bkcqtqfijxmyn"]
+[gd_scene load_steps=31 format=3 uid="uid://bkcqtqfijxmyn"]
 
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_876ac"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_b5ajo"]
@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="19_rxptd"]
 [ext_resource type="PackedScene" uid="uid://dj8lq3gkgc4cg" path="res://dialogic/cutscene/cutscene18_5G.tscn" id="20_v7hsq"]
 [ext_resource type="PackedScene" uid="uid://cqhytanji1adq" path="res://scenes/NPC_cutscene/lux.tscn" id="21_a1xct"]
+[ext_resource type="PackedScene" uid="uid://dv7a2l5hn47ie" path="res://scenes/NPC_cutscene/ninhydro.tscn" id="22_syiqv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_36fax"]
 size = Vector2(1510, 698)
@@ -449,6 +450,9 @@ position = Vector2(-924.999, -7.85182)
 
 [node name="Lux" parent="." instance=ExtResource("21_a1xct")]
 position = Vector2(200, 65)
+
+[node name="Ninhydro" parent="." instance=ExtResource("22_syiqv")]
+position = Vector2(-393, -175)
 
 [connection signal="body_entered" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_entered"]
 [connection signal="body_exited" from="Doors/Door_HiddenRuins" to="." method="_on_door_hidden_ruins_body_exited"]
