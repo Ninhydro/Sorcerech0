@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://e1c8rj22ejyl"]
+[gd_scene load_steps=9 format=3 uid="uid://bkihpfo6i564n"]
 
-[ext_resource type="Script" path="res://scenes/NPC_cutscene/exactlyion_soldier.gd" id="1_jjqk5"]
-[ext_resource type="PackedScene" uid="uid://dxq5h17oubh7u" path="res://scenes/enemies/CyberSoldierEnemy.tscn" id="2_gnxao"]
-[ext_resource type="Texture2D" uid="uid://buobqvgq0dwoe" path="res://assets_image/Characters/Enemies/Cyber_soldier-Sheet.png" id="2_lg5bn"]
-[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="4_07gl2"]
+[ext_resource type="Script" path="res://scenes/NPC_cutscene/forest_dryad.gd" id="1_bda2y"]
+[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="3_pte12"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="4_t11mb"]
 
 [sub_resource type="Animation" id="Animation_rphk2"]
 length = 0.001
@@ -22,7 +21,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_sg3su"]
 resource_name = "idle"
-length = 0.5
+length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -31,10 +30,10 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [48, 49, 50, 51, 52]
+"values": [36, 37, 38, 39]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_oxyk4"]
@@ -49,19 +48,18 @@ size = Vector2(14, 31)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gelxt"]
 size = Vector2(32, 49)
 
-[node name="Cyber Soldier" type="CharacterBody2D"]
+[node name="Dryrad" type="CharacterBody2D"]
 z_index = -1
 collision_layer = 16
 collision_mask = 2
-script = ExtResource("1_jjqk5")
-summon_scene = ExtResource("2_gnxao")
+script = ExtResource("1_bda2y")
 
 [node name="NPC" type="Sprite2D" parent="."]
-position = Vector2(-1, -29)
+position = Vector2(-1, -20)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("2_lg5bn")
-hframes = 8
-vframes = 8
+texture = ExtResource("3_pte12")
+hframes = 4
+vframes = 19
 frame = 32
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="NPC"]
@@ -83,7 +81,7 @@ shape = SubResource("RectangleShape2D_gelxt")
 
 [node name="BubbleContainer" type="Node2D" parent="."]
 
-[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("4_07gl2")]
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("4_t11mb")]
 visible = false
 
 [node name="Marker2D" type="Marker2D" parent="."]
