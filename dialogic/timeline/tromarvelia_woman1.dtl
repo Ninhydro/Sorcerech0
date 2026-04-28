@@ -1,3 +1,13 @@
 "apprentice mage": You're looking for a mage to help you. How about going to Nora.
-"apprentice mage": She’s a bit eccentric and shy but she knows a lot. You can find her in the building with Magic symbol
-Option? cyber or magus side
+"apprentice mage": She’s a bit eccentric and shy but she knows a lot.
+"apprentice mage": I hope I can be as good as magic like Nora
+- Did you never ask Nora
+	"apprentice mage": Well Nora is shy and I don't think a mage at my level can just ask her assisstance
+	"apprentice mage": Oh,  You can find her in the building with Magic symbol
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Cyber_Mage"
+- You're get better
+	"apprentice mage": Thank you I'll trying my best to be the best mage!
+	"apprentice mage": Oh,  You can find her in the building with Magic symbol
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Magus_Mage"

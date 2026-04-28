@@ -1,2 +1,15 @@
-"Cyber soldier": Your android needs some help? How about going to Valentina, she is one of the top researchers here.
-Option? cyber or magus side
+"Cyber soldier": Oh aren't you're a weird group, magus, cyber, small robot...
+"Cyber soldier": What are you planning to do here?
+- We're just sightseeing
+	"Cyber soldier": Ah ok, have fun then
+	"Cyber soldier": Oh, Your android needs some help? How about going to Valentina,
+	"Cyber soldier": She is one of the top researchers here. You can't miss that V sign building there
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Cyber_Cyber Soldier"
+- We're here to bring peace
+	"Cyber soldier": Oh, hope you're not some activist
+	"Cyber soldier": I'll need to call reinforcement if you make any commosion
+	"Cyber soldier": Oh, Your android needs some help? How about going to Valentina,
+	"Cyber soldier": She is one of the top researchers here. You can't miss that V sign building there
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Magus_Cyber Soldier"

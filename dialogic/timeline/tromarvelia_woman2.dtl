@@ -1,2 +1,12 @@
 "apprentice mage": I haven’t seen Nora for a while, hope she’s doing okay.
-Option? cyber or magus side
+"apprentice mage": Do you think things may get better?
+- It will be a quite complicated
+	"apprentice mage": Ah yeah I understand, knowing you're a mix of cyber and magus 
+	"apprentice mage": Good luck on your journey!
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Cyber_Mage2"
+- Of course, trust me
+	"apprentice mage": I like your optimism, but I've past my lively days 
+	"apprentice mage": Just hoping the war will over soon
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Magus_Mage2"

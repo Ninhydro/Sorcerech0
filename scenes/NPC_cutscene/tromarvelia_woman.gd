@@ -8,14 +8,13 @@ extends CharacterBody2D
 # Configuration
 #@export var dialog_timeline1: String = "betael1"
 #@export var dialog_timeline2: String = "alyra2"
-@export var dialog_timeline1: String = "exactlyion_man1"
-@export var dialog_timeline1c: String = "exactlyion_man1_c"
-@export var dialog_timeline1m: String = "exactlyion_man1_m"
-@export var dialog_timeline2: String = "exactlyion_man2"
-@export var dialog_timeline2c: String = "exactlyion_man2_c"
-@export var dialog_timeline2m: String = "exactlyion_man2_m"
-@export var dialog_timeline3: String = "exactlyion_man3"
-@export var dialog_timeline3m: String = "exactlyion_man3m"
+@export var dialog_timeline1: String = "tromarvelia_woman1"
+@export var dialog_timeline1cm: String = "tromarvelia_woman1cm"
+@export var dialog_timeline2: String = "tromarvelia_woman2"
+@export var dialog_timeline2m: String = "tromarvelia_woman2m"
+@export var dialog_timeline2c: String = "tromarvelia_woman2c"
+@export var dialog_timeline3: String = "tromarvelia_woman3"
+@export var dialog_timeline3c: String = "tromarvelia_woman3c"
 
 
 @export var bubble_texts: Array[String] = [
@@ -58,9 +57,7 @@ var current_bubble = null  # Track current bubble instance
 
 #if Global.npc_choice_memory.get("Uncle Betael", {}).get(7, "") == "A":
 	#print("Betael was helped on timeline 7")
-
-#if "A" in Global.npc_choice_memory.get("Uncle Betael", {}).values():
-
+	
 func _ready():
 	print("NPC _ready called")
 	# Initially hide the NPC
@@ -79,8 +76,8 @@ func _ready():
 
 func _process(delta):
 	# Only process if timeline condition is met
-	print(Global.npc_choice_memory)
-	if not Global.timeline >= 3:
+	#print(Global.npc_choice_memory)
+	if not (Global.timeline >= 3):
 		return
 	
 	# Make visible when condition is met
@@ -91,7 +88,6 @@ func _process(delta):
 		elif Global.timeline >= 6:
 			visible = true
 			animation_player.play("idle2")
-		
 	
 	# Flip sprite based on player position
 	#if Global.player:
@@ -128,27 +124,28 @@ func _start_dialog():
 	# Start Dialogic
 	#if Global.timeline < 6:
 	#	Dialogic.start(dialog_timeline1, false)
-	
+
+			
 	if Global.timeline < 6:
-			if "Work_here" in Global.npc_choice_memory.get("Worker", {}).values():
-				Dialogic.start(dialog_timeline1c, false)
-			if "Go_back" in Global.npc_choice_memory.get("Worker", {}).values():
-				Dialogic.start(dialog_timeline1m, false)
+			if "Magus_Mage" in Global.npc_choice_memory.get("Mage", {}).values():
+				Dialogic.start(dialog_timeline1cm, false)
+			elif "Cyber_Mage" in Global.npc_choice_memory.get("Mage", {}).values():
+				Dialogic.start(dialog_timeline1cm, false)
 			else:
 				Dialogic.start(dialog_timeline1, false)
 	elif Global.timeline >= 6 and Global.timeline < 10:
 			if Global.route_status == "Magus":
-					Dialogic.start(dialog_timeline3m, false)
+						Dialogic.start(dialog_timeline3c, false)
 			else:
-				if "Work_here2" in Global.npc_choice_memory.get("Worker", {}).values():
-					Dialogic.start(dialog_timeline2c, false)
-				if "Go_back2" in Global.npc_choice_memory.get("Worker", {}).values():
+				if "Magus_Mage2" in Global.npc_choice_memory.get("Mage", {}).values():
 					Dialogic.start(dialog_timeline2m, false)
+				elif "Cyber_Mage2" in Global.npc_choice_memory.get("Mage", {}).values():
+					Dialogic.start(dialog_timeline2c, false)
 				else:
 					Dialogic.start(dialog_timeline2, false)
 	elif Global.timeline >= 10:
 			Dialogic.start(dialog_timeline3, false)
-			
+		
 			
 	#elif Global.timeline >= 10 and Global.alyra_dead == false:
 	#	Dialogic.start(dialog_timeline3, false)

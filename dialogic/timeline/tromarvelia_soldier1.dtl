@@ -1,3 +1,13 @@
 "Magus soldier": Being a Soldier is boring…
 "Magus soldier": But at least it was not monitored like the Cyber guys, kinda feel bad for them
-Option? cyber or magus side
+- Nah the Cyber is strict, but I'm sure you can do stuff too
+	"Magus soldier": Yeah you're right, sorry I didn't see you there small robot
+	"Magus soldier": I'm okay with Cyber, I just hate their system
+	"Magus soldier": I guess everything have pros and cons
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Cyber_Magus Soldier"
+- Yeah here is trully better
+	"Magus soldier": I know right
+	"Magus soldier": Magus is always better than Cyber
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Magus_Magus Soldier"

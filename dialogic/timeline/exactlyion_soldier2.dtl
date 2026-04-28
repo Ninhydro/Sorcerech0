@@ -1,2 +1,14 @@
 "Cyber soldier": You Magus, you should know that we always keep an eye on you
-Option? cyber or magus side
+"Cyber soldier": Oh you're that robot right, what are you up to now?
+"Cyber soldier": Who do you think going to win this world war?
+- The Cyber of couse
+	"Cyber soldier": I know right, Exactlyion, Cyber is unstoppable
+	"Cyber soldier": No matter what, we will always able to solve the problem
+	"Cyber soldier": We're unlike those primitive Magus
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Cyber_Cyber Soldier2"
+- I'm afraid the Magus have the upper hand
+	"Cyber soldier": You think so? Damn I need to start training
+	"Cyber soldier": I hope Valentina can develop some tool to repel those Magus magics
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Magus_Cyber Soldier2"

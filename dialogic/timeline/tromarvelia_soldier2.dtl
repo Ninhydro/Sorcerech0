@@ -1,2 +1,14 @@
 "Magus soldier": We’re been more cautious around Cyber, you better be careful out there
-Option? cyber or magus side
+"Magus soldier": Who do you think going to win this world war?
+- The Cyber have the upper hand
+	"Magus soldier": Hmm... I guess I need to start practicing my spells
+	"Magus soldier": Or maybe I should run away?.... 
+	"Magus soldier": No, I must save my people
+	set {Global.affinity} += 1
+	set {Global.last_choice_made} = "Cyber_Magus Soldier2"
+- The Magus of course
+	"Magus soldier": Yeah, sooner or later we'll win
+	"Magus soldier": Those Cyber have no respect of tradition and other culture
+	"Magus soldier": I'll kill those Cyber people
+	set {Global.affinity} += -1
+	set {Global.last_choice_made} = "Magus_Magus Soldier2"
