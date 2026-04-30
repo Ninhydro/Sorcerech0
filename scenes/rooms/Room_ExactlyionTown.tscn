@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=48 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -34,6 +34,13 @@
 [ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="32_k08rr"]
 [ext_resource type="PackedScene" uid="uid://ted2qp5nhbhq" path="res://dialogic/cutscene/cutsceneLux0.tscn" id="33_cexh0"]
 [ext_resource type="PackedScene" uid="uid://cd8brqhmhhuj8" path="res://scenes/NPC_cutscene/sterling.tscn" id="34_b1ffn"]
+[ext_resource type="PackedScene" uid="uid://e1c8rj22ejyl" path="res://scenes/NPC_cutscene/exactlyion_soldier.tscn" id="35_j4alb"]
+[ext_resource type="PackedScene" uid="uid://duqrtnixsfu61" path="res://scenes/NPC_cutscene/exactlyion_boy.tscn" id="36_dprul"]
+[ext_resource type="PackedScene" uid="uid://bc6pky4b8xl28" path="res://scenes/NPC_cutscene/exactlyion_girl.tscn" id="37_6rshd"]
+[ext_resource type="PackedScene" uid="uid://cn3xijondplxt" path="res://scenes/NPC_cutscene/exactlyion_worker.tscn" id="38_tsdm2"]
+[ext_resource type="PackedScene" uid="uid://c6kfi0jn6xwod" path="res://scenes/NPC_cutscene/factory_anime.tscn" id="39_b7c33"]
+[ext_resource type="PackedScene" uid="uid://x2iub0lssdam" path="res://scenes/NPC_cutscene/factory_scientist.tscn" id="40_twbkt"]
+[ext_resource type="PackedScene" uid="uid://blb0j2dehpjaq" path="res://scenes/NPC_cutscene/factory_android.tscn" id="41_jo84g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5eae"]
 size = Vector2(4176, 608)
@@ -1055,6 +1062,27 @@ position = Vector2(247.469, 56.0079)
 
 [node name="Sterling" parent="." instance=ExtResource("34_b1ffn")]
 position = Vector2(1608, 81)
+
+[node name="Cyber Soldier" parent="." instance=ExtResource("35_j4alb")]
+position = Vector2(747, 80)
+
+[node name="Thinker  Boy" parent="." instance=ExtResource("36_dprul")]
+position = Vector2(1362, 80)
+
+[node name="Android girl" parent="." instance=ExtResource("37_6rshd")]
+position = Vector2(2141, 81)
+
+[node name="Worker" parent="." instance=ExtResource("38_tsdm2")]
+position = Vector2(2813, 82)
+
+[node name="Anime0Index" parent="." instance=ExtResource("39_b7c33")]
+position = Vector2(2950, 1028)
+
+[node name="Scientist" parent="." instance=ExtResource("40_twbkt")]
+position = Vector2(2546, 1025)
+
+[node name="Android" parent="." instance=ExtResource("41_jo84g")]
+position = Vector2(1973, 1024)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

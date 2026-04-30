@@ -57,7 +57,7 @@ script = ExtResource("1_jjqk5")
 summon_scene = ExtResource("2_gnxao")
 
 [node name="NPC" type="Sprite2D" parent="."]
-position = Vector2(-1, -29)
+position = Vector2(-1, -38)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_lg5bn")
 hframes = 8

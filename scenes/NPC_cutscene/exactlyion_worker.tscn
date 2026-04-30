@@ -86,14 +86,12 @@ libraries = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -16.5)
 shape = SubResource("RectangleShape2D_0xupu")
 
 [node name="InteractionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-visible = false
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_gelxt")
 

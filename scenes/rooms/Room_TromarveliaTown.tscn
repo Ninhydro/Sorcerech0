@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://d31x3lq4tpd8s"]
+[gd_scene load_steps=43 format=3 uid="uid://d31x3lq4tpd8s"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_MagusTown.gd" id="1_imj52"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_0kg3k"]
@@ -28,6 +28,13 @@
 [ext_resource type="PackedScene" uid="uid://bjciu16t76l0r" path="res://dialogic/cutscene/cutscene17_2.tscn" id="26_cpmd7"]
 [ext_resource type="PackedScene" uid="uid://ted2qp5nhbhq" path="res://dialogic/cutscene/cutsceneLux0.tscn" id="27_8t1g5"]
 [ext_resource type="PackedScene" uid="uid://cl7rydee22g02" path="res://scenes/NPC_cutscene/magus_king.tscn" id="28_3t4hv"]
+[ext_resource type="PackedScene" uid="uid://bgkkwme8l0xop" path="res://scenes/NPC_cutscene/tromarvelia_woman.tscn" id="29_2c46e"]
+[ext_resource type="PackedScene" uid="uid://blapcciros03l" path="res://scenes/NPC_cutscene/tromarvelia_boy.tscn" id="30_ulgsi"]
+[ext_resource type="PackedScene" uid="uid://kd4o3wt32h77" path="res://scenes/NPC_cutscene/tromarvelia_soldier.tscn" id="31_0l07j"]
+[ext_resource type="PackedScene" uid="uid://bti38wcreaqy6" path="res://scenes/NPC_cutscene/tromarvelia_beast.tscn" id="32_1sopk"]
+[ext_resource type="PackedScene" uid="uid://bkihpfo6i564n" path="res://scenes/NPC_cutscene/forest_dryad.tscn" id="33_3uwf2"]
+[ext_resource type="PackedScene" uid="uid://bhi66tmk1hnfa" path="res://scenes/NPC_cutscene/forest_dryad2.tscn" id="34_d7xh4"]
+[ext_resource type="PackedScene" uid="uid://cudy3wh074rkf" path="res://scenes/NPC_cutscene/forest_bluefox.tscn" id="35_4v304"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wlrbn"]
 size = Vector2(3432, 638.5)
@@ -276,42 +283,36 @@ position = Vector2(-1102, -712)
 
 [node name="Background" type="Node2D" parent="."]
 z_index = -10
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D2" type="Sprite2D" parent="Background"]
 position = Vector2(8, -296)
 texture = ExtResource("7_32rxi")
 vframes = 8
 frame = 3
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D3" type="Sprite2D" parent="Background"]
 position = Vector2(8, -296)
 texture = ExtResource("7_32rxi")
 vframes = 8
 frame = 4
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D4" type="Sprite2D" parent="Background"]
 position = Vector2(8, -296)
 texture = ExtResource("7_32rxi")
 vframes = 8
 frame = 5
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D5" type="Sprite2D" parent="Background"]
 position = Vector2(8, -296)
 texture = ExtResource("7_32rxi")
 vframes = 8
 frame = 6
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D6" type="Sprite2D" parent="Background"]
 position = Vector2(8, -296)
 texture = ExtResource("7_32rxi")
 vframes = 8
 frame = 7
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D7" type="Sprite2D" parent="Background"]
 position = Vector2(1040, -352)
@@ -319,7 +320,6 @@ texture = ExtResource("7_32rxi")
 flip_h = true
 vframes = 8
 frame = 7
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D8" type="Sprite2D" parent="Background"]
 position = Vector2(1072, -368)
@@ -327,31 +327,6 @@ texture = ExtResource("7_32rxi")
 flip_h = true
 vframes = 8
 frame = 7
-metadata/_edit_lock_ = true
-
-[node name="Sprite2D9" type="Sprite2D" parent="Background"]
-position = Vector2(1136, -416)
-texture = ExtResource("7_32rxi")
-flip_h = true
-vframes = 8
-frame = 7
-metadata/_edit_lock_ = true
-
-[node name="Sprite2D10" type="Sprite2D" parent="Background"]
-position = Vector2(1200, -464)
-texture = ExtResource("7_32rxi")
-flip_h = true
-vframes = 8
-frame = 7
-metadata/_edit_lock_ = true
-
-[node name="Sprite2D11" type="Sprite2D" parent="Background"]
-position = Vector2(1232, -480)
-texture = ExtResource("7_32rxi")
-flip_h = true
-vframes = 8
-frame = 7
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D12" type="Sprite2D" parent="Background"]
 position = Vector2(-1112, -80)
@@ -359,7 +334,6 @@ texture = ExtResource("8_f6xo7")
 flip_h = true
 vframes = 8
 frame = 2
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D13" type="Sprite2D" parent="Background"]
 position = Vector2(-1112, -80)
@@ -367,14 +341,12 @@ texture = ExtResource("8_f6xo7")
 flip_h = true
 vframes = 8
 frame = 3
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D14" type="Sprite2D" parent="Background"]
 position = Vector2(-688, -88)
 texture = ExtResource("8_f6xo7")
 vframes = 8
 frame = 4
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D15" type="Sprite2D" parent="Background"]
 position = Vector2(-1064, -72)
@@ -382,7 +354,6 @@ texture = ExtResource("8_f6xo7")
 flip_h = true
 vframes = 8
 frame = 5
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D16" type="Sprite2D" parent="Background"]
 position = Vector2(-1096, -80)
@@ -391,7 +362,6 @@ texture = ExtResource("8_f6xo7")
 flip_h = true
 vframes = 8
 frame = 7
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D18" type="Sprite2D" parent="Background"]
 position = Vector2(-2053.17, 64)
@@ -401,7 +371,6 @@ flip_h = true
 vframes = 5
 frame = 2
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D17" type="Sprite2D" parent="Background"]
 position = Vector2(-1672, 112)
@@ -410,7 +379,6 @@ texture = ExtResource("8_f6xo7")
 flip_h = true
 region_enabled = true
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D21" type="Sprite2D" parent="Background"]
 position = Vector2(-560, -40)
@@ -419,7 +387,6 @@ texture = ExtResource("8_f6xo7")
 flip_h = true
 region_enabled = true
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D19" type="Sprite2D" parent="Background"]
 position = Vector2(-2339.41, 56)
@@ -429,7 +396,6 @@ flip_h = true
 vframes = 5
 frame = 3
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D20" type="Sprite2D" parent="Background"]
 position = Vector2(-2048, 64)
@@ -438,7 +404,6 @@ texture = ExtResource("9_ayacu")
 vframes = 5
 frame = 4
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D22" type="Sprite2D" parent="Background"]
 position = Vector2(-1855.99, -883.608)
@@ -446,7 +411,6 @@ scale = Vector2(1.02127, 1.16373)
 texture = ExtResource("10_56501")
 vframes = 8
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D23" type="Sprite2D" parent="Background"]
 position = Vector2(-1855.99, -883.608)
@@ -455,7 +419,6 @@ texture = ExtResource("10_56501")
 vframes = 8
 frame = 1
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D24" type="Sprite2D" parent="Background"]
 position = Vector2(-1856, -1048)
@@ -464,7 +427,6 @@ texture = ExtResource("10_56501")
 vframes = 8
 frame = 2
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D25" type="Sprite2D" parent="Background"]
 position = Vector2(-1864, -1448)
@@ -473,7 +435,6 @@ texture = ExtResource("10_56501")
 vframes = 8
 frame = 3
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D26" type="Sprite2D" parent="Background"]
 position = Vector2(-2484, -1028.02)
@@ -481,7 +442,6 @@ scale = Vector2(0.95114, 2.65433)
 texture = ExtResource("10_56501")
 region_enabled = true
 region_rect = Rect2(-84.598, 2335.48, 614.941, 220.947)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D27" type="Sprite2D" parent="Background"]
 position = Vector2(-1936, -841.306)
@@ -490,7 +450,6 @@ texture = ExtResource("10_56501")
 vframes = 8
 frame = 4
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D29" type="Sprite2D" parent="Background"]
 position = Vector2(-1836, -888)
@@ -499,16 +458,15 @@ texture = ExtResource("10_56501")
 vframes = 8
 frame = 5
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D30" type="Sprite2D" parent="Background"]
+visible = false
 position = Vector2(-752, -784)
 scale = Vector2(0.776596, 0.7875)
 texture = ExtResource("10_56501")
 vframes = 8
 frame = 6
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D31" type="Sprite2D" parent="Background"]
 position = Vector2(-1864, -1124.33)
@@ -517,23 +475,19 @@ texture = ExtResource("10_56501")
 vframes = 8
 frame = 7
 region_rect = Rect2(512.811, 2994.34, 235.538, 204.984)
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Background"]
 modulate = Color(0.784314, 0.784314, 0.784314, 1)
 position = Vector2(-1377, 20)
 texture = ExtResource("12_e044j")
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D28" type="Sprite2D" parent="Background"]
 position = Vector2(-1257, 56)
 texture = ExtResource("14_o105p")
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D32" type="Sprite2D" parent="Background"]
 position = Vector2(-1489, 56)
 texture = ExtResource("14_o105p")
-metadata/_edit_lock_ = true
 
 [node name="SaveSpot" parent="." instance=ExtResource("11_f2ex8")]
 position = Vector2(-523, 52)
@@ -605,6 +559,27 @@ maguspos = true
 
 [node name="Magus_king" parent="." instance=ExtResource("28_3t4hv")]
 position = Vector2(-1297, 113)
+
+[node name="Mage" parent="." instance=ExtResource("29_2c46e")]
+position = Vector2(-73, 67)
+
+[node name="Brave Boy" parent="." instance=ExtResource("30_ulgsi")]
+position = Vector2(-1113, 112)
+
+[node name="Magus Soldier" parent="." instance=ExtResource("31_0l07j")]
+position = Vector2(-1529, 121)
+
+[node name="Beast" parent="." instance=ExtResource("32_1sopk")]
+position = Vector2(-2481, -840)
+
+[node name="Dryrad" parent="." instance=ExtResource("33_3uwf2")]
+position = Vector2(-2075, 256)
+
+[node name="Dryrad2" parent="." instance=ExtResource("34_d7xh4")]
+position = Vector2(-1233, -544)
+
+[node name="Bluefox" parent="." instance=ExtResource("35_4v304")]
+position = Vector2(-1593, -895)
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]

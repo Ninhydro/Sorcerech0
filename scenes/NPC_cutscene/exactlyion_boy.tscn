@@ -241,6 +241,7 @@ collision_mask = 2
 script = ExtResource("1_5llg2")
 
 [node name="NPC2" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(8, -16)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_yivct")

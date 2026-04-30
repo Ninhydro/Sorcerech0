@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://baky2m7irkgi0"]
+[gd_scene load_steps=20 format=3 uid="uid://baky2m7irkgi0"]
 
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="1_anecf"]
 [ext_resource type="Script" path="res://scenes/rooms/Place.gd" id="1_gh3vf"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://bnasyvy0oaxae" path="res://scenes/objects/puzzledoor_1.tscn" id="14_a8pdl"]
 [ext_resource type="PackedScene" uid="uid://dpuc0x80rk5r" path="res://scenes/objects/buttonpuzzle_1.tscn" id="15_pfv6s"]
 [ext_resource type="PackedScene" uid="uid://bjhj4nrelo1e7" path="res://scenes/NPC_cutscene/nora.tscn" id="16_tjmdt"]
+[ext_resource type="PackedScene" uid="uid://c4inhdbdnu6bh" path="res://scenes/NPC_cutscene/forest_cat.tscn" id="17_onmem"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f1ip1"]
 size = Vector2(2369, 407)
@@ -171,7 +172,7 @@ visible = false
 position = Vector2(-2248, 72)
 
 [node name="Nora" parent="." instance=ExtResource("7_x12si")]
-position = Vector2(153, 63)
+position = Vector2(153, 64)
 collision_mask = 16
 minigame_stations = Array[NodePath]([NodePath("../MinigameStation"), NodePath("../MinigameStation2"), NodePath("../MinigameStation3")])
 final_position_marker = NodePath("../NoraFinalPosition")
@@ -349,3 +350,6 @@ metadata/_edit_lock_ = true
 
 [node name="Nora2" parent="." instance=ExtResource("16_tjmdt")]
 position = Vector2(-131, 81)
+
+[node name="Cat" parent="." instance=ExtResource("17_onmem")]
+position = Vector2(-69, 80)
