@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://d31x3lq4tpd8s"]
+[gd_scene load_steps=46 format=3 uid="uid://d31x3lq4tpd8s"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_MagusTown.gd" id="1_imj52"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_0kg3k"]
@@ -36,6 +36,8 @@
 [ext_resource type="PackedScene" uid="uid://bhi66tmk1hnfa" path="res://scenes/NPC_cutscene/forest_dryad2.tscn" id="34_d7xh4"]
 [ext_resource type="PackedScene" uid="uid://cudy3wh074rkf" path="res://scenes/NPC_cutscene/forest_bluefox.tscn" id="35_4v304"]
 [ext_resource type="PackedScene" uid="uid://527kvwhyjws3" path="res://scenes/NPC_cutscene/tromarvelia_soldier_background.tscn" id="36_h7rb4"]
+[ext_resource type="PackedScene" uid="uid://c3h0s2naqc524" path="res://scenes/NPC_cutscene/forest_dryad_background.tscn" id="37_phxku"]
+[ext_resource type="PackedScene" uid="uid://cg6o8l7m7i2hu" path="res://scenes/NPC_cutscene/forest_dryad_background2.tscn" id="38_mrccx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wlrbn"]
 size = Vector2(3432, 638.5)
@@ -586,7 +588,7 @@ position = Vector2(637.302, -107.638)
 position = Vector2(45.1704, -61.217)
 
 [node name="cutsceneLux" parent="." instance=ExtResource("27_8t1g5")]
-position = Vector2(-325.346, 54.4915)
+position = Vector2(-289, 56)
 maguspos = true
 
 [node name="Magus_king" parent="." instance=ExtResource("28_3t4hv")]
@@ -596,10 +598,10 @@ position = Vector2(-1297, 113)
 position = Vector2(-73, 67)
 
 [node name="Brave Boy" parent="." instance=ExtResource("30_ulgsi")]
-position = Vector2(-1113, 112)
+position = Vector2(-1529, 128)
 
 [node name="Magus Soldier" parent="." instance=ExtResource("31_0l07j")]
-position = Vector2(-1529, 121)
+position = Vector2(-1022, 104)
 
 [node name="Beast" parent="." instance=ExtResource("32_1sopk")]
 position = Vector2(-2481, -840)
@@ -608,7 +610,7 @@ position = Vector2(-2481, -840)
 position = Vector2(-2075, 256)
 
 [node name="Dryrad2" parent="." instance=ExtResource("34_d7xh4")]
-position = Vector2(-1233, -544)
+position = Vector2(-1321, -544)
 
 [node name="Bluefox" parent="." instance=ExtResource("35_4v304")]
 position = Vector2(-1593, -895)
@@ -618,6 +620,19 @@ position = Vector2(-585, 66)
 
 [node name="Magus Soldier3" parent="." instance=ExtResource("36_h7rb4")]
 position = Vector2(-1461, 114)
+
+[node name="Dryad" parent="." instance=ExtResource("37_phxku")]
+position = Vector2(-1945, -544)
+
+[node name="Dryad2" parent="." instance=ExtResource("37_phxku")]
+position = Vector2(-1236, -544)
+scale = Vector2(-1, 1)
+
+[node name="Dryad3" parent="." instance=ExtResource("38_mrccx")]
+position = Vector2(-1713, -527)
+
+[node name="Dryad4" parent="." instance=ExtResource("38_mrccx")]
+position = Vector2(-1881, -895)
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]

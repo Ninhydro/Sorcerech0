@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=50 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -42,6 +42,7 @@
 [ext_resource type="PackedScene" uid="uid://x2iub0lssdam" path="res://scenes/NPC_cutscene/factory_scientist.tscn" id="40_twbkt"]
 [ext_resource type="PackedScene" uid="uid://blb0j2dehpjaq" path="res://scenes/NPC_cutscene/factory_android.tscn" id="41_jo84g"]
 [ext_resource type="PackedScene" uid="uid://bk11qtyrwgpd4" path="res://scenes/NPC_cutscene/exactlyion_soldier_background.tscn" id="42_s7e74"]
+[ext_resource type="PackedScene" uid="uid://by1qgqsqknbam" path="res://scenes/NPC_cutscene/factory_android_background.tscn" id="43_kg13s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5eae"]
 size = Vector2(4176, 608)
@@ -1084,6 +1085,7 @@ position = Vector2(2546, 1025)
 
 [node name="Android" parent="." instance=ExtResource("41_jo84g")]
 position = Vector2(1973, 1024)
+scale = Vector2(-1, 1)
 
 [node name="Cyber Soldier2" parent="." instance=ExtResource("42_s7e74")]
 position = Vector2(2216, 75)
@@ -1093,6 +1095,16 @@ position = Vector2(-96, 58)
 
 [node name="Cyber Soldier4" parent="." instance=ExtResource("42_s7e74")]
 position = Vector2(816, 75)
+
+[node name="Android2" parent="." instance=ExtResource("43_kg13s")]
+position = Vector2(1760, 1024)
+
+[node name="Android3" parent="." instance=ExtResource("43_kg13s")]
+position = Vector2(2224, 1024)
+
+[node name="Android4" parent="." instance=ExtResource("43_kg13s")]
+position = Vector2(2736, 1024)
+scale = Vector2(-1, 1)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://drg731t1f6lh4"]
+[gd_scene load_steps=8 format=3 uid="uid://c3h0s2naqc524"]
 
-[ext_resource type="Texture2D" uid="uid://bceytbjk8v4c3" path="res://assets_image/Characters/NPC/NPC.png" id="2_jd30x"]
-[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_6n0gy"]
+[ext_resource type="Texture2D" uid="uid://dvha5j3j34j8a" path="res://assets_image/Characters/Enemies/dryad-Sheet.png" id="2_72ex0"]
+[ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_xw3ov"]
 
 [sub_resource type="Animation" id="Animation_rphk2"]
 length = 0.001
@@ -15,12 +15,12 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [60]
+"values": [40]
 }
 
 [sub_resource type="Animation" id="Animation_sg3su"]
 resource_name = "idle"
-length = 0.4
+length = 0.6
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -29,34 +29,16 @@ tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [60, 61, 62, 63]
-}
-
-[sub_resource type="Animation" id="Animation_0uuhl"]
-resource_name = "idle2"
-length = 0.4
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [56, 57, 58, 59]
+"values": [40, 41, 42, 43, 44, 45]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_oxyk4"]
 _data = {
 "RESET": SubResource("Animation_rphk2"),
-"idle": SubResource("Animation_sg3su"),
-"idle2": SubResource("Animation_0uuhl")
+"idle": SubResource("Animation_sg3su")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0xupu"]
@@ -65,19 +47,19 @@ size = Vector2(14, 31)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gelxt"]
 size = Vector2(32, 49)
 
-[node name="Man" type="CharacterBody2D"]
+[node name="Dryad" type="CharacterBody2D"]
 modulate = Color(0.517647, 0.517647, 0.517647, 1)
 z_index = -1
 collision_layer = 16
 collision_mask = 2
 
 [node name="NPC" type="Sprite2D" parent="."]
-position = Vector2(0, -19)
+position = Vector2(0, -38)
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("2_jd30x")
-hframes = 4
-vframes = 19
-frame = 60
+texture = ExtResource("2_72ex0")
+hframes = 8
+vframes = 6
+frame = 40
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="NPC"]
 libraries = {
@@ -101,5 +83,5 @@ shape = SubResource("RectangleShape2D_gelxt")
 
 [node name="BubbleContainer" type="Node2D" parent="."]
 
-[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_6n0gy")]
+[node name="SpeechBubble" parent="BubbleContainer" instance=ExtResource("3_xw3ov")]
 visible = false
