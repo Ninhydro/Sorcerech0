@@ -899,7 +899,7 @@ func reset_to_defaults():
 	screwdriver_on_boy = false
 	sword_on_boy = false
 	
-	demo = true
+	demo = false
 	
 # Helper functions for quest marker serialization
 func _serialize_quest_markers() -> Dictionary:

@@ -92,7 +92,6 @@ vframes = 23
 frame = 45
 
 [node name="Area2D2" type="Area2D" parent="."]
-visible = false
 script = ExtResource("1_hvidw")
 area_name = "Tromarvelia Dungeon"
 metadata/_edit_lock_ = true
@@ -103,7 +102,6 @@ shape = SubResource("RectangleShape2D_4en5y")
 metadata/_edit_lock_ = true
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 script = ExtResource("1_hvidw")
 area_name = "Tromarvelia Castle"
 chunk_name = "Tromarvelia Castle"

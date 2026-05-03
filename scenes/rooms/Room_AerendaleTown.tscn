@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dho52j1svafa7"]
+[gd_scene load_steps=32 format=3 uid="uid://dho52j1svafa7"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_Hub.gd" id="1_67lrk"]
 [ext_resource type="Script" path="res://scripts/world/Door.gd" id="1_sl44h"]
@@ -10,7 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://b3051ea3aujj" path="res://assets_image/Background/Aerendale_Town/Aerendale_Town1-Sheet.png" id="6_x2cyw"]
 [ext_resource type="Texture2D" uid="uid://cmcsxpyb7ey23" path="res://assets_image/Background/Aerendale_Town/Aerendale_Town2-Sheet.png" id="7_idvsl"]
 [ext_resource type="Texture2D" uid="uid://dku0ihmcy85l0" path="res://assets_image/Background/Aerendale_Town/Aerendale_Town3-Sheet.png" id="8_yvppu"]
+[ext_resource type="PackedScene" uid="uid://drg731t1f6lh4" path="res://scenes/NPC_cutscene/aerendale_man_background.tscn" id="10_jqm60"]
 [ext_resource type="PackedScene" uid="uid://bs105i3gcljkr" path="res://scenes/world/SaveSpot.tscn" id="10_kj1r2"]
+[ext_resource type="Texture2D" uid="uid://ce1fw7yf57bkf" path="res://assets_image/Background/Aerendale_Town/Aerendale_Town_background.png" id="10_v3hhp"]
 [ext_resource type="PackedScene" uid="uid://cv3smeyh35wvw" path="res://dialogic/cutscene/cutscene3.tscn" id="11_02nf6"]
 [ext_resource type="PackedScene" uid="uid://bro7o1q0uinsu" path="res://dialogic/cutscene/cutscene3_5.tscn" id="12_miuam"]
 [ext_resource type="PackedScene" uid="uid://cfhmj1vvcbg6r" path="res://dialogic/cutscene/cutscene8.tscn" id="13_dw6lc"]
@@ -881,6 +883,25 @@ vframes = 8
 frame = 6
 metadata/_edit_lock_ = true
 
+[node name="Man2" parent="Background" instance=ExtResource("10_jqm60")]
+z_index = 0
+position = Vector2(306, 61)
+
+[node name="Man3" parent="Background" instance=ExtResource("10_jqm60")]
+z_index = 0
+position = Vector2(146, 58)
+scale = Vector2(-1, 1)
+
+[node name="Man4" parent="Background" instance=ExtResource("10_jqm60")]
+z_index = 0
+position = Vector2(458, 58)
+
+[node name="Sprite2D18" type="Sprite2D" parent="Background"]
+z_index = 1
+position = Vector2(272, -31)
+texture = ExtResource("10_v3hhp")
+metadata/_edit_lock_ = true
+
 [node name="Sprite2D10" type="Sprite2D" parent="Background"]
 position = Vector2(272, -32)
 texture = ExtResource("7_idvsl")
@@ -988,10 +1009,10 @@ position = Vector2(507, 64)
 position = Vector2(528, 65)
 
 [node name="Merchant" parent="." instance=ExtResource("22_6j52r")]
-position = Vector2(192, 64)
+position = Vector2(654, 64)
 
 [node name="Baker" parent="." instance=ExtResource("23_ka2ip")]
-position = Vector2(256, 64)
+position = Vector2(366, 64)
 
 [node name="Man" parent="." instance=ExtResource("24_hlq5j")]
-position = Vector2(365, 64)
+position = Vector2(220, 64)
