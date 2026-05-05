@@ -1,6 +1,9 @@
 extends CharacterBody2D
 class_name BaseEnemy
 
+@export var activation_distance := 1000.0   # Only process when player is closer than this
+
+
 # Base properties
 @export var base_speed = 50
 var speed: float:
@@ -125,6 +128,11 @@ var original_position: Vector2
 
 @onready var flash: FlashHurt = $FlashHurt
 
+func _is_within_activation_distance() -> bool:
+	if not player or not is_instance_valid(player):
+		return false
+	return global_position.distance_to(player.global_position) <= activation_distance
+	
 func _ready():
 	
 	# Initialize attack cooldown timer
@@ -183,6 +191,14 @@ func _initialize_enemy():
 	pass
 
 func _process(delta):
+	player = Global.playerBody
+	
+	if not _is_within_activation_distance():
+		velocity = Vector2.ZERO
+		global_position = original_position   # snap back to start
+		move_and_slide()           # keep physics consistent
+		return
+		
 	if $AnimationPlayer:
 		$AnimationPlayer.speed_scale = Global.global_time_scale
 		
@@ -191,7 +207,7 @@ func _process(delta):
 		velocity.x = 0
 	
 	_update_jump_rise(delta)
-	player = Global.playerBody
+	
 	
 	# Global camouflage affects all enemies
 	if Global.playerAlive and not Global.camouflage and range:
