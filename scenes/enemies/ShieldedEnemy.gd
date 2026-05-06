@@ -161,10 +161,18 @@ func start_attack():
 		
 		# Deal damage
 		if attack_target and attack_target is Player and attack_target.can_take_damage and not attack_target.dead:
-			var knockback_dir = (attack_target.global_position - global_position).normalized()
-			Global.enemyAknockback = knockback_dir * knockback_force
-			attack_target.take_damage(enemy_damage)
-			print("Shield melee enemy dealt damage: ", enemy_damage)
+			var distance_to_player = global_position.distance_to(attack_target.global_position)
+			if distance_to_player <= attack_range:
+				var knockback_dir = (attack_target.global_position - global_position).normalized()
+				Global.enemyAknockback = knockback_dir * knockback_force
+				attack_target.take_damage(enemy_damage)
+				print("Shield melee enemy dealt damage: ", enemy_damage)
+			else:
+				print("Attack missed – player too far (distance: ", distance_to_player, ")")
+			#var knockback_dir = (attack_target.global_position - global_position).normalized()
+			#Global.enemyAknockback = knockback_dir * knockback_force
+			#attack_target.take_damage(enemy_damage)
+			#print("Shield melee enemy dealt damage: ", enemy_damage)
 		
 		# Finish attack animation
 		await get_tree().create_timer(0.2).timeout

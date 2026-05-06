@@ -79,7 +79,7 @@ func _ready():
 
 func _process(delta):
 	# Only process if timeline condition is met
-	print(Global.npc_choice_memory)
+	#print(Global.npc_choice_memory)
 	if not Global.timeline >= 3:
 		return
 	

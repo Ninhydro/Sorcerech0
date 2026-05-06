@@ -1003,7 +1003,7 @@ metadata/_edit_lock_ = true
 position = Vector2(1560, -152)
 
 [node name="Alyra" parent="." instance=ExtResource("20_qehyv")]
-position = Vector2(507, 64)
+position = Vector2(504, 64)
 
 [node name="Varek_soldier" parent="." instance=ExtResource("21_pfm7b")]
 position = Vector2(528, 65)

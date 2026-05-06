@@ -17,7 +17,7 @@ extends CharacterBody2D
 @export var dialog_timeline3m: String = "exactlyion_soldier3m"
 
 @export var summon_scene: PackedScene  # SET THIS IN INSPECTOR!
-@onready var summon_marker: Marker2D = $SummonMarker
+#@onready var summon_marker: Marker2D = $SummonMarker
 
 @export var bubble_texts: Array[String] = [
 	#"Ah You're back",
@@ -87,7 +87,7 @@ func _do_summon() -> void:
 		get_parent().add_child(mob)
 		
 		var offset = Vector2((i - 0.5) * 40, 0)
-		mob.global_position = summon_marker.global_position + offset
+		#mob.global_position = summon_marker.global_position + offset
 		print("MAGUS KING: Summoned minion ", i, " at ", mob.global_position)
 		
 func _process(delta):

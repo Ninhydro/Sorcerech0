@@ -63,8 +63,8 @@ _data = {
 script = ExtResource("1_5lvj5")
 
 [node name="Arachne" type="Sprite2D" parent="."]
-position = Vector2(0, -38)
-scale = Vector2(0.6, 0.6)
+position = Vector2(0, -45)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_ri2sd")
 hframes = 8
 vframes = 5

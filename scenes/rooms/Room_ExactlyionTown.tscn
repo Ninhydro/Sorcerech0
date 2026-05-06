@@ -1088,22 +1088,22 @@ position = Vector2(1973, 1024)
 scale = Vector2(-1, 1)
 
 [node name="Cyber Soldier2" parent="." instance=ExtResource("42_s7e74")]
-position = Vector2(2216, 75)
+position = Vector2(2216, 69)
 
 [node name="Cyber Soldier3" parent="." instance=ExtResource("42_s7e74")]
-position = Vector2(-96, 58)
+position = Vector2(-96, 53)
 
 [node name="Cyber Soldier4" parent="." instance=ExtResource("42_s7e74")]
-position = Vector2(816, 75)
+position = Vector2(816, 69)
 
 [node name="Android2" parent="." instance=ExtResource("43_kg13s")]
-position = Vector2(1760, 1024)
+position = Vector2(1760, 1017)
 
 [node name="Android3" parent="." instance=ExtResource("43_kg13s")]
-position = Vector2(2224, 1024)
+position = Vector2(2224, 1017)
 
 [node name="Android4" parent="." instance=ExtResource("43_kg13s")]
-position = Vector2(2736, 1024)
+position = Vector2(2736, 1017)
 scale = Vector2(-1, 1)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]

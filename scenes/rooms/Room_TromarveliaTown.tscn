@@ -601,10 +601,10 @@ position = Vector2(-73, 67)
 position = Vector2(-1529, 128)
 
 [node name="Magus Soldier" parent="." instance=ExtResource("31_0l07j")]
-position = Vector2(-1022, 104)
+position = Vector2(-1025, 113)
 
 [node name="Beast" parent="." instance=ExtResource("32_1sopk")]
-position = Vector2(-2481, -840)
+position = Vector2(-2481, -831)
 
 [node name="Dryrad" parent="." instance=ExtResource("33_3uwf2")]
 position = Vector2(-2075, 256)
@@ -616,10 +616,10 @@ position = Vector2(-1321, -544)
 position = Vector2(-1593, -895)
 
 [node name="Magus Soldier2" parent="." instance=ExtResource("36_h7rb4")]
-position = Vector2(-585, 66)
+position = Vector2(-585, 59)
 
 [node name="Magus Soldier3" parent="." instance=ExtResource("36_h7rb4")]
-position = Vector2(-1461, 114)
+position = Vector2(-1461, 108)
 
 [node name="Dryad" parent="." instance=ExtResource("37_phxku")]
 position = Vector2(-1945, -544)
@@ -629,10 +629,10 @@ position = Vector2(-1236, -544)
 scale = Vector2(-1, 1)
 
 [node name="Dryad3" parent="." instance=ExtResource("38_mrccx")]
-position = Vector2(-1713, -527)
+position = Vector2(-1713, -533)
 
 [node name="Dryad4" parent="." instance=ExtResource("38_mrccx")]
-position = Vector2(-1881, -895)
+position = Vector2(-1881, -901)
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]
