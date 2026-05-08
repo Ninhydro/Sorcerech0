@@ -128,6 +128,11 @@ var original_position: Vector2
 
 @onready var flash: FlashHurt = $FlashHurt
 
+@export var touch_damage := 5                # Damage when touching player
+@export var touch_damage_cooldown := 0.5     # Seconds between touch damage ticks
+var touch_damage_timer: Timer                # internal cooldown
+var touch_range := 10.0          #How close the player must be to take touch damage
+
 func _is_within_activation_distance() -> bool:
 	if not player or not is_instance_valid(player):
 		return false
@@ -171,6 +176,25 @@ func _ready():
 	previous_position = global_position
 	last_anim_position = global_position  
 	
+	touch_damage_timer = Timer.new()
+	touch_damage_timer.one_shot = true
+	add_child(touch_damage_timer)
+	
+func _apply_touch_damage(delta: float) -> void:
+	if dead or not player or not is_instance_valid(player):
+		return
+	if touch_damage_timer.time_left > 0:
+		return
+	# Use actual distance between enemy and player
+	var distance = global_position.distance_to(player.global_position)
+	if distance <= touch_range:
+		# Apply small knockback and damage
+		var knockback_dir = (player.global_position - global_position).normalized()
+		Global.enemyAknockback = knockback_dir * knockback_force
+		player.take_damage(touch_damage)
+		touch_damage_timer.start(touch_damage_cooldown)
+		print(name, " touched player for ", touch_damage, " damage")
+		
 func _on_attack_delay_timeout():
 	can_start_attack = true
 	
@@ -231,6 +255,9 @@ func _process(delta):
 		
 	move(delta)
 	handle_animation()
+	
+	_apply_touch_damage(delta) 
+	
 	move_and_slide()
 	
 	_update_stuck_state(delta)
