@@ -171,6 +171,14 @@ var damage_cooldown_timer: Timer
 @export var use_health_as_mana: bool = false
 @onready var flash: FlashHurt = $"../FlashHurt"
 
+var _ledge_grab_lock := 0.0
+const LEDGE_GRAB_LOCK_TIME = 0.1   # 100 milliseconds
+
+var coyote_timer := 0.0
+var jump_buffer_timer := 0.0
+const COYOTE_TIME := 0.08      # seconds after leaving ground
+const JUMP_BUFFER_TIME := 0.1   # seconds before landing that jump is stored
+
 # Health costs per form (edit these numbers directly in the script)
 const ATTACK_HEALTH_COSTS := {
 	"Normal": 0,
@@ -336,7 +344,18 @@ func _physics_process(delta):
 		#Global.killing =  !Global.killing
 		#print(Global.killing)
 	
+	if _ledge_grab_lock > 0:
+		_ledge_grab_lock -= delta
 	
+	if is_on_floor():
+		coyote_timer = COYOTE_TIME
+	else:
+		coyote_timer -= delta
+
+	if Input.is_action_just_pressed("jump"):
+		jump_buffer_timer = JUMP_BUFFER_TIME
+	else:
+		jump_buffer_timer -= delta
 	Global.playerBody = self
 	Dialogic.VAR.set_variable("player_current_form", get_current_form_id())
 	Global.set_player_form(get_current_form_id())
@@ -500,7 +519,7 @@ func _physics_process(delta):
 					LedgeLeftON2 = false
 
 				# Apply horizontal movement based on input (only if not wall-jumping, dialog, or attacking)
-				if not wall_jump_just_happened and not Global.is_dialog_open and not Global.attacking and not is_grabbing_ledge and not is_grappling_active and not Global.saving and not Global.loading:
+				if not wall_jump_just_happened and not Global.is_dialog_open and not Global.attacking and not is_grabbing_ledge and not is_grappling_active and not Global.saving and not Global.loading and _ledge_grab_lock <= 0:
 					#print("movinggggggggg")
 					velocity.x = input_dir * move_speed  #* Global.global_time_scale # Use 'speed' here for normal movement 
 					if input_dir != 0:
@@ -513,9 +532,11 @@ func _physics_process(delta):
 					velocity.x = 0 # Stop horizontal movement if dialog is open or attacking
 
 				# Jumping (only if on floor, no dialog, no attacking)
-				if is_on_floor() and Input.is_action_just_pressed("jump") and not Global.is_dialog_open and not Global.attacking and not is_grabbing_ledge and not is_grappling_active and not Global.saving and not Global.loading:
+				if (coyote_timer > 0 and jump_buffer_timer > 0) and not Global.is_dialog_open and not Global.attacking and not is_grabbing_ledge and not is_grappling_active and not Global.saving and not Global.loading:
 					if get_current_form_id() != "UltimateCyber":
 						velocity.y = -jump_force
+						coyote_timer = 0      # prevent double jump
+						jump_buffer_timer = 0
 					elif get_current_form_id() == "UltimateCyber":
 						# Ultimate Cyber jump is handled in its state
 						pass
@@ -955,7 +976,17 @@ func take_damage(damage):
 		apply_knockback(Global.enemyAknockback)
 		
 		if Global.health > 0:
-			flash.play(Global.global_time_scale)
+			if current_state is MagusState and current_state._sprite_node and current_state._sprite_node.material:
+				var mat = current_state._sprite_node.material
+				mat.set_shader_parameter("flash_strength", 1.0)
+				# Create a tween to fade it back to 0
+				var tween = create_tween()
+				tween.tween_method(
+					func(v): mat.set_shader_parameter("flash_strength", v),
+					1.0, 0.0, 0.1
+				)
+			else:
+				flash.play(Global.global_time_scale)
 			Global.health -= damage
 			print("player health: " + str(Global.health))
 			
@@ -1327,8 +1358,10 @@ func handle_ledge_grab():
 			LedgeDirection = Vector2.RIGHT
 
 			var collision_point = LedgeRightLower.get_collision_point()
-			LedgePosition = Vector2(collision_point.x + 6, collision_point.y - 14)
-
+			var y_offset = -8 if velocity.y <= 0 else -4   # less lift when falling
+			LedgePosition = Vector2(collision_point.x + 6, collision_point.y + y_offset)
+			velocity = Vector2.ZERO              # 👈 Stop all movement instantly
+			_ledge_grab_lock = LEDGE_GRAB_LOCK_TIME 
 			print("Player grabbed PLATFORM ledge on the right")
 			return true
 
@@ -1338,8 +1371,10 @@ func handle_ledge_grab():
 			LedgeDirection = Vector2.LEFT
 
 			var collision_point = LedgeLeftLower.get_collision_point()
-			LedgePosition = Vector2(collision_point.x - 6, collision_point.y - 14)
-
+			var y_offset = -8 if velocity.y <= 0 else -4
+			LedgePosition = Vector2(collision_point.x - 6, collision_point.y + y_offset)
+			velocity = Vector2.ZERO              # 👈 Stop all movement instantly
+			_ledge_grab_lock = LEDGE_GRAB_LOCK_TIME 
 			print("Player grabbed PLATFORM ledge on the left")
 			return true
 

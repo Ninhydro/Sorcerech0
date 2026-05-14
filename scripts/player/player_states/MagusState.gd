@@ -22,6 +22,8 @@ var _is_camouflage_active_timed := false
 
 var _previous_material: Material
 
+const COMBINED_SHADER = preload("res://shaders/combined_camouflage_&_hurt.gdshader")
+
 func _init(_player):
 	player = _player
 	combat_fsm = CombatFSM.new(player)
@@ -46,22 +48,31 @@ func enter():
 	
 	
 	# Clean up any existing shader material first
-	if _camouflage_shader_material and is_instance_valid(_camouflage_shader_material):
-		_camouflage_shader_material.free()
-		_camouflage_shader_material = null
+	#if _camouflage_shader_material and is_instance_valid(_camouflage_shader_material):
+	#	_camouflage_shader_material.free()
+	#	_camouflage_shader_material = null
 
 	# Create a new instance of our ShaderMaterial
-	_camouflage_shader_material = Global.create_camouflage_material()
-	if not _camouflage_shader_material:
-		push_error("MagusState: Failed to create camouflage material. Camouflage will not work.")
-		_sprite_node.material = _original_sprite_material
-		return
+	#_camouflage_shader_material = Global.create_camouflage_material()
+	#if not _camouflage_shader_material:
+	#	push_error("MagusState: Failed to create camouflage material. Camouflage will not work.")
+	#	_sprite_node.material = _original_sprite_material
+	#	return
 
 		#_camouflage_shader_material = ShaderMaterial.new()
 		#_camouflage_shader_material.shader = shader_resource
 
 	# Apply our ShaderMaterial to the Sprite2D.
+	_camouflage_shader_material = ShaderMaterial.new()
+	_camouflage_shader_material.shader = COMBINED_SHADER
+	
+	# Set initial camouflage alpha (opaque)
+	_camouflage_shader_material.set_shader_parameter("camouflage_alpha_override", 1.0)
+	_camouflage_shader_material.set_shader_parameter("brightness_boost", 0.0)
+	
+	# Apply the combined material to the sprite
 	_sprite_node.material = _camouflage_shader_material
+
 
 	# Check if the Sprite2D now has our ShaderMaterial applied.
 	#if not (_sprite_node.material is ShaderMaterial):
@@ -164,7 +175,10 @@ func physics_process(delta):
 	
 	if not _sprite_node or not _sprite_node.material or not (_sprite_node.material is ShaderMaterial):
 		return # Exit early if our shader is not active.
-
+	
+	if not _ensure_material():
+		return
+		
 	# Update the shader uniform based on player.allow_camouflage
 	# _camouflage_target_alpha will be 0.5 if camouflage is ON, else 1.0
 	_sprite_node.material.set_shader_parameter("camouflage_alpha_override", _camouflage_target_alpha)
@@ -187,11 +201,15 @@ func toggle_camouflage():
 		print("Camouflage is already active or on cooldown.")
 		return
 
+	if not _ensure_material():
+		push_error("toggle_camouflage: Cannot apply camouflage – material missing.")
+		return
+		
 	#player.allow_camouflage = true # Explicitly set to true when activating
 	Global.camouflage = true
 	_camouflage_target_alpha = 0.5 # Semi-transparent
 	_is_camouflage_active_timed = true # Mark timed camouflage as active
-
+	
 	# Immediately apply the transparency
 	if _sprite_node and _sprite_node.material and (_sprite_node.material is ShaderMaterial):
 		_sprite_node.material.set_shader_parameter("camouflage_alpha_override", _camouflage_target_alpha)
@@ -207,6 +225,9 @@ func toggle_camouflage():
 	# After timeout, disable camouflage
 	_camouflage_target_alpha = 1.0 # Fully opaque
 	
+	if _sprite_node and _sprite_node.material:
+		_sprite_node.material.set_shader_parameter("camouflage_alpha_override", _camouflage_target_alpha)
+		
 	#if _sprite_node and _sprite_node.material and (_sprite_node.material is ShaderMaterial):
 	#	_sprite_node.material.set_shader_parameter("camouflage_alpha_override", _camouflage_target_alpha)
 	
@@ -214,4 +235,32 @@ func toggle_camouflage():
 	Global.camouflage = false
 	_is_camouflage_active_timed = false # Mark timed camouflage as inactive
 	print("Camouflage OFF")
+	
+
+func _ensure_material() -> bool:
+	# Check if the sprite node still exists
+	if not is_instance_valid(_sprite_node):
+		# Try to re-fetch the Sprite2D from the player
+		_sprite_node = player.get_node_or_null("Sprite2D")
+		if not _sprite_node:
+			push_error("_ensure_material: Sprite2D not found!")
+			return false
+	
+	# If the sprite already has our combined shader, just return true
+	if _sprite_node.material == _camouflage_shader_material:
+		return true
+	
+	# Otherwise, re-create the combined material
+	# Store original material only if not already stored
+	if not _original_sprite_material or _original_sprite_material == _camouflage_shader_material:
+		_original_sprite_material = _sprite_node.material
+	
+	_camouflage_shader_material = ShaderMaterial.new()
+	_camouflage_shader_material.shader = COMBINED_SHADER
+	_camouflage_shader_material.set_shader_parameter("camouflage_alpha_override", _camouflage_target_alpha)
+	_camouflage_shader_material.set_shader_parameter("brightness_boost", 0.0)
+	_sprite_node.material = _camouflage_shader_material
+	
+	print("_ensure_material: Re-applied combined shader material.")
+	return true
 	

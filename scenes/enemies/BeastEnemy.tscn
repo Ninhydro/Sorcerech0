@@ -146,6 +146,7 @@ enemy_damage = 5
 health = 50
 health_max = 50
 edge_priority_over_chase = true
+touch_range = 25.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -10)

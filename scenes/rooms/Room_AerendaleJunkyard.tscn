@@ -41,6 +41,21 @@ size = Vector2(393, 130)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c7w7"]
 size = Vector2(29, 48.375)
 
+[sub_resource type="Animation" id="Animation_b5p3x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background/Sprite2D18:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_gl12d"]
 resource_name = "idle1"
 length = 0.4
@@ -56,21 +71,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [0, 1, 2]
-}
-
-[sub_resource type="Animation" id="Animation_b5p3x"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Background/Sprite2D18:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
 }
 
 [sub_resource type="Animation" id="Animation_qlu5y"]
@@ -743,36 +743,29 @@ position = Vector2(-112, 26)
 position = Vector2(192, 26)
 
 [node name="cutscene1" parent="." instance=ExtResource("10_ltn64")]
-visible = false
 position = Vector2(-192, 369)
 metadata/_edit_lock_ = true
 
 [node name="cutscene2" parent="." instance=ExtResource("11_53y5o")]
-visible = false
 position = Vector2(-640, 54)
 metadata/_edit_lock_ = true
 
 [node name="cutscene0_5" parent="." instance=ExtResource("12_3u6ks")]
-visible = false
 position = Vector2(361, 55)
 metadata/_edit_lock_ = true
 
 [node name="cutscene12" parent="." instance=ExtResource("14_djwtx")]
-visible = false
 position = Vector2(27, 359)
 metadata/_edit_lock_ = true
 
 [node name="cutscene17" parent="." instance=ExtResource("15_1usq2")]
-visible = false
 position = Vector2(-195, 243)
 metadata/_edit_lock_ = true
 
 [node name="cutscene21T" parent="." instance=ExtResource("16_jysj8")]
-visible = false
 position = Vector2(295.573, -60.6841)
 
 [node name="cutscene17_2" parent="." instance=ExtResource("27_rp2os")]
-visible = false
 position = Vector2(119.047, -60.1308)
 
 [connection signal="body_entered" from="Doors/Door_Maya" to="." method="_on_door_maya_body_entered"]

@@ -101,6 +101,8 @@ func _process(delta: float) -> void:
 	if last_platform_check_time > 0:
 		last_platform_check_time -= delta
 
+	
+	_apply_touch_damage(delta) 	
 # =====================================================
 # TAKE DAMAGE - FIXED TO PREVENT DOUBLE DAMAGE
 # =====================================================

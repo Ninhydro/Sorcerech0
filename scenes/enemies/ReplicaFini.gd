@@ -166,7 +166,7 @@ func _process(delta: float) -> void:
 				current_animation = "idle"
 				animation_player.play("idle")
 	move_and_slide()
-
+	_apply_touch_damage(delta) 
 
 # ===================================================================
 #                     HURT / INTERRUPT HELPER

@@ -61,6 +61,8 @@ func _process(delta):
 	handle_animation()
 	move_and_slide()
 
+	super._process(delta)
+	
 func move(delta):
 	if dead:
 		velocity.x = 0

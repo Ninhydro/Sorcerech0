@@ -152,6 +152,8 @@ func _process(delta):
 		# Increased chance for rocket attack
 		if distance > melee_range and distance < chase_range and randf() < 0.02:
 			_start_rocket_attack()
+	
+	_apply_touch_damage(delta) 
 # -------------------------------------------------
 # SHIELD SYSTEM
 # -------------------------------------------------

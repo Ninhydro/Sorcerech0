@@ -10,7 +10,7 @@ var speed: float:
 	get:
 		return base_speed * Global.global_time_scale
 		
-@export var attack_range := 50
+@export var attack_range := 40
 @export var enemy_damage := 0
 @export var attack_cooldown := 2.0
 @export var health := 100
@@ -131,7 +131,7 @@ var original_position: Vector2
 @export var touch_damage := 5                # Damage when touching player
 @export var touch_damage_cooldown := 0.5     # Seconds between touch damage ticks
 var touch_damage_timer: Timer                # internal cooldown
-var touch_range := 10.0          #How close the player must be to take touch damage
+@export var touch_range := 20.0          #How close the player must be to take touch damage
 
 func _is_within_activation_distance() -> bool:
 	if not player or not is_instance_valid(player):
@@ -181,7 +181,7 @@ func _ready():
 	add_child(touch_damage_timer)
 	
 func _apply_touch_damage(delta: float) -> void:
-	if dead or not player or not is_instance_valid(player):
+	if dead or not player or not is_instance_valid(player) or Global.dashing or Global.camouflage:
 		return
 	if touch_damage_timer.time_left > 0:
 		return

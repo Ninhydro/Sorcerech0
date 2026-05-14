@@ -1,4 +1,4 @@
-[gd_scene load_steps=286 format=3 uid="uid://cov3kryfnxah6"]
+[gd_scene load_steps=288 format=3 uid="uid://cov3kryfnxah6"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.gd" id="1_6nqbo"]
 [ext_resource type="Texture2D" uid="uid://sf7f3ilxiysq" path="res://assets_image/Characters/Phina/phina1-Sheet.png" id="2_2avrg"]
@@ -2315,6 +2315,14 @@ graph_offset = Vector2(-94, -159.712)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ak7ds"]
 size = Vector2(13, 11.3333)
 
+[sub_resource type="Gradient" id="Gradient_tx0g3"]
+offsets = PackedFloat32Array(0.215909, 0.5, 0.761364)
+colors = PackedColorArray(0.460296, 0.804568, 0.993807, 1, 0.114806, 0.41798, 0.581083, 1, 0.458824, 0.803922, 0.992157, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jqokp"]
+gradient = SubResource("Gradient_tx0g3")
+fill_to = Vector2(0, 1)
+
 [node name="Player" type="Node2D"]
 
 [node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
@@ -2363,7 +2371,11 @@ shape = SubResource("RectangleShape2D_ak7ds")
 
 [node name="GrappleLine" type="Line2D" parent="Player"]
 points = PackedVector2Array(9, -28)
-width = 5.0
+width = 2.0
+default_color = Color(0.458824, 0.803922, 0.992157, 1)
+texture = SubResource("GradientTexture2D_jqokp")
+texture_mode = 2
+antialiased = true
 
 [node name="GrappleHandPoint" type="Marker2D" parent="Player"]
 position = Vector2(9, -27)

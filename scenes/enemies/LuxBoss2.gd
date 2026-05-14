@@ -174,7 +174,8 @@ func _process(delta: float) -> void:
 		slam_cooldown_timer -= delta * Global.global_time_scale
 		if slam_cooldown_timer <= 0:
 			can_slam = true
-
+			
+	_apply_touch_damage(delta) 
 # =====================================================
 # TAKE DAMAGE - FIXED TO PREVENT DOUBLE DAMAGE
 # =====================================================

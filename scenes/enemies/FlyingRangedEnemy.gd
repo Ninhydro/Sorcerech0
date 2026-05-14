@@ -49,7 +49,8 @@ func _process(delta):
 	move(delta)
 	handle_animation()
 	move_and_slide()
-
+	super._process(delta)
+	
 func handle_hover_movement(delta):
 	# Gentle up/down hover movement
 	hover_timer += delta

@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://c3h0s2naqc524"]
+[gd_scene load_steps=9 format=3 uid="uid://c3h0s2naqc524"]
 
+[ext_resource type="Script" path="res://scenes/NPC_cutscene/NPC_background.gd" id="1_pdsgw"]
 [ext_resource type="Texture2D" uid="uid://dvha5j3j34j8a" path="res://assets_image/Characters/Enemies/dryad-Sheet.png" id="2_72ex0"]
 [ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="3_xw3ov"]
 
@@ -52,6 +53,7 @@ modulate = Color(0.517647, 0.517647, 0.517647, 1)
 z_index = -1
 collision_layer = 16
 collision_mask = 2
+script = ExtResource("1_pdsgw")
 
 [node name="NPC" type="Sprite2D" parent="."]
 position = Vector2(0, -45)

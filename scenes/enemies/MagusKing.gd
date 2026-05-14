@@ -289,6 +289,7 @@ func _process(delta: float) -> void:
 			anim.play("idle")
 	
 	move_and_slide()
+	_apply_touch_damage(delta) 
 
 # Create a separate function for taking damage handling
 func _handle_taking_damage() -> void:

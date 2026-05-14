@@ -96,7 +96,9 @@ func _process(delta):
 		move(delta)
 		handle_animation()
 		move_and_slide()
-
+	
+	super._process(delta)
+	
 func detect_edges():
 	if not is_on_wall or dead or taking_damage:
 		return

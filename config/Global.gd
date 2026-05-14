@@ -35,7 +35,7 @@ func _ready():
 	Dialogic.connect("dialog_started", Callable(self, "_on_dialog_started"))
 	Dialogic.connect("dialog_ended", Callable(self, "_on_dialog_ended"))
 	highlight_shader = load("res://shaders/highlight2.gdshader") #currently I think the highlight.gdshader is not used
-	camouflage_shader = load("res://shaders/camouflage_alpha.gdshader")
+	camouflage_shader = load("res://shaders/combined_camouflage_&_hurt.gdshader")
 	circle_shader = load("res://shaders/circle.gdshader")
 	
 	if highlight_shader:

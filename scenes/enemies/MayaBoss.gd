@@ -143,6 +143,8 @@ func _process(delta):
 	if not is_tired and (player and not dead and not taking_damage and not is_dealing_damage 
 		and not is_teleporting and teleport_cooldown <= 0 and _should_teleport()):
 		_execute_teleport()
+	
+	_apply_touch_damage(delta) 
 
 # -------------------------------------------------
 # MOVEMENT OVERRIDE - FIXED

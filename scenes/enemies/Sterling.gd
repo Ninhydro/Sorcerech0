@@ -108,6 +108,7 @@ func _process(delta: float) -> void:
 		anim.play("idle")
 
 	move_and_slide()
+	_apply_touch_damage(delta) 
 
 func take_damage(amount: int) -> void:
 	if dead or invulnerable_during_attack:

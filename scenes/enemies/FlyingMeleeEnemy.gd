@@ -47,6 +47,8 @@ func _process(delta: float) -> void:
 	_move_logic(delta)
 	_handle_animation()
 	move_and_slide()
+	super._process(delta)
+	
 
 func _handle_hover_movement(delta: float) -> void:
 	if dead or taking_damage or is_dealing_damage or is_preparing_attack:
