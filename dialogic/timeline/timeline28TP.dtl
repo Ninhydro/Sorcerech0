@@ -1,6 +1,6 @@
 join Nataly leftmost
 Nataly: Oh you're here, come on, everyone is waiting for you
-join Maya_adult rightmost
+join Maya_adult right
 Maya_adult: Or you need to go somewhere else first?
 join Player center
 Player: Hmm... (Proceeding will go to ending scene)
@@ -8,7 +8,25 @@ Player: Hmm... (Proceeding will go to ending scene)
 	leave Player
 	leave Maya_adult
 	leave Nataly
-	[background arg="res://assets_image/Background/Black.png" fade="0.0"]
+	#join black center [animation="Fade In"]
+	#[wait time="1.0"]
+	#leave black [animation="Fade Out"]
+	join CGFinal_back center [animation="Instant In"]
+	join CGFinal_phina center [animation="Instant In"]
+	join CGFinal_maya center [animation="Instant In"]
+	join CGFinal_nataly center [animation="Instant In"]
+	join CGFinal_lux center [animation="Instant In"]
+	join CGFinal_mid center [animation="Instant In"]
+	join CGFinal_betael center [animation="Instant In"]
+	if {Global.valentina_dead} == false:
+		join CGFinal_valentina center [animation="Instant In"]
+	if {Global.alyra_dead} == false:
+		join CGFinal_alyra center [animation="Instant In"]
+		join CGFinal_varek center [animation="Instant In"]
+	if {Global.nora_dead} == false:
+		join CGFinal_nora center [animation="Instant In"]
+	join CGFinal_sterling center [animation="Instant In"]
+	join Fini (Happy) center
 	Player (Happy): Oh everyone is here
 	Maya_adult: Yeah we're having a picnic, come join us
 	Nataly: What a journey huh?
@@ -27,5 +45,6 @@ Player: Hmm... (Proceeding will go to ending scene)
 	Narrator: And with peace… a better future to be told...
 	Narrator: THE END
 	set {Global.game_cleared} = true
+
 - I want to talk with people
 	set {Global.game_cleared} = false
