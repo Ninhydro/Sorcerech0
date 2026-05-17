@@ -62,6 +62,9 @@ var final_position_bubble_texts: Array[String] = [
 var dialog_cooldown: bool = false
 var dialog_cooldown_timer: Timer
 
+#var intro_shown_for_current_station: bool = false
+#var can_reset: bool = true
+
 func start_dialog_cooldown(duration: float = 1.0):
 	dialog_cooldown = true
 	if dialog_cooldown_timer and is_instance_valid(dialog_cooldown_timer):
@@ -199,7 +202,7 @@ func move_to_station(station_index: int):
 func setup_current_station():
 	print("Nora: Arrived at station ", current_station_index)
 	print("Nora: Current goal: ", ColorObject.ColorType.keys()[current_goal])
-	
+	#intro_shown_for_current_station = false
 	player_is_near = false
 	# Check if this station is already completed
 	var station_already_completed = false
@@ -216,6 +219,7 @@ func setup_current_station():
 	# Only auto-start if minigame is enabled AND station not completed
 	if minigame_enabled and not station_already_completed:
 		minigame_active = true
+		start_instruction_timer()
 		print("Nora: Minigame AUTO-STARTED! Goal: ", ColorObject.ColorType.keys()[current_goal])
 	else:
 		minigame_active = false
@@ -269,7 +273,7 @@ func show_interaction_prompt(show: bool):
 
 func _input(event):
 	# Use "yes" action instead of "ui_accept" or "interact"
-	if Input.is_action_just_pressed("yes") and player_is_near and not is_moving:
+	if Input.is_action_just_pressed("yes") and player_is_near and not is_moving and Dialogic.current_timeline == null:
 		print("=== YES BUTTON PRESSED NEAR NORA ===")
 		print("Nora: minigame_enabled = ", minigame_enabled)
 		print("Nora: minigame_active = ", minigame_active)
@@ -335,7 +339,7 @@ func complete_minigame(success: bool):
 		print("Nora: Wonderful! You made %s!" % ColorObject.ColorType.keys()[current_goal])
 		print("Nora: Station %d completed! Global flag set." % current_station_index)
 		
-		#show_completion_speech() 
+		show_completion_speech() 
 		stop_instruction_timer()
 		
 		if goals_completed < minigame_stations.size():
@@ -378,6 +382,9 @@ func set_station_global_flag(station_index: int, completed: bool):
 
 	
 func reset_current_minigame():
+	#if dialog_cooldown:   # <-- ADD THIS LINE
+	#	print("Nora: Reset blocked - dialog cooldown active")
+	#	return
 	if not allow_reset or not minigame_active:
 		print("Nora: Reset not allowed or minigame not active")
 		return
@@ -448,8 +455,9 @@ func reset_current_minigame():
 	
 	# STEP 6: Force scene tree update
 	await get_tree().process_frame
-	await get_tree().process_frame
+	#await get_tree().process_frame
 	show_station_speech()
+	start_instruction_timer() 
 	
 	print("Nora: RESET COMPLETE! Recreated ", reset_count, " objects")
 
@@ -797,31 +805,28 @@ func _show_dialog_and_wait(timeline_name: String):
 	Dialogic.timeline_ended.disconnect(connection)
 	
 func show_station_speech():
-	"""Show speech bubble based on current station"""
+	print("=== show_station_speech called ===")
+	print("Global.meet_nora_one = ", Global.meet_nora_one)
+	print("current_station_index = ", current_station_index)
 	if Global.meet_nora_one == true:
 		var timeline = ""
 		match current_station_index:
-			0: return   
+			0: timeline = "timeline6M_1_1"   
 			1: timeline = "timeline6M_2"
 			2: timeline = "timeline6M_3"
+		print("Timeline to play: ", timeline)
 		if timeline:
+			#can_reset = false 
+			print("Starting dialog: ", timeline)
 			await _show_dialog_and_wait(timeline)
-			if minigame_active and not stations_completed[current_station_index]:
-				start_instruction_timer()
-			
-		#match current_station_index:
-		#	0:  # Station 1 - Green
-		#		create_speech_bubble("Mix the orbs to create GREEN orb!")
-		#	1:  # Station 2 - Purple
-		#		create_speech_bubble("Alright, next one I need to get PURPLE orb")
-		#	2:  # Station 3 - Gold
-		#		create_speech_bubble("This is the final one, I need GOLDEN orb. You need to mix TWO TIMES!")
-		#	_:
-		#		pass
+			print("Dialog finished")
+			await get_tree().create_timer(0.5).timeout
+			#can_reset = true
+			#if minigame_active and not stations_completed[current_station_index]:
+			#	start_instruction_timer()
 	else:
-		pass
-		
-	start_instruction_timer()
+		print("meet_nora_one is false, skipping dialog")
+	#start_instruction_timer()
 
 func show_completion_speech():
 	"""Show speech when a station is completed"""
@@ -886,7 +891,7 @@ func start_instruction_timer():
 	instruction_timer.timeout.connect(_repeat_station_instruction)
 	
 	# Set random interval (15-20 seconds)
-	instruction_timer.wait_time = randf_range(15.0, 20.0)
+	instruction_timer.wait_time = randf_range(10.0, 15.0)
 	instruction_timer.start()
 	print("Nora: Started instruction repeat timer for station ", current_station_index)
 
@@ -913,7 +918,7 @@ func _repeat_station_instruction():
 	
 	# Reset timer for next repeat
 	if instruction_timer and is_instance_valid(instruction_timer):
-		instruction_timer.wait_time = randf_range(15.0, 20.0)  # Random interval
+		instruction_timer.wait_time = randf_range(5.0, 15.0)  # Random interval
 		instruction_timer.start()
 
 func stop_instruction_timer():

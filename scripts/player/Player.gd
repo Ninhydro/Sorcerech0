@@ -265,6 +265,8 @@ func _ready():
 	
 	#unlock_state("Magus")
 	#unlock_state("UltimateMagus")
+	#Global.selected_form_index = unlocked_states.find("UltimateMagus")
+	#switch_state("UltimateMagus")
 	#unlock_state("Cyber")
 	#unlock_state("UltimateCyber")
 	
@@ -544,7 +546,9 @@ func _physics_process(delta):
 				elif is_grabbing_ledge:
 					velocity.y += gravity+delta
 
-		
+			elif is_busy:
+				velocity = Vector2(0,0)
+				
 		if is_launched and cannon_form_switched:
 	# Restore previous form after launch
 			if previous_form != "" and previous_form != "Normal":
@@ -973,8 +977,12 @@ func take_damage(damage):
 		can_take_damage = false
 		
 		# Apply knockback and damage
-		apply_knockback(Global.enemyAknockback)
-		
+		#apply_knockback(Global.enemyAknockback)
+		var kb = Global.enemyAknockback
+# If knockback is downward or zero, send player upward instead
+		if kb.y >= 0:
+			kb.y = -200   # adjust value as needed
+		apply_knockback(kb)
 		if Global.health > 0:
 			if current_state is MagusState and current_state._sprite_node and current_state._sprite_node.material:
 				var mat = current_state._sprite_node.material
