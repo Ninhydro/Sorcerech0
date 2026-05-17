@@ -52,7 +52,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="PlayerSpriteProfile" type="TextureRect" parent="Panel/MainContainer/HBoxContainer"]
-custom_minimum_size = Vector2(80, 100)
+custom_minimum_size = Vector2(90, 100)
 layout_mode = 2
 texture = ExtResource("2_wfj6n")
 

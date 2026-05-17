@@ -3,13 +3,14 @@ Uncle_Betael (Angry): You bringin’ rebel soldiers to my scrap lot now, Maya?
 join Maya_kid (Happy) center [mirrored="true"]
 Maya_kid (Happy): They’re not rebels. They’re… future heroes! Well maybe..
 Uncle_Betael (Angry): Hope they don’t blow the kettle up…
+Maya_kid (Happy): Gotcha gotcha!
 leave Uncle_Betael
-update Maya_kid left [mirrored="false"]
+leave Maya_kid
+[background arg="res://assets_image/CG/CG8.png" fade="0.0"]
+Maya_kid (Happy): Alright here some tea and crackers
 Maya_kid (Happy): What a day huh? You two almost blew up the market square
 Fini_ball: Why… fight?
-join Varek_soldier (Angry) rightmost [mirrored="true"]
 Varek_soldier (Angry): You kidding me? Look at what your kind did to Tromarvelia’s eastern district—children been enslaved and used as power source for your machine's battery
-join Alyra (Angry) right [mirrored="true"]
 Alyra (Angry): Oh, like how Magus "liberated" our outposts? Turned prisoners into mana core for your magic forges?
 Varek_soldier (Angry): Propaganda. Typical Cyber lies.
 Alyra (Angry): Propaganda… you should told that to my sister's wound.

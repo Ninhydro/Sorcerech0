@@ -1,7 +1,9 @@
 [background scene="res://dialogic/PastBackstoryBackground.tscn" arg="  brown" fade="0.5"]
+join Lux_kid center
 Lux: Give the core to me! It's my core! I need to give proof Mom...
 Fini: Lux stop! This isn’t strength— it’s suicide!
 Lux: Then why you?! A machine that can’t even "feel", why you're the chosen one?!
+leave Lux_kid
 Fini: … No Lux don’t go…
 [background arg="res://assets_image/Background/Black.png" fade="0.5"]
 Player: I didn’t want this… I just…
