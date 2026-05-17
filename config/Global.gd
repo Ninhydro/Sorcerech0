@@ -443,7 +443,8 @@ var health_regeneration_timer: float = 0.0
 var health_regeneration_active: bool = true  # Can be toggled on/off
 var player_is_moving: bool = false  # Add this line
 #var playerAlive: bool = true
-var demo = false
+var demo = false #false full version, true demo, REMEMBER TO SET THIS BEFORE RELEASE
+
 # Add these functions in the script (I suggest adding them after the health variables)
 
 # Health regeneration functions
@@ -605,6 +606,9 @@ func set_current_game_scene_path(path: String):
 	current_scene_path = path
 	print("Global: Current game scene path set to: " + current_scene_path)
 
+var lux_encounter_magus = false
+var lux_encounter_cyber = false
+
 #Inventory key items
 var has_glasses: bool = false
 var glasses_on_man: bool = false
@@ -698,8 +702,11 @@ func get_save_data() -> Dictionary:
 		"screwdriver_on_boy": screwdriver_on_boy,
 		"sword_on_boy": sword_on_boy,
 		
-		
-		"demo": demo,
+		"lux_encounter_magus": lux_encounter_magus,
+		"lux_encounter_cyber": lux_encounter_cyber,
+
+
+		#"demo": demo,
 		
 		
 	}
@@ -792,12 +799,17 @@ func apply_load_data(data: Dictionary):
 	screwdriver_on_boy = data.get("screwdriver_on_boy", false)
 	sword_on_boy = data.get("sword_on_boy", false)
 	
+	lux_encounter_magus = data.get("lux_encounter_magus", false)
+	lux_encounter_cyber = data.get("lux_encounter_cyber", false)
+	
+
+		
 	# Force demo off for full game builds
-	var is_full_game = true   # set this via a build flag or constant
-	if is_full_game:
-		demo = false
-	else:
-		demo = data.get("demo", false)
+	#var is_full_game = true   # set this via a build flag or constant REMEMBER TO SET THIS BEFORE RELEASE
+	#if is_full_game:
+	#	demo = false
+	#else:
+	#	demo = true #data.get("demo", false)
 
 	print("Global: Save data loaded successfully.")
 
@@ -899,7 +911,11 @@ func reset_to_defaults():
 	screwdriver_on_boy = false
 	sword_on_boy = false
 	
-	demo = false
+	
+	lux_encounter_magus = false
+	lux_encounter_cyber = false
+	
+
 	
 # Helper functions for quest marker serialization
 func _serialize_quest_markers() -> Dictionary:

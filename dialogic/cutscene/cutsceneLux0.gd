@@ -12,7 +12,7 @@ var player_in_range = null
 @onready var luxanim: AnimationPlayer = $Lux/AnimationPlayer
 # Called when the node enters the scene tree for the first time.
 
-var lux_encounter = false
+#var lux_encounter = false
 @export var maguspos = false 
 
 func _ready():
@@ -25,10 +25,16 @@ func _ready():
 	
 func _process(delta):
 	if Global.timeline <= 6.5:
-		if lux_encounter == false:
-			lux.visible = true
-		else:
-			lux.visible = false
+		if maguspos == true:
+			if Global.lux_encounter_magus == false:
+				lux.visible = true
+			else:
+				lux.visible = false
+		elif maguspos == false:
+			if Global.lux_encounter_cyber == false:
+				lux.visible = true
+			else:
+				lux.visible = false
 	else:
 		lux.visible = false
 	
@@ -37,14 +43,29 @@ func _on_body_entered(body):
 	print("Cutscene1: Body entered - ", body.name if body else "null")
 	#Global.timeline == 6.5
 	# Check if timeline condition is met
-	if Global.timeline <= 6.5 and lux_encounter == false and body.is_in_group("player"):
-		print("Cutscene1: Conditions met, calling parent method")
+	if Global.timeline <= 6.5 and body.is_in_group("player"):
+		if maguspos == true:
+			if Global.lux_encounter_magus == false:
+				player_in_range = body
+				super._on_body_entered(body)
+			else:
+				pass
+				#lux.visible = false
+		elif maguspos == false:
+			if Global.lux_encounter_cyber == false:
+				player_in_range = body
+				super._on_body_entered(body)
+			else:
+				pass
+				#lux.visible = false
+				
+		#print("Cutscene1: Conditions met, calling parent method")
 		# Store player reference first
-		player_in_range = body
+		#player_in_range = body
 		# Call parent's _on_body_entered
 		#betael.visible = true
 		#maya.visible = false
-		super._on_body_entered(body)
+		#super._on_body_entered(body)
 	else:
 		print("Cutscene1: Conditions not met. Global.timeline = ", Global.timeline, ", is_player = ", body.is_in_group("player") if body else "false")
 		
@@ -104,7 +125,10 @@ func _on_cutscene_start():
 
 func _on_cutscene_end():
 	print("Cutscene1: Finished")
-	lux_encounter = true
+	if maguspos == true:
+		Global.lux_encounter_magus = true
+	elif maguspos == false:
+		Global.lux_encounter_cyber = true
 	lux.visible = false
 	Global.attacking= false
 	# Set timeline

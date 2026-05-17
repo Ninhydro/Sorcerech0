@@ -72,6 +72,7 @@ func _setup_cutscene():
 		{"type": "animation", "name": "anim1_idle", "wait": false, "loop": true},
 		{"type": "dialog", "name": "timeline6M", "wait": true},
 		
+		{"type": "move_cutscene", "name": "cutscene_marker1", "duration": 1.0, "wait": false},
 		{"type": "animation", "name": "anim2", "wait": true, "loop": false},
 		{"type": "animation", "name": "anim2_idle", "wait": false, "loop": true},
 		{"type": "move_player", "name": "marker1",  "duration": 2, "animation": "run", "wait": true},

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ceb52tng3vx82" path="res://assets_image/Characters/Lux/Lux-Sheet.png" id="4_a0f3c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwwtj"]
-size = Vector2(388, 75)
+size = Vector2(320, 75)
 
 [sub_resource type="Animation" id="Animation_g0bnc"]
 resource_name = "anim1"
@@ -427,7 +427,7 @@ position = Vector2(-103, -46)
 script = ExtResource("1_efnl3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-2, -27.5)
+position = Vector2(-1, -27.5)
 shape = SubResource("RectangleShape2D_xwwtj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -449,6 +449,7 @@ zoom = Vector2(0.8, 0.8)
 position = Vector2(-16, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_a0f3c")
+flip_h = true
 hframes = 10
 vframes = 14
 frame = 110

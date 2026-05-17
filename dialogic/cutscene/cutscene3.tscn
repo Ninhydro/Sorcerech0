@@ -2309,7 +2309,7 @@ scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_yehhj")
 hframes = 8
 vframes = 19
-frame = 144
+frame = 146
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Maya kid"]
 root_node = NodePath("../..")
@@ -2318,10 +2318,9 @@ libraries = {
 }
 
 [node name="Alyra" type="Sprite2D" parent="."]
-position = Vector2(-1439, 278)
+position = Vector2(247, -24)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_nl6ah")
-flip_h = true
 hframes = 9
 vframes = 9
 frame = 72
@@ -2333,10 +2332,9 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
-position = Vector2(-1467, 278)
+position = Vector2(266.531, -24)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_u47py")
-flip_h = true
 hframes = 8
 vframes = 18
 frame = 136

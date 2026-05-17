@@ -1175,7 +1175,7 @@ position = Vector2(-64, -8)
 position = Vector2(-64, -40)
 
 [node name="CutsceneMarker1" type="Marker2D" parent="."]
-position = Vector2(5, 20)
+position = Vector2(-168, -8)
 
 [node name="Alyra" type="Sprite2D" parent="."]
 visible = false
@@ -1232,11 +1232,12 @@ libraries = {
 visible = false
 
 [node name="BlackOverlay" type="ColorRect" parent="."]
+visible = false
 modulate = Color(1, 1, 1, 0)
-offset_left = -20783.0
-offset_top = -14168.0
-offset_right = 3993.0
-offset_bottom = 3368.0
+offset_left = -20936.0
+offset_top = -14176.0
+offset_right = 3840.0
+offset_bottom = 3360.0
 color = Color(0, 0, 0, 1)
 
 [node name="WhiteOverlay" type="ColorRect" parent="."]

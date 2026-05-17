@@ -88,6 +88,8 @@ func _process(delta: float) -> void:
 		#if collision_shape.disabled:
 		#	print("Boss1: timeline=5 but collision_shape is disabled")
 		collision_shape.disabled = false
+	else:
+		collision_shape.disabled = true
 	#else:
 	#	if not collision_shape.disabled:
 	#		print("Boss1: timeline!=5 (", Global.timeline, "), disabling trigger")

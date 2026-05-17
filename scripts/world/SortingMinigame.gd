@@ -89,12 +89,10 @@ func spawn_next_object():
 	
 	var current_objects = get_tree().get_nodes_in_group("FallingObjects")
 	if current_objects.size() >= max_objects_on_screen:
-		# Wait and try again later
 		await get_tree().create_timer(0.5).timeout
 		spawn_next_object()
 		return
 		
-	# Random delay between spawns (0.5 to 2 seconds)
 	var spawn_delay = randf_range(2.0, 4.0)
 	await get_tree().create_timer(spawn_delay).timeout
 	
@@ -109,21 +107,21 @@ func spawn_next_object():
 	var available_types = ["cyber", "magus"]
 	var random_type = available_types[randi() % available_types.size()]
 	new_object.setup_object(random_type)
-	#print("DEBUG: Setting object type to: '", random_type, "'")
 	new_object.global_position = spawn_point.global_position
 	new_object.contact_monitor = true
 	new_object.max_contacts_reported = 10
 	
-	new_object.apply_impulse(Vector2(0, 50))
+	# --- FIX: Random horizontal angle ---
+	# Generate random horizontal direction (-1 to 1) with configurable strength
+	var horizontal_strength = randf_range(-80, 80)  # pixels per second left/right
+	var vertical_strength = 50  # keep original downward push
+	var impulse = Vector2(horizontal_strength, vertical_strength)
+	new_object.apply_impulse(impulse)
+	# -----------------------------------
 	
 	objects_spawned += 1
 	
-	# Setup bin detection
-	#for bin in $Bins.get_children():
-	#	bin.connect("object_dropped", _on_object_dropped.bind(new_object))
-	
-	# Spawn next object after a delay
-	if objects_spawned < objects_to_spawn :
+	if objects_spawned < objects_to_spawn:
 		spawn_next_object()
 
 func _on_object_dropped(bin_name: String, object: RigidBody2D):

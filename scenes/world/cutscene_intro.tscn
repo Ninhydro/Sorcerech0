@@ -2791,7 +2791,6 @@ libraries = {
 one_shot = true
 
 [node name="Intro" type="Node2D" parent="."]
-visible = false
 position = Vector2(840, -40)
 metadata/_edit_lock_ = true
 

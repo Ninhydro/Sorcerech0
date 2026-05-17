@@ -1356,7 +1356,6 @@ libraries = {
 }
 
 [node name="Varek_soldier" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(13, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("4_jq35i")
@@ -1372,7 +1371,6 @@ libraries = {
 }
 
 [node name="Nora" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(-142, -28)
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("5_yxt7u")

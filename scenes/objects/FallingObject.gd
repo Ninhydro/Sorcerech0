@@ -53,6 +53,12 @@ func _ready():
 	angular_damp = 0.5
 	freeze = false  # Ensure it's not frozen initially
 	
+	mass = 10.0
+	var material = PhysicsMaterial.new()
+	material.bounce = 0.1          # No bounce at all
+	material.friction = 0.8
+	physics_material_override = material
+	
 	collision_layer = 6  # Objects layer
 	collision_mask =  2 | 7 # Collide with player (layer 1) and bins (layer 4)
 	
@@ -118,11 +124,11 @@ func _on_body_entered(body):
 			has_landed_on_player = true
 			
 			# Add a small upward impulse to prevent sticking
-			var jump_impulse = Vector2(0, -50) * Global.global_time_scale
+			var jump_impulse = Vector2(0, -10) * Global.global_time_scale
 			apply_impulse(jump_impulse)
 			
 			# Also add a small random horizontal impulse to separate
-			var random_horizontal = randf_range(-30, 30) * Global.global_time_scale
+			var random_horizontal = randf_range(-60, 60) * Global.global_time_scale
 			apply_impulse(Vector2(random_horizontal, 0))
 			
 			print("FallingObject: Applied small jump impulse to prevent sticking with player")

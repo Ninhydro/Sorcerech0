@@ -59,7 +59,20 @@ var final_position_bubble_texts: Array[String] = [
 	"I wonder what color I should create next..."
 ]
 
+var dialog_cooldown: bool = false
+var dialog_cooldown_timer: Timer
 
+func start_dialog_cooldown(duration: float = 1.0):
+	dialog_cooldown = true
+	if dialog_cooldown_timer and is_instance_valid(dialog_cooldown_timer):
+		dialog_cooldown_timer.queue_free()
+	dialog_cooldown_timer = Timer.new()
+	add_child(dialog_cooldown_timer)
+	dialog_cooldown_timer.wait_time = duration
+	dialog_cooldown_timer.one_shot = true
+	dialog_cooldown_timer.timeout.connect(func(): dialog_cooldown = false)
+	dialog_cooldown_timer.start()
+	
 func _ready():
 	alyra.visible = false
 	nora.visible = false

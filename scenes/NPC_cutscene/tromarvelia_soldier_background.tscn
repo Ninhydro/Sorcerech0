@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://527kvwhyjws3"]
 
-[ext_resource type="Script" path="res://scenes/NPC_cutscene/NPC_background.gd" id="1_n4n3k"]
+[ext_resource type="Script" path="res://scenes/NPC_cutscene/tromarvelia_soldier_background.gd" id="1_bgjum"]
 [ext_resource type="Texture2D" uid="uid://c1qwfwmuqooib" path="res://assets_image/Characters/Enemies/Magus_soldier-Sheet.png" id="3_p2qjv"]
 [ext_resource type="PackedScene" uid="uid://d3xk2w0qelwqr" path="res://scenes/SpeechBubble/speech_bubble.tscn" id="4_iinf3"]
 
@@ -95,7 +95,7 @@ modulate = Color(0.478431, 0.478431, 0.478431, 1)
 z_index = -1
 collision_layer = 16
 collision_mask = 2
-script = ExtResource("1_n4n3k")
+script = ExtResource("1_bgjum")
 
 [node name="NPC" type="Sprite2D" parent="."]
 position = Vector2(0, -40)

@@ -13,7 +13,7 @@
 "display_name": "Fini",
 "mirror": false,
 "nicknames": [""],
-"offset": Vector2(0, 0),
+"offset": Vector2(0, 70),
 "portraits": {
 "Angry": {
 "export_overrides": {
@@ -52,5 +52,5 @@
 "scene": "res://addons/dialogic/Modules/HighlightPortrait/simple_highlight_portrait.tscn"
 }
 },
-"scale": 0.9
+"scale": 1.5
 }
