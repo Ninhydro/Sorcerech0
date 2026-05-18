@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://d31x3lq4tpd8s"]
+[gd_scene load_steps=47 format=3 uid="uid://d31x3lq4tpd8s"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_MagusTown.gd" id="1_imj52"]
 [ext_resource type="TileSet" uid="uid://dckcj5o6bchxt" path="res://scenes/tileset/Placeholder_new_tile_set.tres" id="2_0kg3k"]
@@ -38,6 +38,7 @@
 [ext_resource type="PackedScene" uid="uid://527kvwhyjws3" path="res://scenes/NPC_cutscene/tromarvelia_soldier_background.tscn" id="36_h7rb4"]
 [ext_resource type="PackedScene" uid="uid://c3h0s2naqc524" path="res://scenes/NPC_cutscene/forest_dryad_background.tscn" id="37_phxku"]
 [ext_resource type="PackedScene" uid="uid://cg6o8l7m7i2hu" path="res://scenes/NPC_cutscene/forest_dryad_background2.tscn" id="38_mrccx"]
+[ext_resource type="PackedScene" uid="uid://b2n44t0kwwtq1" path="res://scenes/NPC_cutscene/tromarvelia_receptionist.tscn" id="39_16onc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wlrbn"]
 size = Vector2(3432, 638.5)
@@ -595,7 +596,7 @@ maguspos = true
 position = Vector2(-1297, 113)
 
 [node name="Mage" parent="." instance=ExtResource("29_2c46e")]
-position = Vector2(-73, 67)
+position = Vector2(-601, 64)
 
 [node name="Brave Boy" parent="." instance=ExtResource("30_ulgsi")]
 position = Vector2(-1529, 128)
@@ -633,6 +634,9 @@ position = Vector2(-1713, -533)
 
 [node name="Dryad4" parent="." instance=ExtResource("38_mrccx")]
 position = Vector2(-1881, -901)
+
+[node name="Receptionist" parent="." instance=ExtResource("39_16onc")]
+position = Vector2(-21, 65)
 
 [connection signal="body_entered" from="Doors/Door_Nora" to="." method="_on_door_nora_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Nora" to="." method="_on_door_nora_body_exited"]

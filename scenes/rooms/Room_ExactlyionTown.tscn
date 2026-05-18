@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://2y3devuwcuju"]
+[gd_scene load_steps=51 format=3 uid="uid://2y3devuwcuju"]
 
 [ext_resource type="Script" path="res://scripts/rooms/Room_CyberTown.gd" id="1_0e4yv"]
 [ext_resource type="Texture2D" uid="uid://dthqd5hqlryu5" path="res://assets_image/Objects/grappling_point.png" id="2_jr5me"]
@@ -43,6 +43,7 @@
 [ext_resource type="PackedScene" uid="uid://blb0j2dehpjaq" path="res://scenes/NPC_cutscene/factory_android.tscn" id="41_jo84g"]
 [ext_resource type="PackedScene" uid="uid://bk11qtyrwgpd4" path="res://scenes/NPC_cutscene/exactlyion_soldier_background.tscn" id="42_s7e74"]
 [ext_resource type="PackedScene" uid="uid://by1qgqsqknbam" path="res://scenes/NPC_cutscene/factory_android_background.tscn" id="43_kg13s"]
+[ext_resource type="PackedScene" uid="uid://bcp5p8wivg2ir" path="res://scenes/NPC_cutscene/exactlyion_drone.tscn" id="44_7r8lq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a5eae"]
 size = Vector2(4176, 608)
@@ -1063,19 +1064,19 @@ position = Vector2(-363, -59)
 position = Vector2(247.469, 56.0079)
 
 [node name="Sterling" parent="." instance=ExtResource("34_b1ffn")]
-position = Vector2(1608, 81)
+position = Vector2(1616, 80)
 
 [node name="Cyber Soldier" parent="." instance=ExtResource("35_j4alb")]
-position = Vector2(747, 80)
+position = Vector2(1344, 80)
 
 [node name="Thinker  Boy" parent="." instance=ExtResource("36_dprul")]
-position = Vector2(1362, 80)
+position = Vector2(720, 81)
 
 [node name="Android girl" parent="." instance=ExtResource("37_6rshd")]
 position = Vector2(2141, 81)
 
 [node name="Worker" parent="." instance=ExtResource("38_tsdm2")]
-position = Vector2(2813, 82)
+position = Vector2(2864, 81)
 
 [node name="Anime0Index" parent="." instance=ExtResource("39_b7c33")]
 position = Vector2(2950, 1028)
@@ -1105,6 +1106,9 @@ position = Vector2(2224, 1017)
 [node name="Android4" parent="." instance=ExtResource("43_kg13s")]
 position = Vector2(2736, 1017)
 scale = Vector2(-1, 1)
+
+[node name="Drone" parent="." instance=ExtResource("44_7r8lq")]
+position = Vector2(2544, 72)
 
 [connection signal="body_entered" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_entered"]
 [connection signal="body_exited" from="Doors/Door_Valentina" to="." method="_on_door_valentina_body_exited"]

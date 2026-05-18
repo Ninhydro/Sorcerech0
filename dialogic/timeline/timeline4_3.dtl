@@ -6,7 +6,7 @@ Uncle_Betael (Angry): Hope they don’t blow the kettle up…
 Maya_kid (Happy): Gotcha gotcha!
 leave Uncle_Betael
 leave Maya_kid
-[background arg="res://assets_image/CG/CG8.png" fade="0.0"]
+join CG8 center [animation="Fade In"]
 Maya_kid (Happy): Alright here some tea and crackers
 Maya_kid (Happy): What a day huh? You two almost blew up the market square
 Fini_ball: Why… fight?

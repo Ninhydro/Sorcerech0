@@ -5,26 +5,27 @@ Maya_adult: Or you need to go somewhere else first?
 join Player center
 Player: Hmm... (Proceeding will go to ending scene)
 - Continue to ending
+	[background arg="res://assets_image/Background/Black.png" fade="0.0"]
 	leave Player
 	leave Maya_adult
 	leave Nataly
-	#join black center [animation="Fade In"]
-	#[wait time="1.0"]
-	#leave black [animation="Fade Out"]
+	# #join black center [animation="Fade In"]
+	[wait time="1.0"]
+	# #leave black [animation="Fade Out"]
 	join CGFinal_back center [animation="Instant In"]
-	join CGFinal_phina center [animation="Instant In"]
-	join CGFinal_maya center [animation="Instant In"]
-	join CGFinal_nataly center [animation="Instant In"]
-	join CGFinal_mid center [animation="Instant In"]
-	join CGFinal_betael center [animation="Instant In"]
+	join CGFinal_mid center [animation="Instant In" z_index="1"]
+	join CGFinal_phina center
+	join CGFinal_maya center
+	join CGFinal_nataly center
+	join CGFinal_betael center [z_index="1"]
 	if {Global.valentina_dead} == false:
-		join CGFinal_valentina center [animation="Instant In"]
+		join CGFinal_valentina center [z_index="1"]
 	if {Global.alyra_dead} == false:
-		join CGFinal_alyra center [animation="Instant In"]
-		join CGFinal_varek center [animation="Instant In"]
+		join CGFinal_alyra center [z_index="1"]
+		join CGFinal_varek center [z_index="1"]
 	if {Global.nora_dead} == false:
-		join CGFinal_nora center [animation="Instant In"]
-	join CGFinal_sterling center [animation="Instant In"]
+		join CGFinal_nora center [z_index="1"]
+	join CGFinal_sterling center [z_index="1"]
 	Player (Happy): Oh everyone is here
 	Maya_adult: Yeah we're having a picnic, come join us
 	Nataly: What a journey huh?
